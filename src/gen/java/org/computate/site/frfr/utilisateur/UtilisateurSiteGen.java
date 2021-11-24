@@ -1,33 +1,35 @@
 package org.computate.site.frfr.utilisateur;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Arrays;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import java.util.Date;
-import org.computate.site.frfr.cluster.Cluster;
+import org.slf4j.LoggerFactory;
 import java.util.HashMap;
+import org.computate.site.frfr.base.ModeleBase;
 import org.apache.commons.lang3.StringUtils;
-import io.vertx.core.logging.LoggerFactory;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import org.computate.site.frfr.config.ConfigCles;
 import org.apache.commons.collections.CollectionUtils;
 import java.lang.Long;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.lang.Boolean;
 import io.vertx.core.json.JsonObject;
 import java.lang.String;
-import io.vertx.core.logging.Logger;
 import java.math.RoundingMode;
+import org.slf4j.Logger;
 import java.math.MathContext;
+import io.vertx.core.Promise;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import java.util.Set;
 import org.apache.commons.text.StringEscapeUtils;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import org.computate.site.frfr.contexte.SiteContexteFrFR;
+import io.vertx.core.Future;
 import org.computate.site.frfr.requete.api.RequeteApi;
-import org.computate.site.frfr.ecrivain.ToutEcrivain;
 import org.apache.solr.client.solrj.SolrClient;
 import java.util.Objects;
 import io.vertx.core.json.JsonArray;
@@ -40,20 +42,16 @@ import java.util.Optional;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.apache.solr.client.solrj.util.ClientUtils;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import org.computate.site.frfr.couverture.Couverture;
 import org.apache.solr.common.SolrInputDocument;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
 /**	
- * <br/><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstClasse_indexed_boolean:true&fq=classeNomCanonique_frFR_indexed_string:org.computate.site.frfr.utilisateur.UtilisateurSite&fq=classeEtendGen_indexed_boolean:true">Trouver la classe  dans Solr. </a>
+ * <br/><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstClasse_indexed_boolean:true&fq=classeNomCanonique_frFR_indexed_string:org.computate.site.frfr.utilisateur.UtilisateurSite&fq=classeEtendGen_indexed_boolean:true">Trouver la classe seeDeleted dans Solr. </a>
  * <br/>
  **/
-public abstract class UtilisateurSiteGen<DEV> extends Cluster {
-	protected static final Logger LOGGER = LoggerFactory.getLogger(UtilisateurSite.class);
-
-	public static final List<String> ROLES = Arrays.asList("SiteAdmin", "SiteAdmin");
-	public static final List<String> ROLE_READS = Arrays.asList("");
+public abstract class UtilisateurSiteGen<DEV> extends ModeleBase {
+	protected static final Logger LOG = LoggerFactory.getLogger(UtilisateurSite.class);
 
 	public static final String UtilisateurSite_UnNom = "un utilisateur du site";
 	public static final String UtilisateurSite_Ce = "ce ";
@@ -84,11 +82,11 @@ public abstract class UtilisateurSiteGen<DEV> extends Cluster {
 	/**	 L'entité utilisateurCles
 	 *	Il est construit avant d'être initialisé avec le constructeur par défaut List<Long>(). 
 	 */
+	@JsonProperty
+	@JsonFormat(shape = JsonFormat.Shape.ARRAY)
 	@JsonSerialize(contentUsing = ToStringSerializer.class)
 	@JsonInclude(Include.NON_NULL)
 	protected List<Long> utilisateurCles = new ArrayList<Long>();
-	@JsonIgnore
-	public Couverture<List<Long>> utilisateurClesCouverture = new Couverture<List<Long>>().p(this).c(List.class).var("utilisateurCles").o(utilisateurCles);
 
 	/**	<br/> L'entité utilisateurCles
 	 * Il est construit avant d'être initialisé avec le constructeur par défaut List<Long>(). 
@@ -104,7 +102,17 @@ public abstract class UtilisateurSiteGen<DEV> extends Cluster {
 
 	public void setUtilisateurCles(List<Long> utilisateurCles) {
 		this.utilisateurCles = utilisateurCles;
-		this.utilisateurClesCouverture.dejaInitialise = true;
+	}
+	@JsonIgnore
+	public void setUtilisateurCles(String o) {
+		Long l = UtilisateurSite.staticSetUtilisateurCles(null, o);
+		if(l != null)
+			addUtilisateurCles(l);
+	}
+	public static Long staticSetUtilisateurCles(RequeteSiteFrFR requeteSite_, String o) {
+		if(NumberUtils.isParsable(o))
+			return Long.parseLong(o);
+		return null;
 	}
 	public UtilisateurSite addUtilisateurCles(Long...objets) {
 		for(Long o : objets) {
@@ -113,17 +121,17 @@ public abstract class UtilisateurSiteGen<DEV> extends Cluster {
 		return (UtilisateurSite)this;
 	}
 	public UtilisateurSite addUtilisateurCles(Long o) {
-		if(o != null && !utilisateurCles.contains(o))
+		if(o != null)
 			this.utilisateurCles.add(o);
 		return (UtilisateurSite)this;
 	}
-	public UtilisateurSite setUtilisateurCles(JsonArray objets) {
+	@JsonIgnore
+	public void setUtilisateurCles(JsonArray objets) {
 		utilisateurCles.clear();
 		for(int i = 0; i < objets.size(); i++) {
 			Long o = objets.getLong(i);
 			addUtilisateurCles(o);
 		}
-		return (UtilisateurSite)this;
 	}
 	public UtilisateurSite addUtilisateurCles(String o) {
 		if(NumberUtils.isParsable(o)) {
@@ -133,35 +141,20 @@ public abstract class UtilisateurSiteGen<DEV> extends Cluster {
 		return (UtilisateurSite)this;
 	}
 	protected UtilisateurSite utilisateurClesInit() {
-		if(!utilisateurClesCouverture.dejaInitialise) {
-			_utilisateurCles(utilisateurCles);
-		}
-		utilisateurClesCouverture.dejaInitialise(true);
+		_utilisateurCles(utilisateurCles);
 		return (UtilisateurSite)this;
 	}
 
-	public List<Long> solrUtilisateurCles() {
-		return utilisateurCles;
-	}
-
-	public String strUtilisateurCles() {
-		return utilisateurCles == null ? "" : utilisateurCles.toString();
-	}
-
-	public String jsonUtilisateurCles() {
-		return utilisateurCles == null ? "" : utilisateurCles.toString();
-	}
-
-	public String nomAffichageUtilisateurCles() {
+	public static Object staticSolrUtilisateurCles(RequeteSiteFrFR requeteSite_, List<Long> o) {
 		return null;
 	}
 
-	public String htmTooltipUtilisateurCles() {
+	public static String staticSolrStrUtilisateurCles(RequeteSiteFrFR requeteSite_, Object o) {
 		return null;
 	}
 
-	public String htmUtilisateurCles() {
-		return utilisateurCles == null ? "" : StringEscapeUtils.escapeHtml4(strUtilisateurCles());
+	public static String staticSolrFqUtilisateurCles(RequeteSiteFrFR requeteSite_, String o) {
+		return UtilisateurSite.staticSolrStrUtilisateurCles(requeteSite_, UtilisateurSite.staticSolrUtilisateurCles(requeteSite_, UtilisateurSite.staticSetUtilisateurCles(requeteSite_, o)));
 	}
 
 	//////////////////
@@ -171,11 +164,11 @@ public abstract class UtilisateurSiteGen<DEV> extends Cluster {
 	/**	 L'entité paiementCles
 	 *	Il est construit avant d'être initialisé avec le constructeur par défaut List<Long>(). 
 	 */
+	@JsonProperty
+	@JsonFormat(shape = JsonFormat.Shape.ARRAY)
 	@JsonSerialize(contentUsing = ToStringSerializer.class)
 	@JsonInclude(Include.NON_NULL)
 	protected List<Long> paiementCles = new ArrayList<Long>();
-	@JsonIgnore
-	public Couverture<List<Long>> paiementClesCouverture = new Couverture<List<Long>>().p(this).c(List.class).var("paiementCles").o(paiementCles);
 
 	/**	<br/> L'entité paiementCles
 	 * Il est construit avant d'être initialisé avec le constructeur par défaut List<Long>(). 
@@ -191,7 +184,17 @@ public abstract class UtilisateurSiteGen<DEV> extends Cluster {
 
 	public void setPaiementCles(List<Long> paiementCles) {
 		this.paiementCles = paiementCles;
-		this.paiementClesCouverture.dejaInitialise = true;
+	}
+	@JsonIgnore
+	public void setPaiementCles(String o) {
+		Long l = UtilisateurSite.staticSetPaiementCles(null, o);
+		if(l != null)
+			addPaiementCles(l);
+	}
+	public static Long staticSetPaiementCles(RequeteSiteFrFR requeteSite_, String o) {
+		if(NumberUtils.isParsable(o))
+			return Long.parseLong(o);
+		return null;
 	}
 	public UtilisateurSite addPaiementCles(Long...objets) {
 		for(Long o : objets) {
@@ -200,17 +203,17 @@ public abstract class UtilisateurSiteGen<DEV> extends Cluster {
 		return (UtilisateurSite)this;
 	}
 	public UtilisateurSite addPaiementCles(Long o) {
-		if(o != null && !paiementCles.contains(o))
+		if(o != null)
 			this.paiementCles.add(o);
 		return (UtilisateurSite)this;
 	}
-	public UtilisateurSite setPaiementCles(JsonArray objets) {
+	@JsonIgnore
+	public void setPaiementCles(JsonArray objets) {
 		paiementCles.clear();
 		for(int i = 0; i < objets.size(); i++) {
 			Long o = objets.getLong(i);
 			addPaiementCles(o);
 		}
-		return (UtilisateurSite)this;
 	}
 	public UtilisateurSite addPaiementCles(String o) {
 		if(NumberUtils.isParsable(o)) {
@@ -220,61 +223,20 @@ public abstract class UtilisateurSiteGen<DEV> extends Cluster {
 		return (UtilisateurSite)this;
 	}
 	protected UtilisateurSite paiementClesInit() {
-		if(!paiementClesCouverture.dejaInitialise) {
-			_paiementCles(paiementCles);
-		}
-		paiementClesCouverture.dejaInitialise(true);
+		_paiementCles(paiementCles);
 		return (UtilisateurSite)this;
 	}
 
-	public List<Long> solrPaiementCles() {
-		return paiementCles;
-	}
-
-	public String strPaiementCles() {
-		return paiementCles == null ? "" : paiementCles.toString();
-	}
-
-	public String jsonPaiementCles() {
-		return paiementCles == null ? "" : paiementCles.toString();
-	}
-
-	public String nomAffichagePaiementCles() {
-		return "paiements";
-	}
-
-	public String htmTooltipPaiementCles() {
+	public static Object staticSolrPaiementCles(RequeteSiteFrFR requeteSite_, List<Long> o) {
 		return null;
 	}
 
-	public String htmPaiementCles() {
-		return paiementCles == null ? "" : StringEscapeUtils.escapeHtml4(strPaiementCles());
+	public static String staticSolrStrPaiementCles(RequeteSiteFrFR requeteSite_, Object o) {
+		return null;
 	}
 
-	public void inputPaiementCles(String classeApiMethodeMethode) {
-		UtilisateurSite s = (UtilisateurSite)this;
-	}
-
-	public void htmPaiementCles(String classeApiMethodeMethode) {
-		UtilisateurSite s = (UtilisateurSite)this;
-		{ e("div").a("class", "w3-cell w3-cell-top w3-center w3-mobile ").f();
-			if("Page".equals(classeApiMethodeMethode)) {
-				{ e("div").a("class", "w3-padding ").f();
-					{ e("div").a("class", "w3-card ").f();
-						{ e("div").a("class", "w3-cell-row w3-gray ").f();
-							e("label").a("class", "").f().sx("paiements").g("label");
-						} g("div");
-						{ e("div").a("class", "w3-cell-row  ").f();
-							{ e("div").a("class", "w3-cell ").f();
-								{ e("div").a("class", "w3-rest ").f();
-									e("span").a("class", "varUtilisateurSite", pk, "PaiementCles ").f().sx(strPaiementCles()).g("span");
-								} g("div");
-							} g("div");
-						} g("div");
-					} g("div");
-				} g("div");
-			}
-		} g("div");
+	public static String staticSolrFqPaiementCles(RequeteSiteFrFR requeteSite_, String o) {
+		return UtilisateurSite.staticSolrStrPaiementCles(requeteSite_, UtilisateurSite.staticSolrPaiementCles(requeteSite_, UtilisateurSite.staticSetPaiementCles(requeteSite_, o)));
 	}
 
 	////////////////////
@@ -284,10 +246,9 @@ public abstract class UtilisateurSiteGen<DEV> extends Cluster {
 	/**	 L'entité utilisateurNom
 	 *	 is defined as null before being initialized. 
 	 */
+	@JsonProperty
 	@JsonInclude(Include.NON_NULL)
 	protected String utilisateurNom;
-	@JsonIgnore
-	public Couverture<String> utilisateurNomCouverture = new Couverture<String>().p(this).c(String.class).var("utilisateurNom").o(utilisateurNom);
 
 	/**	<br/> L'entité utilisateurNom
 	 *  est défini comme null avant d'être initialisé. 
@@ -300,110 +261,31 @@ public abstract class UtilisateurSiteGen<DEV> extends Cluster {
 	public String getUtilisateurNom() {
 		return utilisateurNom;
 	}
-
-	public void setUtilisateurNom(String utilisateurNom) {
-		this.utilisateurNom = utilisateurNom;
-		this.utilisateurNomCouverture.dejaInitialise = true;
+	public void setUtilisateurNom(String o) {
+		this.utilisateurNom = UtilisateurSite.staticSetUtilisateurNom(null, o);
+	}
+	public static String staticSetUtilisateurNom(RequeteSiteFrFR requeteSite_, String o) {
+		return o;
 	}
 	protected UtilisateurSite utilisateurNomInit() {
-		if(!utilisateurNomCouverture.dejaInitialise) {
+		Couverture<String> utilisateurNomCouverture = new Couverture<String>().var("utilisateurNom");
+		if(utilisateurNom == null) {
 			_utilisateurNom(utilisateurNomCouverture);
-			if(utilisateurNom == null)
-				setUtilisateurNom(utilisateurNomCouverture.o);
+			setUtilisateurNom(utilisateurNomCouverture.o);
 		}
-		utilisateurNomCouverture.dejaInitialise(true);
 		return (UtilisateurSite)this;
 	}
 
-	public String solrUtilisateurNom() {
-		return utilisateurNom;
-	}
-
-	public String strUtilisateurNom() {
-		return utilisateurNom == null ? "" : utilisateurNom;
-	}
-
-	public String jsonUtilisateurNom() {
-		return utilisateurNom == null ? "" : utilisateurNom;
-	}
-
-	public String nomAffichageUtilisateurNom() {
+	public static Object staticSolrUtilisateurNom(RequeteSiteFrFR requeteSite_, String o) {
 		return null;
 	}
 
-	public String htmTooltipUtilisateurNom() {
+	public static String staticSolrStrUtilisateurNom(RequeteSiteFrFR requeteSite_, Object o) {
 		return null;
 	}
 
-	public String htmUtilisateurNom() {
-		return utilisateurNom == null ? "" : StringEscapeUtils.escapeHtml4(strUtilisateurNom());
-	}
-
-	public void inputUtilisateurNom(String classeApiMethodeMethode) {
-		UtilisateurSite s = (UtilisateurSite)this;
-		if(
-				CollectionUtils.containsAny(requeteSite_.getUtilisateurRolesRessource(), ROLES)
-				|| CollectionUtils.containsAny(requeteSite_.getUtilisateurRolesRoyaume(), ROLES)
-				) {
-			e("input")
-				.a("type", "text")
-				.a("id", classeApiMethodeMethode, "_utilisateurNom");
-				if("Page".equals(classeApiMethodeMethode) || "PATCH".equals(classeApiMethodeMethode)) {
-					a("class", "setUtilisateurNom classUtilisateurSite inputUtilisateurSite", pk, "UtilisateurNom w3-input w3-border ");
-					a("name", "setUtilisateurNom");
-				} else {
-					a("class", "valeurUtilisateurNom w3-input w3-border classUtilisateurSite inputUtilisateurSite", pk, "UtilisateurNom w3-input w3-border ");
-					a("name", "utilisateurNom");
-				}
-				if("Page".equals(classeApiMethodeMethode)) {
-					a("onclick", "enleverLueur($(this)); ");
-					a("onchange", "patch", getClass().getSimpleName(), "Val([{ name: 'fq', value: 'pk:", pk, "' }], 'setUtilisateurNom', $(this).val(), function() { ajouterLueur($('#", classeApiMethodeMethode, "_utilisateurNom')); }, function() { ajouterErreur($('#", classeApiMethodeMethode, "_utilisateurNom')); }); ");
-				}
-				a("value", strUtilisateurNom())
-			.fg();
-
-		} else {
-			if(
-					CollectionUtils.containsAny(requeteSite_.getUtilisateurRolesRessource(), ROLES)
-					|| CollectionUtils.containsAny(requeteSite_.getUtilisateurRolesRoyaume(), ROLES)
-					) {
-				e("span").a("class", "varUtilisateurSite", pk, "UtilisateurNom ").f().sx(htmUtilisateurNom()).g("span");
-			}
-		}
-	}
-
-	public void htmUtilisateurNom(String classeApiMethodeMethode) {
-		UtilisateurSite s = (UtilisateurSite)this;
-		{ e("div").a("class", "w3-cell w3-cell-top w3-center w3-mobile ").f();
-			{ e("div").a("class", "w3-padding ").f();
-				{ e("div").a("id", "suggere", classeApiMethodeMethode, "UtilisateurSiteUtilisateurNom").f();
-					{ e("div").a("class", "w3-card ").f();
-						{ e("div").a("class", "w3-cell-row w3-padding ").f();
-							{ e("div").a("class", "w3-cell ").f();
-
-								inputUtilisateurNom(classeApiMethodeMethode);
-							} g("div");
-							if(
-									CollectionUtils.containsAny(requeteSite_.getUtilisateurRolesRessource(), ROLES)
-									|| CollectionUtils.containsAny(requeteSite_.getUtilisateurRolesRoyaume(), ROLES)
-									) {
-								if("Page".equals(classeApiMethodeMethode)) {
-									{ e("div").a("class", "w3-cell w3-left-align w3-cell-top ").f();
-										{ e("button")
-											.a("tabindex", "-1")
-											.a("class", "w3-btn w3-round w3-border w3-border-black w3-ripple w3-padding w3-bar-item w3-gray ")
-										.a("onclick", "enleverLueur($('#", classeApiMethodeMethode, "_utilisateurNom')); $('#", classeApiMethodeMethode, "_utilisateurNom').val(null); patch", getClass().getSimpleName(), "Val([{ name: 'fq', value: 'pk:' + $('#UtilisateurSiteForm :input[name=pk]').val() }], 'setUtilisateurNom', null, function() { ajouterLueur($('#", classeApiMethodeMethode, "_utilisateurNom')); }, function() { ajouterErreur($('#", classeApiMethodeMethode, "_utilisateurNom')); }); ")
-											.f();
-											e("i").a("class", "far fa-eraser ").f().g("i");
-										} g("button");
-									} g("div");
-								}
-							}
-						} g("div");
-					} g("div");
-				} g("div");
-			} g("div");
-		} g("div");
+	public static String staticSolrFqUtilisateurNom(RequeteSiteFrFR requeteSite_, String o) {
+		return UtilisateurSite.staticSolrStrUtilisateurNom(requeteSite_, UtilisateurSite.staticSolrUtilisateurNom(requeteSite_, UtilisateurSite.staticSetUtilisateurNom(requeteSite_, o)));
 	}
 
 	/////////////////////
@@ -413,10 +295,9 @@ public abstract class UtilisateurSiteGen<DEV> extends Cluster {
 	/**	 L'entité utilisateurMail
 	 *	 is defined as null before being initialized. 
 	 */
+	@JsonProperty
 	@JsonInclude(Include.NON_NULL)
 	protected String utilisateurMail;
-	@JsonIgnore
-	public Couverture<String> utilisateurMailCouverture = new Couverture<String>().p(this).c(String.class).var("utilisateurMail").o(utilisateurMail);
 
 	/**	<br/> L'entité utilisateurMail
 	 *  est défini comme null avant d'être initialisé. 
@@ -429,110 +310,31 @@ public abstract class UtilisateurSiteGen<DEV> extends Cluster {
 	public String getUtilisateurMail() {
 		return utilisateurMail;
 	}
-
-	public void setUtilisateurMail(String utilisateurMail) {
-		this.utilisateurMail = utilisateurMail;
-		this.utilisateurMailCouverture.dejaInitialise = true;
+	public void setUtilisateurMail(String o) {
+		this.utilisateurMail = UtilisateurSite.staticSetUtilisateurMail(null, o);
+	}
+	public static String staticSetUtilisateurMail(RequeteSiteFrFR requeteSite_, String o) {
+		return o;
 	}
 	protected UtilisateurSite utilisateurMailInit() {
-		if(!utilisateurMailCouverture.dejaInitialise) {
+		Couverture<String> utilisateurMailCouverture = new Couverture<String>().var("utilisateurMail");
+		if(utilisateurMail == null) {
 			_utilisateurMail(utilisateurMailCouverture);
-			if(utilisateurMail == null)
-				setUtilisateurMail(utilisateurMailCouverture.o);
+			setUtilisateurMail(utilisateurMailCouverture.o);
 		}
-		utilisateurMailCouverture.dejaInitialise(true);
 		return (UtilisateurSite)this;
 	}
 
-	public String solrUtilisateurMail() {
-		return utilisateurMail;
-	}
-
-	public String strUtilisateurMail() {
-		return utilisateurMail == null ? "" : utilisateurMail;
-	}
-
-	public String jsonUtilisateurMail() {
-		return utilisateurMail == null ? "" : utilisateurMail;
-	}
-
-	public String nomAffichageUtilisateurMail() {
+	public static Object staticSolrUtilisateurMail(RequeteSiteFrFR requeteSite_, String o) {
 		return null;
 	}
 
-	public String htmTooltipUtilisateurMail() {
+	public static String staticSolrStrUtilisateurMail(RequeteSiteFrFR requeteSite_, Object o) {
 		return null;
 	}
 
-	public String htmUtilisateurMail() {
-		return utilisateurMail == null ? "" : StringEscapeUtils.escapeHtml4(strUtilisateurMail());
-	}
-
-	public void inputUtilisateurMail(String classeApiMethodeMethode) {
-		UtilisateurSite s = (UtilisateurSite)this;
-		if(
-				CollectionUtils.containsAny(requeteSite_.getUtilisateurRolesRessource(), ROLES)
-				|| CollectionUtils.containsAny(requeteSite_.getUtilisateurRolesRoyaume(), ROLES)
-				) {
-			e("input")
-				.a("type", "text")
-				.a("id", classeApiMethodeMethode, "_utilisateurMail");
-				if("Page".equals(classeApiMethodeMethode) || "PATCH".equals(classeApiMethodeMethode)) {
-					a("class", "setUtilisateurMail classUtilisateurSite inputUtilisateurSite", pk, "UtilisateurMail w3-input w3-border ");
-					a("name", "setUtilisateurMail");
-				} else {
-					a("class", "valeurUtilisateurMail w3-input w3-border classUtilisateurSite inputUtilisateurSite", pk, "UtilisateurMail w3-input w3-border ");
-					a("name", "utilisateurMail");
-				}
-				if("Page".equals(classeApiMethodeMethode)) {
-					a("onclick", "enleverLueur($(this)); ");
-					a("onchange", "patch", getClass().getSimpleName(), "Val([{ name: 'fq', value: 'pk:", pk, "' }], 'setUtilisateurMail', $(this).val(), function() { ajouterLueur($('#", classeApiMethodeMethode, "_utilisateurMail')); }, function() { ajouterErreur($('#", classeApiMethodeMethode, "_utilisateurMail')); }); ");
-				}
-				a("value", strUtilisateurMail())
-			.fg();
-
-		} else {
-			if(
-					CollectionUtils.containsAny(requeteSite_.getUtilisateurRolesRessource(), ROLES)
-					|| CollectionUtils.containsAny(requeteSite_.getUtilisateurRolesRoyaume(), ROLES)
-					) {
-				e("span").a("class", "varUtilisateurSite", pk, "UtilisateurMail ").f().sx(htmUtilisateurMail()).g("span");
-			}
-		}
-	}
-
-	public void htmUtilisateurMail(String classeApiMethodeMethode) {
-		UtilisateurSite s = (UtilisateurSite)this;
-		{ e("div").a("class", "w3-cell w3-cell-top w3-center w3-mobile ").f();
-			{ e("div").a("class", "w3-padding ").f();
-				{ e("div").a("id", "suggere", classeApiMethodeMethode, "UtilisateurSiteUtilisateurMail").f();
-					{ e("div").a("class", "w3-card ").f();
-						{ e("div").a("class", "w3-cell-row w3-padding ").f();
-							{ e("div").a("class", "w3-cell ").f();
-
-								inputUtilisateurMail(classeApiMethodeMethode);
-							} g("div");
-							if(
-									CollectionUtils.containsAny(requeteSite_.getUtilisateurRolesRessource(), ROLES)
-									|| CollectionUtils.containsAny(requeteSite_.getUtilisateurRolesRoyaume(), ROLES)
-									) {
-								if("Page".equals(classeApiMethodeMethode)) {
-									{ e("div").a("class", "w3-cell w3-left-align w3-cell-top ").f();
-										{ e("button")
-											.a("tabindex", "-1")
-											.a("class", "w3-btn w3-round w3-border w3-border-black w3-ripple w3-padding w3-bar-item w3-gray ")
-										.a("onclick", "enleverLueur($('#", classeApiMethodeMethode, "_utilisateurMail')); $('#", classeApiMethodeMethode, "_utilisateurMail').val(null); patch", getClass().getSimpleName(), "Val([{ name: 'fq', value: 'pk:' + $('#UtilisateurSiteForm :input[name=pk]').val() }], 'setUtilisateurMail', null, function() { ajouterLueur($('#", classeApiMethodeMethode, "_utilisateurMail')); }, function() { ajouterErreur($('#", classeApiMethodeMethode, "_utilisateurMail')); }); ")
-											.f();
-											e("i").a("class", "far fa-eraser ").f().g("i");
-										} g("button");
-									} g("div");
-								}
-							}
-						} g("div");
-					} g("div");
-				} g("div");
-			} g("div");
-		} g("div");
+	public static String staticSolrFqUtilisateurMail(RequeteSiteFrFR requeteSite_, String o) {
+		return UtilisateurSite.staticSolrStrUtilisateurMail(requeteSite_, UtilisateurSite.staticSolrUtilisateurMail(requeteSite_, UtilisateurSite.staticSetUtilisateurMail(requeteSite_, o)));
 	}
 
 	///////////////////////
@@ -542,10 +344,9 @@ public abstract class UtilisateurSiteGen<DEV> extends Cluster {
 	/**	 L'entité utilisateurPrenom
 	 *	 is defined as null before being initialized. 
 	 */
+	@JsonProperty
 	@JsonInclude(Include.NON_NULL)
 	protected String utilisateurPrenom;
-	@JsonIgnore
-	public Couverture<String> utilisateurPrenomCouverture = new Couverture<String>().p(this).c(String.class).var("utilisateurPrenom").o(utilisateurPrenom);
 
 	/**	<br/> L'entité utilisateurPrenom
 	 *  est défini comme null avant d'être initialisé. 
@@ -558,43 +359,31 @@ public abstract class UtilisateurSiteGen<DEV> extends Cluster {
 	public String getUtilisateurPrenom() {
 		return utilisateurPrenom;
 	}
-
-	public void setUtilisateurPrenom(String utilisateurPrenom) {
-		this.utilisateurPrenom = utilisateurPrenom;
-		this.utilisateurPrenomCouverture.dejaInitialise = true;
+	public void setUtilisateurPrenom(String o) {
+		this.utilisateurPrenom = UtilisateurSite.staticSetUtilisateurPrenom(null, o);
+	}
+	public static String staticSetUtilisateurPrenom(RequeteSiteFrFR requeteSite_, String o) {
+		return o;
 	}
 	protected UtilisateurSite utilisateurPrenomInit() {
-		if(!utilisateurPrenomCouverture.dejaInitialise) {
+		Couverture<String> utilisateurPrenomCouverture = new Couverture<String>().var("utilisateurPrenom");
+		if(utilisateurPrenom == null) {
 			_utilisateurPrenom(utilisateurPrenomCouverture);
-			if(utilisateurPrenom == null)
-				setUtilisateurPrenom(utilisateurPrenomCouverture.o);
+			setUtilisateurPrenom(utilisateurPrenomCouverture.o);
 		}
-		utilisateurPrenomCouverture.dejaInitialise(true);
 		return (UtilisateurSite)this;
 	}
 
-	public String solrUtilisateurPrenom() {
-		return utilisateurPrenom;
-	}
-
-	public String strUtilisateurPrenom() {
-		return utilisateurPrenom == null ? "" : utilisateurPrenom;
-	}
-
-	public String jsonUtilisateurPrenom() {
-		return utilisateurPrenom == null ? "" : utilisateurPrenom;
-	}
-
-	public String nomAffichageUtilisateurPrenom() {
+	public static Object staticSolrUtilisateurPrenom(RequeteSiteFrFR requeteSite_, String o) {
 		return null;
 	}
 
-	public String htmTooltipUtilisateurPrenom() {
+	public static String staticSolrStrUtilisateurPrenom(RequeteSiteFrFR requeteSite_, Object o) {
 		return null;
 	}
 
-	public String htmUtilisateurPrenom() {
-		return utilisateurPrenom == null ? "" : StringEscapeUtils.escapeHtml4(strUtilisateurPrenom());
+	public static String staticSolrFqUtilisateurPrenom(RequeteSiteFrFR requeteSite_, String o) {
+		return UtilisateurSite.staticSolrStrUtilisateurPrenom(requeteSite_, UtilisateurSite.staticSolrUtilisateurPrenom(requeteSite_, UtilisateurSite.staticSetUtilisateurPrenom(requeteSite_, o)));
 	}
 
 	///////////////////////////
@@ -604,10 +393,9 @@ public abstract class UtilisateurSiteGen<DEV> extends Cluster {
 	/**	 L'entité utilisateurNomFamille
 	 *	 is defined as null before being initialized. 
 	 */
+	@JsonProperty
 	@JsonInclude(Include.NON_NULL)
 	protected String utilisateurNomFamille;
-	@JsonIgnore
-	public Couverture<String> utilisateurNomFamilleCouverture = new Couverture<String>().p(this).c(String.class).var("utilisateurNomFamille").o(utilisateurNomFamille);
 
 	/**	<br/> L'entité utilisateurNomFamille
 	 *  est défini comme null avant d'être initialisé. 
@@ -620,43 +408,31 @@ public abstract class UtilisateurSiteGen<DEV> extends Cluster {
 	public String getUtilisateurNomFamille() {
 		return utilisateurNomFamille;
 	}
-
-	public void setUtilisateurNomFamille(String utilisateurNomFamille) {
-		this.utilisateurNomFamille = utilisateurNomFamille;
-		this.utilisateurNomFamilleCouverture.dejaInitialise = true;
+	public void setUtilisateurNomFamille(String o) {
+		this.utilisateurNomFamille = UtilisateurSite.staticSetUtilisateurNomFamille(null, o);
+	}
+	public static String staticSetUtilisateurNomFamille(RequeteSiteFrFR requeteSite_, String o) {
+		return o;
 	}
 	protected UtilisateurSite utilisateurNomFamilleInit() {
-		if(!utilisateurNomFamilleCouverture.dejaInitialise) {
+		Couverture<String> utilisateurNomFamilleCouverture = new Couverture<String>().var("utilisateurNomFamille");
+		if(utilisateurNomFamille == null) {
 			_utilisateurNomFamille(utilisateurNomFamilleCouverture);
-			if(utilisateurNomFamille == null)
-				setUtilisateurNomFamille(utilisateurNomFamilleCouverture.o);
+			setUtilisateurNomFamille(utilisateurNomFamilleCouverture.o);
 		}
-		utilisateurNomFamilleCouverture.dejaInitialise(true);
 		return (UtilisateurSite)this;
 	}
 
-	public String solrUtilisateurNomFamille() {
-		return utilisateurNomFamille;
-	}
-
-	public String strUtilisateurNomFamille() {
-		return utilisateurNomFamille == null ? "" : utilisateurNomFamille;
-	}
-
-	public String jsonUtilisateurNomFamille() {
-		return utilisateurNomFamille == null ? "" : utilisateurNomFamille;
-	}
-
-	public String nomAffichageUtilisateurNomFamille() {
+	public static Object staticSolrUtilisateurNomFamille(RequeteSiteFrFR requeteSite_, String o) {
 		return null;
 	}
 
-	public String htmTooltipUtilisateurNomFamille() {
+	public static String staticSolrStrUtilisateurNomFamille(RequeteSiteFrFR requeteSite_, Object o) {
 		return null;
 	}
 
-	public String htmUtilisateurNomFamille() {
-		return utilisateurNomFamille == null ? "" : StringEscapeUtils.escapeHtml4(strUtilisateurNomFamille());
+	public static String staticSolrFqUtilisateurNomFamille(RequeteSiteFrFR requeteSite_, String o) {
+		return UtilisateurSite.staticSolrStrUtilisateurNomFamille(requeteSite_, UtilisateurSite.staticSolrUtilisateurNomFamille(requeteSite_, UtilisateurSite.staticSetUtilisateurNomFamille(requeteSite_, o)));
 	}
 
 	///////////////////////////
@@ -666,10 +442,9 @@ public abstract class UtilisateurSiteGen<DEV> extends Cluster {
 	/**	 L'entité utilisateurNomComplet
 	 *	 is defined as null before being initialized. 
 	 */
+	@JsonProperty
 	@JsonInclude(Include.NON_NULL)
 	protected String utilisateurNomComplet;
-	@JsonIgnore
-	public Couverture<String> utilisateurNomCompletCouverture = new Couverture<String>().p(this).c(String.class).var("utilisateurNomComplet").o(utilisateurNomComplet);
 
 	/**	<br/> L'entité utilisateurNomComplet
 	 *  est défini comme null avant d'être initialisé. 
@@ -682,43 +457,31 @@ public abstract class UtilisateurSiteGen<DEV> extends Cluster {
 	public String getUtilisateurNomComplet() {
 		return utilisateurNomComplet;
 	}
-
-	public void setUtilisateurNomComplet(String utilisateurNomComplet) {
-		this.utilisateurNomComplet = utilisateurNomComplet;
-		this.utilisateurNomCompletCouverture.dejaInitialise = true;
+	public void setUtilisateurNomComplet(String o) {
+		this.utilisateurNomComplet = UtilisateurSite.staticSetUtilisateurNomComplet(null, o);
+	}
+	public static String staticSetUtilisateurNomComplet(RequeteSiteFrFR requeteSite_, String o) {
+		return o;
 	}
 	protected UtilisateurSite utilisateurNomCompletInit() {
-		if(!utilisateurNomCompletCouverture.dejaInitialise) {
+		Couverture<String> utilisateurNomCompletCouverture = new Couverture<String>().var("utilisateurNomComplet");
+		if(utilisateurNomComplet == null) {
 			_utilisateurNomComplet(utilisateurNomCompletCouverture);
-			if(utilisateurNomComplet == null)
-				setUtilisateurNomComplet(utilisateurNomCompletCouverture.o);
+			setUtilisateurNomComplet(utilisateurNomCompletCouverture.o);
 		}
-		utilisateurNomCompletCouverture.dejaInitialise(true);
 		return (UtilisateurSite)this;
 	}
 
-	public String solrUtilisateurNomComplet() {
-		return utilisateurNomComplet;
-	}
-
-	public String strUtilisateurNomComplet() {
-		return utilisateurNomComplet == null ? "" : utilisateurNomComplet;
-	}
-
-	public String jsonUtilisateurNomComplet() {
-		return utilisateurNomComplet == null ? "" : utilisateurNomComplet;
-	}
-
-	public String nomAffichageUtilisateurNomComplet() {
+	public static Object staticSolrUtilisateurNomComplet(RequeteSiteFrFR requeteSite_, String o) {
 		return null;
 	}
 
-	public String htmTooltipUtilisateurNomComplet() {
+	public static String staticSolrStrUtilisateurNomComplet(RequeteSiteFrFR requeteSite_, Object o) {
 		return null;
 	}
 
-	public String htmUtilisateurNomComplet() {
-		return utilisateurNomComplet == null ? "" : StringEscapeUtils.escapeHtml4(strUtilisateurNomComplet());
+	public static String staticSolrFqUtilisateurNomComplet(RequeteSiteFrFR requeteSite_, String o) {
+		return UtilisateurSite.staticSolrStrUtilisateurNomComplet(requeteSite_, UtilisateurSite.staticSolrUtilisateurNomComplet(requeteSite_, UtilisateurSite.staticSetUtilisateurNomComplet(requeteSite_, o)));
 	}
 
 	/////////////////////
@@ -728,10 +491,9 @@ public abstract class UtilisateurSiteGen<DEV> extends Cluster {
 	/**	 L'entité utilisateurSite
 	 *	 is defined as null before being initialized. 
 	 */
+	@JsonProperty
 	@JsonInclude(Include.NON_NULL)
 	protected String utilisateurSite;
-	@JsonIgnore
-	public Couverture<String> utilisateurSiteCouverture = new Couverture<String>().p(this).c(String.class).var("utilisateurSite").o(utilisateurSite);
 
 	/**	<br/> L'entité utilisateurSite
 	 *  est défini comme null avant d'être initialisé. 
@@ -744,43 +506,31 @@ public abstract class UtilisateurSiteGen<DEV> extends Cluster {
 	public String getUtilisateurSite() {
 		return utilisateurSite;
 	}
-
-	public void setUtilisateurSite(String utilisateurSite) {
-		this.utilisateurSite = utilisateurSite;
-		this.utilisateurSiteCouverture.dejaInitialise = true;
+	public void setUtilisateurSite(String o) {
+		this.utilisateurSite = UtilisateurSite.staticSetUtilisateurSite(null, o);
+	}
+	public static String staticSetUtilisateurSite(RequeteSiteFrFR requeteSite_, String o) {
+		return o;
 	}
 	protected UtilisateurSite utilisateurSiteInit() {
-		if(!utilisateurSiteCouverture.dejaInitialise) {
+		Couverture<String> utilisateurSiteCouverture = new Couverture<String>().var("utilisateurSite");
+		if(utilisateurSite == null) {
 			_utilisateurSite(utilisateurSiteCouverture);
-			if(utilisateurSite == null)
-				setUtilisateurSite(utilisateurSiteCouverture.o);
+			setUtilisateurSite(utilisateurSiteCouverture.o);
 		}
-		utilisateurSiteCouverture.dejaInitialise(true);
 		return (UtilisateurSite)this;
 	}
 
-	public String solrUtilisateurSite() {
-		return utilisateurSite;
-	}
-
-	public String strUtilisateurSite() {
-		return utilisateurSite == null ? "" : utilisateurSite;
-	}
-
-	public String jsonUtilisateurSite() {
-		return utilisateurSite == null ? "" : utilisateurSite;
-	}
-
-	public String nomAffichageUtilisateurSite() {
+	public static Object staticSolrUtilisateurSite(RequeteSiteFrFR requeteSite_, String o) {
 		return null;
 	}
 
-	public String htmTooltipUtilisateurSite() {
+	public static String staticSolrStrUtilisateurSite(RequeteSiteFrFR requeteSite_, Object o) {
 		return null;
 	}
 
-	public String htmUtilisateurSite() {
-		return utilisateurSite == null ? "" : StringEscapeUtils.escapeHtml4(strUtilisateurSite());
+	public static String staticSolrFqUtilisateurSite(RequeteSiteFrFR requeteSite_, String o) {
+		return UtilisateurSite.staticSolrStrUtilisateurSite(requeteSite_, UtilisateurSite.staticSolrUtilisateurSite(requeteSite_, UtilisateurSite.staticSetUtilisateurSite(requeteSite_, o)));
 	}
 
 	////////////////////////
@@ -790,10 +540,9 @@ public abstract class UtilisateurSiteGen<DEV> extends Cluster {
 	/**	 L'entité customerProfileId1
 	 *	 is defined as null before being initialized. 
 	 */
+	@JsonProperty
 	@JsonInclude(Include.NON_NULL)
 	protected String customerProfileId1;
-	@JsonIgnore
-	public Couverture<String> customerProfileId1Couverture = new Couverture<String>().p(this).c(String.class).var("customerProfileId1").o(customerProfileId1);
 
 	/**	<br/> L'entité customerProfileId1
 	 *  est défini comme null avant d'être initialisé. 
@@ -806,114 +555,31 @@ public abstract class UtilisateurSiteGen<DEV> extends Cluster {
 	public String getCustomerProfileId1() {
 		return customerProfileId1;
 	}
-
-	public void setCustomerProfileId1(String customerProfileId1) {
-		this.customerProfileId1 = customerProfileId1;
-		this.customerProfileId1Couverture.dejaInitialise = true;
+	public void setCustomerProfileId1(String o) {
+		this.customerProfileId1 = UtilisateurSite.staticSetCustomerProfileId1(null, o);
+	}
+	public static String staticSetCustomerProfileId1(RequeteSiteFrFR requeteSite_, String o) {
+		return o;
 	}
 	protected UtilisateurSite customerProfileId1Init() {
-		if(!customerProfileId1Couverture.dejaInitialise) {
+		Couverture<String> customerProfileId1Couverture = new Couverture<String>().var("customerProfileId1");
+		if(customerProfileId1 == null) {
 			_customerProfileId1(customerProfileId1Couverture);
-			if(customerProfileId1 == null)
-				setCustomerProfileId1(customerProfileId1Couverture.o);
+			setCustomerProfileId1(customerProfileId1Couverture.o);
 		}
-		customerProfileId1Couverture.dejaInitialise(true);
 		return (UtilisateurSite)this;
 	}
 
-	public String solrCustomerProfileId1() {
-		return customerProfileId1;
-	}
-
-	public String strCustomerProfileId1() {
-		return customerProfileId1 == null ? "" : customerProfileId1;
-	}
-
-	public String jsonCustomerProfileId1() {
-		return customerProfileId1 == null ? "" : customerProfileId1;
-	}
-
-	public String nomAffichageCustomerProfileId1() {
-		return "customer profile ID 1";
-	}
-
-	public String htmTooltipCustomerProfileId1() {
+	public static Object staticSolrCustomerProfileId1(RequeteSiteFrFR requeteSite_, String o) {
 		return null;
 	}
 
-	public String htmCustomerProfileId1() {
-		return customerProfileId1 == null ? "" : StringEscapeUtils.escapeHtml4(strCustomerProfileId1());
+	public static String staticSolrStrCustomerProfileId1(RequeteSiteFrFR requeteSite_, Object o) {
+		return null;
 	}
 
-	public void inputCustomerProfileId1(String classeApiMethodeMethode) {
-		UtilisateurSite s = (UtilisateurSite)this;
-		if(
-				CollectionUtils.containsAny(requeteSite_.getUtilisateurRolesRessource(), ROLES)
-				|| CollectionUtils.containsAny(requeteSite_.getUtilisateurRolesRoyaume(), ROLES)
-				) {
-			e("input")
-				.a("type", "text")
-				.a("placeholder", "customer profile ID 1")
-				.a("id", classeApiMethodeMethode, "_customerProfileId1");
-				if("Page".equals(classeApiMethodeMethode) || "PATCH".equals(classeApiMethodeMethode)) {
-					a("class", "setCustomerProfileId1 classUtilisateurSite inputUtilisateurSite", pk, "CustomerProfileId1 w3-input w3-border ");
-					a("name", "setCustomerProfileId1");
-				} else {
-					a("class", "valeurCustomerProfileId1 w3-input w3-border classUtilisateurSite inputUtilisateurSite", pk, "CustomerProfileId1 w3-input w3-border ");
-					a("name", "customerProfileId1");
-				}
-				if("Page".equals(classeApiMethodeMethode)) {
-					a("onclick", "enleverLueur($(this)); ");
-					a("onchange", "patch", getClass().getSimpleName(), "Val([{ name: 'fq', value: 'pk:", pk, "' }], 'setCustomerProfileId1', $(this).val(), function() { ajouterLueur($('#", classeApiMethodeMethode, "_customerProfileId1')); }, function() { ajouterErreur($('#", classeApiMethodeMethode, "_customerProfileId1')); }); ");
-				}
-				a("value", strCustomerProfileId1())
-			.fg();
-
-		} else {
-			if(
-					CollectionUtils.containsAny(requeteSite_.getUtilisateurRolesRessource(), ROLES)
-					|| CollectionUtils.containsAny(requeteSite_.getUtilisateurRolesRoyaume(), ROLES)
-					) {
-				e("span").a("class", "varUtilisateurSite", pk, "CustomerProfileId1 ").f().sx(htmCustomerProfileId1()).g("span");
-			}
-		}
-	}
-
-	public void htmCustomerProfileId1(String classeApiMethodeMethode) {
-		UtilisateurSite s = (UtilisateurSite)this;
-		{ e("div").a("class", "w3-cell w3-cell-top w3-center w3-mobile ").f();
-			{ e("div").a("class", "w3-padding ").f();
-				{ e("div").a("id", "suggere", classeApiMethodeMethode, "UtilisateurSiteCustomerProfileId1").f();
-					{ e("div").a("class", "w3-card ").f();
-						{ e("div").a("class", "w3-cell-row w3-gray ").f();
-							e("label").a("for", classeApiMethodeMethode, "_customerProfileId1").a("class", "").f().sx("customer profile ID 1").g("label");
-						} g("div");
-						{ e("div").a("class", "w3-cell-row w3-padding ").f();
-							{ e("div").a("class", "w3-cell ").f();
-
-								inputCustomerProfileId1(classeApiMethodeMethode);
-							} g("div");
-							if(
-									CollectionUtils.containsAny(requeteSite_.getUtilisateurRolesRessource(), ROLES)
-									|| CollectionUtils.containsAny(requeteSite_.getUtilisateurRolesRoyaume(), ROLES)
-									) {
-								if("Page".equals(classeApiMethodeMethode)) {
-									{ e("div").a("class", "w3-cell w3-left-align w3-cell-top ").f();
-										{ e("button")
-											.a("tabindex", "-1")
-											.a("class", "w3-btn w3-round w3-border w3-border-black w3-ripple w3-padding w3-bar-item w3-gray ")
-										.a("onclick", "enleverLueur($('#", classeApiMethodeMethode, "_customerProfileId1')); $('#", classeApiMethodeMethode, "_customerProfileId1').val(null); patch", getClass().getSimpleName(), "Val([{ name: 'fq', value: 'pk:' + $('#UtilisateurSiteForm :input[name=pk]').val() }], 'setCustomerProfileId1', null, function() { ajouterLueur($('#", classeApiMethodeMethode, "_customerProfileId1')); }, function() { ajouterErreur($('#", classeApiMethodeMethode, "_customerProfileId1')); }); ")
-											.f();
-											e("i").a("class", "far fa-eraser ").f().g("i");
-										} g("button");
-									} g("div");
-								}
-							}
-						} g("div");
-					} g("div");
-				} g("div");
-			} g("div");
-		} g("div");
+	public static String staticSolrFqCustomerProfileId1(RequeteSiteFrFR requeteSite_, String o) {
+		return UtilisateurSite.staticSolrStrCustomerProfileId1(requeteSite_, UtilisateurSite.staticSolrCustomerProfileId1(requeteSite_, UtilisateurSite.staticSetCustomerProfileId1(requeteSite_, o)));
 	}
 
 	//////////////////////////////////
@@ -923,10 +589,9 @@ public abstract class UtilisateurSiteGen<DEV> extends Cluster {
 	/**	 L'entité utilisateurRecevoirCourriels
 	 *	 is defined as null before being initialized. 
 	 */
+	@JsonProperty
 	@JsonInclude(Include.NON_NULL)
 	protected Boolean utilisateurRecevoirCourriels;
-	@JsonIgnore
-	public Couverture<Boolean> utilisateurRecevoirCourrielsCouverture = new Couverture<Boolean>().p(this).c(Boolean.class).var("utilisateurRecevoirCourriels").o(utilisateurRecevoirCourriels);
 
 	/**	<br/> L'entité utilisateurRecevoirCourriels
 	 *  est défini comme null avant d'être initialisé. 
@@ -942,113 +607,33 @@ public abstract class UtilisateurSiteGen<DEV> extends Cluster {
 
 	public void setUtilisateurRecevoirCourriels(Boolean utilisateurRecevoirCourriels) {
 		this.utilisateurRecevoirCourriels = utilisateurRecevoirCourriels;
-		this.utilisateurRecevoirCourrielsCouverture.dejaInitialise = true;
 	}
-	public UtilisateurSite setUtilisateurRecevoirCourriels(String o) {
-		this.utilisateurRecevoirCourriels = Boolean.parseBoolean(o);
-		this.utilisateurRecevoirCourrielsCouverture.dejaInitialise = true;
-		return (UtilisateurSite)this;
+	@JsonIgnore
+	public void setUtilisateurRecevoirCourriels(String o) {
+		this.utilisateurRecevoirCourriels = UtilisateurSite.staticSetUtilisateurRecevoirCourriels(null, o);
+	}
+	public static Boolean staticSetUtilisateurRecevoirCourriels(RequeteSiteFrFR requeteSite_, String o) {
+		return Boolean.parseBoolean(o);
 	}
 	protected UtilisateurSite utilisateurRecevoirCourrielsInit() {
-		if(!utilisateurRecevoirCourrielsCouverture.dejaInitialise) {
+		Couverture<Boolean> utilisateurRecevoirCourrielsCouverture = new Couverture<Boolean>().var("utilisateurRecevoirCourriels");
+		if(utilisateurRecevoirCourriels == null) {
 			_utilisateurRecevoirCourriels(utilisateurRecevoirCourrielsCouverture);
-			if(utilisateurRecevoirCourriels == null)
-				setUtilisateurRecevoirCourriels(utilisateurRecevoirCourrielsCouverture.o);
+			setUtilisateurRecevoirCourriels(utilisateurRecevoirCourrielsCouverture.o);
 		}
-		utilisateurRecevoirCourrielsCouverture.dejaInitialise(true);
 		return (UtilisateurSite)this;
 	}
 
-	public Boolean solrUtilisateurRecevoirCourriels() {
-		return utilisateurRecevoirCourriels;
-	}
-
-	public String strUtilisateurRecevoirCourriels() {
-		return utilisateurRecevoirCourriels == null ? "" : utilisateurRecevoirCourriels.toString();
-	}
-
-	public String jsonUtilisateurRecevoirCourriels() {
-		return utilisateurRecevoirCourriels == null ? "" : utilisateurRecevoirCourriels.toString();
-	}
-
-	public String nomAffichageUtilisateurRecevoirCourriels() {
-		return "recevoir des courriels";
-	}
-
-	public String htmTooltipUtilisateurRecevoirCourriels() {
+	public static Object staticSolrUtilisateurRecevoirCourriels(RequeteSiteFrFR requeteSite_, Boolean o) {
 		return null;
 	}
 
-	public String htmUtilisateurRecevoirCourriels() {
-		return utilisateurRecevoirCourriels == null ? "" : StringEscapeUtils.escapeHtml4(strUtilisateurRecevoirCourriels());
+	public static String staticSolrStrUtilisateurRecevoirCourriels(RequeteSiteFrFR requeteSite_, Object o) {
+		return null;
 	}
 
-	public void inputUtilisateurRecevoirCourriels(String classeApiMethodeMethode) {
-		UtilisateurSite s = (UtilisateurSite)this;
-		if(
-				CollectionUtils.containsAny(requeteSite_.getUtilisateurRolesRessource(), ROLES)
-				|| CollectionUtils.containsAny(requeteSite_.getUtilisateurRolesRoyaume(), ROLES)
-				) {
-			if("Page".equals(classeApiMethodeMethode)) {
-				e("input")
-					.a("type", "checkbox")
-					.a("id", classeApiMethodeMethode, "_utilisateurRecevoirCourriels")
-					.a("value", "true");
-			} else {
-				e("select")
-					.a("id", classeApiMethodeMethode, "_utilisateurRecevoirCourriels");
-			}
-			if("Page".equals(classeApiMethodeMethode) || "PATCH".equals(classeApiMethodeMethode)) {
-				a("class", "setUtilisateurRecevoirCourriels classUtilisateurSite inputUtilisateurSite", pk, "UtilisateurRecevoirCourriels w3-input w3-border ");
-				a("name", "setUtilisateurRecevoirCourriels");
-			} else {
-				a("class", "valeurUtilisateurRecevoirCourriels classUtilisateurSite inputUtilisateurSite", pk, "UtilisateurRecevoirCourriels w3-input w3-border ");
-				a("name", "utilisateurRecevoirCourriels");
-			}
-			if("Page".equals(classeApiMethodeMethode)) {
-				a("onchange", "patch", getClass().getSimpleName(), "Val([{ name: 'fq', value: 'pk:", pk, "' }], 'setUtilisateurRecevoirCourriels', $(this).prop('checked'), function() { ajouterLueur($('#", classeApiMethodeMethode, "_utilisateurRecevoirCourriels')); }, function() { ajouterErreur($('#", classeApiMethodeMethode, "_utilisateurRecevoirCourriels')); }); ");
-			}
-			if("Page".equals(classeApiMethodeMethode)) {
-				if(getUtilisateurRecevoirCourriels() != null && getUtilisateurRecevoirCourriels())
-					a("checked", "checked");
-				fg();
-			} else {
-				f();
-				e("option").a("value", "").a("selected", "selected").f().g("option");
-				e("option").a("value", "true").f().sx("true").g("option");
-				e("option").a("value", "false").f().sx("false").g("option");
-				g("select");
-			}
-
-		} else {
-			if(
-					CollectionUtils.containsAny(requeteSite_.getUtilisateurRolesRessource(), ROLES)
-					|| CollectionUtils.containsAny(requeteSite_.getUtilisateurRolesRoyaume(), ROLES)
-					) {
-				e("span").a("class", "varUtilisateurSite", pk, "UtilisateurRecevoirCourriels ").f().sx(htmUtilisateurRecevoirCourriels()).g("span");
-			}
-		}
-	}
-
-	public void htmUtilisateurRecevoirCourriels(String classeApiMethodeMethode) {
-		UtilisateurSite s = (UtilisateurSite)this;
-		{ e("div").a("class", "w3-cell w3-cell-top w3-center w3-mobile ").f();
-			{ e("div").a("class", "w3-padding ").f();
-				{ e("div").a("id", "suggere", classeApiMethodeMethode, "UtilisateurSiteUtilisateurRecevoirCourriels").f();
-					{ e("div").a("class", "w3-card ").f();
-						{ e("div").a("class", "w3-cell-row w3-gray ").f();
-							e("label").a("for", classeApiMethodeMethode, "_utilisateurRecevoirCourriels").a("class", "").f().sx("recevoir des courriels").g("label");
-						} g("div");
-						{ e("div").a("class", "w3-cell-row w3-padding ").f();
-							{ e("div").a("class", "w3-cell ").f();
-
-								inputUtilisateurRecevoirCourriels(classeApiMethodeMethode);
-							} g("div");
-						} g("div");
-					} g("div");
-				} g("div");
-			} g("div");
-		} g("div");
+	public static String staticSolrFqUtilisateurRecevoirCourriels(RequeteSiteFrFR requeteSite_, String o) {
+		return UtilisateurSite.staticSolrStrUtilisateurRecevoirCourriels(requeteSite_, UtilisateurSite.staticSolrUtilisateurRecevoirCourriels(requeteSite_, UtilisateurSite.staticSetUtilisateurRecevoirCourriels(requeteSite_, o)));
 	}
 
 	/////////////////
@@ -1058,10 +643,9 @@ public abstract class UtilisateurSiteGen<DEV> extends Cluster {
 	/**	 L'entité voirArchive
 	 *	 is defined as null before being initialized. 
 	 */
+	@JsonProperty
 	@JsonInclude(Include.NON_NULL)
 	protected Boolean voirArchive;
-	@JsonIgnore
-	public Couverture<Boolean> voirArchiveCouverture = new Couverture<Boolean>().p(this).c(Boolean.class).var("voirArchive").o(voirArchive);
 
 	/**	<br/> L'entité voirArchive
 	 *  est défini comme null avant d'être initialisé. 
@@ -1077,113 +661,33 @@ public abstract class UtilisateurSiteGen<DEV> extends Cluster {
 
 	public void setVoirArchive(Boolean voirArchive) {
 		this.voirArchive = voirArchive;
-		this.voirArchiveCouverture.dejaInitialise = true;
 	}
-	public UtilisateurSite setVoirArchive(String o) {
-		this.voirArchive = Boolean.parseBoolean(o);
-		this.voirArchiveCouverture.dejaInitialise = true;
-		return (UtilisateurSite)this;
+	@JsonIgnore
+	public void setVoirArchive(String o) {
+		this.voirArchive = UtilisateurSite.staticSetVoirArchive(null, o);
+	}
+	public static Boolean staticSetVoirArchive(RequeteSiteFrFR requeteSite_, String o) {
+		return Boolean.parseBoolean(o);
 	}
 	protected UtilisateurSite voirArchiveInit() {
-		if(!voirArchiveCouverture.dejaInitialise) {
+		Couverture<Boolean> voirArchiveCouverture = new Couverture<Boolean>().var("voirArchive");
+		if(voirArchive == null) {
 			_voirArchive(voirArchiveCouverture);
-			if(voirArchive == null)
-				setVoirArchive(voirArchiveCouverture.o);
+			setVoirArchive(voirArchiveCouverture.o);
 		}
-		voirArchiveCouverture.dejaInitialise(true);
 		return (UtilisateurSite)this;
 	}
 
-	public Boolean solrVoirArchive() {
-		return voirArchive;
-	}
-
-	public String strVoirArchive() {
-		return voirArchive == null ? "" : voirArchive.toString();
-	}
-
-	public String jsonVoirArchive() {
-		return voirArchive == null ? "" : voirArchive.toString();
-	}
-
-	public String nomAffichageVoirArchive() {
-		return "voir archivé";
-	}
-
-	public String htmTooltipVoirArchive() {
+	public static Object staticSolrVoirArchive(RequeteSiteFrFR requeteSite_, Boolean o) {
 		return null;
 	}
 
-	public String htmVoirArchive() {
-		return voirArchive == null ? "" : StringEscapeUtils.escapeHtml4(strVoirArchive());
+	public static String staticSolrStrVoirArchive(RequeteSiteFrFR requeteSite_, Object o) {
+		return null;
 	}
 
-	public void inputVoirArchive(String classeApiMethodeMethode) {
-		UtilisateurSite s = (UtilisateurSite)this;
-		if(
-				CollectionUtils.containsAny(requeteSite_.getUtilisateurRolesRessource(), ROLES)
-				|| CollectionUtils.containsAny(requeteSite_.getUtilisateurRolesRoyaume(), ROLES)
-				) {
-			if("Page".equals(classeApiMethodeMethode)) {
-				e("input")
-					.a("type", "checkbox")
-					.a("id", classeApiMethodeMethode, "_voirArchive")
-					.a("value", "true");
-			} else {
-				e("select")
-					.a("id", classeApiMethodeMethode, "_voirArchive");
-			}
-			if("Page".equals(classeApiMethodeMethode) || "PATCH".equals(classeApiMethodeMethode)) {
-				a("class", "setVoirArchive classUtilisateurSite inputUtilisateurSite", pk, "VoirArchive w3-input w3-border ");
-				a("name", "setVoirArchive");
-			} else {
-				a("class", "valeurVoirArchive classUtilisateurSite inputUtilisateurSite", pk, "VoirArchive w3-input w3-border ");
-				a("name", "voirArchive");
-			}
-			if("Page".equals(classeApiMethodeMethode)) {
-				a("onchange", "patch", getClass().getSimpleName(), "Val([{ name: 'fq', value: 'pk:", pk, "' }], 'setVoirArchive', $(this).prop('checked'), function() { ajouterLueur($('#", classeApiMethodeMethode, "_voirArchive')); }, function() { ajouterErreur($('#", classeApiMethodeMethode, "_voirArchive')); }); ");
-			}
-			if("Page".equals(classeApiMethodeMethode)) {
-				if(getVoirArchive() != null && getVoirArchive())
-					a("checked", "checked");
-				fg();
-			} else {
-				f();
-				e("option").a("value", "").a("selected", "selected").f().g("option");
-				e("option").a("value", "true").f().sx("true").g("option");
-				e("option").a("value", "false").f().sx("false").g("option");
-				g("select");
-			}
-
-		} else {
-			if(
-					CollectionUtils.containsAny(requeteSite_.getUtilisateurRolesRessource(), ROLES)
-					|| CollectionUtils.containsAny(requeteSite_.getUtilisateurRolesRoyaume(), ROLES)
-					) {
-				e("span").a("class", "varUtilisateurSite", pk, "VoirArchive ").f().sx(htmVoirArchive()).g("span");
-			}
-		}
-	}
-
-	public void htmVoirArchive(String classeApiMethodeMethode) {
-		UtilisateurSite s = (UtilisateurSite)this;
-		{ e("div").a("class", "w3-cell w3-cell-top w3-center w3-mobile ").f();
-			{ e("div").a("class", "w3-padding ").f();
-				{ e("div").a("id", "suggere", classeApiMethodeMethode, "UtilisateurSiteVoirArchive").f();
-					{ e("div").a("class", "w3-card ").f();
-						{ e("div").a("class", "w3-cell-row w3-gray ").f();
-							e("label").a("for", classeApiMethodeMethode, "_voirArchive").a("class", "").f().sx("voir archivé").g("label");
-						} g("div");
-						{ e("div").a("class", "w3-cell-row w3-padding ").f();
-							{ e("div").a("class", "w3-cell ").f();
-
-								inputVoirArchive(classeApiMethodeMethode);
-							} g("div");
-						} g("div");
-					} g("div");
-				} g("div");
-			} g("div");
-		} g("div");
+	public static String staticSolrFqVoirArchive(RequeteSiteFrFR requeteSite_, String o) {
+		return UtilisateurSite.staticSolrStrVoirArchive(requeteSite_, UtilisateurSite.staticSolrVoirArchive(requeteSite_, UtilisateurSite.staticSetVoirArchive(requeteSite_, o)));
 	}
 
 	//////////////////
@@ -1193,10 +697,9 @@ public abstract class UtilisateurSiteGen<DEV> extends Cluster {
 	/**	 L'entité voirSupprime
 	 *	 is defined as null before being initialized. 
 	 */
+	@JsonProperty
 	@JsonInclude(Include.NON_NULL)
 	protected Boolean voirSupprime;
-	@JsonIgnore
-	public Couverture<Boolean> voirSupprimeCouverture = new Couverture<Boolean>().p(this).c(Boolean.class).var("voirSupprime").o(voirSupprime);
 
 	/**	<br/> L'entité voirSupprime
 	 *  est défini comme null avant d'être initialisé. 
@@ -1212,179 +715,105 @@ public abstract class UtilisateurSiteGen<DEV> extends Cluster {
 
 	public void setVoirSupprime(Boolean voirSupprime) {
 		this.voirSupprime = voirSupprime;
-		this.voirSupprimeCouverture.dejaInitialise = true;
 	}
-	public UtilisateurSite setVoirSupprime(String o) {
-		this.voirSupprime = Boolean.parseBoolean(o);
-		this.voirSupprimeCouverture.dejaInitialise = true;
-		return (UtilisateurSite)this;
+	@JsonIgnore
+	public void setVoirSupprime(String o) {
+		this.voirSupprime = UtilisateurSite.staticSetVoirSupprime(null, o);
+	}
+	public static Boolean staticSetVoirSupprime(RequeteSiteFrFR requeteSite_, String o) {
+		return Boolean.parseBoolean(o);
 	}
 	protected UtilisateurSite voirSupprimeInit() {
-		if(!voirSupprimeCouverture.dejaInitialise) {
+		Couverture<Boolean> voirSupprimeCouverture = new Couverture<Boolean>().var("voirSupprime");
+		if(voirSupprime == null) {
 			_voirSupprime(voirSupprimeCouverture);
-			if(voirSupprime == null)
-				setVoirSupprime(voirSupprimeCouverture.o);
+			setVoirSupprime(voirSupprimeCouverture.o);
 		}
-		voirSupprimeCouverture.dejaInitialise(true);
 		return (UtilisateurSite)this;
 	}
 
-	public Boolean solrVoirSupprime() {
-		return voirSupprime;
-	}
-
-	public String strVoirSupprime() {
-		return voirSupprime == null ? "" : voirSupprime.toString();
-	}
-
-	public String jsonVoirSupprime() {
-		return voirSupprime == null ? "" : voirSupprime.toString();
-	}
-
-	public String nomAffichageVoirSupprime() {
-		return "voir supprimé";
-	}
-
-	public String htmTooltipVoirSupprime() {
+	public static Object staticSolrVoirSupprime(RequeteSiteFrFR requeteSite_, Boolean o) {
 		return null;
 	}
 
-	public String htmVoirSupprime() {
-		return voirSupprime == null ? "" : StringEscapeUtils.escapeHtml4(strVoirSupprime());
+	public static String staticSolrStrVoirSupprime(RequeteSiteFrFR requeteSite_, Object o) {
+		return null;
 	}
 
-	public void inputVoirSupprime(String classeApiMethodeMethode) {
-		UtilisateurSite s = (UtilisateurSite)this;
-		if(
-				CollectionUtils.containsAny(requeteSite_.getUtilisateurRolesRessource(), ROLES)
-				|| CollectionUtils.containsAny(requeteSite_.getUtilisateurRolesRoyaume(), ROLES)
-				) {
-			if("Page".equals(classeApiMethodeMethode)) {
-				e("input")
-					.a("type", "checkbox")
-					.a("id", classeApiMethodeMethode, "_voirSupprime")
-					.a("value", "true");
-			} else {
-				e("select")
-					.a("id", classeApiMethodeMethode, "_voirSupprime");
-			}
-			if("Page".equals(classeApiMethodeMethode) || "PATCH".equals(classeApiMethodeMethode)) {
-				a("class", "setVoirSupprime classUtilisateurSite inputUtilisateurSite", pk, "VoirSupprime w3-input w3-border ");
-				a("name", "setVoirSupprime");
-			} else {
-				a("class", "valeurVoirSupprime classUtilisateurSite inputUtilisateurSite", pk, "VoirSupprime w3-input w3-border ");
-				a("name", "voirSupprime");
-			}
-			if("Page".equals(classeApiMethodeMethode)) {
-				a("onchange", "patch", getClass().getSimpleName(), "Val([{ name: 'fq', value: 'pk:", pk, "' }], 'setVoirSupprime', $(this).prop('checked'), function() { ajouterLueur($('#", classeApiMethodeMethode, "_voirSupprime')); }, function() { ajouterErreur($('#", classeApiMethodeMethode, "_voirSupprime')); }); ");
-			}
-			if("Page".equals(classeApiMethodeMethode)) {
-				if(getVoirSupprime() != null && getVoirSupprime())
-					a("checked", "checked");
-				fg();
-			} else {
-				f();
-				e("option").a("value", "").a("selected", "selected").f().g("option");
-				e("option").a("value", "true").f().sx("true").g("option");
-				e("option").a("value", "false").f().sx("false").g("option");
-				g("select");
-			}
-
-		} else {
-			if(
-					CollectionUtils.containsAny(requeteSite_.getUtilisateurRolesRessource(), ROLES)
-					|| CollectionUtils.containsAny(requeteSite_.getUtilisateurRolesRoyaume(), ROLES)
-					) {
-				e("span").a("class", "varUtilisateurSite", pk, "VoirSupprime ").f().sx(htmVoirSupprime()).g("span");
-			}
-		}
-	}
-
-	public void htmVoirSupprime(String classeApiMethodeMethode) {
-		UtilisateurSite s = (UtilisateurSite)this;
-		{ e("div").a("class", "w3-cell w3-cell-top w3-center w3-mobile ").f();
-			{ e("div").a("class", "w3-padding ").f();
-				{ e("div").a("id", "suggere", classeApiMethodeMethode, "UtilisateurSiteVoirSupprime").f();
-					{ e("div").a("class", "w3-card ").f();
-						{ e("div").a("class", "w3-cell-row w3-gray ").f();
-							e("label").a("for", classeApiMethodeMethode, "_voirSupprime").a("class", "").f().sx("voir supprimé").g("label");
-						} g("div");
-						{ e("div").a("class", "w3-cell-row w3-padding ").f();
-							{ e("div").a("class", "w3-cell ").f();
-
-								inputVoirSupprime(classeApiMethodeMethode);
-							} g("div");
-						} g("div");
-					} g("div");
-				} g("div");
-			} g("div");
-		} g("div");
+	public static String staticSolrFqVoirSupprime(RequeteSiteFrFR requeteSite_, String o) {
+		return UtilisateurSite.staticSolrStrVoirSupprime(requeteSite_, UtilisateurSite.staticSolrVoirSupprime(requeteSite_, UtilisateurSite.staticSetVoirSupprime(requeteSite_, o)));
 	}
 
 	//////////////
 	// initLoin //
 	//////////////
 
-	protected boolean dejaInitialiseUtilisateurSite = false;
-
-	public UtilisateurSite initLoinUtilisateurSite(RequeteSiteFrFR requeteSite_) {
-		setRequeteSite_(requeteSite_);
-		if(!dejaInitialiseUtilisateurSite) {
-			dejaInitialiseUtilisateurSite = true;
-			initLoinUtilisateurSite();
-		}
-		return (UtilisateurSite)this;
+	public Future<Void> promesseLoinUtilisateurSite(RequeteSiteFrFR requeteSite_) {
+		return promesseLoinUtilisateurSite();
 	}
 
-	public void initLoinUtilisateurSite() {
-		initUtilisateurSite();
-		super.initLoinCluster(requeteSite_);
+	public Future<Void> promesseLoinUtilisateurSite() {
+		Promise<Void> promise = Promise.promise();
+		Promise<Void> promise2 = Promise.promise();
+		promesseUtilisateurSite(promise2);
+		promise2.future().onSuccess(a -> {
+			promise.complete();
+		}).onFailure(ex -> {
+			promise.fail(ex);
+		});
+		return promise.future();
 	}
 
-	public void initUtilisateurSite() {
-		utilisateurClesInit();
-		paiementClesInit();
-		utilisateurNomInit();
-		utilisateurMailInit();
-		utilisateurPrenomInit();
-		utilisateurNomFamilleInit();
-		utilisateurNomCompletInit();
-		utilisateurSiteInit();
-		customerProfileId1Init();
-		utilisateurRecevoirCourrielsInit();
-		voirArchiveInit();
-		voirSupprimeInit();
+	public Future<Void> promesseUtilisateurSite(Promise<Void> promise) {
+		Future.future(a -> a.complete()).compose(a -> {
+			Promise<Void> promise2 = Promise.promise();
+			try {
+				utilisateurClesInit();
+				paiementClesInit();
+				utilisateurNomInit();
+				utilisateurMailInit();
+				utilisateurPrenomInit();
+				utilisateurNomFamilleInit();
+				utilisateurNomCompletInit();
+				utilisateurSiteInit();
+				customerProfileId1Init();
+				utilisateurRecevoirCourrielsInit();
+				voirArchiveInit();
+				voirSupprimeInit();
+				promise2.complete();
+			} catch(Exception ex) {
+				promise2.fail(ex);
+			}
+			return promise2.future();
+		}).onSuccess(a -> {
+			promise.complete();
+		}).onFailure(ex -> {
+			promise.fail(ex);
+		});
+		return promise.future();
 	}
 
-	@Override public void initLoinPourClasse(RequeteSiteFrFR requeteSite_) {
-		initLoinUtilisateurSite(requeteSite_);
-	}
-
-	/////////////////
-	// requeteSite //
-	/////////////////
-
-	public void requeteSiteUtilisateurSite(RequeteSiteFrFR requeteSite_) {
-			super.requeteSiteCluster(requeteSite_);
-	}
-
-	public void requeteSitePourClasse(RequeteSiteFrFR requeteSite_) {
-		requeteSiteUtilisateurSite(requeteSite_);
+	public Future<Void> promesseLoinPourClasse(RequeteSiteFrFR requeteSite_) {
+		return promesseLoinUtilisateurSite(requeteSite_);
 	}
 
 	/////////////
 	// obtenir //
 	/////////////
 
-	@Override public Object obtenirPourClasse(String var) {
+	public Object obtenirPourClasse(String var) {
 		String[] vars = StringUtils.split(var, ".");
 		Object o = null;
 		for(String v : vars) {
 			if(o == null)
 				o = obtenirUtilisateurSite(v);
-			else if(o instanceof Cluster) {
-				Cluster cluster = (Cluster)o;
-				o = cluster.obtenirPourClasse(v);
+			else if(o instanceof ModeleBase) {
+				ModeleBase modeleBase = (ModeleBase)o;
+				o = modeleBase.obtenirPourClasse(v);
+			}
+			else if(o instanceof Map) {
+				Map<?, ?> map = (Map<?, ?>)o;
+				o = map.get(v);
 			}
 		}
 		return o;
@@ -1417,7 +846,7 @@ public abstract class UtilisateurSiteGen<DEV> extends Cluster {
 			case "voirSupprime":
 				return oUtilisateurSite.voirSupprime;
 			default:
-				return super.obtenirCluster(var);
+				return null;
 		}
 	}
 
@@ -1425,15 +854,15 @@ public abstract class UtilisateurSiteGen<DEV> extends Cluster {
 	// attribuer //
 	///////////////
 
-	@Override public boolean attribuerPourClasse(String var, Object val) {
+	public boolean attribuerPourClasse(String var, Object val) {
 		String[] vars = StringUtils.split(var, ".");
 		Object o = null;
 		for(String v : vars) {
 			if(o == null)
 				o = attribuerUtilisateurSite(v, val);
-			else if(o instanceof Cluster) {
-				Cluster cluster = (Cluster)o;
-				o = cluster.attribuerPourClasse(v, val);
+			else if(o instanceof ModeleBase) {
+				ModeleBase modeleBase = (ModeleBase)o;
+				o = modeleBase.attribuerPourClasse(v, val);
 			}
 		}
 		return o != null;
@@ -1442,7 +871,159 @@ public abstract class UtilisateurSiteGen<DEV> extends Cluster {
 		UtilisateurSite oUtilisateurSite = (UtilisateurSite)this;
 		switch(var) {
 			default:
-				return super.attribuerCluster(var, val);
+				return null;
+		}
+	}
+
+	///////////////
+	// staticSet //
+	///////////////
+
+	public static Object staticSetPourClasse(String entiteVar, RequeteSiteFrFR requeteSite_, String o) {
+		return staticSetUtilisateurSite(entiteVar,  requeteSite_, o);
+	}
+	public static Object staticSetUtilisateurSite(String entiteVar, RequeteSiteFrFR requeteSite_, String o) {
+		switch(entiteVar) {
+		case "utilisateurCles":
+			return UtilisateurSite.staticSetUtilisateurCles(requeteSite_, o);
+		case "paiementCles":
+			return UtilisateurSite.staticSetPaiementCles(requeteSite_, o);
+		case "utilisateurNom":
+			return UtilisateurSite.staticSetUtilisateurNom(requeteSite_, o);
+		case "utilisateurMail":
+			return UtilisateurSite.staticSetUtilisateurMail(requeteSite_, o);
+		case "utilisateurPrenom":
+			return UtilisateurSite.staticSetUtilisateurPrenom(requeteSite_, o);
+		case "utilisateurNomFamille":
+			return UtilisateurSite.staticSetUtilisateurNomFamille(requeteSite_, o);
+		case "utilisateurNomComplet":
+			return UtilisateurSite.staticSetUtilisateurNomComplet(requeteSite_, o);
+		case "utilisateurSite":
+			return UtilisateurSite.staticSetUtilisateurSite(requeteSite_, o);
+		case "customerProfileId1":
+			return UtilisateurSite.staticSetCustomerProfileId1(requeteSite_, o);
+		case "utilisateurRecevoirCourriels":
+			return UtilisateurSite.staticSetUtilisateurRecevoirCourriels(requeteSite_, o);
+		case "voirArchive":
+			return UtilisateurSite.staticSetVoirArchive(requeteSite_, o);
+		case "voirSupprime":
+			return UtilisateurSite.staticSetVoirSupprime(requeteSite_, o);
+			default:
+				return null;
+		}
+	}
+
+	////////////////
+	// staticSolr //
+	////////////////
+
+	public static Object staticSolrPourClasse(String entiteVar, RequeteSiteFrFR requeteSite_, Object o) {
+		return staticSolrUtilisateurSite(entiteVar,  requeteSite_, o);
+	}
+	public static Object staticSolrUtilisateurSite(String entiteVar, RequeteSiteFrFR requeteSite_, Object o) {
+		switch(entiteVar) {
+		case "utilisateurCles":
+			return UtilisateurSite.staticSolrUtilisateurCles(requeteSite_, (Long)o);
+		case "paiementCles":
+			return UtilisateurSite.staticSolrPaiementCles(requeteSite_, (Long)o);
+		case "utilisateurNom":
+			return UtilisateurSite.staticSolrUtilisateurNom(requeteSite_, (String)o);
+		case "utilisateurMail":
+			return UtilisateurSite.staticSolrUtilisateurMail(requeteSite_, (String)o);
+		case "utilisateurPrenom":
+			return UtilisateurSite.staticSolrUtilisateurPrenom(requeteSite_, (String)o);
+		case "utilisateurNomFamille":
+			return UtilisateurSite.staticSolrUtilisateurNomFamille(requeteSite_, (String)o);
+		case "utilisateurNomComplet":
+			return UtilisateurSite.staticSolrUtilisateurNomComplet(requeteSite_, (String)o);
+		case "utilisateurSite":
+			return UtilisateurSite.staticSolrUtilisateurSite(requeteSite_, (String)o);
+		case "customerProfileId1":
+			return UtilisateurSite.staticSolrCustomerProfileId1(requeteSite_, (String)o);
+		case "utilisateurRecevoirCourriels":
+			return UtilisateurSite.staticSolrUtilisateurRecevoirCourriels(requeteSite_, (Boolean)o);
+		case "voirArchive":
+			return UtilisateurSite.staticSolrVoirArchive(requeteSite_, (Boolean)o);
+		case "voirSupprime":
+			return UtilisateurSite.staticSolrVoirSupprime(requeteSite_, (Boolean)o);
+			default:
+				return null;
+		}
+	}
+
+	///////////////////
+	// staticSolrStr //
+	///////////////////
+
+	public static String staticSolrStrPourClasse(String entiteVar, RequeteSiteFrFR requeteSite_, Object o) {
+		return staticSolrStrUtilisateurSite(entiteVar,  requeteSite_, o);
+	}
+	public static String staticSolrStrUtilisateurSite(String entiteVar, RequeteSiteFrFR requeteSite_, Object o) {
+		switch(entiteVar) {
+		case "utilisateurCles":
+			return UtilisateurSite.staticSolrStrUtilisateurCles(requeteSite_, (Long)o);
+		case "paiementCles":
+			return UtilisateurSite.staticSolrStrPaiementCles(requeteSite_, (Long)o);
+		case "utilisateurNom":
+			return UtilisateurSite.staticSolrStrUtilisateurNom(requeteSite_, (String)o);
+		case "utilisateurMail":
+			return UtilisateurSite.staticSolrStrUtilisateurMail(requeteSite_, (String)o);
+		case "utilisateurPrenom":
+			return UtilisateurSite.staticSolrStrUtilisateurPrenom(requeteSite_, (String)o);
+		case "utilisateurNomFamille":
+			return UtilisateurSite.staticSolrStrUtilisateurNomFamille(requeteSite_, (String)o);
+		case "utilisateurNomComplet":
+			return UtilisateurSite.staticSolrStrUtilisateurNomComplet(requeteSite_, (String)o);
+		case "utilisateurSite":
+			return UtilisateurSite.staticSolrStrUtilisateurSite(requeteSite_, (String)o);
+		case "customerProfileId1":
+			return UtilisateurSite.staticSolrStrCustomerProfileId1(requeteSite_, (String)o);
+		case "utilisateurRecevoirCourriels":
+			return UtilisateurSite.staticSolrStrUtilisateurRecevoirCourriels(requeteSite_, (Boolean)o);
+		case "voirArchive":
+			return UtilisateurSite.staticSolrStrVoirArchive(requeteSite_, (Boolean)o);
+		case "voirSupprime":
+			return UtilisateurSite.staticSolrStrVoirSupprime(requeteSite_, (Boolean)o);
+			default:
+				return null;
+		}
+	}
+
+	//////////////////
+	// staticSolrFq //
+	//////////////////
+
+	public static String staticSolrFqPourClasse(String entiteVar, RequeteSiteFrFR requeteSite_, String o) {
+		return staticSolrFqUtilisateurSite(entiteVar,  requeteSite_, o);
+	}
+	public static String staticSolrFqUtilisateurSite(String entiteVar, RequeteSiteFrFR requeteSite_, String o) {
+		switch(entiteVar) {
+		case "utilisateurCles":
+			return UtilisateurSite.staticSolrFqUtilisateurCles(requeteSite_, o);
+		case "paiementCles":
+			return UtilisateurSite.staticSolrFqPaiementCles(requeteSite_, o);
+		case "utilisateurNom":
+			return UtilisateurSite.staticSolrFqUtilisateurNom(requeteSite_, o);
+		case "utilisateurMail":
+			return UtilisateurSite.staticSolrFqUtilisateurMail(requeteSite_, o);
+		case "utilisateurPrenom":
+			return UtilisateurSite.staticSolrFqUtilisateurPrenom(requeteSite_, o);
+		case "utilisateurNomFamille":
+			return UtilisateurSite.staticSolrFqUtilisateurNomFamille(requeteSite_, o);
+		case "utilisateurNomComplet":
+			return UtilisateurSite.staticSolrFqUtilisateurNomComplet(requeteSite_, o);
+		case "utilisateurSite":
+			return UtilisateurSite.staticSolrFqUtilisateurSite(requeteSite_, o);
+		case "customerProfileId1":
+			return UtilisateurSite.staticSolrFqCustomerProfileId1(requeteSite_, o);
+		case "utilisateurRecevoirCourriels":
+			return UtilisateurSite.staticSolrFqUtilisateurRecevoirCourriels(requeteSite_, o);
+		case "voirArchive":
+			return UtilisateurSite.staticSolrFqVoirArchive(requeteSite_, o);
+		case "voirSupprime":
+			return UtilisateurSite.staticSolrFqVoirSupprime(requeteSite_, o);
+			default:
+				return null;
 		}
 	}
 
@@ -1450,55 +1031,55 @@ public abstract class UtilisateurSiteGen<DEV> extends Cluster {
 	// definir //
 	/////////////
 
-	@Override public boolean definirPourClasse(String var, String val) {
+	public boolean definirPourClasse(String var, Object val) {
 		String[] vars = StringUtils.split(var, ".");
 		Object o = null;
 		if(val != null) {
 			for(String v : vars) {
 				if(o == null)
 					o = definirUtilisateurSite(v, val);
-				else if(o instanceof Cluster) {
-					Cluster cluster = (Cluster)o;
-					o = cluster.definirPourClasse(v, val);
+				else if(o instanceof ModeleBase) {
+					ModeleBase oModeleBase = (ModeleBase)o;
+					o = oModeleBase.definirPourClasse(v, val);
 				}
 			}
 		}
 		return o != null;
 	}
-	public Object definirUtilisateurSite(String var, String val) {
-		switch(var) {
-			case "utilisateurNom":
-				if(val != null)
-					setUtilisateurNom(val);
-				sauvegardes.add(var);
+	public Object definirUtilisateurSite(String var, Object val) {
+		switch(var.toLowerCase()) {
+			case "utilisateurnom":
+				if(val instanceof String)
+					setUtilisateurNom((String)val);
+				sauvegardes.add("utilisateurNom");
 				return val;
-			case "utilisateurMail":
-				if(val != null)
-					setUtilisateurMail(val);
-				sauvegardes.add(var);
+			case "utilisateurmail":
+				if(val instanceof String)
+					setUtilisateurMail((String)val);
+				sauvegardes.add("utilisateurMail");
 				return val;
-			case "customerProfileId1":
-				if(val != null)
-					setCustomerProfileId1(val);
-				sauvegardes.add(var);
+			case "customerprofileid1":
+				if(val instanceof String)
+					setCustomerProfileId1((String)val);
+				sauvegardes.add("customerProfileId1");
 				return val;
-			case "utilisateurRecevoirCourriels":
-				if(val != null)
-					setUtilisateurRecevoirCourriels(val);
-				sauvegardes.add(var);
+			case "utilisateurrecevoircourriels":
+				if(val instanceof Boolean)
+					setUtilisateurRecevoirCourriels((Boolean)val);
+				sauvegardes.add("utilisateurRecevoirCourriels");
 				return val;
-			case "voirArchive":
-				if(val != null)
-					setVoirArchive(val);
-				sauvegardes.add(var);
+			case "voirarchive":
+				if(val instanceof Boolean)
+					setVoirArchive((Boolean)val);
+				sauvegardes.add("voirArchive");
 				return val;
-			case "voirSupprime":
-				if(val != null)
-					setVoirSupprime(val);
-				sauvegardes.add(var);
+			case "voirsupprime":
+				if(val instanceof Boolean)
+					setVoirSupprime((Boolean)val);
+				sauvegardes.add("voirSupprime");
 				return val;
 			default:
-				return super.definirCluster(var, val);
+				return null;
 		}
 	}
 
@@ -1506,271 +1087,173 @@ public abstract class UtilisateurSiteGen<DEV> extends Cluster {
 	// peupler //
 	/////////////
 
-	@Override public void peuplerPourClasse(SolrDocument solrDocument) {
+	public void peuplerPourClasse(SolrDocument solrDocument) {
 		peuplerUtilisateurSite(solrDocument);
 	}
 	public void peuplerUtilisateurSite(SolrDocument solrDocument) {
 		UtilisateurSite oUtilisateurSite = (UtilisateurSite)this;
-		sauvegardes = (List<String>)solrDocument.get("sauvegardes_stored_strings");
+		sauvegardes = (List<String>)solrDocument.get("sauvegardes_indexedstored_strings");
 		if(sauvegardes != null) {
 
 			if(sauvegardes.contains("utilisateurCles")) {
-				List<Long> utilisateurCles = (List<Long>)solrDocument.get("utilisateurCles_stored_longs");
+				List<Long> utilisateurCles = (List<Long>)solrDocument.get("utilisateurCles_indexedstored_longs");
 				if(utilisateurCles != null)
 					oUtilisateurSite.utilisateurCles.addAll(utilisateurCles);
 			}
 
 			if(sauvegardes.contains("paiementCles")) {
-				List<Long> paiementCles = (List<Long>)solrDocument.get("paiementCles_stored_longs");
+				List<Long> paiementCles = (List<Long>)solrDocument.get("paiementCles_indexedstored_longs");
 				if(paiementCles != null)
 					oUtilisateurSite.paiementCles.addAll(paiementCles);
 			}
 
 			if(sauvegardes.contains("utilisateurNom")) {
-				String utilisateurNom = (String)solrDocument.get("utilisateurNom_stored_string");
+				String utilisateurNom = (String)solrDocument.get("utilisateurNom_indexedstored_string");
 				if(utilisateurNom != null)
 					oUtilisateurSite.setUtilisateurNom(utilisateurNom);
 			}
 
 			if(sauvegardes.contains("utilisateurMail")) {
-				String utilisateurMail = (String)solrDocument.get("utilisateurMail_stored_string");
+				String utilisateurMail = (String)solrDocument.get("utilisateurMail_indexedstored_string");
 				if(utilisateurMail != null)
 					oUtilisateurSite.setUtilisateurMail(utilisateurMail);
 			}
 
 			if(sauvegardes.contains("utilisateurPrenom")) {
-				String utilisateurPrenom = (String)solrDocument.get("utilisateurPrenom_stored_string");
+				String utilisateurPrenom = (String)solrDocument.get("utilisateurPrenom_indexedstored_string");
 				if(utilisateurPrenom != null)
 					oUtilisateurSite.setUtilisateurPrenom(utilisateurPrenom);
 			}
 
 			if(sauvegardes.contains("utilisateurNomFamille")) {
-				String utilisateurNomFamille = (String)solrDocument.get("utilisateurNomFamille_stored_string");
+				String utilisateurNomFamille = (String)solrDocument.get("utilisateurNomFamille_indexedstored_string");
 				if(utilisateurNomFamille != null)
 					oUtilisateurSite.setUtilisateurNomFamille(utilisateurNomFamille);
 			}
 
 			if(sauvegardes.contains("utilisateurNomComplet")) {
-				String utilisateurNomComplet = (String)solrDocument.get("utilisateurNomComplet_stored_string");
+				String utilisateurNomComplet = (String)solrDocument.get("utilisateurNomComplet_indexedstored_string");
 				if(utilisateurNomComplet != null)
 					oUtilisateurSite.setUtilisateurNomComplet(utilisateurNomComplet);
 			}
 
 			if(sauvegardes.contains("utilisateurSite")) {
-				String utilisateurSite = (String)solrDocument.get("utilisateurSite_stored_string");
+				String utilisateurSite = (String)solrDocument.get("utilisateurSite_indexedstored_string");
 				if(utilisateurSite != null)
 					oUtilisateurSite.setUtilisateurSite(utilisateurSite);
 			}
 
 			if(sauvegardes.contains("customerProfileId1")) {
-				String customerProfileId1 = (String)solrDocument.get("customerProfileId1_stored_string");
+				String customerProfileId1 = (String)solrDocument.get("customerProfileId1_indexedstored_string");
 				if(customerProfileId1 != null)
 					oUtilisateurSite.setCustomerProfileId1(customerProfileId1);
 			}
 
 			if(sauvegardes.contains("utilisateurRecevoirCourriels")) {
-				Boolean utilisateurRecevoirCourriels = (Boolean)solrDocument.get("utilisateurRecevoirCourriels_stored_boolean");
+				Boolean utilisateurRecevoirCourriels = (Boolean)solrDocument.get("utilisateurRecevoirCourriels_indexedstored_boolean");
 				if(utilisateurRecevoirCourriels != null)
 					oUtilisateurSite.setUtilisateurRecevoirCourriels(utilisateurRecevoirCourriels);
 			}
 
 			if(sauvegardes.contains("voirArchive")) {
-				Boolean voirArchive = (Boolean)solrDocument.get("voirArchive_stored_boolean");
+				Boolean voirArchive = (Boolean)solrDocument.get("voirArchive_indexedstored_boolean");
 				if(voirArchive != null)
 					oUtilisateurSite.setVoirArchive(voirArchive);
 			}
 
 			if(sauvegardes.contains("voirSupprime")) {
-				Boolean voirSupprime = (Boolean)solrDocument.get("voirSupprime_stored_boolean");
+				Boolean voirSupprime = (Boolean)solrDocument.get("voirSupprime_indexedstored_boolean");
 				if(voirSupprime != null)
 					oUtilisateurSite.setVoirSupprime(voirSupprime);
 			}
-		}
-
-		super.peuplerCluster(solrDocument);
-	}
-
-	/////////////
-	// indexer //
-	/////////////
-
-	public static void indexer() {
-		try {
-			RequeteSiteFrFR requeteSite = new RequeteSiteFrFR();
-			requeteSite.initLoinRequeteSiteFrFR();
-			SiteContexteFrFR siteContexte = new SiteContexteFrFR();
-			siteContexte.getConfigSite().setConfigChemin("/usr/local/src/computate.org/config/computate.org.config");
-			siteContexte.initLoinSiteContexteFrFR();
-			requeteSite.setSiteContexte_(siteContexte);
-			requeteSite.setConfigSite_(siteContexte.getConfigSite());
-			SolrQuery rechercheSolr = new SolrQuery();
-			rechercheSolr.setQuery("*:*");
-			rechercheSolr.setRows(1);
-			rechercheSolr.addFilterQuery("id:" + ClientUtils.escapeQueryChars("org.computate.site.frfr.utilisateur.UtilisateurSite"));
-			QueryResponse reponseRecherche = requeteSite.getSiteContexte_().getClientSolr().query(rechercheSolr);
-			if(reponseRecherche.getResults().size() > 0)
-				requeteSite.setDocumentSolr(reponseRecherche.getResults().get(0));
-			UtilisateurSite o = new UtilisateurSite();
-			o.requeteSiteUtilisateurSite(requeteSite);
-			o.initLoinUtilisateurSite(requeteSite);
-			o.indexerUtilisateurSite();
-		} catch(Exception e) {
-			ExceptionUtils.rethrow(e);
-		}
-	}
-
-
-	@Override public void indexerPourClasse() {
-		indexerUtilisateurSite();
-	}
-
-	@Override public void indexerPourClasse(SolrInputDocument document) {
-		indexerUtilisateurSite(document);
-	}
-
-	public void indexerUtilisateurSite(SolrClient clientSolr) {
-		try {
-			SolrInputDocument document = new SolrInputDocument();
-			indexerUtilisateurSite(document);
-			clientSolr.add(document);
-			clientSolr.commit(false, false, true);
-		} catch(Exception e) {
-			ExceptionUtils.rethrow(e);
-		}
-	}
-
-	public void indexerUtilisateurSite() {
-		try {
-			SolrInputDocument document = new SolrInputDocument();
-			indexerUtilisateurSite(document);
-			SolrClient clientSolr = requeteSite_.getSiteContexte_().getClientSolr();
-			clientSolr.add(document);
-			clientSolr.commit(false, false, true);
-		} catch(Exception e) {
-			ExceptionUtils.rethrow(e);
 		}
 	}
 
 	public void indexerUtilisateurSite(SolrInputDocument document) {
 		if(utilisateurCles != null) {
 			for(java.lang.Long o : utilisateurCles) {
-				document.addField("utilisateurCles_indexed_longs", o);
-			}
-			for(java.lang.Long o : utilisateurCles) {
-				document.addField("utilisateurCles_stored_longs", o);
+				document.addField("utilisateurCles_indexedstored_longs", o);
 			}
 		}
 		if(paiementCles != null) {
 			for(java.lang.Long o : paiementCles) {
-				document.addField("paiementCles_indexed_longs", o);
-			}
-			for(java.lang.Long o : paiementCles) {
-				document.addField("paiementCles_stored_longs", o);
+				document.addField("paiementCles_indexedstored_longs", o);
 			}
 		}
 		if(utilisateurNom != null) {
-			document.addField("utilisateurNom_indexed_string", utilisateurNom);
-			document.addField("utilisateurNom_stored_string", utilisateurNom);
+			document.addField("utilisateurNom_indexedstored_string", utilisateurNom);
 		}
 		if(utilisateurMail != null) {
-			document.addField("utilisateurMail_indexed_string", utilisateurMail);
-			document.addField("utilisateurMail_stored_string", utilisateurMail);
+			document.addField("utilisateurMail_indexedstored_string", utilisateurMail);
 		}
 		if(utilisateurPrenom != null) {
-			document.addField("utilisateurPrenom_indexed_string", utilisateurPrenom);
-			document.addField("utilisateurPrenom_stored_string", utilisateurPrenom);
+			document.addField("utilisateurPrenom_indexedstored_string", utilisateurPrenom);
 		}
 		if(utilisateurNomFamille != null) {
-			document.addField("utilisateurNomFamille_indexed_string", utilisateurNomFamille);
-			document.addField("utilisateurNomFamille_stored_string", utilisateurNomFamille);
+			document.addField("utilisateurNomFamille_indexedstored_string", utilisateurNomFamille);
 		}
 		if(utilisateurNomComplet != null) {
-			document.addField("utilisateurNomComplet_indexed_string", utilisateurNomComplet);
-			document.addField("utilisateurNomComplet_stored_string", utilisateurNomComplet);
+			document.addField("utilisateurNomComplet_indexedstored_string", utilisateurNomComplet);
 		}
 		if(utilisateurSite != null) {
-			document.addField("utilisateurSite_indexed_string", utilisateurSite);
-			document.addField("utilisateurSite_stored_string", utilisateurSite);
+			document.addField("utilisateurSite_indexedstored_string", utilisateurSite);
 		}
 		if(customerProfileId1 != null) {
-			document.addField("customerProfileId1_indexed_string", customerProfileId1);
-			document.addField("customerProfileId1_stored_string", customerProfileId1);
+			document.addField("customerProfileId1_indexedstored_string", customerProfileId1);
 		}
 		if(utilisateurRecevoirCourriels != null) {
-			document.addField("utilisateurRecevoirCourriels_indexed_boolean", utilisateurRecevoirCourriels);
-			document.addField("utilisateurRecevoirCourriels_stored_boolean", utilisateurRecevoirCourriels);
+			document.addField("utilisateurRecevoirCourriels_indexedstored_boolean", utilisateurRecevoirCourriels);
 		}
 		if(voirArchive != null) {
-			document.addField("voirArchive_indexed_boolean", voirArchive);
-			document.addField("voirArchive_stored_boolean", voirArchive);
+			document.addField("voirArchive_indexedstored_boolean", voirArchive);
 		}
 		if(voirSupprime != null) {
-			document.addField("voirSupprime_indexed_boolean", voirSupprime);
-			document.addField("voirSupprime_stored_boolean", voirSupprime);
-		}
-		super.indexerCluster(document);
-
-	}
-
-	public void desindexerUtilisateurSite() {
-		try {
-		RequeteSiteFrFR requeteSite = new RequeteSiteFrFR();
-			requeteSite.initLoinRequeteSiteFrFR();
-			SiteContexteFrFR siteContexte = new SiteContexteFrFR();
-			siteContexte.initLoinSiteContexteFrFR();
-			requeteSite.setSiteContexte_(siteContexte);
-			requeteSite.setConfigSite_(siteContexte.getConfigSite());
-			initLoinUtilisateurSite(requeteSite);
-			SolrClient clientSolr = siteContexte.getClientSolr();
-			clientSolr.deleteById(id.toString());
-			clientSolr.commit(false, false, true);
-		} catch(Exception e) {
-			ExceptionUtils.rethrow(e);
+			document.addField("voirSupprime_indexedstored_boolean", voirSupprime);
 		}
 	}
 
 	public static String varIndexeUtilisateurSite(String entiteVar) {
 		switch(entiteVar) {
 			case "utilisateurCles":
-				return "utilisateurCles_indexed_longs";
+				return "utilisateurCles_indexedstored_longs";
 			case "paiementCles":
-				return "paiementCles_indexed_longs";
+				return "paiementCles_indexedstored_longs";
 			case "utilisateurNom":
-				return "utilisateurNom_indexed_string";
+				return "utilisateurNom_indexedstored_string";
 			case "utilisateurMail":
-				return "utilisateurMail_indexed_string";
+				return "utilisateurMail_indexedstored_string";
 			case "utilisateurPrenom":
-				return "utilisateurPrenom_indexed_string";
+				return "utilisateurPrenom_indexedstored_string";
 			case "utilisateurNomFamille":
-				return "utilisateurNomFamille_indexed_string";
+				return "utilisateurNomFamille_indexedstored_string";
 			case "utilisateurNomComplet":
-				return "utilisateurNomComplet_indexed_string";
+				return "utilisateurNomComplet_indexedstored_string";
 			case "utilisateurSite":
-				return "utilisateurSite_indexed_string";
+				return "utilisateurSite_indexedstored_string";
 			case "customerProfileId1":
-				return "customerProfileId1_indexed_string";
+				return "customerProfileId1_indexedstored_string";
 			case "utilisateurRecevoirCourriels":
-				return "utilisateurRecevoirCourriels_indexed_boolean";
+				return "utilisateurRecevoirCourriels_indexedstored_boolean";
 			case "voirArchive":
-				return "voirArchive_indexed_boolean";
+				return "voirArchive_indexedstored_boolean";
 			case "voirSupprime":
-				return "voirSupprime_indexed_boolean";
+				return "voirSupprime_indexedstored_boolean";
 			default:
-				return Cluster.varIndexeCluster(entiteVar);
+				return null;
 		}
 	}
 
 	public static String varRechercheUtilisateurSite(String entiteVar) {
 		switch(entiteVar) {
 			default:
-				return Cluster.varRechercheCluster(entiteVar);
+				return null;
 		}
 	}
 
 	public static String varSuggereUtilisateurSite(String entiteVar) {
 		switch(entiteVar) {
 			default:
-				return Cluster.varSuggereCluster(entiteVar);
+				return null;
 		}
 	}
 
@@ -1778,142 +1261,28 @@ public abstract class UtilisateurSiteGen<DEV> extends Cluster {
 	// stocker //
 	/////////////
 
-	@Override public void stockerPourClasse(SolrDocument solrDocument) {
+	public void stockerPourClasse(SolrDocument solrDocument) {
 		stockerUtilisateurSite(solrDocument);
 	}
 	public void stockerUtilisateurSite(SolrDocument solrDocument) {
 		UtilisateurSite oUtilisateurSite = (UtilisateurSite)this;
 
-		List<Long> utilisateurCles = (List<Long>)solrDocument.get("utilisateurCles_stored_longs");
-		if(utilisateurCles != null)
-			oUtilisateurSite.utilisateurCles.addAll(utilisateurCles);
-
-		List<Long> paiementCles = (List<Long>)solrDocument.get("paiementCles_stored_longs");
-		if(paiementCles != null)
-			oUtilisateurSite.paiementCles.addAll(paiementCles);
-
-		String utilisateurNom = (String)solrDocument.get("utilisateurNom_stored_string");
-		if(utilisateurNom != null)
-			oUtilisateurSite.setUtilisateurNom(utilisateurNom);
-
-		String utilisateurMail = (String)solrDocument.get("utilisateurMail_stored_string");
-		if(utilisateurMail != null)
-			oUtilisateurSite.setUtilisateurMail(utilisateurMail);
-
-		String utilisateurPrenom = (String)solrDocument.get("utilisateurPrenom_stored_string");
-		if(utilisateurPrenom != null)
-			oUtilisateurSite.setUtilisateurPrenom(utilisateurPrenom);
-
-		String utilisateurNomFamille = (String)solrDocument.get("utilisateurNomFamille_stored_string");
-		if(utilisateurNomFamille != null)
-			oUtilisateurSite.setUtilisateurNomFamille(utilisateurNomFamille);
-
-		String utilisateurNomComplet = (String)solrDocument.get("utilisateurNomComplet_stored_string");
-		if(utilisateurNomComplet != null)
-			oUtilisateurSite.setUtilisateurNomComplet(utilisateurNomComplet);
-
-		String utilisateurSite = (String)solrDocument.get("utilisateurSite_stored_string");
-		if(utilisateurSite != null)
-			oUtilisateurSite.setUtilisateurSite(utilisateurSite);
-
-		String customerProfileId1 = (String)solrDocument.get("customerProfileId1_stored_string");
-		if(customerProfileId1 != null)
-			oUtilisateurSite.setCustomerProfileId1(customerProfileId1);
-
-		Boolean utilisateurRecevoirCourriels = (Boolean)solrDocument.get("utilisateurRecevoirCourriels_stored_boolean");
-		if(utilisateurRecevoirCourriels != null)
-			oUtilisateurSite.setUtilisateurRecevoirCourriels(utilisateurRecevoirCourriels);
-
-		Boolean voirArchive = (Boolean)solrDocument.get("voirArchive_stored_boolean");
-		if(voirArchive != null)
-			oUtilisateurSite.setVoirArchive(voirArchive);
-
-		Boolean voirSupprime = (Boolean)solrDocument.get("voirSupprime_stored_boolean");
-		if(voirSupprime != null)
-			oUtilisateurSite.setVoirSupprime(voirSupprime);
-
-		super.stockerCluster(solrDocument);
-	}
-
-	//////////////
-	// htmlBody //
-	//////////////
-
-	public void htmlBody() {
-		htmlBodyUtilisateurSite();
-	}
-
-	public void htmlBodyUtilisateurSite() {
-	}
-
-	//////////////////
-	// requeteApi //
-	//////////////////
-
-	public void requeteApiUtilisateurSite() {
-		RequeteApi requeteApi = Optional.ofNullable(requeteSite_).map(RequeteSiteFrFR::getRequeteApi_).orElse(null);
-		Object o = Optional.ofNullable(requeteApi).map(RequeteApi::getOriginal).orElse(null);
-		if(o != null && o instanceof UtilisateurSite) {
-			UtilisateurSite original = (UtilisateurSite)o;
-			if(!Objects.equals(utilisateurCles, original.getUtilisateurCles()))
-				requeteApi.addVars("utilisateurCles");
-			if(!Objects.equals(paiementCles, original.getPaiementCles()))
-				requeteApi.addVars("paiementCles");
-			if(!Objects.equals(utilisateurNom, original.getUtilisateurNom()))
-				requeteApi.addVars("utilisateurNom");
-			if(!Objects.equals(utilisateurMail, original.getUtilisateurMail()))
-				requeteApi.addVars("utilisateurMail");
-			if(!Objects.equals(utilisateurPrenom, original.getUtilisateurPrenom()))
-				requeteApi.addVars("utilisateurPrenom");
-			if(!Objects.equals(utilisateurNomFamille, original.getUtilisateurNomFamille()))
-				requeteApi.addVars("utilisateurNomFamille");
-			if(!Objects.equals(utilisateurNomComplet, original.getUtilisateurNomComplet()))
-				requeteApi.addVars("utilisateurNomComplet");
-			if(!Objects.equals(utilisateurSite, original.getUtilisateurSite()))
-				requeteApi.addVars("utilisateurSite");
-			if(!Objects.equals(customerProfileId1, original.getCustomerProfileId1()))
-				requeteApi.addVars("customerProfileId1");
-			if(!Objects.equals(utilisateurRecevoirCourriels, original.getUtilisateurRecevoirCourriels()))
-				requeteApi.addVars("utilisateurRecevoirCourriels");
-			if(!Objects.equals(voirArchive, original.getVoirArchive()))
-				requeteApi.addVars("voirArchive");
-			if(!Objects.equals(voirSupprime, original.getVoirSupprime()))
-				requeteApi.addVars("voirSupprime");
-			super.requeteApiCluster();
-		}
-	}
-
-	//////////////
-	// hashCode //
-	//////////////
-
-	@Override public int hashCode() {
-		return Objects.hash(super.hashCode(), utilisateurCles, paiementCles, utilisateurNom, utilisateurMail, utilisateurPrenom, utilisateurNomFamille, utilisateurNomComplet, utilisateurSite, customerProfileId1, utilisateurRecevoirCourriels, voirArchive, voirSupprime);
-	}
-
-	////////////
-	// equals //
-	////////////
-
-	@Override public boolean equals(Object o) {
-		if(this == o)
-			return true;
-		if(!(o instanceof UtilisateurSite))
-			return false;
-		UtilisateurSite that = (UtilisateurSite)o;
-		return super.equals(o)
-				&& Objects.equals( utilisateurCles, that.utilisateurCles )
-				&& Objects.equals( paiementCles, that.paiementCles )
-				&& Objects.equals( utilisateurNom, that.utilisateurNom )
-				&& Objects.equals( utilisateurMail, that.utilisateurMail )
-				&& Objects.equals( utilisateurPrenom, that.utilisateurPrenom )
-				&& Objects.equals( utilisateurNomFamille, that.utilisateurNomFamille )
-				&& Objects.equals( utilisateurNomComplet, that.utilisateurNomComplet )
-				&& Objects.equals( utilisateurSite, that.utilisateurSite )
-				&& Objects.equals( customerProfileId1, that.customerProfileId1 )
-				&& Objects.equals( utilisateurRecevoirCourriels, that.utilisateurRecevoirCourriels )
-				&& Objects.equals( voirArchive, that.voirArchive )
-				&& Objects.equals( voirSupprime, that.voirSupprime );
+		Optional.ofNullable((List<?>)solrDocument.get("utilisateurCles_indexedstored_longs")).orElse(Arrays.asList()).stream().filter(v -> v != null).forEach(v -> {
+			oUtilisateurSite.addUtilisateurCles(v.toString());
+		});
+		Optional.ofNullable((List<?>)solrDocument.get("paiementCles_indexedstored_longs")).orElse(Arrays.asList()).stream().filter(v -> v != null).forEach(v -> {
+			oUtilisateurSite.addPaiementCles(v.toString());
+		});
+		oUtilisateurSite.setUtilisateurNom(Optional.ofNullable(solrDocument.get("utilisateurNom_indexedstored_string")).map(v -> v.toString()).orElse(null));
+		oUtilisateurSite.setUtilisateurMail(Optional.ofNullable(solrDocument.get("utilisateurMail_indexedstored_string")).map(v -> v.toString()).orElse(null));
+		oUtilisateurSite.setUtilisateurPrenom(Optional.ofNullable(solrDocument.get("utilisateurPrenom_indexedstored_string")).map(v -> v.toString()).orElse(null));
+		oUtilisateurSite.setUtilisateurNomFamille(Optional.ofNullable(solrDocument.get("utilisateurNomFamille_indexedstored_string")).map(v -> v.toString()).orElse(null));
+		oUtilisateurSite.setUtilisateurNomComplet(Optional.ofNullable(solrDocument.get("utilisateurNomComplet_indexedstored_string")).map(v -> v.toString()).orElse(null));
+		oUtilisateurSite.setUtilisateurSite(Optional.ofNullable(solrDocument.get("utilisateurSite_indexedstored_string")).map(v -> v.toString()).orElse(null));
+		oUtilisateurSite.setCustomerProfileId1(Optional.ofNullable(solrDocument.get("customerProfileId1_indexedstored_string")).map(v -> v.toString()).orElse(null));
+		oUtilisateurSite.setUtilisateurRecevoirCourriels(Optional.ofNullable(solrDocument.get("utilisateurRecevoirCourriels_indexedstored_boolean")).map(v -> v.toString()).orElse(null));
+		oUtilisateurSite.setVoirArchive(Optional.ofNullable(solrDocument.get("voirArchive_indexedstored_boolean")).map(v -> v.toString()).orElse(null));
+		oUtilisateurSite.setVoirSupprime(Optional.ofNullable(solrDocument.get("voirSupprime_indexedstored_boolean")).map(v -> v.toString()).orElse(null));
 	}
 
 	//////////////
@@ -1922,21 +1291,31 @@ public abstract class UtilisateurSiteGen<DEV> extends Cluster {
 
 	@Override public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append(super.toString() + "\n");
-		sb.append("UtilisateurSite { ");
-		sb.append( "utilisateurCles: " ).append(utilisateurCles);
-		sb.append( ", paiementCles: " ).append(paiementCles);
-		sb.append( ", utilisateurNom: \"" ).append(utilisateurNom).append( "\"" );
-		sb.append( ", utilisateurMail: \"" ).append(utilisateurMail).append( "\"" );
-		sb.append( ", utilisateurPrenom: \"" ).append(utilisateurPrenom).append( "\"" );
-		sb.append( ", utilisateurNomFamille: \"" ).append(utilisateurNomFamille).append( "\"" );
-		sb.append( ", utilisateurNomComplet: \"" ).append(utilisateurNomComplet).append( "\"" );
-		sb.append( ", utilisateurSite: \"" ).append(utilisateurSite).append( "\"" );
-		sb.append( ", customerProfileId1: \"" ).append(customerProfileId1).append( "\"" );
-		sb.append( ", utilisateurRecevoirCourriels: " ).append(utilisateurRecevoirCourriels);
-		sb.append( ", voirArchive: " ).append(voirArchive);
-		sb.append( ", voirSupprime: " ).append(voirSupprime);
-		sb.append(" }");
+		sb.append(Optional.ofNullable(utilisateurCles).map(v -> "utilisateurCles: " + v + "\n").orElse(""));
+		sb.append(Optional.ofNullable(paiementCles).map(v -> "paiementCles: " + v + "\n").orElse(""));
+		sb.append(Optional.ofNullable(utilisateurNom).map(v -> "utilisateurNom: \"" + v + "\"\n" ).orElse(""));
+		sb.append(Optional.ofNullable(utilisateurMail).map(v -> "utilisateurMail: \"" + v + "\"\n" ).orElse(""));
+		sb.append(Optional.ofNullable(utilisateurPrenom).map(v -> "utilisateurPrenom: \"" + v + "\"\n" ).orElse(""));
+		sb.append(Optional.ofNullable(utilisateurNomFamille).map(v -> "utilisateurNomFamille: \"" + v + "\"\n" ).orElse(""));
+		sb.append(Optional.ofNullable(utilisateurNomComplet).map(v -> "utilisateurNomComplet: \"" + v + "\"\n" ).orElse(""));
+		sb.append(Optional.ofNullable(utilisateurSite).map(v -> "utilisateurSite: \"" + v + "\"\n" ).orElse(""));
+		sb.append(Optional.ofNullable(customerProfileId1).map(v -> "customerProfileId1: \"" + v + "\"\n" ).orElse(""));
+		sb.append(Optional.ofNullable(utilisateurRecevoirCourriels).map(v -> "utilisateurRecevoirCourriels: " + v + "\n").orElse(""));
+		sb.append(Optional.ofNullable(voirArchive).map(v -> "voirArchive: " + v + "\n").orElse(""));
+		sb.append(Optional.ofNullable(voirSupprime).map(v -> "voirSupprime: " + v + "\n").orElse(""));
 		return sb.toString();
 	}
+
+	public static final String VAR_utilisateurCles = "utilisateurCles";
+	public static final String VAR_paiementCles = "paiementCles";
+	public static final String VAR_utilisateurNom = "utilisateurNom";
+	public static final String VAR_utilisateurMail = "utilisateurMail";
+	public static final String VAR_utilisateurPrenom = "utilisateurPrenom";
+	public static final String VAR_utilisateurNomFamille = "utilisateurNomFamille";
+	public static final String VAR_utilisateurNomComplet = "utilisateurNomComplet";
+	public static final String VAR_utilisateurSite = "utilisateurSite";
+	public static final String VAR_customerProfileId1 = "customerProfileId1";
+	public static final String VAR_utilisateurRecevoirCourriels = "utilisateurRecevoirCourriels";
+	public static final String VAR_voirArchive = "voirArchive";
+	public static final String VAR_voirSupprime = "voirSupprime";
 }

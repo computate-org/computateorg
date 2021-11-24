@@ -11,7 +11,7 @@ release.properties
 dependency-reduced-pom.xml
 buildNumber.properties
 .mvn/timing.properties
-config/computate.org.config
+config/computate.org.yml
 config/keystore.properties
 src/main/fabric8/deployment.yaml
 **/*.swp

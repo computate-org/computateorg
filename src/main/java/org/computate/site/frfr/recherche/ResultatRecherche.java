@@ -5,7 +5,6 @@ import org.computate.site.frfr.couverture.Couverture;
 import org.computate.site.frfr.requete.RequeteSiteFrFR;
 
 /**
- * NomCanonique.enUS: org.computate.site.enus.search.SearchResult
  * MotCle: classeNomSimpleResultatRecherche
  */
 public class ResultatRecherche extends ResultatRechercheGen<Object> { 

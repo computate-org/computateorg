@@ -1,56 +1,51 @@
 package org.computate.site.frfr.requete.api;
 
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
+import org.computate.site.frfr.config.ConfigCles;
 import org.computate.site.frfr.couverture.Couverture;
 import org.computate.site.frfr.requete.RequeteSiteFrFR;
 
 /**    
- * NomCanonique.enUS: org.computate.site.enus.request.api.ApiRequest
  * MotCle: classeNomSimpleRequeteApi
 */  
 public class RequeteApi extends RequeteApiGen<Object> {
 
 	/**
 	 * {@inheritDoc}
-	 * Var.enUS: siteRequest_
 	 * Ignorer: true
 	 */        
 	protected void _requeteSite_(Couverture<RequeteSiteFrFR> c) {}
 
 	/**
 	 * {@inheritDoc}
-	 * Var.enUS: created
-	 * Indexe: true
-	 * Stocke: true
+	 * DocValues: true
 	 * VarCree: true
 	 * NomAffichage.frFR: crée
 	 * NomAffichage.enUS: created
 	 */   
 	protected void _cree(Couverture<ZonedDateTime> c) {
-		c.o(ZonedDateTime.now());
+		c.o(ZonedDateTime.now(ZoneId.of(requeteSite_.getConfig().getString(ConfigCles.SITE_ZONE))));
 	}
 
 	/**
-	 * Indexe: true
-	 * Stocke: true
+	 * DocValues: true
 	 */   
 	protected void _rows(Couverture<Integer> c) {
 	}
 
 	/**
-	 * Indexe: true
-	 * Stocke: true
+	 * DocValues: true
 	 */   
 	protected void _numFound(Couverture<Long> c) {
 	}
 
 	/**
-	 * Indexe: true
-	 * Stocke: true
+	 * DocValues: true
 	 */   
 	protected void _numPATCH(Couverture<Long> c) {
 		c.o(0L);
@@ -58,8 +53,7 @@ public class RequeteApi extends RequeteApiGen<Object> {
 
 	/**
 	 * {@inheritDoc}
-	 * Indexe: true
-	 * Stocke: true
+	 * DocValues: true
 	 * NomAffichage.frFR: UUID
 	 * NomAffichage.enUS: UUID
 	 */                 
@@ -69,18 +63,6 @@ public class RequeteApi extends RequeteApiGen<Object> {
 
 	protected void _id(Couverture<String> c) {
 		c.o("PATCH-" + uuid);
-	}
-
-	/**
-	 * r: requeteSite
-	 * r.enUS: siteRequest
-	 * r: RequeteSiteFrFR
-	 * r.enUS: SiteRequestEnUS
-	 * r: ObjetJson
-	 * r.enUS: JsonObject
-	 */
-	protected void _empty(Couverture<Boolean> c) {
-		c.o(Optional.ofNullable(requeteSite_).map(RequeteSiteFrFR::getObjetJson).map(b -> b.size()).orElse(0) == 0);
 	}
 
 	protected void _pk(Couverture<Long> c) {
@@ -101,13 +83,25 @@ public class RequeteApi extends RequeteApiGen<Object> {
 	protected void _vars(List<String> c) {
 	}
 
-//	/**
-//	 * {@inheritDoc}
-//	 * Var.enUS: _objectTitle
-//	 * r: anneeNomComplet
-//	 * r.enUS: yearCompleteName
-//	 */
-//	@Override
-//	protected void _objetTitre(Couverture<String> c) {
-//	}
+	protected void _timeRemaining(Couverture<String> w) {
+		w.o(calculateTimeRemaining());
+	}
+
+	public String calculateTimeRemaining() {
+		ZonedDateTime now = ZonedDateTime.now(ZoneId.of(requeteSite_.getConfig().getString(ConfigCles.SITE_ZONE)));
+		Long timeDifferenceNow = ChronoUnit.SECONDS.between(cree, now);
+		Double ratio = ((double) numPATCH / numFound);
+		Double remainingSeconds = ((double) timeDifferenceNow) / ratio - ((double) timeDifferenceNow);
+
+		// Calculating the difference in Hours
+		Long hours = ((Double) (remainingSeconds / 60 / 60)).longValue();
+
+		// Calculating the difference in Minutes
+		Long minutes = ((Double) ((remainingSeconds / 60) % 60)).longValue();
+
+		// Calculating the difference in Seconds
+		Long seconds = ((Double) (remainingSeconds % 60)).longValue();
+
+		return (hours > 0L ? hours + " hours " : "") + (minutes > 0L ? minutes + " minutes " : "") + (hours == 0L && minutes <= 1L ? seconds + " seconds." : "");
+	}
 }

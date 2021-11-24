@@ -1,16 +1,17 @@
-package org.computate.site.frfr.utilisateur;                   
+package org.computate.site.frfr.utilisateur;                       
 
 import java.util.List;
 
-import org.computate.site.frfr.cluster.Cluster;
+import org.computate.site.frfr.base.ModeleBase;
 import org.computate.site.frfr.couverture.Couverture;
 
 /** 
- * NomCanonique.enUS: org.computate.site.enus.user.SiteUser
- * 
  * Modele: true
  * Api: true
+ * Page: true
+ * SuperPage.enUS: ModeleBasePage
  * Indexe: true
+ * Map.Integer.sqlSort: 3
  * 
  * ApiTag.frFR: Utilisateur
  * ApiUri.frFR: /api/utilisateur
@@ -20,8 +21,10 @@ import org.computate.site.frfr.couverture.Couverture;
  * 
  * ApiMethode.frFR: Recherche
  * ApiMethode.enUS: Search
- * ApiMethode: PATCH
- * ApiMethode: POST
+ * ApiMethode.frFR: PATCHFrFR
+ * ApiMethode.frFR: POSTFrFR
+ * ApiMethode.enUS: PATCHEnUS
+ * ApiMethode.enUS: POSTEnUS
  * 
  * ApiMethode.frFR: PageRecherche
  * PagePageRecherche.frFR: UtilisateurSitePage
@@ -52,10 +55,10 @@ import org.computate.site.frfr.couverture.Couverture;
  * RoleUtilisateur: true
  * Role.frFR: SiteAdmin
  * Role.enUS: SiteAdmin
- */             
-public class UtilisateurSite extends UtilisateurSiteGen<Cluster> {  
+ */    
+public class UtilisateurSite extends UtilisateurSiteGen<ModeleBase> {  
 
-	/**  
+	/** 
 	 * {@inheritDoc}
 	 * Var.enUS: userKeys
 	 * Indexe: true

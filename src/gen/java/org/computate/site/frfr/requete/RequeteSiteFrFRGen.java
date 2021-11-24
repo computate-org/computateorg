@@ -1,135 +1,92 @@
 package org.computate.site.frfr.requete;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Arrays;
-import org.apache.solr.common.SolrDocumentList;
-import org.apache.commons.lang3.StringUtils;
-import java.lang.Long;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
-import java.util.Map;
-import org.computate.site.frfr.utilisateur.UtilisateurSite;
-import io.vertx.core.json.JsonObject;
-import io.vertx.sqlclient.Transaction;
-import io.vertx.core.logging.Logger;
-import java.math.RoundingMode;
-import io.vertx.core.http.CaseInsensitiveHeaders;
-import java.math.MathContext;
-import org.computate.site.frfr.config.ConfigSite;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import java.util.Objects;
-import java.util.List;
-import org.apache.solr.client.solrj.SolrQuery;
-import java.util.Optional;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import org.computate.site.frfr.couverture.Couverture;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
-import org.computate.site.frfr.cluster.Cluster;
+import io.vertx.ext.web.client.WebClient;
+import org.slf4j.LoggerFactory;
+import io.vertx.core.MultiMap;
 import java.util.HashMap;
+import org.computate.site.frfr.base.ModeleBase;
+import org.apache.commons.lang3.StringUtils;
 import java.text.NumberFormat;
-import io.vertx.core.logging.LoggerFactory;
-import java.util.Stack;
 import java.util.ArrayList;
+import org.computate.site.frfr.config.ConfigCles;
 import io.vertx.sqlclient.SqlConnection;
 import org.apache.commons.collections.CollectionUtils;
+import java.lang.Long;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.computate.site.frfr.utilisateur.UtilisateurSite;
 import java.lang.Boolean;
+import io.vertx.core.json.JsonObject;
 import java.lang.String;
-import org.apache.solr.client.solrj.response.QueryResponse;
-import io.vertx.core.Vertx;
+import java.math.RoundingMode;
+import org.slf4j.Logger;
+import java.math.MathContext;
+import io.vertx.core.Promise;
 import org.apache.commons.text.StringEscapeUtils;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import org.computate.site.frfr.contexte.SiteContexteFrFR;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import io.vertx.core.Future;
 import org.computate.site.frfr.requete.api.RequeteApi;
-import org.computate.site.frfr.ecrivain.ToutEcrivain;
+import io.vertx.ext.web.api.service.ServiceRequest;
+import java.util.Objects;
 import io.vertx.core.json.JsonArray;
 import org.apache.solr.common.SolrDocument;
+import java.util.List;
 import org.computate.site.frfr.requete.RequeteSiteFrFR;
-import io.vertx.ext.web.api.OperationRequest;
+import io.vertx.ext.auth.User;
+import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.commons.lang3.math.NumberUtils;
+import java.util.Optional;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import java.lang.Object;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import org.computate.site.frfr.couverture.Couverture;
 
 /**	
- * <br/><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstClasse_indexed_boolean:true&fq=classeNomCanonique_frFR_indexed_string:org.computate.site.frfr.requete.RequeteSiteFrFR&fq=classeEtendGen_indexed_boolean:true">Trouver la classe  dans Solr. </a>
+ * <br/><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstClasse_indexed_boolean:true&fq=classeNomCanonique_frFR_indexed_string:org.computate.site.frfr.requete.RequeteSiteFrFR&fq=classeEtendGen_indexed_boolean:true">Trouver la classe requeteVars dans Solr. </a>
  * <br/>
  **/
 public abstract class RequeteSiteFrFRGen<DEV> extends Object {
-	protected static final Logger LOGGER = LoggerFactory.getLogger(RequeteSiteFrFR.class);
+	protected static final Logger LOG = LoggerFactory.getLogger(RequeteSiteFrFR.class);
 
-	///////////////////
-	// siteContexte_ //
-	///////////////////
+	////////////
+	// config //
+	////////////
 
-	/**	 L'entité siteContexte_
+	/**	 L'entité config
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonInclude(Include.NON_NULL)
-	protected SiteContexteFrFR siteContexte_;
-	@JsonIgnore
-	public Couverture<SiteContexteFrFR> siteContexte_Couverture = new Couverture<SiteContexteFrFR>().p(this).c(SiteContexteFrFR.class).var("siteContexte_").o(siteContexte_);
+	protected JsonObject config;
 
-	/**	<br/> L'entité siteContexte_
+	/**	<br/> L'entité config
 	 *  est défini comme null avant d'être initialisé. 
-	 * <br/><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_frFR_indexed_string:org.computate.site.frfr.requete.RequeteSiteFrFR&fq=classeEtendGen_indexed_boolean:true&fq=entiteVar_frFR_indexed_string:siteContexte_">Trouver l'entité siteContexte_ dans Solr</a>
+	 * <br/><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_frFR_indexed_string:org.computate.site.frfr.requete.RequeteSiteFrFR&fq=classeEtendGen_indexed_boolean:true&fq=entiteVar_frFR_indexed_string:config">Trouver l'entité config dans Solr</a>
 	 * <br/>
 	 * @param c est pour envelopper une valeur à assigner à cette entité lors de l'initialisation. 
 	 **/
-	protected abstract void _siteContexte_(Couverture<SiteContexteFrFR> c);
+	protected abstract void _config(Couverture<JsonObject> c);
 
-	public SiteContexteFrFR getSiteContexte_() {
-		return siteContexte_;
+	public JsonObject getConfig() {
+		return config;
 	}
 
-	public void setSiteContexte_(SiteContexteFrFR siteContexte_) {
-		this.siteContexte_ = siteContexte_;
-		this.siteContexte_Couverture.dejaInitialise = true;
+	public void setConfig(JsonObject config) {
+		this.config = config;
 	}
-	protected RequeteSiteFrFR siteContexte_Init() {
-		if(!siteContexte_Couverture.dejaInitialise) {
-			_siteContexte_(siteContexte_Couverture);
-			if(siteContexte_ == null)
-				setSiteContexte_(siteContexte_Couverture.o);
+	public static JsonObject staticSetConfig(RequeteSiteFrFR requeteSite_, String o) {
+		return null;
+	}
+	protected RequeteSiteFrFR configInit() {
+		Couverture<JsonObject> configCouverture = new Couverture<JsonObject>().var("config");
+		if(config == null) {
+			_config(configCouverture);
+			setConfig(configCouverture.o);
 		}
-		siteContexte_Couverture.dejaInitialise(true);
-		return (RequeteSiteFrFR)this;
-	}
-
-	/////////////////
-	// configSite_ //
-	/////////////////
-
-	/**	 L'entité configSite_
-	 *	 is defined as null before being initialized. 
-	 */
-	@JsonInclude(Include.NON_NULL)
-	protected ConfigSite configSite_;
-	@JsonIgnore
-	public Couverture<ConfigSite> configSite_Couverture = new Couverture<ConfigSite>().p(this).c(ConfigSite.class).var("configSite_").o(configSite_);
-
-	/**	<br/> L'entité configSite_
-	 *  est défini comme null avant d'être initialisé. 
-	 * <br/><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_frFR_indexed_string:org.computate.site.frfr.requete.RequeteSiteFrFR&fq=classeEtendGen_indexed_boolean:true&fq=entiteVar_frFR_indexed_string:configSite_">Trouver l'entité configSite_ dans Solr</a>
-	 * <br/>
-	 * @param c est pour envelopper une valeur à assigner à cette entité lors de l'initialisation. 
-	 **/
-	protected abstract void _configSite_(Couverture<ConfigSite> c);
-
-	public ConfigSite getConfigSite_() {
-		return configSite_;
-	}
-
-	public void setConfigSite_(ConfigSite configSite_) {
-		this.configSite_ = configSite_;
-		this.configSite_Couverture.dejaInitialise = true;
-	}
-	protected RequeteSiteFrFR configSite_Init() {
-		if(!configSite_Couverture.dejaInitialise) {
-			_configSite_(configSite_Couverture);
-			if(configSite_ == null)
-				setConfigSite_(configSite_Couverture.o);
-		}
-		configSite_Couverture.dejaInitialise(true);
 		return (RequeteSiteFrFR)this;
 	}
 
@@ -140,10 +97,9 @@ public abstract class RequeteSiteFrFRGen<DEV> extends Object {
 	/**	 L'entité requeteSite_
 	 *	 is defined as null before being initialized. 
 	 */
+	@JsonProperty
 	@JsonInclude(Include.NON_NULL)
 	protected RequeteSiteFrFR requeteSite_;
-	@JsonIgnore
-	public Couverture<RequeteSiteFrFR> requeteSite_Couverture = new Couverture<RequeteSiteFrFR>().p(this).c(RequeteSiteFrFR.class).var("requeteSite_").o(requeteSite_);
 
 	/**	<br/> L'entité requeteSite_
 	 *  est défini comme null avant d'être initialisé. 
@@ -159,15 +115,54 @@ public abstract class RequeteSiteFrFRGen<DEV> extends Object {
 
 	public void setRequeteSite_(RequeteSiteFrFR requeteSite_) {
 		this.requeteSite_ = requeteSite_;
-		this.requeteSite_Couverture.dejaInitialise = true;
+	}
+	public static RequeteSiteFrFR staticSetRequeteSite_(RequeteSiteFrFR requeteSite_, String o) {
+		return null;
 	}
 	protected RequeteSiteFrFR requeteSite_Init() {
-		if(!requeteSite_Couverture.dejaInitialise) {
+		Couverture<RequeteSiteFrFR> requeteSite_Couverture = new Couverture<RequeteSiteFrFR>().var("requeteSite_");
+		if(requeteSite_ == null) {
 			_requeteSite_(requeteSite_Couverture);
-			if(requeteSite_ == null)
-				setRequeteSite_(requeteSite_Couverture.o);
+			setRequeteSite_(requeteSite_Couverture.o);
 		}
-		requeteSite_Couverture.dejaInitialise(true);
+		return (RequeteSiteFrFR)this;
+	}
+
+	///////////////
+	// clientWeb //
+	///////////////
+
+	/**	 L'entité clientWeb
+	 *	 is defined as null before being initialized. 
+	 */
+	@JsonProperty
+	@JsonInclude(Include.NON_NULL)
+	protected WebClient clientWeb;
+
+	/**	<br/> L'entité clientWeb
+	 *  est défini comme null avant d'être initialisé. 
+	 * <br/><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_frFR_indexed_string:org.computate.site.frfr.requete.RequeteSiteFrFR&fq=classeEtendGen_indexed_boolean:true&fq=entiteVar_frFR_indexed_string:clientWeb">Trouver l'entité clientWeb dans Solr</a>
+	 * <br/>
+	 * @param c est pour envelopper une valeur à assigner à cette entité lors de l'initialisation. 
+	 **/
+	protected abstract void _clientWeb(Couverture<WebClient> c);
+
+	public WebClient getClientWeb() {
+		return clientWeb;
+	}
+
+	public void setClientWeb(WebClient clientWeb) {
+		this.clientWeb = clientWeb;
+	}
+	public static WebClient staticSetClientWeb(RequeteSiteFrFR requeteSite_, String o) {
+		return null;
+	}
+	protected RequeteSiteFrFR clientWebInit() {
+		Couverture<WebClient> clientWebCouverture = new Couverture<WebClient>().var("clientWeb");
+		if(clientWeb == null) {
+			_clientWeb(clientWebCouverture);
+			setClientWeb(clientWebCouverture.o);
+		}
 		return (RequeteSiteFrFR)this;
 	}
 
@@ -178,10 +173,9 @@ public abstract class RequeteSiteFrFRGen<DEV> extends Object {
 	/**	 L'entité requeteApi_
 	 *	 is defined as null before being initialized. 
 	 */
+	@JsonProperty
 	@JsonInclude(Include.NON_NULL)
 	protected RequeteApi requeteApi_;
-	@JsonIgnore
-	public Couverture<RequeteApi> requeteApi_Couverture = new Couverture<RequeteApi>().p(this).c(RequeteApi.class).var("requeteApi_").o(requeteApi_);
 
 	/**	<br/> L'entité requeteApi_
 	 *  est défini comme null avant d'être initialisé. 
@@ -197,53 +191,16 @@ public abstract class RequeteSiteFrFRGen<DEV> extends Object {
 
 	public void setRequeteApi_(RequeteApi requeteApi_) {
 		this.requeteApi_ = requeteApi_;
-		this.requeteApi_Couverture.dejaInitialise = true;
+	}
+	public static RequeteApi staticSetRequeteApi_(RequeteSiteFrFR requeteSite_, String o) {
+		return null;
 	}
 	protected RequeteSiteFrFR requeteApi_Init() {
-		if(!requeteApi_Couverture.dejaInitialise) {
+		Couverture<RequeteApi> requeteApi_Couverture = new Couverture<RequeteApi>().var("requeteApi_");
+		if(requeteApi_ == null) {
 			_requeteApi_(requeteApi_Couverture);
-			if(requeteApi_ == null)
-				setRequeteApi_(requeteApi_Couverture.o);
+			setRequeteApi_(requeteApi_Couverture.o);
 		}
-		requeteApi_Couverture.dejaInitialise(true);
-		return (RequeteSiteFrFR)this;
-	}
-
-	///////////
-	// vertx //
-	///////////
-
-	/**	 L'entité vertx
-	 *	 is defined as null before being initialized. 
-	 */
-	@JsonInclude(Include.NON_NULL)
-	protected Vertx vertx;
-	@JsonIgnore
-	public Couverture<Vertx> vertxCouverture = new Couverture<Vertx>().p(this).c(Vertx.class).var("vertx").o(vertx);
-
-	/**	<br/> L'entité vertx
-	 *  est défini comme null avant d'être initialisé. 
-	 * <br/><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_frFR_indexed_string:org.computate.site.frfr.requete.RequeteSiteFrFR&fq=classeEtendGen_indexed_boolean:true&fq=entiteVar_frFR_indexed_string:vertx">Trouver l'entité vertx dans Solr</a>
-	 * <br/>
-	 * @param c est pour envelopper une valeur à assigner à cette entité lors de l'initialisation. 
-	 **/
-	protected abstract void _vertx(Couverture<Vertx> c);
-
-	public Vertx getVertx() {
-		return vertx;
-	}
-
-	public void setVertx(Vertx vertx) {
-		this.vertx = vertx;
-		this.vertxCouverture.dejaInitialise = true;
-	}
-	protected RequeteSiteFrFR vertxInit() {
-		if(!vertxCouverture.dejaInitialise) {
-			_vertx(vertxCouverture);
-			if(vertx == null)
-				setVertx(vertxCouverture.o);
-		}
-		vertxCouverture.dejaInitialise(true);
 		return (RequeteSiteFrFR)this;
 	}
 
@@ -256,8 +213,6 @@ public abstract class RequeteSiteFrFRGen<DEV> extends Object {
 	 */
 	@JsonInclude(Include.NON_NULL)
 	protected JsonObject objetJson;
-	@JsonIgnore
-	public Couverture<JsonObject> objetJsonCouverture = new Couverture<JsonObject>().p(this).c(JsonObject.class).var("objetJson").o(objetJson);
 
 	/**	<br/> L'entité objetJson
 	 *  est défini comme null avant d'être initialisé. 
@@ -273,15 +228,16 @@ public abstract class RequeteSiteFrFRGen<DEV> extends Object {
 
 	public void setObjetJson(JsonObject objetJson) {
 		this.objetJson = objetJson;
-		this.objetJsonCouverture.dejaInitialise = true;
+	}
+	public static JsonObject staticSetObjetJson(RequeteSiteFrFR requeteSite_, String o) {
+		return null;
 	}
 	protected RequeteSiteFrFR objetJsonInit() {
-		if(!objetJsonCouverture.dejaInitialise) {
+		Couverture<JsonObject> objetJsonCouverture = new Couverture<JsonObject>().var("objetJson");
+		if(objetJson == null) {
 			_objetJson(objetJsonCouverture);
-			if(objetJson == null)
-				setObjetJson(objetJsonCouverture.o);
+			setObjetJson(objetJsonCouverture.o);
 		}
-		objetJsonCouverture.dejaInitialise(true);
 		return (RequeteSiteFrFR)this;
 	}
 
@@ -292,10 +248,9 @@ public abstract class RequeteSiteFrFRGen<DEV> extends Object {
 	/**	 L'entité rechercheSolr
 	 *	 is defined as null before being initialized. 
 	 */
+	@JsonProperty
 	@JsonInclude(Include.NON_NULL)
 	protected SolrQuery rechercheSolr;
-	@JsonIgnore
-	public Couverture<SolrQuery> rechercheSolrCouverture = new Couverture<SolrQuery>().p(this).c(SolrQuery.class).var("rechercheSolr").o(rechercheSolr);
 
 	/**	<br/> L'entité rechercheSolr
 	 *  est défini comme null avant d'être initialisé. 
@@ -311,245 +266,92 @@ public abstract class RequeteSiteFrFRGen<DEV> extends Object {
 
 	public void setRechercheSolr(SolrQuery rechercheSolr) {
 		this.rechercheSolr = rechercheSolr;
-		this.rechercheSolrCouverture.dejaInitialise = true;
+	}
+	public static SolrQuery staticSetRechercheSolr(RequeteSiteFrFR requeteSite_, String o) {
+		return null;
 	}
 	protected RequeteSiteFrFR rechercheSolrInit() {
-		if(!rechercheSolrCouverture.dejaInitialise) {
+		Couverture<SolrQuery> rechercheSolrCouverture = new Couverture<SolrQuery>().var("rechercheSolr");
+		if(rechercheSolr == null) {
 			_rechercheSolr(rechercheSolrCouverture);
-			if(rechercheSolr == null)
-				setRechercheSolr(rechercheSolrCouverture.o);
+			setRechercheSolr(rechercheSolrCouverture.o);
 		}
-		rechercheSolrCouverture.dejaInitialise(true);
 		return (RequeteSiteFrFR)this;
 	}
 
-	//////////////////////
-	// operationRequete //
-	//////////////////////
+	////////////////////
+	// requeteService //
+	////////////////////
 
-	/**	 L'entité operationRequete
+	/**	 L'entité requeteService
 	 *	 is defined as null before being initialized. 
 	 */
+	@JsonProperty
 	@JsonInclude(Include.NON_NULL)
-	protected OperationRequest operationRequete;
-	@JsonIgnore
-	public Couverture<OperationRequest> operationRequeteCouverture = new Couverture<OperationRequest>().p(this).c(OperationRequest.class).var("operationRequete").o(operationRequete);
+	protected ServiceRequest requeteService;
 
-	/**	<br/> L'entité operationRequete
+	/**	<br/> L'entité requeteService
 	 *  est défini comme null avant d'être initialisé. 
-	 * <br/><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_frFR_indexed_string:org.computate.site.frfr.requete.RequeteSiteFrFR&fq=classeEtendGen_indexed_boolean:true&fq=entiteVar_frFR_indexed_string:operationRequete">Trouver l'entité operationRequete dans Solr</a>
+	 * <br/><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_frFR_indexed_string:org.computate.site.frfr.requete.RequeteSiteFrFR&fq=classeEtendGen_indexed_boolean:true&fq=entiteVar_frFR_indexed_string:requeteService">Trouver l'entité requeteService dans Solr</a>
 	 * <br/>
 	 * @param c est pour envelopper une valeur à assigner à cette entité lors de l'initialisation. 
 	 **/
-	protected abstract void _operationRequete(Couverture<OperationRequest> c);
+	protected abstract void _requeteService(Couverture<ServiceRequest> c);
 
-	public OperationRequest getOperationRequete() {
-		return operationRequete;
+	public ServiceRequest getRequeteService() {
+		return requeteService;
 	}
 
-	public void setOperationRequete(OperationRequest operationRequete) {
-		this.operationRequete = operationRequete;
-		this.operationRequeteCouverture.dejaInitialise = true;
+	public void setRequeteService(ServiceRequest requeteService) {
+		this.requeteService = requeteService;
 	}
-	protected RequeteSiteFrFR operationRequeteInit() {
-		if(!operationRequeteCouverture.dejaInitialise) {
-			_operationRequete(operationRequeteCouverture);
-			if(operationRequete == null)
-				setOperationRequete(operationRequeteCouverture.o);
+	public static ServiceRequest staticSetRequeteService(RequeteSiteFrFR requeteSite_, String o) {
+		return null;
+	}
+	protected RequeteSiteFrFR requeteServiceInit() {
+		Couverture<ServiceRequest> requeteServiceCouverture = new Couverture<ServiceRequest>().var("requeteService");
+		if(requeteService == null) {
+			_requeteService(requeteServiceCouverture);
+			setRequeteService(requeteServiceCouverture.o);
 		}
-		operationRequeteCouverture.dejaInitialise(true);
 		return (RequeteSiteFrFR)this;
 	}
 
-	//////////////////////
-	// reponseRecherche //
-	//////////////////////
+	/////////////////
+	// utilisateur //
+	/////////////////
 
-	/**	 L'entité reponseRecherche
+	/**	 L'entité utilisateur
 	 *	 is defined as null before being initialized. 
 	 */
+	@JsonProperty
 	@JsonInclude(Include.NON_NULL)
-	protected QueryResponse reponseRecherche;
-	@JsonIgnore
-	public Couverture<QueryResponse> reponseRechercheCouverture = new Couverture<QueryResponse>().p(this).c(QueryResponse.class).var("reponseRecherche").o(reponseRecherche);
+	protected User utilisateur;
 
-	/**	<br/> L'entité reponseRecherche
+	/**	<br/> L'entité utilisateur
 	 *  est défini comme null avant d'être initialisé. 
-	 * <br/><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_frFR_indexed_string:org.computate.site.frfr.requete.RequeteSiteFrFR&fq=classeEtendGen_indexed_boolean:true&fq=entiteVar_frFR_indexed_string:reponseRecherche">Trouver l'entité reponseRecherche dans Solr</a>
+	 * <br/><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_frFR_indexed_string:org.computate.site.frfr.requete.RequeteSiteFrFR&fq=classeEtendGen_indexed_boolean:true&fq=entiteVar_frFR_indexed_string:utilisateur">Trouver l'entité utilisateur dans Solr</a>
 	 * <br/>
 	 * @param c est pour envelopper une valeur à assigner à cette entité lors de l'initialisation. 
 	 **/
-	protected abstract void _reponseRecherche(Couverture<QueryResponse> c);
+	protected abstract void _utilisateur(Couverture<User> c);
 
-	public QueryResponse getReponseRecherche() {
-		return reponseRecherche;
+	public User getUtilisateur() {
+		return utilisateur;
 	}
 
-	public void setReponseRecherche(QueryResponse reponseRecherche) {
-		this.reponseRecherche = reponseRecherche;
-		this.reponseRechercheCouverture.dejaInitialise = true;
+	public void setUtilisateur(User utilisateur) {
+		this.utilisateur = utilisateur;
 	}
-	protected RequeteSiteFrFR reponseRechercheInit() {
-		if(!reponseRechercheCouverture.dejaInitialise) {
-			_reponseRecherche(reponseRechercheCouverture);
-			if(reponseRecherche == null)
-				setReponseRecherche(reponseRechercheCouverture.o);
+	public static User staticSetUtilisateur(RequeteSiteFrFR requeteSite_, String o) {
+		return null;
+	}
+	protected RequeteSiteFrFR utilisateurInit() {
+		Couverture<User> utilisateurCouverture = new Couverture<User>().var("utilisateur");
+		if(utilisateur == null) {
+			_utilisateur(utilisateurCouverture);
+			setUtilisateur(utilisateurCouverture.o);
 		}
-		reponseRechercheCouverture.dejaInitialise(true);
-		return (RequeteSiteFrFR)this;
-	}
-
-	////////////////////////
-	// resultatsRecherche //
-	////////////////////////
-
-	/**	 L'entité resultatsRecherche
-	 *	 is defined as null before being initialized. 
-	 */
-	@JsonInclude(Include.NON_NULL)
-	protected SolrDocumentList resultatsRecherche;
-	@JsonIgnore
-	public Couverture<SolrDocumentList> resultatsRechercheCouverture = new Couverture<SolrDocumentList>().p(this).c(SolrDocumentList.class).var("resultatsRecherche").o(resultatsRecherche);
-
-	/**	<br/> L'entité resultatsRecherche
-	 *  est défini comme null avant d'être initialisé. 
-	 * <br/><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_frFR_indexed_string:org.computate.site.frfr.requete.RequeteSiteFrFR&fq=classeEtendGen_indexed_boolean:true&fq=entiteVar_frFR_indexed_string:resultatsRecherche">Trouver l'entité resultatsRecherche dans Solr</a>
-	 * <br/>
-	 * @param c est pour envelopper une valeur à assigner à cette entité lors de l'initialisation. 
-	 **/
-	protected abstract void _resultatsRecherche(Couverture<SolrDocumentList> c);
-
-	public SolrDocumentList getResultatsRecherche() {
-		return resultatsRecherche;
-	}
-
-	public void setResultatsRecherche(SolrDocumentList resultatsRecherche) {
-		this.resultatsRecherche = resultatsRecherche;
-		this.resultatsRechercheCouverture.dejaInitialise = true;
-	}
-	protected RequeteSiteFrFR resultatsRechercheInit() {
-		if(!resultatsRechercheCouverture.dejaInitialise) {
-			_resultatsRecherche(resultatsRechercheCouverture);
-			if(resultatsRecherche == null)
-				setResultatsRecherche(resultatsRechercheCouverture.o);
-		}
-		resultatsRechercheCouverture.dejaInitialise(true);
-		return (RequeteSiteFrFR)this;
-	}
-
-	///////
-	// w //
-	///////
-
-	/**	 L'entité w
-	 *	 is defined as null before being initialized. 
-	 */
-	@JsonInclude(Include.NON_NULL)
-	protected ToutEcrivain w;
-	@JsonIgnore
-	public Couverture<ToutEcrivain> wCouverture = new Couverture<ToutEcrivain>().p(this).c(ToutEcrivain.class).var("w").o(w);
-
-	/**	<br/> L'entité w
-	 *  est défini comme null avant d'être initialisé. 
-	 * <br/><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_frFR_indexed_string:org.computate.site.frfr.requete.RequeteSiteFrFR&fq=classeEtendGen_indexed_boolean:true&fq=entiteVar_frFR_indexed_string:w">Trouver l'entité w dans Solr</a>
-	 * <br/>
-	 * @param c est pour envelopper une valeur à assigner à cette entité lors de l'initialisation. 
-	 **/
-	protected abstract void _w(Couverture<ToutEcrivain> c);
-
-	public ToutEcrivain getW() {
-		return w;
-	}
-
-	public void setW(ToutEcrivain w) {
-		this.w = w;
-		this.wCouverture.dejaInitialise = true;
-	}
-	protected RequeteSiteFrFR wInit() {
-		if(!wCouverture.dejaInitialise) {
-			_w(wCouverture);
-			if(w == null)
-				setW(wCouverture.o);
-		}
-		if(w != null)
-			w.initLoinPourClasse(requeteSite_);
-		wCouverture.dejaInitialise(true);
-		return (RequeteSiteFrFR)this;
-	}
-
-	//////////////////////
-	// utilisateurVertx //
-	//////////////////////
-
-	/**	 L'entité utilisateurVertx
-	 *	 is defined as null before being initialized. 
-	 */
-	@JsonInclude(Include.NON_NULL)
-	protected JsonObject utilisateurVertx;
-	@JsonIgnore
-	public Couverture<JsonObject> utilisateurVertxCouverture = new Couverture<JsonObject>().p(this).c(JsonObject.class).var("utilisateurVertx").o(utilisateurVertx);
-
-	/**	<br/> L'entité utilisateurVertx
-	 *  est défini comme null avant d'être initialisé. 
-	 * <br/><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_frFR_indexed_string:org.computate.site.frfr.requete.RequeteSiteFrFR&fq=classeEtendGen_indexed_boolean:true&fq=entiteVar_frFR_indexed_string:utilisateurVertx">Trouver l'entité utilisateurVertx dans Solr</a>
-	 * <br/>
-	 * @param c est pour envelopper une valeur à assigner à cette entité lors de l'initialisation. 
-	 **/
-	protected abstract void _utilisateurVertx(Couverture<JsonObject> c);
-
-	public JsonObject getUtilisateurVertx() {
-		return utilisateurVertx;
-	}
-
-	public void setUtilisateurVertx(JsonObject utilisateurVertx) {
-		this.utilisateurVertx = utilisateurVertx;
-		this.utilisateurVertxCouverture.dejaInitialise = true;
-	}
-	protected RequeteSiteFrFR utilisateurVertxInit() {
-		if(!utilisateurVertxCouverture.dejaInitialise) {
-			_utilisateurVertx(utilisateurVertxCouverture);
-			if(utilisateurVertx == null)
-				setUtilisateurVertx(utilisateurVertxCouverture.o);
-		}
-		utilisateurVertxCouverture.dejaInitialise(true);
-		return (RequeteSiteFrFR)this;
-	}
-
-	///////////////////
-	// principalJson //
-	///////////////////
-
-	/**	 L'entité principalJson
-	 *	 is defined as null before being initialized. 
-	 */
-	@JsonInclude(Include.NON_NULL)
-	protected JsonObject principalJson;
-	@JsonIgnore
-	public Couverture<JsonObject> principalJsonCouverture = new Couverture<JsonObject>().p(this).c(JsonObject.class).var("principalJson").o(principalJson);
-
-	/**	<br/> L'entité principalJson
-	 *  est défini comme null avant d'être initialisé. 
-	 * <br/><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_frFR_indexed_string:org.computate.site.frfr.requete.RequeteSiteFrFR&fq=classeEtendGen_indexed_boolean:true&fq=entiteVar_frFR_indexed_string:principalJson">Trouver l'entité principalJson dans Solr</a>
-	 * <br/>
-	 * @param c est pour envelopper une valeur à assigner à cette entité lors de l'initialisation. 
-	 **/
-	protected abstract void _principalJson(Couverture<JsonObject> c);
-
-	public JsonObject getPrincipalJson() {
-		return principalJson;
-	}
-
-	public void setPrincipalJson(JsonObject principalJson) {
-		this.principalJson = principalJson;
-		this.principalJsonCouverture.dejaInitialise = true;
-	}
-	protected RequeteSiteFrFR principalJsonInit() {
-		if(!principalJsonCouverture.dejaInitialise) {
-			_principalJson(principalJsonCouverture);
-			if(principalJson == null)
-				setPrincipalJson(principalJsonCouverture.o);
-		}
-		principalJsonCouverture.dejaInitialise(true);
 		return (RequeteSiteFrFR)this;
 	}
 
@@ -560,10 +362,9 @@ public abstract class RequeteSiteFrFRGen<DEV> extends Object {
 	/**	 L'entité utilisateurId
 	 *	 is defined as null before being initialized. 
 	 */
+	@JsonProperty
 	@JsonInclude(Include.NON_NULL)
 	protected String utilisateurId;
-	@JsonIgnore
-	public Couverture<String> utilisateurIdCouverture = new Couverture<String>().p(this).c(String.class).var("utilisateurId").o(utilisateurId);
 
 	/**	<br/> L'entité utilisateurId
 	 *  est défini comme null avant d'être initialisé. 
@@ -576,43 +377,31 @@ public abstract class RequeteSiteFrFRGen<DEV> extends Object {
 	public String getUtilisateurId() {
 		return utilisateurId;
 	}
-
-	public void setUtilisateurId(String utilisateurId) {
-		this.utilisateurId = utilisateurId;
-		this.utilisateurIdCouverture.dejaInitialise = true;
+	public void setUtilisateurId(String o) {
+		this.utilisateurId = RequeteSiteFrFR.staticSetUtilisateurId(requeteSite_, o);
+	}
+	public static String staticSetUtilisateurId(RequeteSiteFrFR requeteSite_, String o) {
+		return o;
 	}
 	protected RequeteSiteFrFR utilisateurIdInit() {
-		if(!utilisateurIdCouverture.dejaInitialise) {
+		Couverture<String> utilisateurIdCouverture = new Couverture<String>().var("utilisateurId");
+		if(utilisateurId == null) {
 			_utilisateurId(utilisateurIdCouverture);
-			if(utilisateurId == null)
-				setUtilisateurId(utilisateurIdCouverture.o);
+			setUtilisateurId(utilisateurIdCouverture.o);
 		}
-		utilisateurIdCouverture.dejaInitialise(true);
 		return (RequeteSiteFrFR)this;
 	}
 
-	public String solrUtilisateurId() {
-		return utilisateurId;
+	public static String staticSolrUtilisateurId(RequeteSiteFrFR requeteSite_, String o) {
+		return o;
 	}
 
-	public String strUtilisateurId() {
-		return utilisateurId == null ? "" : utilisateurId;
+	public static String staticSolrStrUtilisateurId(RequeteSiteFrFR requeteSite_, String o) {
+		return o == null ? null : o.toString();
 	}
 
-	public String jsonUtilisateurId() {
-		return utilisateurId == null ? "" : utilisateurId;
-	}
-
-	public String nomAffichageUtilisateurId() {
-		return null;
-	}
-
-	public String htmTooltipUtilisateurId() {
-		return null;
-	}
-
-	public String htmUtilisateurId() {
-		return utilisateurId == null ? "" : StringEscapeUtils.escapeHtml4(strUtilisateurId());
+	public static String staticSolrFqUtilisateurId(RequeteSiteFrFR requeteSite_, String o) {
+		return RequeteSiteFrFR.staticSolrStrUtilisateurId(requeteSite_, RequeteSiteFrFR.staticSolrUtilisateurId(requeteSite_, RequeteSiteFrFR.staticSetUtilisateurId(requeteSite_, o)));
 	}
 
 	////////////////////
@@ -622,11 +411,10 @@ public abstract class RequeteSiteFrFRGen<DEV> extends Object {
 	/**	 L'entité utilisateurCle
 	 *	 is defined as null before being initialized. 
 	 */
+	@JsonProperty
 	@JsonSerialize(using = ToStringSerializer.class)
 	@JsonInclude(Include.NON_NULL)
 	protected Long utilisateurCle;
-	@JsonIgnore
-	public Couverture<Long> utilisateurCleCouverture = new Couverture<Long>().p(this).c(Long.class).var("utilisateurCle").o(utilisateurCle);
 
 	/**	<br/> L'entité utilisateurCle
 	 *  est défini comme null avant d'être initialisé. 
@@ -642,46 +430,35 @@ public abstract class RequeteSiteFrFRGen<DEV> extends Object {
 
 	public void setUtilisateurCle(Long utilisateurCle) {
 		this.utilisateurCle = utilisateurCle;
-		this.utilisateurCleCouverture.dejaInitialise = true;
 	}
-	public RequeteSiteFrFR setUtilisateurCle(String o) {
+	@JsonIgnore
+	public void setUtilisateurCle(String o) {
+		this.utilisateurCle = RequeteSiteFrFR.staticSetUtilisateurCle(requeteSite_, o);
+	}
+	public static Long staticSetUtilisateurCle(RequeteSiteFrFR requeteSite_, String o) {
 		if(NumberUtils.isParsable(o))
-			this.utilisateurCle = Long.parseLong(o);
-		this.utilisateurCleCouverture.dejaInitialise = true;
-		return (RequeteSiteFrFR)this;
+			return Long.parseLong(o);
+		return null;
 	}
 	protected RequeteSiteFrFR utilisateurCleInit() {
-		if(!utilisateurCleCouverture.dejaInitialise) {
+		Couverture<Long> utilisateurCleCouverture = new Couverture<Long>().var("utilisateurCle");
+		if(utilisateurCle == null) {
 			_utilisateurCle(utilisateurCleCouverture);
-			if(utilisateurCle == null)
-				setUtilisateurCle(utilisateurCleCouverture.o);
+			setUtilisateurCle(utilisateurCleCouverture.o);
 		}
-		utilisateurCleCouverture.dejaInitialise(true);
 		return (RequeteSiteFrFR)this;
 	}
 
-	public Long solrUtilisateurCle() {
-		return utilisateurCle;
+	public static Long staticSolrUtilisateurCle(RequeteSiteFrFR requeteSite_, Long o) {
+		return o;
 	}
 
-	public String strUtilisateurCle() {
-		return utilisateurCle == null ? "" : utilisateurCle.toString();
+	public static String staticSolrStrUtilisateurCle(RequeteSiteFrFR requeteSite_, Long o) {
+		return o == null ? null : o.toString();
 	}
 
-	public String jsonUtilisateurCle() {
-		return utilisateurCle == null ? "" : utilisateurCle.toString();
-	}
-
-	public String nomAffichageUtilisateurCle() {
-		return null;
-	}
-
-	public String htmTooltipUtilisateurCle() {
-		return null;
-	}
-
-	public String htmUtilisateurCle() {
-		return utilisateurCle == null ? "" : StringEscapeUtils.escapeHtml4(strUtilisateurCle());
+	public static String staticSolrFqUtilisateurCle(RequeteSiteFrFR requeteSite_, String o) {
+		return RequeteSiteFrFR.staticSolrStrUtilisateurCle(requeteSite_, RequeteSiteFrFR.staticSolrUtilisateurCle(requeteSite_, RequeteSiteFrFR.staticSetUtilisateurCle(requeteSite_, o)));
 	}
 
 	///////////////
@@ -691,10 +468,9 @@ public abstract class RequeteSiteFrFRGen<DEV> extends Object {
 	/**	 L'entité sessionId
 	 *	 is defined as null before being initialized. 
 	 */
+	@JsonProperty
 	@JsonInclude(Include.NON_NULL)
 	protected String sessionId;
-	@JsonIgnore
-	public Couverture<String> sessionIdCouverture = new Couverture<String>().p(this).c(String.class).var("sessionId").o(sessionId);
 
 	/**	<br/> L'entité sessionId
 	 *  est défini comme null avant d'être initialisé. 
@@ -707,43 +483,31 @@ public abstract class RequeteSiteFrFRGen<DEV> extends Object {
 	public String getSessionId() {
 		return sessionId;
 	}
-
-	public void setSessionId(String sessionId) {
-		this.sessionId = sessionId;
-		this.sessionIdCouverture.dejaInitialise = true;
+	public void setSessionId(String o) {
+		this.sessionId = RequeteSiteFrFR.staticSetSessionId(requeteSite_, o);
+	}
+	public static String staticSetSessionId(RequeteSiteFrFR requeteSite_, String o) {
+		return o;
 	}
 	protected RequeteSiteFrFR sessionIdInit() {
-		if(!sessionIdCouverture.dejaInitialise) {
+		Couverture<String> sessionIdCouverture = new Couverture<String>().var("sessionId");
+		if(sessionId == null) {
 			_sessionId(sessionIdCouverture);
-			if(sessionId == null)
-				setSessionId(sessionIdCouverture.o);
+			setSessionId(sessionIdCouverture.o);
 		}
-		sessionIdCouverture.dejaInitialise(true);
 		return (RequeteSiteFrFR)this;
 	}
 
-	public String solrSessionId() {
-		return sessionId;
+	public static String staticSolrSessionId(RequeteSiteFrFR requeteSite_, String o) {
+		return o;
 	}
 
-	public String strSessionId() {
-		return sessionId == null ? "" : sessionId;
+	public static String staticSolrStrSessionId(RequeteSiteFrFR requeteSite_, String o) {
+		return o == null ? null : o.toString();
 	}
 
-	public String jsonSessionId() {
-		return sessionId == null ? "" : sessionId;
-	}
-
-	public String nomAffichageSessionId() {
-		return null;
-	}
-
-	public String htmTooltipSessionId() {
-		return null;
-	}
-
-	public String htmSessionId() {
-		return sessionId == null ? "" : StringEscapeUtils.escapeHtml4(strSessionId());
+	public static String staticSolrFqSessionId(RequeteSiteFrFR requeteSite_, String o) {
+		return RequeteSiteFrFR.staticSolrStrSessionId(requeteSite_, RequeteSiteFrFR.staticSolrSessionId(requeteSite_, RequeteSiteFrFR.staticSetSessionId(requeteSite_, o)));
 	}
 
 	////////////////////
@@ -753,10 +517,9 @@ public abstract class RequeteSiteFrFRGen<DEV> extends Object {
 	/**	 L'entité sessionIdAvant
 	 *	 is defined as null before being initialized. 
 	 */
+	@JsonProperty
 	@JsonInclude(Include.NON_NULL)
 	protected String sessionIdAvant;
-	@JsonIgnore
-	public Couverture<String> sessionIdAvantCouverture = new Couverture<String>().p(this).c(String.class).var("sessionIdAvant").o(sessionIdAvant);
 
 	/**	<br/> L'entité sessionIdAvant
 	 *  est défini comme null avant d'être initialisé. 
@@ -769,43 +532,31 @@ public abstract class RequeteSiteFrFRGen<DEV> extends Object {
 	public String getSessionIdAvant() {
 		return sessionIdAvant;
 	}
-
-	public void setSessionIdAvant(String sessionIdAvant) {
-		this.sessionIdAvant = sessionIdAvant;
-		this.sessionIdAvantCouverture.dejaInitialise = true;
+	public void setSessionIdAvant(String o) {
+		this.sessionIdAvant = RequeteSiteFrFR.staticSetSessionIdAvant(requeteSite_, o);
+	}
+	public static String staticSetSessionIdAvant(RequeteSiteFrFR requeteSite_, String o) {
+		return o;
 	}
 	protected RequeteSiteFrFR sessionIdAvantInit() {
-		if(!sessionIdAvantCouverture.dejaInitialise) {
+		Couverture<String> sessionIdAvantCouverture = new Couverture<String>().var("sessionIdAvant");
+		if(sessionIdAvant == null) {
 			_sessionIdAvant(sessionIdAvantCouverture);
-			if(sessionIdAvant == null)
-				setSessionIdAvant(sessionIdAvantCouverture.o);
+			setSessionIdAvant(sessionIdAvantCouverture.o);
 		}
-		sessionIdAvantCouverture.dejaInitialise(true);
 		return (RequeteSiteFrFR)this;
 	}
 
-	public String solrSessionIdAvant() {
-		return sessionIdAvant;
+	public static String staticSolrSessionIdAvant(RequeteSiteFrFR requeteSite_, String o) {
+		return o;
 	}
 
-	public String strSessionIdAvant() {
-		return sessionIdAvant == null ? "" : sessionIdAvant;
+	public static String staticSolrStrSessionIdAvant(RequeteSiteFrFR requeteSite_, String o) {
+		return o == null ? null : o.toString();
 	}
 
-	public String jsonSessionIdAvant() {
-		return sessionIdAvant == null ? "" : sessionIdAvant;
-	}
-
-	public String nomAffichageSessionIdAvant() {
-		return null;
-	}
-
-	public String htmTooltipSessionIdAvant() {
-		return null;
-	}
-
-	public String htmSessionIdAvant() {
-		return sessionIdAvant == null ? "" : StringEscapeUtils.escapeHtml4(strSessionIdAvant());
+	public static String staticSolrFqSessionIdAvant(RequeteSiteFrFR requeteSite_, String o) {
+		return RequeteSiteFrFR.staticSolrStrSessionIdAvant(requeteSite_, RequeteSiteFrFR.staticSolrSessionIdAvant(requeteSite_, RequeteSiteFrFR.staticSetSessionIdAvant(requeteSite_, o)));
 	}
 
 	////////////////////
@@ -815,10 +566,9 @@ public abstract class RequeteSiteFrFRGen<DEV> extends Object {
 	/**	 L'entité utilisateurNom
 	 *	 is defined as null before being initialized. 
 	 */
+	@JsonProperty
 	@JsonInclude(Include.NON_NULL)
 	protected String utilisateurNom;
-	@JsonIgnore
-	public Couverture<String> utilisateurNomCouverture = new Couverture<String>().p(this).c(String.class).var("utilisateurNom").o(utilisateurNom);
 
 	/**	<br/> L'entité utilisateurNom
 	 *  est défini comme null avant d'être initialisé. 
@@ -831,43 +581,31 @@ public abstract class RequeteSiteFrFRGen<DEV> extends Object {
 	public String getUtilisateurNom() {
 		return utilisateurNom;
 	}
-
-	public void setUtilisateurNom(String utilisateurNom) {
-		this.utilisateurNom = utilisateurNom;
-		this.utilisateurNomCouverture.dejaInitialise = true;
+	public void setUtilisateurNom(String o) {
+		this.utilisateurNom = RequeteSiteFrFR.staticSetUtilisateurNom(requeteSite_, o);
+	}
+	public static String staticSetUtilisateurNom(RequeteSiteFrFR requeteSite_, String o) {
+		return o;
 	}
 	protected RequeteSiteFrFR utilisateurNomInit() {
-		if(!utilisateurNomCouverture.dejaInitialise) {
+		Couverture<String> utilisateurNomCouverture = new Couverture<String>().var("utilisateurNom");
+		if(utilisateurNom == null) {
 			_utilisateurNom(utilisateurNomCouverture);
-			if(utilisateurNom == null)
-				setUtilisateurNom(utilisateurNomCouverture.o);
+			setUtilisateurNom(utilisateurNomCouverture.o);
 		}
-		utilisateurNomCouverture.dejaInitialise(true);
 		return (RequeteSiteFrFR)this;
 	}
 
-	public String solrUtilisateurNom() {
-		return utilisateurNom;
+	public static String staticSolrUtilisateurNom(RequeteSiteFrFR requeteSite_, String o) {
+		return o;
 	}
 
-	public String strUtilisateurNom() {
-		return utilisateurNom == null ? "" : utilisateurNom;
+	public static String staticSolrStrUtilisateurNom(RequeteSiteFrFR requeteSite_, String o) {
+		return o == null ? null : o.toString();
 	}
 
-	public String jsonUtilisateurNom() {
-		return utilisateurNom == null ? "" : utilisateurNom;
-	}
-
-	public String nomAffichageUtilisateurNom() {
-		return null;
-	}
-
-	public String htmTooltipUtilisateurNom() {
-		return null;
-	}
-
-	public String htmUtilisateurNom() {
-		return utilisateurNom == null ? "" : StringEscapeUtils.escapeHtml4(strUtilisateurNom());
+	public static String staticSolrFqUtilisateurNom(RequeteSiteFrFR requeteSite_, String o) {
+		return RequeteSiteFrFR.staticSolrStrUtilisateurNom(requeteSite_, RequeteSiteFrFR.staticSolrUtilisateurNom(requeteSite_, RequeteSiteFrFR.staticSetUtilisateurNom(requeteSite_, o)));
 	}
 
 	///////////////////////////
@@ -877,10 +615,9 @@ public abstract class RequeteSiteFrFRGen<DEV> extends Object {
 	/**	 L'entité utilisateurNomFamille
 	 *	 is defined as null before being initialized. 
 	 */
+	@JsonProperty
 	@JsonInclude(Include.NON_NULL)
 	protected String utilisateurNomFamille;
-	@JsonIgnore
-	public Couverture<String> utilisateurNomFamilleCouverture = new Couverture<String>().p(this).c(String.class).var("utilisateurNomFamille").o(utilisateurNomFamille);
 
 	/**	<br/> L'entité utilisateurNomFamille
 	 *  est défini comme null avant d'être initialisé. 
@@ -893,43 +630,31 @@ public abstract class RequeteSiteFrFRGen<DEV> extends Object {
 	public String getUtilisateurNomFamille() {
 		return utilisateurNomFamille;
 	}
-
-	public void setUtilisateurNomFamille(String utilisateurNomFamille) {
-		this.utilisateurNomFamille = utilisateurNomFamille;
-		this.utilisateurNomFamilleCouverture.dejaInitialise = true;
+	public void setUtilisateurNomFamille(String o) {
+		this.utilisateurNomFamille = RequeteSiteFrFR.staticSetUtilisateurNomFamille(requeteSite_, o);
+	}
+	public static String staticSetUtilisateurNomFamille(RequeteSiteFrFR requeteSite_, String o) {
+		return o;
 	}
 	protected RequeteSiteFrFR utilisateurNomFamilleInit() {
-		if(!utilisateurNomFamilleCouverture.dejaInitialise) {
+		Couverture<String> utilisateurNomFamilleCouverture = new Couverture<String>().var("utilisateurNomFamille");
+		if(utilisateurNomFamille == null) {
 			_utilisateurNomFamille(utilisateurNomFamilleCouverture);
-			if(utilisateurNomFamille == null)
-				setUtilisateurNomFamille(utilisateurNomFamilleCouverture.o);
+			setUtilisateurNomFamille(utilisateurNomFamilleCouverture.o);
 		}
-		utilisateurNomFamilleCouverture.dejaInitialise(true);
 		return (RequeteSiteFrFR)this;
 	}
 
-	public String solrUtilisateurNomFamille() {
-		return utilisateurNomFamille;
+	public static String staticSolrUtilisateurNomFamille(RequeteSiteFrFR requeteSite_, String o) {
+		return o;
 	}
 
-	public String strUtilisateurNomFamille() {
-		return utilisateurNomFamille == null ? "" : utilisateurNomFamille;
+	public static String staticSolrStrUtilisateurNomFamille(RequeteSiteFrFR requeteSite_, String o) {
+		return o == null ? null : o.toString();
 	}
 
-	public String jsonUtilisateurNomFamille() {
-		return utilisateurNomFamille == null ? "" : utilisateurNomFamille;
-	}
-
-	public String nomAffichageUtilisateurNomFamille() {
-		return null;
-	}
-
-	public String htmTooltipUtilisateurNomFamille() {
-		return null;
-	}
-
-	public String htmUtilisateurNomFamille() {
-		return utilisateurNomFamille == null ? "" : StringEscapeUtils.escapeHtml4(strUtilisateurNomFamille());
+	public static String staticSolrFqUtilisateurNomFamille(RequeteSiteFrFR requeteSite_, String o) {
+		return RequeteSiteFrFR.staticSolrStrUtilisateurNomFamille(requeteSite_, RequeteSiteFrFR.staticSolrUtilisateurNomFamille(requeteSite_, RequeteSiteFrFR.staticSetUtilisateurNomFamille(requeteSite_, o)));
 	}
 
 	///////////////////////
@@ -939,10 +664,9 @@ public abstract class RequeteSiteFrFRGen<DEV> extends Object {
 	/**	 L'entité utilisateurPrenom
 	 *	 is defined as null before being initialized. 
 	 */
+	@JsonProperty
 	@JsonInclude(Include.NON_NULL)
 	protected String utilisateurPrenom;
-	@JsonIgnore
-	public Couverture<String> utilisateurPrenomCouverture = new Couverture<String>().p(this).c(String.class).var("utilisateurPrenom").o(utilisateurPrenom);
 
 	/**	<br/> L'entité utilisateurPrenom
 	 *  est défini comme null avant d'être initialisé. 
@@ -955,43 +679,31 @@ public abstract class RequeteSiteFrFRGen<DEV> extends Object {
 	public String getUtilisateurPrenom() {
 		return utilisateurPrenom;
 	}
-
-	public void setUtilisateurPrenom(String utilisateurPrenom) {
-		this.utilisateurPrenom = utilisateurPrenom;
-		this.utilisateurPrenomCouverture.dejaInitialise = true;
+	public void setUtilisateurPrenom(String o) {
+		this.utilisateurPrenom = RequeteSiteFrFR.staticSetUtilisateurPrenom(requeteSite_, o);
+	}
+	public static String staticSetUtilisateurPrenom(RequeteSiteFrFR requeteSite_, String o) {
+		return o;
 	}
 	protected RequeteSiteFrFR utilisateurPrenomInit() {
-		if(!utilisateurPrenomCouverture.dejaInitialise) {
+		Couverture<String> utilisateurPrenomCouverture = new Couverture<String>().var("utilisateurPrenom");
+		if(utilisateurPrenom == null) {
 			_utilisateurPrenom(utilisateurPrenomCouverture);
-			if(utilisateurPrenom == null)
-				setUtilisateurPrenom(utilisateurPrenomCouverture.o);
+			setUtilisateurPrenom(utilisateurPrenomCouverture.o);
 		}
-		utilisateurPrenomCouverture.dejaInitialise(true);
 		return (RequeteSiteFrFR)this;
 	}
 
-	public String solrUtilisateurPrenom() {
-		return utilisateurPrenom;
+	public static String staticSolrUtilisateurPrenom(RequeteSiteFrFR requeteSite_, String o) {
+		return o;
 	}
 
-	public String strUtilisateurPrenom() {
-		return utilisateurPrenom == null ? "" : utilisateurPrenom;
+	public static String staticSolrStrUtilisateurPrenom(RequeteSiteFrFR requeteSite_, String o) {
+		return o == null ? null : o.toString();
 	}
 
-	public String jsonUtilisateurPrenom() {
-		return utilisateurPrenom == null ? "" : utilisateurPrenom;
-	}
-
-	public String nomAffichageUtilisateurPrenom() {
-		return null;
-	}
-
-	public String htmTooltipUtilisateurPrenom() {
-		return null;
-	}
-
-	public String htmUtilisateurPrenom() {
-		return utilisateurPrenom == null ? "" : StringEscapeUtils.escapeHtml4(strUtilisateurPrenom());
+	public static String staticSolrFqUtilisateurPrenom(RequeteSiteFrFR requeteSite_, String o) {
+		return RequeteSiteFrFR.staticSolrStrUtilisateurPrenom(requeteSite_, RequeteSiteFrFR.staticSolrUtilisateurPrenom(requeteSite_, RequeteSiteFrFR.staticSetUtilisateurPrenom(requeteSite_, o)));
 	}
 
 	///////////////////////////
@@ -1001,10 +713,9 @@ public abstract class RequeteSiteFrFRGen<DEV> extends Object {
 	/**	 L'entité utilisateurNomComplet
 	 *	 is defined as null before being initialized. 
 	 */
+	@JsonProperty
 	@JsonInclude(Include.NON_NULL)
 	protected String utilisateurNomComplet;
-	@JsonIgnore
-	public Couverture<String> utilisateurNomCompletCouverture = new Couverture<String>().p(this).c(String.class).var("utilisateurNomComplet").o(utilisateurNomComplet);
 
 	/**	<br/> L'entité utilisateurNomComplet
 	 *  est défini comme null avant d'être initialisé. 
@@ -1017,43 +728,80 @@ public abstract class RequeteSiteFrFRGen<DEV> extends Object {
 	public String getUtilisateurNomComplet() {
 		return utilisateurNomComplet;
 	}
-
-	public void setUtilisateurNomComplet(String utilisateurNomComplet) {
-		this.utilisateurNomComplet = utilisateurNomComplet;
-		this.utilisateurNomCompletCouverture.dejaInitialise = true;
+	public void setUtilisateurNomComplet(String o) {
+		this.utilisateurNomComplet = RequeteSiteFrFR.staticSetUtilisateurNomComplet(requeteSite_, o);
+	}
+	public static String staticSetUtilisateurNomComplet(RequeteSiteFrFR requeteSite_, String o) {
+		return o;
 	}
 	protected RequeteSiteFrFR utilisateurNomCompletInit() {
-		if(!utilisateurNomCompletCouverture.dejaInitialise) {
+		Couverture<String> utilisateurNomCompletCouverture = new Couverture<String>().var("utilisateurNomComplet");
+		if(utilisateurNomComplet == null) {
 			_utilisateurNomComplet(utilisateurNomCompletCouverture);
-			if(utilisateurNomComplet == null)
-				setUtilisateurNomComplet(utilisateurNomCompletCouverture.o);
+			setUtilisateurNomComplet(utilisateurNomCompletCouverture.o);
 		}
-		utilisateurNomCompletCouverture.dejaInitialise(true);
 		return (RequeteSiteFrFR)this;
 	}
 
-	public String solrUtilisateurNomComplet() {
-		return utilisateurNomComplet;
+	public static String staticSolrUtilisateurNomComplet(RequeteSiteFrFR requeteSite_, String o) {
+		return o;
 	}
 
-	public String strUtilisateurNomComplet() {
-		return utilisateurNomComplet == null ? "" : utilisateurNomComplet;
+	public static String staticSolrStrUtilisateurNomComplet(RequeteSiteFrFR requeteSite_, String o) {
+		return o == null ? null : o.toString();
 	}
 
-	public String jsonUtilisateurNomComplet() {
-		return utilisateurNomComplet == null ? "" : utilisateurNomComplet;
+	public static String staticSolrFqUtilisateurNomComplet(RequeteSiteFrFR requeteSite_, String o) {
+		return RequeteSiteFrFR.staticSolrStrUtilisateurNomComplet(requeteSite_, RequeteSiteFrFR.staticSolrUtilisateurNomComplet(requeteSite_, RequeteSiteFrFR.staticSetUtilisateurNomComplet(requeteSite_, o)));
 	}
 
-	public String nomAffichageUtilisateurNomComplet() {
-		return null;
+	//////////////
+	// userMail //
+	//////////////
+
+	/**	 L'entité userMail
+	 *	 is defined as null before being initialized. 
+	 */
+	@JsonProperty
+	@JsonInclude(Include.NON_NULL)
+	protected String userMail;
+
+	/**	<br/> L'entité userMail
+	 *  est défini comme null avant d'être initialisé. 
+	 * <br/><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_frFR_indexed_string:org.computate.site.frfr.requete.RequeteSiteFrFR&fq=classeEtendGen_indexed_boolean:true&fq=entiteVar_frFR_indexed_string:userMail">Trouver l'entité userMail dans Solr</a>
+	 * <br/>
+	 * @param c est pour envelopper une valeur à assigner à cette entité lors de l'initialisation. 
+	 **/
+	protected abstract void _userMail(Couverture<String> c);
+
+	public String getUserMail() {
+		return userMail;
+	}
+	public void setUserMail(String o) {
+		this.userMail = RequeteSiteFrFR.staticSetUserMail(requeteSite_, o);
+	}
+	public static String staticSetUserMail(RequeteSiteFrFR requeteSite_, String o) {
+		return o;
+	}
+	protected RequeteSiteFrFR userMailInit() {
+		Couverture<String> userMailCouverture = new Couverture<String>().var("userMail");
+		if(userMail == null) {
+			_userMail(userMailCouverture);
+			setUserMail(userMailCouverture.o);
+		}
+		return (RequeteSiteFrFR)this;
 	}
 
-	public String htmTooltipUtilisateurNomComplet() {
-		return null;
+	public static String staticSolrUserMail(RequeteSiteFrFR requeteSite_, String o) {
+		return o;
 	}
 
-	public String htmUtilisateurNomComplet() {
-		return utilisateurNomComplet == null ? "" : StringEscapeUtils.escapeHtml4(strUtilisateurNomComplet());
+	public static String staticSolrStrUserMail(RequeteSiteFrFR requeteSite_, String o) {
+		return o == null ? null : o.toString();
+	}
+
+	public static String staticSolrFqUserMail(RequeteSiteFrFR requeteSite_, String o) {
+		return RequeteSiteFrFR.staticSolrStrUserMail(requeteSite_, RequeteSiteFrFR.staticSolrUserMail(requeteSite_, RequeteSiteFrFR.staticSetUserMail(requeteSite_, o)));
 	}
 
 	/////////////////////////////
@@ -1063,10 +811,10 @@ public abstract class RequeteSiteFrFRGen<DEV> extends Object {
 	/**	 L'entité utilisateurRolesRoyaume
 	 *	Il est construit avant d'être initialisé avec le constructeur par défaut List<String>(). 
 	 */
+	@JsonProperty
+	@JsonFormat(shape = JsonFormat.Shape.ARRAY)
 	@JsonInclude(Include.NON_NULL)
 	protected List<String> utilisateurRolesRoyaume = new ArrayList<String>();
-	@JsonIgnore
-	public Couverture<List<String>> utilisateurRolesRoyaumeCouverture = new Couverture<List<String>>().p(this).c(List.class).var("utilisateurRolesRoyaume").o(utilisateurRolesRoyaume);
 
 	/**	<br/> L'entité utilisateurRolesRoyaume
 	 * Il est construit avant d'être initialisé avec le constructeur par défaut List<String>(). 
@@ -1082,7 +830,9 @@ public abstract class RequeteSiteFrFRGen<DEV> extends Object {
 
 	public void setUtilisateurRolesRoyaume(List<String> utilisateurRolesRoyaume) {
 		this.utilisateurRolesRoyaume = utilisateurRolesRoyaume;
-		this.utilisateurRolesRoyaumeCouverture.dejaInitialise = true;
+	}
+	public static String staticSetUtilisateurRolesRoyaume(RequeteSiteFrFR requeteSite_, String o) {
+		return o;
 	}
 	public RequeteSiteFrFR addUtilisateurRolesRoyaume(String...objets) {
 		for(String o : objets) {
@@ -1091,48 +841,33 @@ public abstract class RequeteSiteFrFRGen<DEV> extends Object {
 		return (RequeteSiteFrFR)this;
 	}
 	public RequeteSiteFrFR addUtilisateurRolesRoyaume(String o) {
-		if(o != null && !utilisateurRolesRoyaume.contains(o))
+		if(o != null)
 			this.utilisateurRolesRoyaume.add(o);
 		return (RequeteSiteFrFR)this;
 	}
-	public RequeteSiteFrFR setUtilisateurRolesRoyaume(JsonArray objets) {
+	@JsonIgnore
+	public void setUtilisateurRolesRoyaume(JsonArray objets) {
 		utilisateurRolesRoyaume.clear();
 		for(int i = 0; i < objets.size(); i++) {
 			String o = objets.getString(i);
 			addUtilisateurRolesRoyaume(o);
 		}
-		return (RequeteSiteFrFR)this;
 	}
 	protected RequeteSiteFrFR utilisateurRolesRoyaumeInit() {
-		if(!utilisateurRolesRoyaumeCouverture.dejaInitialise) {
-			_utilisateurRolesRoyaume(utilisateurRolesRoyaume);
-		}
-		utilisateurRolesRoyaumeCouverture.dejaInitialise(true);
+		_utilisateurRolesRoyaume(utilisateurRolesRoyaume);
 		return (RequeteSiteFrFR)this;
 	}
 
-	public List<String> solrUtilisateurRolesRoyaume() {
-		return utilisateurRolesRoyaume;
+	public static String staticSolrUtilisateurRolesRoyaume(RequeteSiteFrFR requeteSite_, String o) {
+		return o;
 	}
 
-	public String strUtilisateurRolesRoyaume() {
-		return utilisateurRolesRoyaume == null ? "" : utilisateurRolesRoyaume.toString();
+	public static String staticSolrStrUtilisateurRolesRoyaume(RequeteSiteFrFR requeteSite_, String o) {
+		return o == null ? null : o.toString();
 	}
 
-	public String jsonUtilisateurRolesRoyaume() {
-		return utilisateurRolesRoyaume == null ? "" : utilisateurRolesRoyaume.toString();
-	}
-
-	public String nomAffichageUtilisateurRolesRoyaume() {
-		return null;
-	}
-
-	public String htmTooltipUtilisateurRolesRoyaume() {
-		return null;
-	}
-
-	public String htmUtilisateurRolesRoyaume() {
-		return utilisateurRolesRoyaume == null ? "" : StringEscapeUtils.escapeHtml4(strUtilisateurRolesRoyaume());
+	public static String staticSolrFqUtilisateurRolesRoyaume(RequeteSiteFrFR requeteSite_, String o) {
+		return RequeteSiteFrFR.staticSolrStrUtilisateurRolesRoyaume(requeteSite_, RequeteSiteFrFR.staticSolrUtilisateurRolesRoyaume(requeteSite_, RequeteSiteFrFR.staticSetUtilisateurRolesRoyaume(requeteSite_, o)));
 	}
 
 	//////////////////////////
@@ -1144,8 +879,6 @@ public abstract class RequeteSiteFrFRGen<DEV> extends Object {
 	 */
 	@JsonInclude(Include.NON_NULL)
 	protected JsonObject utilisateurRessource;
-	@JsonIgnore
-	public Couverture<JsonObject> utilisateurRessourceCouverture = new Couverture<JsonObject>().p(this).c(JsonObject.class).var("utilisateurRessource").o(utilisateurRessource);
 
 	/**	<br/> L'entité utilisateurRessource
 	 *  est défini comme null avant d'être initialisé. 
@@ -1161,15 +894,16 @@ public abstract class RequeteSiteFrFRGen<DEV> extends Object {
 
 	public void setUtilisateurRessource(JsonObject utilisateurRessource) {
 		this.utilisateurRessource = utilisateurRessource;
-		this.utilisateurRessourceCouverture.dejaInitialise = true;
+	}
+	public static JsonObject staticSetUtilisateurRessource(RequeteSiteFrFR requeteSite_, String o) {
+		return null;
 	}
 	protected RequeteSiteFrFR utilisateurRessourceInit() {
-		if(!utilisateurRessourceCouverture.dejaInitialise) {
+		Couverture<JsonObject> utilisateurRessourceCouverture = new Couverture<JsonObject>().var("utilisateurRessource");
+		if(utilisateurRessource == null) {
 			_utilisateurRessource(utilisateurRessourceCouverture);
-			if(utilisateurRessource == null)
-				setUtilisateurRessource(utilisateurRessourceCouverture.o);
+			setUtilisateurRessource(utilisateurRessourceCouverture.o);
 		}
-		utilisateurRessourceCouverture.dejaInitialise(true);
 		return (RequeteSiteFrFR)this;
 	}
 
@@ -1180,10 +914,10 @@ public abstract class RequeteSiteFrFRGen<DEV> extends Object {
 	/**	 L'entité utilisateurRolesRessource
 	 *	Il est construit avant d'être initialisé avec le constructeur par défaut List<String>(). 
 	 */
+	@JsonProperty
+	@JsonFormat(shape = JsonFormat.Shape.ARRAY)
 	@JsonInclude(Include.NON_NULL)
 	protected List<String> utilisateurRolesRessource = new ArrayList<String>();
-	@JsonIgnore
-	public Couverture<List<String>> utilisateurRolesRessourceCouverture = new Couverture<List<String>>().p(this).c(List.class).var("utilisateurRolesRessource").o(utilisateurRolesRessource);
 
 	/**	<br/> L'entité utilisateurRolesRessource
 	 * Il est construit avant d'être initialisé avec le constructeur par défaut List<String>(). 
@@ -1199,7 +933,9 @@ public abstract class RequeteSiteFrFRGen<DEV> extends Object {
 
 	public void setUtilisateurRolesRessource(List<String> utilisateurRolesRessource) {
 		this.utilisateurRolesRessource = utilisateurRolesRessource;
-		this.utilisateurRolesRessourceCouverture.dejaInitialise = true;
+	}
+	public static String staticSetUtilisateurRolesRessource(RequeteSiteFrFR requeteSite_, String o) {
+		return o;
 	}
 	public RequeteSiteFrFR addUtilisateurRolesRessource(String...objets) {
 		for(String o : objets) {
@@ -1208,123 +944,70 @@ public abstract class RequeteSiteFrFRGen<DEV> extends Object {
 		return (RequeteSiteFrFR)this;
 	}
 	public RequeteSiteFrFR addUtilisateurRolesRessource(String o) {
-		if(o != null && !utilisateurRolesRessource.contains(o))
+		if(o != null)
 			this.utilisateurRolesRessource.add(o);
 		return (RequeteSiteFrFR)this;
 	}
-	public RequeteSiteFrFR setUtilisateurRolesRessource(JsonArray objets) {
+	@JsonIgnore
+	public void setUtilisateurRolesRessource(JsonArray objets) {
 		utilisateurRolesRessource.clear();
 		for(int i = 0; i < objets.size(); i++) {
 			String o = objets.getString(i);
 			addUtilisateurRolesRessource(o);
 		}
-		return (RequeteSiteFrFR)this;
 	}
 	protected RequeteSiteFrFR utilisateurRolesRessourceInit() {
-		if(!utilisateurRolesRessourceCouverture.dejaInitialise) {
-			_utilisateurRolesRessource(utilisateurRolesRessource);
-		}
-		utilisateurRolesRessourceCouverture.dejaInitialise(true);
+		_utilisateurRolesRessource(utilisateurRolesRessource);
 		return (RequeteSiteFrFR)this;
 	}
 
-	public List<String> solrUtilisateurRolesRessource() {
-		return utilisateurRolesRessource;
+	public static String staticSolrUtilisateurRolesRessource(RequeteSiteFrFR requeteSite_, String o) {
+		return o;
 	}
 
-	public String strUtilisateurRolesRessource() {
-		return utilisateurRolesRessource == null ? "" : utilisateurRolesRessource.toString();
+	public static String staticSolrStrUtilisateurRolesRessource(RequeteSiteFrFR requeteSite_, String o) {
+		return o == null ? null : o.toString();
 	}
 
-	public String jsonUtilisateurRolesRessource() {
-		return utilisateurRolesRessource == null ? "" : utilisateurRolesRessource.toString();
+	public static String staticSolrFqUtilisateurRolesRessource(RequeteSiteFrFR requeteSite_, String o) {
+		return RequeteSiteFrFR.staticSolrStrUtilisateurRolesRessource(requeteSite_, RequeteSiteFrFR.staticSolrUtilisateurRolesRessource(requeteSite_, RequeteSiteFrFR.staticSetUtilisateurRolesRessource(requeteSite_, o)));
 	}
 
-	public String nomAffichageUtilisateurRolesRessource() {
-		return null;
-	}
+	//////////////////////
+	// utilisateurSite_ //
+	//////////////////////
 
-	public String htmTooltipUtilisateurRolesRessource() {
-		return null;
-	}
-
-	public String htmUtilisateurRolesRessource() {
-		return utilisateurRolesRessource == null ? "" : StringEscapeUtils.escapeHtml4(strUtilisateurRolesRessource());
-	}
-
-	/////////////////////
-	// utilisateurSite //
-	/////////////////////
-
-	/**	 L'entité utilisateurSite
+	/**	 L'entité utilisateurSite_
 	 *	 is defined as null before being initialized. 
 	 */
+	@JsonProperty
 	@JsonInclude(Include.NON_NULL)
-	protected UtilisateurSite utilisateurSite;
-	@JsonIgnore
-	public Couverture<UtilisateurSite> utilisateurSiteCouverture = new Couverture<UtilisateurSite>().p(this).c(UtilisateurSite.class).var("utilisateurSite").o(utilisateurSite);
+	protected UtilisateurSite utilisateurSite_;
 
-	/**	<br/> L'entité utilisateurSite
+	/**	<br/> L'entité utilisateurSite_
 	 *  est défini comme null avant d'être initialisé. 
-	 * <br/><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_frFR_indexed_string:org.computate.site.frfr.requete.RequeteSiteFrFR&fq=classeEtendGen_indexed_boolean:true&fq=entiteVar_frFR_indexed_string:utilisateurSite">Trouver l'entité utilisateurSite dans Solr</a>
+	 * <br/><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_frFR_indexed_string:org.computate.site.frfr.requete.RequeteSiteFrFR&fq=classeEtendGen_indexed_boolean:true&fq=entiteVar_frFR_indexed_string:utilisateurSite_">Trouver l'entité utilisateurSite_ dans Solr</a>
 	 * <br/>
 	 * @param c est pour envelopper une valeur à assigner à cette entité lors de l'initialisation. 
 	 **/
-	protected abstract void _utilisateurSite(Couverture<UtilisateurSite> c);
+	protected abstract void _utilisateurSite_(Couverture<UtilisateurSite> c);
 
-	public UtilisateurSite getUtilisateurSite() {
-		return utilisateurSite;
+	public UtilisateurSite getUtilisateurSite_() {
+		return utilisateurSite_;
 	}
 
-	public void setUtilisateurSite(UtilisateurSite utilisateurSite) {
-		this.utilisateurSite = utilisateurSite;
-		this.utilisateurSiteCouverture.dejaInitialise = true;
+	public void setUtilisateurSite_(UtilisateurSite utilisateurSite_) {
+		this.utilisateurSite_ = utilisateurSite_;
 	}
-	protected RequeteSiteFrFR utilisateurSiteInit() {
-		if(!utilisateurSiteCouverture.dejaInitialise) {
-			_utilisateurSite(utilisateurSiteCouverture);
-			if(utilisateurSite == null)
-				setUtilisateurSite(utilisateurSiteCouverture.o);
+	public static UtilisateurSite staticSetUtilisateurSite_(RequeteSiteFrFR requeteSite_, String o) {
+		return null;
+	}
+	protected RequeteSiteFrFR utilisateurSite_Init() {
+		Couverture<UtilisateurSite> utilisateurSite_Couverture = new Couverture<UtilisateurSite>().var("utilisateurSite_");
+		if(utilisateurSite_ == null) {
+			_utilisateurSite_(utilisateurSite_Couverture);
+			setUtilisateurSite_(utilisateurSite_Couverture.o);
 		}
-		if(utilisateurSite != null)
-			utilisateurSite.initLoinPourClasse(requeteSite_);
-		utilisateurSiteCouverture.dejaInitialise(true);
-		return (RequeteSiteFrFR)this;
-	}
-
-	/////////////
-	// xmlPile //
-	/////////////
-
-	/**	 L'entité xmlPile
-	 *	Il est construit avant d'être initialisé avec le constructeur par défaut Stack<String>(). 
-	 */
-	@JsonInclude(Include.NON_NULL)
-	protected Stack<String> xmlPile = new Stack<String>();
-	@JsonIgnore
-	public Couverture<Stack<String>> xmlPileCouverture = new Couverture<Stack<String>>().p(this).c(Stack.class).var("xmlPile").o(xmlPile);
-
-	/**	<br/> L'entité xmlPile
-	 * Il est construit avant d'être initialisé avec le constructeur par défaut Stack<String>(). 
-	 * <br/><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_frFR_indexed_string:org.computate.site.frfr.requete.RequeteSiteFrFR&fq=classeEtendGen_indexed_boolean:true&fq=entiteVar_frFR_indexed_string:xmlPile">Trouver l'entité xmlPile dans Solr</a>
-	 * <br/>
-	 * @param xmlPile est l'entité déjà construit. 
-	 **/
-	protected abstract void _xmlPile(Stack<String> o);
-
-	public Stack<String> getXmlPile() {
-		return xmlPile;
-	}
-
-	public void setXmlPile(Stack<String> xmlPile) {
-		this.xmlPile = xmlPile;
-		this.xmlPileCouverture.dejaInitialise = true;
-	}
-	protected RequeteSiteFrFR xmlPileInit() {
-		if(!xmlPileCouverture.dejaInitialise) {
-			_xmlPile(xmlPile);
-		}
-		xmlPileCouverture.dejaInitialise(true);
 		return (RequeteSiteFrFR)this;
 	}
 
@@ -1335,10 +1018,9 @@ public abstract class RequeteSiteFrFRGen<DEV> extends Object {
 	/**	 L'entité documentSolr
 	 *	 is defined as null before being initialized. 
 	 */
+	@JsonProperty
 	@JsonInclude(Include.NON_NULL)
 	protected SolrDocument documentSolr;
-	@JsonIgnore
-	public Couverture<SolrDocument> documentSolrCouverture = new Couverture<SolrDocument>().p(this).c(SolrDocument.class).var("documentSolr").o(documentSolr);
 
 	/**	<br/> L'entité documentSolr
 	 *  est défini comme null avant d'être initialisé. 
@@ -1354,15 +1036,16 @@ public abstract class RequeteSiteFrFRGen<DEV> extends Object {
 
 	public void setDocumentSolr(SolrDocument documentSolr) {
 		this.documentSolr = documentSolr;
-		this.documentSolrCouverture.dejaInitialise = true;
+	}
+	public static SolrDocument staticSetDocumentSolr(RequeteSiteFrFR requeteSite_, String o) {
+		return null;
 	}
 	protected RequeteSiteFrFR documentSolrInit() {
-		if(!documentSolrCouverture.dejaInitialise) {
+		Couverture<SolrDocument> documentSolrCouverture = new Couverture<SolrDocument>().var("documentSolr");
+		if(documentSolr == null) {
 			_documentSolr(documentSolrCouverture);
-			if(documentSolr == null)
-				setDocumentSolr(documentSolrCouverture.o);
+			setDocumentSolr(documentSolrCouverture.o);
 		}
-		documentSolrCouverture.dejaInitialise(true);
 		return (RequeteSiteFrFR)this;
 	}
 
@@ -1373,10 +1056,9 @@ public abstract class RequeteSiteFrFRGen<DEV> extends Object {
 	/**	 L'entité pageAdmin
 	 *	 is defined as null before being initialized. 
 	 */
+	@JsonProperty
 	@JsonInclude(Include.NON_NULL)
 	protected Boolean pageAdmin;
-	@JsonIgnore
-	public Couverture<Boolean> pageAdminCouverture = new Couverture<Boolean>().p(this).c(Boolean.class).var("pageAdmin").o(pageAdmin);
 
 	/**	<br/> L'entité pageAdmin
 	 *  est défini comme null avant d'être initialisé. 
@@ -1392,45 +1074,33 @@ public abstract class RequeteSiteFrFRGen<DEV> extends Object {
 
 	public void setPageAdmin(Boolean pageAdmin) {
 		this.pageAdmin = pageAdmin;
-		this.pageAdminCouverture.dejaInitialise = true;
 	}
-	public RequeteSiteFrFR setPageAdmin(String o) {
-		this.pageAdmin = Boolean.parseBoolean(o);
-		this.pageAdminCouverture.dejaInitialise = true;
-		return (RequeteSiteFrFR)this;
+	@JsonIgnore
+	public void setPageAdmin(String o) {
+		this.pageAdmin = RequeteSiteFrFR.staticSetPageAdmin(requeteSite_, o);
+	}
+	public static Boolean staticSetPageAdmin(RequeteSiteFrFR requeteSite_, String o) {
+		return Boolean.parseBoolean(o);
 	}
 	protected RequeteSiteFrFR pageAdminInit() {
-		if(!pageAdminCouverture.dejaInitialise) {
+		Couverture<Boolean> pageAdminCouverture = new Couverture<Boolean>().var("pageAdmin");
+		if(pageAdmin == null) {
 			_pageAdmin(pageAdminCouverture);
-			if(pageAdmin == null)
-				setPageAdmin(pageAdminCouverture.o);
+			setPageAdmin(pageAdminCouverture.o);
 		}
-		pageAdminCouverture.dejaInitialise(true);
 		return (RequeteSiteFrFR)this;
 	}
 
-	public Boolean solrPageAdmin() {
-		return pageAdmin;
+	public static Boolean staticSolrPageAdmin(RequeteSiteFrFR requeteSite_, Boolean o) {
+		return o;
 	}
 
-	public String strPageAdmin() {
-		return pageAdmin == null ? "" : pageAdmin.toString();
+	public static String staticSolrStrPageAdmin(RequeteSiteFrFR requeteSite_, Boolean o) {
+		return o == null ? null : o.toString();
 	}
 
-	public String jsonPageAdmin() {
-		return pageAdmin == null ? "" : pageAdmin.toString();
-	}
-
-	public String nomAffichagePageAdmin() {
-		return null;
-	}
-
-	public String htmTooltipPageAdmin() {
-		return null;
-	}
-
-	public String htmPageAdmin() {
-		return pageAdmin == null ? "" : StringEscapeUtils.escapeHtml4(strPageAdmin());
+	public static String staticSolrFqPageAdmin(RequeteSiteFrFR requeteSite_, String o) {
+		return RequeteSiteFrFR.staticSolrStrPageAdmin(requeteSite_, RequeteSiteFrFR.staticSolrPageAdmin(requeteSite_, RequeteSiteFrFR.staticSetPageAdmin(requeteSite_, o)));
 	}
 
 	///////////////
@@ -1440,11 +1110,10 @@ public abstract class RequeteSiteFrFRGen<DEV> extends Object {
 	/**	 L'entité requetePk
 	 *	 is defined as null before being initialized. 
 	 */
+	@JsonProperty
 	@JsonSerialize(using = ToStringSerializer.class)
 	@JsonInclude(Include.NON_NULL)
 	protected Long requetePk;
-	@JsonIgnore
-	public Couverture<Long> requetePkCouverture = new Couverture<Long>().p(this).c(Long.class).var("requetePk").o(requetePk);
 
 	/**	<br/> L'entité requetePk
 	 *  est défini comme null avant d'être initialisé. 
@@ -1460,46 +1129,35 @@ public abstract class RequeteSiteFrFRGen<DEV> extends Object {
 
 	public void setRequetePk(Long requetePk) {
 		this.requetePk = requetePk;
-		this.requetePkCouverture.dejaInitialise = true;
 	}
-	public RequeteSiteFrFR setRequetePk(String o) {
+	@JsonIgnore
+	public void setRequetePk(String o) {
+		this.requetePk = RequeteSiteFrFR.staticSetRequetePk(requeteSite_, o);
+	}
+	public static Long staticSetRequetePk(RequeteSiteFrFR requeteSite_, String o) {
 		if(NumberUtils.isParsable(o))
-			this.requetePk = Long.parseLong(o);
-		this.requetePkCouverture.dejaInitialise = true;
-		return (RequeteSiteFrFR)this;
+			return Long.parseLong(o);
+		return null;
 	}
 	protected RequeteSiteFrFR requetePkInit() {
-		if(!requetePkCouverture.dejaInitialise) {
+		Couverture<Long> requetePkCouverture = new Couverture<Long>().var("requetePk");
+		if(requetePk == null) {
 			_requetePk(requetePkCouverture);
-			if(requetePk == null)
-				setRequetePk(requetePkCouverture.o);
+			setRequetePk(requetePkCouverture.o);
 		}
-		requetePkCouverture.dejaInitialise(true);
 		return (RequeteSiteFrFR)this;
 	}
 
-	public Long solrRequetePk() {
-		return requetePk;
+	public static Long staticSolrRequetePk(RequeteSiteFrFR requeteSite_, Long o) {
+		return o;
 	}
 
-	public String strRequetePk() {
-		return requetePk == null ? "" : requetePk.toString();
+	public static String staticSolrStrRequetePk(RequeteSiteFrFR requeteSite_, Long o) {
+		return o == null ? null : o.toString();
 	}
 
-	public String jsonRequetePk() {
-		return requetePk == null ? "" : requetePk.toString();
-	}
-
-	public String nomAffichageRequetePk() {
-		return null;
-	}
-
-	public String htmTooltipRequetePk() {
-		return null;
-	}
-
-	public String htmRequetePk() {
-		return requetePk == null ? "" : StringEscapeUtils.escapeHtml4(strRequetePk());
+	public static String staticSolrFqRequetePk(RequeteSiteFrFR requeteSite_, String o) {
+		return RequeteSiteFrFR.staticSolrStrRequetePk(requeteSite_, RequeteSiteFrFR.staticSolrRequetePk(requeteSite_, RequeteSiteFrFR.staticSetRequetePk(requeteSite_, o)));
 	}
 
 	////////////////
@@ -1509,10 +1167,9 @@ public abstract class RequeteSiteFrFRGen<DEV> extends Object {
 	/**	 L'entité requeteUri
 	 *	 is defined as null before being initialized. 
 	 */
+	@JsonProperty
 	@JsonInclude(Include.NON_NULL)
 	protected String requeteUri;
-	@JsonIgnore
-	public Couverture<String> requeteUriCouverture = new Couverture<String>().p(this).c(String.class).var("requeteUri").o(requeteUri);
 
 	/**	<br/> L'entité requeteUri
 	 *  est défini comme null avant d'être initialisé. 
@@ -1525,43 +1182,31 @@ public abstract class RequeteSiteFrFRGen<DEV> extends Object {
 	public String getRequeteUri() {
 		return requeteUri;
 	}
-
-	public void setRequeteUri(String requeteUri) {
-		this.requeteUri = requeteUri;
-		this.requeteUriCouverture.dejaInitialise = true;
+	public void setRequeteUri(String o) {
+		this.requeteUri = RequeteSiteFrFR.staticSetRequeteUri(requeteSite_, o);
+	}
+	public static String staticSetRequeteUri(RequeteSiteFrFR requeteSite_, String o) {
+		return o;
 	}
 	protected RequeteSiteFrFR requeteUriInit() {
-		if(!requeteUriCouverture.dejaInitialise) {
+		Couverture<String> requeteUriCouverture = new Couverture<String>().var("requeteUri");
+		if(requeteUri == null) {
 			_requeteUri(requeteUriCouverture);
-			if(requeteUri == null)
-				setRequeteUri(requeteUriCouverture.o);
+			setRequeteUri(requeteUriCouverture.o);
 		}
-		requeteUriCouverture.dejaInitialise(true);
 		return (RequeteSiteFrFR)this;
 	}
 
-	public String solrRequeteUri() {
-		return requeteUri;
+	public static String staticSolrRequeteUri(RequeteSiteFrFR requeteSite_, String o) {
+		return o;
 	}
 
-	public String strRequeteUri() {
-		return requeteUri == null ? "" : requeteUri;
+	public static String staticSolrStrRequeteUri(RequeteSiteFrFR requeteSite_, String o) {
+		return o == null ? null : o.toString();
 	}
 
-	public String jsonRequeteUri() {
-		return requeteUri == null ? "" : requeteUri;
-	}
-
-	public String nomAffichageRequeteUri() {
-		return null;
-	}
-
-	public String htmTooltipRequeteUri() {
-		return null;
-	}
-
-	public String htmRequeteUri() {
-		return requeteUri == null ? "" : StringEscapeUtils.escapeHtml4(strRequeteUri());
+	public static String staticSolrFqRequeteUri(RequeteSiteFrFR requeteSite_, String o) {
+		return RequeteSiteFrFR.staticSolrStrRequeteUri(requeteSite_, RequeteSiteFrFR.staticSolrRequeteUri(requeteSite_, RequeteSiteFrFR.staticSetRequeteUri(requeteSite_, o)));
 	}
 
 	////////////////////
@@ -1571,10 +1216,9 @@ public abstract class RequeteSiteFrFRGen<DEV> extends Object {
 	/**	 L'entité requeteMethode
 	 *	 is defined as null before being initialized. 
 	 */
+	@JsonProperty
 	@JsonInclude(Include.NON_NULL)
 	protected String requeteMethode;
-	@JsonIgnore
-	public Couverture<String> requeteMethodeCouverture = new Couverture<String>().p(this).c(String.class).var("requeteMethode").o(requeteMethode);
 
 	/**	<br/> L'entité requeteMethode
 	 *  est défini comme null avant d'être initialisé. 
@@ -1587,82 +1231,31 @@ public abstract class RequeteSiteFrFRGen<DEV> extends Object {
 	public String getRequeteMethode() {
 		return requeteMethode;
 	}
-
-	public void setRequeteMethode(String requeteMethode) {
-		this.requeteMethode = requeteMethode;
-		this.requeteMethodeCouverture.dejaInitialise = true;
+	public void setRequeteMethode(String o) {
+		this.requeteMethode = RequeteSiteFrFR.staticSetRequeteMethode(requeteSite_, o);
+	}
+	public static String staticSetRequeteMethode(RequeteSiteFrFR requeteSite_, String o) {
+		return o;
 	}
 	protected RequeteSiteFrFR requeteMethodeInit() {
-		if(!requeteMethodeCouverture.dejaInitialise) {
+		Couverture<String> requeteMethodeCouverture = new Couverture<String>().var("requeteMethode");
+		if(requeteMethode == null) {
 			_requeteMethode(requeteMethodeCouverture);
-			if(requeteMethode == null)
-				setRequeteMethode(requeteMethodeCouverture.o);
+			setRequeteMethode(requeteMethodeCouverture.o);
 		}
-		requeteMethodeCouverture.dejaInitialise(true);
 		return (RequeteSiteFrFR)this;
 	}
 
-	public String solrRequeteMethode() {
-		return requeteMethode;
+	public static String staticSolrRequeteMethode(RequeteSiteFrFR requeteSite_, String o) {
+		return o;
 	}
 
-	public String strRequeteMethode() {
-		return requeteMethode == null ? "" : requeteMethode;
+	public static String staticSolrStrRequeteMethode(RequeteSiteFrFR requeteSite_, String o) {
+		return o == null ? null : o.toString();
 	}
 
-	public String jsonRequeteMethode() {
-		return requeteMethode == null ? "" : requeteMethode;
-	}
-
-	public String nomAffichageRequeteMethode() {
-		return null;
-	}
-
-	public String htmTooltipRequeteMethode() {
-		return null;
-	}
-
-	public String htmRequeteMethode() {
-		return requeteMethode == null ? "" : StringEscapeUtils.escapeHtml4(strRequeteMethode());
-	}
-
-	////////
-	// tx //
-	////////
-
-	/**	 L'entité tx
-	 *	 is defined as null before being initialized. 
-	 */
-	@JsonIgnore
-	@JsonInclude(Include.NON_NULL)
-	protected Transaction tx;
-	@JsonIgnore
-	public Couverture<Transaction> txCouverture = new Couverture<Transaction>().p(this).c(Transaction.class).var("tx").o(tx);
-
-	/**	<br/> L'entité tx
-	 *  est défini comme null avant d'être initialisé. 
-	 * <br/><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_frFR_indexed_string:org.computate.site.frfr.requete.RequeteSiteFrFR&fq=classeEtendGen_indexed_boolean:true&fq=entiteVar_frFR_indexed_string:tx">Trouver l'entité tx dans Solr</a>
-	 * <br/>
-	 * @param c est pour envelopper une valeur à assigner à cette entité lors de l'initialisation. 
-	 **/
-	protected abstract void _tx(Couverture<Transaction> c);
-
-	public Transaction getTx() {
-		return tx;
-	}
-
-	public void setTx(Transaction tx) {
-		this.tx = tx;
-		this.txCouverture.dejaInitialise = true;
-	}
-	protected RequeteSiteFrFR txInit() {
-		if(!txCouverture.dejaInitialise) {
-			_tx(txCouverture);
-			if(tx == null)
-				setTx(txCouverture.o);
-		}
-		txCouverture.dejaInitialise(true);
-		return (RequeteSiteFrFR)this;
+	public static String staticSolrFqRequeteMethode(RequeteSiteFrFR requeteSite_, String o) {
+		return RequeteSiteFrFR.staticSolrStrRequeteMethode(requeteSite_, RequeteSiteFrFR.staticSolrRequeteMethode(requeteSite_, RequeteSiteFrFR.staticSetRequeteMethode(requeteSite_, o)));
 	}
 
 	//////////////////
@@ -1675,8 +1268,6 @@ public abstract class RequeteSiteFrFRGen<DEV> extends Object {
 	@JsonIgnore
 	@JsonInclude(Include.NON_NULL)
 	protected SqlConnection connexionSql;
-	@JsonIgnore
-	public Couverture<SqlConnection> connexionSqlCouverture = new Couverture<SqlConnection>().p(this).c(SqlConnection.class).var("connexionSql").o(connexionSql);
 
 	/**	<br/> L'entité connexionSql
 	 *  est défini comme null avant d'être initialisé. 
@@ -1692,15 +1283,16 @@ public abstract class RequeteSiteFrFRGen<DEV> extends Object {
 
 	public void setConnexionSql(SqlConnection connexionSql) {
 		this.connexionSql = connexionSql;
-		this.connexionSqlCouverture.dejaInitialise = true;
+	}
+	public static SqlConnection staticSetConnexionSql(RequeteSiteFrFR requeteSite_, String o) {
+		return null;
 	}
 	protected RequeteSiteFrFR connexionSqlInit() {
-		if(!connexionSqlCouverture.dejaInitialise) {
+		Couverture<SqlConnection> connexionSqlCouverture = new Couverture<SqlConnection>().var("connexionSql");
+		if(connexionSql == null) {
 			_connexionSql(connexionSqlCouverture);
-			if(connexionSql == null)
-				setConnexionSql(connexionSqlCouverture.o);
+			setConnexionSql(connexionSqlCouverture.o);
 		}
-		connexionSqlCouverture.dejaInitialise(true);
 		return (RequeteSiteFrFR)this;
 	}
 
@@ -1713,9 +1305,7 @@ public abstract class RequeteSiteFrFRGen<DEV> extends Object {
 	 */
 	@JsonIgnore
 	@JsonInclude(Include.NON_NULL)
-	protected CaseInsensitiveHeaders requeteEnTetes;
-	@JsonIgnore
-	public Couverture<CaseInsensitiveHeaders> requeteEnTetesCouverture = new Couverture<CaseInsensitiveHeaders>().p(this).c(CaseInsensitiveHeaders.class).var("requeteEnTetes").o(requeteEnTetes);
+	protected MultiMap requeteEnTetes;
 
 	/**	<br/> L'entité requeteEnTetes
 	 *  est défini comme null avant d'être initialisé. 
@@ -1723,23 +1313,24 @@ public abstract class RequeteSiteFrFRGen<DEV> extends Object {
 	 * <br/>
 	 * @param c est pour envelopper une valeur à assigner à cette entité lors de l'initialisation. 
 	 **/
-	protected abstract void _requeteEnTetes(Couverture<CaseInsensitiveHeaders> c);
+	protected abstract void _requeteEnTetes(Couverture<MultiMap> c);
 
-	public CaseInsensitiveHeaders getRequeteEnTetes() {
+	public MultiMap getRequeteEnTetes() {
 		return requeteEnTetes;
 	}
 
-	public void setRequeteEnTetes(CaseInsensitiveHeaders requeteEnTetes) {
+	public void setRequeteEnTetes(MultiMap requeteEnTetes) {
 		this.requeteEnTetes = requeteEnTetes;
-		this.requeteEnTetesCouverture.dejaInitialise = true;
+	}
+	public static MultiMap staticSetRequeteEnTetes(RequeteSiteFrFR requeteSite_, String o) {
+		return null;
 	}
 	protected RequeteSiteFrFR requeteEnTetesInit() {
-		if(!requeteEnTetesCouverture.dejaInitialise) {
+		Couverture<MultiMap> requeteEnTetesCouverture = new Couverture<MultiMap>().var("requeteEnTetes");
+		if(requeteEnTetes == null) {
 			_requeteEnTetes(requeteEnTetesCouverture);
-			if(requeteEnTetes == null)
-				setRequeteEnTetes(requeteEnTetesCouverture.o);
+			setRequeteEnTetes(requeteEnTetesCouverture.o);
 		}
-		requeteEnTetesCouverture.dejaInitialise(true);
 		return (RequeteSiteFrFR)this;
 	}
 
@@ -1753,8 +1344,6 @@ public abstract class RequeteSiteFrFRGen<DEV> extends Object {
 	@JsonIgnore
 	@JsonInclude(Include.NON_NULL)
 	protected Map<String, String> requeteVars = new HashMap<String, String>();
-	@JsonIgnore
-	public Couverture<Map<String, String>> requeteVarsCouverture = new Couverture<Map<String, String>>().p(this).c(Map.class).var("requeteVars").o(requeteVars);
 
 	/**	<br/> L'entité requeteVars
 	 * Il est construit avant d'être initialisé avec le constructeur par défaut Map<String, String>(). 
@@ -1770,13 +1359,12 @@ public abstract class RequeteSiteFrFRGen<DEV> extends Object {
 
 	public void setRequeteVars(Map<String, String> requeteVars) {
 		this.requeteVars = requeteVars;
-		this.requeteVarsCouverture.dejaInitialise = true;
+	}
+	public static Map<String, String> staticSetRequeteVars(RequeteSiteFrFR requeteSite_, String o) {
+		return null;
 	}
 	protected RequeteSiteFrFR requeteVarsInit() {
-		if(!requeteVarsCouverture.dejaInitialise) {
-			_requeteVars(requeteVars);
-		}
-		requeteVarsCouverture.dejaInitialise(true);
+		_requeteVars(requeteVars);
 		return (RequeteSiteFrFR)this;
 	}
 
@@ -1784,14 +1372,9 @@ public abstract class RequeteSiteFrFRGen<DEV> extends Object {
 	// initLoin //
 	//////////////
 
-	protected boolean dejaInitialiseRequeteSiteFrFR = false;
-
 	public RequeteSiteFrFR initLoinRequeteSiteFrFR(RequeteSiteFrFR requeteSite_) {
 		setRequeteSite_(requeteSite_);
-		if(!dejaInitialiseRequeteSiteFrFR) {
-			dejaInitialiseRequeteSiteFrFR = true;
-			initLoinRequeteSiteFrFR();
-		}
+		initLoinRequeteSiteFrFR();
 		return (RequeteSiteFrFR)this;
 	}
 
@@ -1800,41 +1383,35 @@ public abstract class RequeteSiteFrFRGen<DEV> extends Object {
 	}
 
 	public void initRequeteSiteFrFR() {
-		siteContexte_Init();
-		configSite_Init();
-		requeteSite_Init();
-		requeteApi_Init();
-		vertxInit();
-		objetJsonInit();
-		rechercheSolrInit();
-		operationRequeteInit();
-		reponseRechercheInit();
-		resultatsRechercheInit();
-		wInit();
-		utilisateurVertxInit();
-		principalJsonInit();
-		utilisateurIdInit();
-		utilisateurCleInit();
-		sessionIdInit();
-		sessionIdAvantInit();
-		utilisateurNomInit();
-		utilisateurNomFamilleInit();
-		utilisateurPrenomInit();
-		utilisateurNomCompletInit();
-		utilisateurRolesRoyaumeInit();
-		utilisateurRessourceInit();
-		utilisateurRolesRessourceInit();
-		utilisateurSiteInit();
-		xmlPileInit();
-		documentSolrInit();
-		pageAdminInit();
-		requetePkInit();
-		requeteUriInit();
-		requeteMethodeInit();
-		txInit();
-		connexionSqlInit();
-		requeteEnTetesInit();
-		requeteVarsInit();
+				configInit();
+				requeteSite_Init();
+				clientWebInit();
+				requeteApi_Init();
+				objetJsonInit();
+				rechercheSolrInit();
+				requeteServiceInit();
+				utilisateurInit();
+				utilisateurIdInit();
+				utilisateurCleInit();
+				sessionIdInit();
+				sessionIdAvantInit();
+				utilisateurNomInit();
+				utilisateurNomFamilleInit();
+				utilisateurPrenomInit();
+				utilisateurNomCompletInit();
+				userMailInit();
+				utilisateurRolesRoyaumeInit();
+				utilisateurRessourceInit();
+				utilisateurRolesRessourceInit();
+				utilisateurSite_Init();
+				documentSolrInit();
+				pageAdminInit();
+				requetePkInit();
+				requeteUriInit();
+				requeteMethodeInit();
+				connexionSqlInit();
+				requeteEnTetesInit();
+				requeteVarsInit();
 	}
 
 	public void initLoinPourClasse(RequeteSiteFrFR requeteSite_) {
@@ -1846,10 +1423,6 @@ public abstract class RequeteSiteFrFRGen<DEV> extends Object {
 	/////////////////
 
 	public void requeteSiteRequeteSiteFrFR(RequeteSiteFrFR requeteSite_) {
-		if(w != null)
-			w.setRequeteSite_(requeteSite_);
-		if(utilisateurSite != null)
-			utilisateurSite.setRequeteSite_(requeteSite_);
 	}
 
 	public void requeteSitePourClasse(RequeteSiteFrFR requeteSite_) {
@@ -1866,9 +1439,13 @@ public abstract class RequeteSiteFrFRGen<DEV> extends Object {
 		for(String v : vars) {
 			if(o == null)
 				o = obtenirRequeteSiteFrFR(v);
-			else if(o instanceof Cluster) {
-				Cluster cluster = (Cluster)o;
-				o = cluster.obtenirPourClasse(v);
+			else if(o instanceof ModeleBase) {
+				ModeleBase modeleBase = (ModeleBase)o;
+				o = modeleBase.obtenirPourClasse(v);
+			}
+			else if(o instanceof Map) {
+				Map<?, ?> map = (Map<?, ?>)o;
+				o = map.get(v);
 			}
 		}
 		return o;
@@ -1876,32 +1453,22 @@ public abstract class RequeteSiteFrFRGen<DEV> extends Object {
 	public Object obtenirRequeteSiteFrFR(String var) {
 		RequeteSiteFrFR oRequeteSiteFrFR = (RequeteSiteFrFR)this;
 		switch(var) {
-			case "siteContexte_":
-				return oRequeteSiteFrFR.siteContexte_;
-			case "configSite_":
-				return oRequeteSiteFrFR.configSite_;
+			case "config":
+				return oRequeteSiteFrFR.config;
 			case "requeteSite_":
 				return oRequeteSiteFrFR.requeteSite_;
+			case "clientWeb":
+				return oRequeteSiteFrFR.clientWeb;
 			case "requeteApi_":
 				return oRequeteSiteFrFR.requeteApi_;
-			case "vertx":
-				return oRequeteSiteFrFR.vertx;
 			case "objetJson":
 				return oRequeteSiteFrFR.objetJson;
 			case "rechercheSolr":
 				return oRequeteSiteFrFR.rechercheSolr;
-			case "operationRequete":
-				return oRequeteSiteFrFR.operationRequete;
-			case "reponseRecherche":
-				return oRequeteSiteFrFR.reponseRecherche;
-			case "resultatsRecherche":
-				return oRequeteSiteFrFR.resultatsRecherche;
-			case "w":
-				return oRequeteSiteFrFR.w;
-			case "utilisateurVertx":
-				return oRequeteSiteFrFR.utilisateurVertx;
-			case "principalJson":
-				return oRequeteSiteFrFR.principalJson;
+			case "requeteService":
+				return oRequeteSiteFrFR.requeteService;
+			case "utilisateur":
+				return oRequeteSiteFrFR.utilisateur;
 			case "utilisateurId":
 				return oRequeteSiteFrFR.utilisateurId;
 			case "utilisateurCle":
@@ -1918,16 +1485,16 @@ public abstract class RequeteSiteFrFRGen<DEV> extends Object {
 				return oRequeteSiteFrFR.utilisateurPrenom;
 			case "utilisateurNomComplet":
 				return oRequeteSiteFrFR.utilisateurNomComplet;
+			case "userMail":
+				return oRequeteSiteFrFR.userMail;
 			case "utilisateurRolesRoyaume":
 				return oRequeteSiteFrFR.utilisateurRolesRoyaume;
 			case "utilisateurRessource":
 				return oRequeteSiteFrFR.utilisateurRessource;
 			case "utilisateurRolesRessource":
 				return oRequeteSiteFrFR.utilisateurRolesRessource;
-			case "utilisateurSite":
-				return oRequeteSiteFrFR.utilisateurSite;
-			case "xmlPile":
-				return oRequeteSiteFrFR.xmlPile;
+			case "utilisateurSite_":
+				return oRequeteSiteFrFR.utilisateurSite_;
 			case "documentSolr":
 				return oRequeteSiteFrFR.documentSolr;
 			case "pageAdmin":
@@ -1938,8 +1505,6 @@ public abstract class RequeteSiteFrFRGen<DEV> extends Object {
 				return oRequeteSiteFrFR.requeteUri;
 			case "requeteMethode":
 				return oRequeteSiteFrFR.requeteMethode;
-			case "tx":
-				return oRequeteSiteFrFR.tx;
 			case "connexionSql":
 				return oRequeteSiteFrFR.connexionSql;
 			case "requeteEnTetes":
@@ -1961,9 +1526,9 @@ public abstract class RequeteSiteFrFRGen<DEV> extends Object {
 		for(String v : vars) {
 			if(o == null)
 				o = attribuerRequeteSiteFrFR(v, val);
-			else if(o instanceof Cluster) {
-				Cluster cluster = (Cluster)o;
-				o = cluster.attribuerPourClasse(v, val);
+			else if(o instanceof ModeleBase) {
+				ModeleBase modeleBase = (ModeleBase)o;
+				o = modeleBase.attribuerPourClasse(v, val);
 			}
 		}
 		return o != null;
@@ -1976,27 +1541,203 @@ public abstract class RequeteSiteFrFRGen<DEV> extends Object {
 		}
 	}
 
+	///////////////
+	// staticSet //
+	///////////////
+
+	public static Object staticSetPourClasse(String entiteVar, RequeteSiteFrFR requeteSite_, String o) {
+		return staticSetRequeteSiteFrFR(entiteVar,  requeteSite_, o);
+	}
+	public static Object staticSetRequeteSiteFrFR(String entiteVar, RequeteSiteFrFR requeteSite_, String o) {
+		switch(entiteVar) {
+		case "utilisateurId":
+			return RequeteSiteFrFR.staticSetUtilisateurId(requeteSite_, o);
+		case "utilisateurCle":
+			return RequeteSiteFrFR.staticSetUtilisateurCle(requeteSite_, o);
+		case "sessionId":
+			return RequeteSiteFrFR.staticSetSessionId(requeteSite_, o);
+		case "sessionIdAvant":
+			return RequeteSiteFrFR.staticSetSessionIdAvant(requeteSite_, o);
+		case "utilisateurNom":
+			return RequeteSiteFrFR.staticSetUtilisateurNom(requeteSite_, o);
+		case "utilisateurNomFamille":
+			return RequeteSiteFrFR.staticSetUtilisateurNomFamille(requeteSite_, o);
+		case "utilisateurPrenom":
+			return RequeteSiteFrFR.staticSetUtilisateurPrenom(requeteSite_, o);
+		case "utilisateurNomComplet":
+			return RequeteSiteFrFR.staticSetUtilisateurNomComplet(requeteSite_, o);
+		case "userMail":
+			return RequeteSiteFrFR.staticSetUserMail(requeteSite_, o);
+		case "utilisateurRolesRoyaume":
+			return RequeteSiteFrFR.staticSetUtilisateurRolesRoyaume(requeteSite_, o);
+		case "utilisateurRolesRessource":
+			return RequeteSiteFrFR.staticSetUtilisateurRolesRessource(requeteSite_, o);
+		case "pageAdmin":
+			return RequeteSiteFrFR.staticSetPageAdmin(requeteSite_, o);
+		case "requetePk":
+			return RequeteSiteFrFR.staticSetRequetePk(requeteSite_, o);
+		case "requeteUri":
+			return RequeteSiteFrFR.staticSetRequeteUri(requeteSite_, o);
+		case "requeteMethode":
+			return RequeteSiteFrFR.staticSetRequeteMethode(requeteSite_, o);
+			default:
+				return null;
+		}
+	}
+
+	////////////////
+	// staticSolr //
+	////////////////
+
+	public static Object staticSolrPourClasse(String entiteVar, RequeteSiteFrFR requeteSite_, Object o) {
+		return staticSolrRequeteSiteFrFR(entiteVar,  requeteSite_, o);
+	}
+	public static Object staticSolrRequeteSiteFrFR(String entiteVar, RequeteSiteFrFR requeteSite_, Object o) {
+		switch(entiteVar) {
+		case "utilisateurId":
+			return RequeteSiteFrFR.staticSolrUtilisateurId(requeteSite_, (String)o);
+		case "utilisateurCle":
+			return RequeteSiteFrFR.staticSolrUtilisateurCle(requeteSite_, (Long)o);
+		case "sessionId":
+			return RequeteSiteFrFR.staticSolrSessionId(requeteSite_, (String)o);
+		case "sessionIdAvant":
+			return RequeteSiteFrFR.staticSolrSessionIdAvant(requeteSite_, (String)o);
+		case "utilisateurNom":
+			return RequeteSiteFrFR.staticSolrUtilisateurNom(requeteSite_, (String)o);
+		case "utilisateurNomFamille":
+			return RequeteSiteFrFR.staticSolrUtilisateurNomFamille(requeteSite_, (String)o);
+		case "utilisateurPrenom":
+			return RequeteSiteFrFR.staticSolrUtilisateurPrenom(requeteSite_, (String)o);
+		case "utilisateurNomComplet":
+			return RequeteSiteFrFR.staticSolrUtilisateurNomComplet(requeteSite_, (String)o);
+		case "userMail":
+			return RequeteSiteFrFR.staticSolrUserMail(requeteSite_, (String)o);
+		case "utilisateurRolesRoyaume":
+			return RequeteSiteFrFR.staticSolrUtilisateurRolesRoyaume(requeteSite_, (String)o);
+		case "utilisateurRolesRessource":
+			return RequeteSiteFrFR.staticSolrUtilisateurRolesRessource(requeteSite_, (String)o);
+		case "pageAdmin":
+			return RequeteSiteFrFR.staticSolrPageAdmin(requeteSite_, (Boolean)o);
+		case "requetePk":
+			return RequeteSiteFrFR.staticSolrRequetePk(requeteSite_, (Long)o);
+		case "requeteUri":
+			return RequeteSiteFrFR.staticSolrRequeteUri(requeteSite_, (String)o);
+		case "requeteMethode":
+			return RequeteSiteFrFR.staticSolrRequeteMethode(requeteSite_, (String)o);
+			default:
+				return null;
+		}
+	}
+
+	///////////////////
+	// staticSolrStr //
+	///////////////////
+
+	public static String staticSolrStrPourClasse(String entiteVar, RequeteSiteFrFR requeteSite_, Object o) {
+		return staticSolrStrRequeteSiteFrFR(entiteVar,  requeteSite_, o);
+	}
+	public static String staticSolrStrRequeteSiteFrFR(String entiteVar, RequeteSiteFrFR requeteSite_, Object o) {
+		switch(entiteVar) {
+		case "utilisateurId":
+			return RequeteSiteFrFR.staticSolrStrUtilisateurId(requeteSite_, (String)o);
+		case "utilisateurCle":
+			return RequeteSiteFrFR.staticSolrStrUtilisateurCle(requeteSite_, (Long)o);
+		case "sessionId":
+			return RequeteSiteFrFR.staticSolrStrSessionId(requeteSite_, (String)o);
+		case "sessionIdAvant":
+			return RequeteSiteFrFR.staticSolrStrSessionIdAvant(requeteSite_, (String)o);
+		case "utilisateurNom":
+			return RequeteSiteFrFR.staticSolrStrUtilisateurNom(requeteSite_, (String)o);
+		case "utilisateurNomFamille":
+			return RequeteSiteFrFR.staticSolrStrUtilisateurNomFamille(requeteSite_, (String)o);
+		case "utilisateurPrenom":
+			return RequeteSiteFrFR.staticSolrStrUtilisateurPrenom(requeteSite_, (String)o);
+		case "utilisateurNomComplet":
+			return RequeteSiteFrFR.staticSolrStrUtilisateurNomComplet(requeteSite_, (String)o);
+		case "userMail":
+			return RequeteSiteFrFR.staticSolrStrUserMail(requeteSite_, (String)o);
+		case "utilisateurRolesRoyaume":
+			return RequeteSiteFrFR.staticSolrStrUtilisateurRolesRoyaume(requeteSite_, (String)o);
+		case "utilisateurRolesRessource":
+			return RequeteSiteFrFR.staticSolrStrUtilisateurRolesRessource(requeteSite_, (String)o);
+		case "pageAdmin":
+			return RequeteSiteFrFR.staticSolrStrPageAdmin(requeteSite_, (Boolean)o);
+		case "requetePk":
+			return RequeteSiteFrFR.staticSolrStrRequetePk(requeteSite_, (Long)o);
+		case "requeteUri":
+			return RequeteSiteFrFR.staticSolrStrRequeteUri(requeteSite_, (String)o);
+		case "requeteMethode":
+			return RequeteSiteFrFR.staticSolrStrRequeteMethode(requeteSite_, (String)o);
+			default:
+				return null;
+		}
+	}
+
+	//////////////////
+	// staticSolrFq //
+	//////////////////
+
+	public static String staticSolrFqPourClasse(String entiteVar, RequeteSiteFrFR requeteSite_, String o) {
+		return staticSolrFqRequeteSiteFrFR(entiteVar,  requeteSite_, o);
+	}
+	public static String staticSolrFqRequeteSiteFrFR(String entiteVar, RequeteSiteFrFR requeteSite_, String o) {
+		switch(entiteVar) {
+		case "utilisateurId":
+			return RequeteSiteFrFR.staticSolrFqUtilisateurId(requeteSite_, o);
+		case "utilisateurCle":
+			return RequeteSiteFrFR.staticSolrFqUtilisateurCle(requeteSite_, o);
+		case "sessionId":
+			return RequeteSiteFrFR.staticSolrFqSessionId(requeteSite_, o);
+		case "sessionIdAvant":
+			return RequeteSiteFrFR.staticSolrFqSessionIdAvant(requeteSite_, o);
+		case "utilisateurNom":
+			return RequeteSiteFrFR.staticSolrFqUtilisateurNom(requeteSite_, o);
+		case "utilisateurNomFamille":
+			return RequeteSiteFrFR.staticSolrFqUtilisateurNomFamille(requeteSite_, o);
+		case "utilisateurPrenom":
+			return RequeteSiteFrFR.staticSolrFqUtilisateurPrenom(requeteSite_, o);
+		case "utilisateurNomComplet":
+			return RequeteSiteFrFR.staticSolrFqUtilisateurNomComplet(requeteSite_, o);
+		case "userMail":
+			return RequeteSiteFrFR.staticSolrFqUserMail(requeteSite_, o);
+		case "utilisateurRolesRoyaume":
+			return RequeteSiteFrFR.staticSolrFqUtilisateurRolesRoyaume(requeteSite_, o);
+		case "utilisateurRolesRessource":
+			return RequeteSiteFrFR.staticSolrFqUtilisateurRolesRessource(requeteSite_, o);
+		case "pageAdmin":
+			return RequeteSiteFrFR.staticSolrFqPageAdmin(requeteSite_, o);
+		case "requetePk":
+			return RequeteSiteFrFR.staticSolrFqRequetePk(requeteSite_, o);
+		case "requeteUri":
+			return RequeteSiteFrFR.staticSolrFqRequeteUri(requeteSite_, o);
+		case "requeteMethode":
+			return RequeteSiteFrFR.staticSolrFqRequeteMethode(requeteSite_, o);
+			default:
+				return null;
+		}
+	}
+
 	/////////////
 	// definir //
 	/////////////
 
-	public boolean definirPourClasse(String var, String val) {
+	public boolean definirPourClasse(String var, Object val) {
 		String[] vars = StringUtils.split(var, ".");
 		Object o = null;
 		if(val != null) {
 			for(String v : vars) {
 				if(o == null)
 					o = definirRequeteSiteFrFR(v, val);
-				else if(o instanceof Cluster) {
-					Cluster cluster = (Cluster)o;
-					o = cluster.definirPourClasse(v, val);
+				else if(o instanceof ModeleBase) {
+					ModeleBase oModeleBase = (ModeleBase)o;
+					o = oModeleBase.definirPourClasse(v, val);
 				}
 			}
 		}
 		return o != null;
 	}
-	public Object definirRequeteSiteFrFR(String var, String val) {
-		switch(var) {
+	public Object definirRequeteSiteFrFR(String var, Object val) {
+		switch(var.toLowerCase()) {
 			default:
 				return null;
 		}
@@ -2015,34 +1756,41 @@ public abstract class RequeteSiteFrFRGen<DEV> extends Object {
 	}
 
 	//////////////
-	// hashCode //
-	//////////////
-
-	@Override public int hashCode() {
-		return Objects.hash();
-	}
-
-	////////////
-	// equals //
-	////////////
-
-	@Override public boolean equals(Object o) {
-		if(this == o)
-			return true;
-		if(!(o instanceof RequeteSiteFrFR))
-			return false;
-		RequeteSiteFrFR that = (RequeteSiteFrFR)o;
-		return true;
-	}
-
-	//////////////
 	// toString //
 	//////////////
 
 	@Override public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("RequeteSiteFrFR { ");
-		sb.append(" }");
 		return sb.toString();
 	}
+
+	public static final String VAR_config = "config";
+	public static final String VAR_requeteSite_ = "requeteSite_";
+	public static final String VAR_clientWeb = "clientWeb";
+	public static final String VAR_requeteApi_ = "requeteApi_";
+	public static final String VAR_objetJson = "objetJson";
+	public static final String VAR_rechercheSolr = "rechercheSolr";
+	public static final String VAR_requeteService = "requeteService";
+	public static final String VAR_utilisateur = "utilisateur";
+	public static final String VAR_utilisateurId = "utilisateurId";
+	public static final String VAR_utilisateurCle = "utilisateurCle";
+	public static final String VAR_sessionId = "sessionId";
+	public static final String VAR_sessionIdAvant = "sessionIdAvant";
+	public static final String VAR_utilisateurNom = "utilisateurNom";
+	public static final String VAR_utilisateurNomFamille = "utilisateurNomFamille";
+	public static final String VAR_utilisateurPrenom = "utilisateurPrenom";
+	public static final String VAR_utilisateurNomComplet = "utilisateurNomComplet";
+	public static final String VAR_userMail = "userMail";
+	public static final String VAR_utilisateurRolesRoyaume = "utilisateurRolesRoyaume";
+	public static final String VAR_utilisateurRessource = "utilisateurRessource";
+	public static final String VAR_utilisateurRolesRessource = "utilisateurRolesRessource";
+	public static final String VAR_utilisateurSite_ = "utilisateurSite_";
+	public static final String VAR_documentSolr = "documentSolr";
+	public static final String VAR_pageAdmin = "pageAdmin";
+	public static final String VAR_requetePk = "requetePk";
+	public static final String VAR_requeteUri = "requeteUri";
+	public static final String VAR_requeteMethode = "requeteMethode";
+	public static final String VAR_connexionSql = "connexionSql";
+	public static final String VAR_requeteEnTetes = "requeteEnTetes";
+	public static final String VAR_requeteVars = "requeteVars";
 }

@@ -1,213 +1,94 @@
-package org.computate.site.frfr.requete;  
+package org.computate.site.frfr.requete; 
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.solr.client.solrj.SolrQuery;
-import org.apache.solr.client.solrj.SolrServerException;
-import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
-import org.apache.solr.common.SolrDocumentList;
-import org.computate.site.frfr.config.ConfigSite;
-import org.computate.site.frfr.contexte.SiteContexteFrFR;
 import org.computate.site.frfr.couverture.Couverture;
-import org.computate.site.frfr.ecrivain.ToutEcrivain;
 import org.computate.site.frfr.requete.api.RequeteApi;
 import org.computate.site.frfr.utilisateur.UtilisateurSite;
 
-import io.vertx.core.Vertx;
-import io.vertx.core.http.CaseInsensitiveHeaders;
+import io.vertx.core.MultiMap;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
-import io.vertx.ext.auth.oauth2.KeycloakHelper;
-import io.vertx.ext.web.api.OperationRequest;
-import io.vertx.sqlclient.SqlConnection;
-import io.vertx.sqlclient.Transaction; 
+import io.vertx.ext.auth.User;
+import io.vertx.ext.web.api.service.ServiceRequest;
+import io.vertx.ext.web.client.WebClient;
+import io.vertx.sqlclient.SqlConnection; 
 
 /**
  * MotCle: classeNomSimpleRequeteSite
- * NomCanonique.enUS: org.computate.site.enus.request.SiteRequestEnUS
  */  
 public class RequeteSiteFrFR extends RequeteSiteFrFRGen<Object> implements Serializable {  
-	private static final long serialVersionUID = -6737494107881513257L;
-
-	/**
-	 * {@inheritDoc}
-	 * Var.enUS: siteContext_
-	 * r: SiteContexteFrFR
-	 * r.enUS: SiteContextEnUS
-	 * 
-	 * enUS: The site context with global site information. 
-	 * frFR: Le contexte du site pour obtenir des objets globals du contexte. 
-	 **/    
-	protected void _siteContexte_(Couverture<SiteContexteFrFR> c) {
-	}
 
 	private static final Pattern PATTERN_SESSION = Pattern.compile(".*vertx-web.session=(\\w+).*");
 
 	/**	
-	 * Var.enUS: siteConfig_
-	 * 
-	 * r: ConfigSite
-	 * r.enUS: SiteConfig
-	 * r: siteContexte_
-	 * r.enUS: siteContext_
-	 * 
-	 * enUS: The site configuration. 
-	 * frFR: L'objet de configuration du site. 
-	 * **/
-	protected void _configSite_(Couverture<ConfigSite> c) {
-		ConfigSite o = siteContexte_.getConfigSite();
-		c.o(o);
+	 *	The site configuration. 
+	 **/
+	protected void _config(Couverture<JsonObject> c) {
 	}
 
 	/**
-	 * Var.enUS: siteRequest_
 	 */
 	protected void _requeteSite_(Couverture<RequeteSiteFrFR> c) { 
 		c.o(this);
 	}
 
+	protected void _clientWeb(Couverture<WebClient> c) { 
+	}
+
 	/**
-	 * Var.enUS: apiRequest_
 	 */
 	protected void _requeteApi_(Couverture<RequeteApi> c) { 
 	}
 
 	/**
-	 * r: siteContexte_
-	 * r.enUS: siteContext_
-	 */
-	protected void _vertx(Couverture<Vertx> c) {
-		if(siteContexte_ != null)
-			c.o(siteContexte_.getVertx());
-	}
-
-	/**
-	 * Var.enUS: jsonObject
 	 */
 	protected void _objetJson(Couverture<JsonObject> c) {
 	}
 
 	/**
-	 * Var.enUS: solrQuery
 	 */
 	protected void _rechercheSolr(Couverture<SolrQuery> c) {
 	}
 
 	/**
-	 * Var.enUS: operationRequest
 	 */
-	protected void _operationRequete(Couverture<OperationRequest> c) {
+	protected void _requeteService(Couverture<ServiceRequest> c) {
 	}
 
-	/**
-	 * Var.enUS: queryResponse
-	 * r: rechercheSolr
-	 * r.enUS: solrQuery
-	 * r: siteContexte_
-	 * r.enUS: siteContext_
-	 * r: getClientSolr
-	 * r.enUS: getSolrClient
-	 */
-	protected void _reponseRecherche(Couverture<QueryResponse> c) {
-		if(rechercheSolr != null) {
-			try {
-				QueryResponse o = siteContexte_.getClientSolr().query(rechercheSolr);
-				c.o(o);
-			} catch (SolrServerException | IOException e) {
-				ExceptionUtils.rethrow(e);
-			}
-		}
-	}
-
-	/**
-	 * Var.enUS: searchResults
-	 * r: reponseRecherche
-	 * r.enUS: queryResponse
-	 */
-	protected void _resultatsRecherche(Couverture<SolrDocumentList> c) {
-		if(reponseRecherche != null) {
-			SolrDocumentList o = reponseRecherche.getResults();
-			c.o(o);
-		}
-	} 
-
-	/**
-	 * frFR: L'écrivain pour écrirer le résultat du réponse. 
-	 * r.enUS: requeteSite_
-	 * siteRequest
-	 * r.enUS: ecrivain
-	 * writer
-	 */  
-	protected void _w(Couverture<ToutEcrivain> c) {
-	}
-
-	/**
-	 * Var.enUS: userVertx
-	 * r: operationRequete
-	 * r.enUS: operationRequest
-	 */
-	protected void _utilisateurVertx(Couverture<JsonObject> c) {
-		if(operationRequete != null) {
-			JsonObject o = operationRequete.getUser();
-			c.o(o);
-		}
-
-	}
-
-	/**
-	 * Var.enUS: jsonPrincipal
-	 * r: utilisateurVertx
-	 * r.enUS: userVertx
-	 */
-	protected void _principalJson(Couverture<JsonObject> c) {
-		if(utilisateurVertx != null) {
-			JsonObject o = KeycloakHelper.parseToken(utilisateurVertx.getString("access_token"));
-			c.o(o);
-		}
+	protected void _utilisateur(Couverture<User> c) {
 	}
 
 	/**	
-	 * Var.enUS: userId
-	 * r: principalJson
-	 * r.enUS: jsonPrincipal
 	 * Le sujet d'acces Keycloak pour l'utilisateur. 
 	 * Aussi l'ID d'utilisateur cle primaire dans la base de donnees Keycloak. 
 	 ***/
 	protected void _utilisateurId(Couverture<String> c) {
-		if(principalJson != null) {
-			String o = principalJson.getString("sub");
+		if(utilisateur != null) {
+			String o = utilisateur.attributes().getString("sub");
 			c.o(o);
 		}
 	}
 
 	/**	
-	 * Var.enUS: userKey
 	 ***/
 	protected void _utilisateurCle(Couverture<Long> c) {
 	}
 
 	/**   
 	 * {@inheritDoc}
-	 * r: requeteSite
-	 * r.enUS: siteRequest
-	 * r: principalJson
-	 * r.enUS: jsonPrincipal
-	 * r: operationRequete
-	 * r.enUS: operationRequest
 	 */                   
 	protected void _sessionId(Couverture<String> c) {
-		if(operationRequete != null) {
-			String cookie = operationRequete.getHeaders().get("Cookie");
+		if(requeteService != null) {
+			String cookie = requeteService.getHeaders().get("Cookie");
 			if(StringUtils.isNotBlank(cookie)) {
 				Matcher m = PATTERN_SESSION.matcher(cookie);
 				if(m.matches()) {
@@ -219,120 +100,80 @@ public class RequeteSiteFrFR extends RequeteSiteFrFRGen<Object> implements Seria
 
 	/**	
 	 * {@inheritDoc}
-	 * Var.enUS: sessionIdBefore
-	 * r: requeteSite
-	 * r.enUS: siteRequest
-	 * r: principalJson
-	 * r.enUS: jsonPrincipal
-	 * r: operationRequete
-	 * r.enUS: operationRequest
-	 * r: sessionIdAvant
-	 * r.enUS: sessionIdBefore
 	 */                   
 	protected void _sessionIdAvant(Couverture<String> c) {
-		if(operationRequete != null) {
-			c.o(operationRequete.getParams().getJsonObject("cookie").getString("sessionIdAvant"));
+		if(requeteService != null) {
+			c.o(Optional.ofNullable(requeteService).map(r -> r.getParams()).map(p -> p.getJsonObject("cookie")).map(cookie -> cookie.getString("sessionIdBefore")).orElse(null));
 		}
 	}
 
 	/**	
-	 * Var.enUS: userName
-	 * r: principalJson
-	 * r.enUS: jsonPrincipal
 	 * Le nom d'utilisateur prefere de l'utilisateur. 
 	 * **/
 	protected void _utilisateurNom(Couverture<String> c) {
-		if(principalJson != null) {
-			String o = principalJson.getString("preferred_username");
+		if(utilisateur != null) {
+			String o = utilisateur.attributes().getJsonObject("accessToken").getString("preferred_username");
 			c.o(o);
 		}
 	}
 
 	/**	
-	 * Var.enUS: userLastName
-	 * r: principalJson
-	 * r.enUS: jsonPrincipal
 	 * Le nom de famille de l'utilisateur. 
 	 * **/
 	protected void _utilisateurNomFamille(Couverture<String> c) {
-		if(principalJson != null) {
-			String o = principalJson.getString("family_name");
+		if(utilisateur != null) {
+			String o = utilisateur.attributes().getJsonObject("accessToken").getString("family_name");
 			c.o(o);
 		}
 	}
 
 	/**	
-	 * Var.enUS: userFirstName
-	 * r: principalJson
-	 * r.enUS: jsonPrincipal
 	 * Le prenom de l'utilisateur. 
 	 * **/
 	protected void _utilisateurPrenom(Couverture<String> c) { 
-		if(principalJson != null) {
-			String o = principalJson.getString("given_name");
+		if(utilisateur != null) {
+			String o = utilisateur.attributes().getJsonObject("accessToken").getString("given_name");
 			c.o(o);
 		}
 	}
 
 	/**	
-	 * Var.enUS: userFullName
-	 * r: principalJson
-	 * r.enUS: jsonPrincipal
 	 * Le nom complet de l'utilisateur. 
 	 * **/
 	protected void _utilisateurNomComplet(Couverture<String> c) {
-		if(principalJson != null) {
-			String o = principalJson.getString("name");
+		if(utilisateur != null) {
+			String o = utilisateur.attributes().getJsonObject("accessToken").getString("name");
+			c.o(o);
+		}
+	}
+
+	protected void _userMail(Couverture<String> c) {
+		if(utilisateur != null) {
+			String o = utilisateur.attributes().getJsonObject("accessToken").getString("email");
 			c.o(o);
 		}
 	}
 
 	/**	
-	 * Var.enUS: userRealmRoles
-	 * r: configSite_
-	 * r.enUS: siteConfig_
-	 * r: principalJson
-	 * r.enUS: jsonPrincipal
-	 * r: addUtilisateurRolesRoyaume
-	 * r.enUS: addUserRealmRoles
 	 * frFR: Les rôles de la ressource de l'utilisateur. 
 	 * **/
 	protected void _utilisateurRolesRoyaume(List<String> o) {
-		JsonArray roles = Optional.ofNullable(principalJson).map(o1 -> o1.getJsonObject("realm_access")).map(o2 -> o2.getJsonArray("roles")).orElse(new JsonArray());
+		JsonArray roles = Optional.ofNullable(utilisateur).map(user -> user.attributes()).map(attributes -> attributes.getJsonObject("accessToken")).map(o1 -> o1.getJsonObject("realm_access")).map(o2 -> o2.getJsonArray("roles")).orElse(new JsonArray());
 		roles.stream().forEach(r -> {
 			addUtilisateurRolesRoyaume((String)r);
 		});
 	}
 
 	/**	
-	 * Var.enUS: userResource
-	 * r: configSite_
-	 * r.enUS: siteConfig_
-	 * r: principalJson
-	 * r.enUS: jsonPrincipal
-	 * r: requeteSite_
-	 * r.enUS: siteRequest_
-	 * r: ConfigSite
-	 * r.enUS: SiteConfig
-	 * r: AuthRessource
-	 * r.enUS: AuthResource
 	 * frFR: Les rôles de la ressource de l'utilisateur. 
 	 * **/
 	protected void _utilisateurRessource(Couverture<JsonObject> c) {
-		JsonObject o = Optional.ofNullable(principalJson).map(p -> p.getJsonObject("resource_access")).map(o1 -> o1.getJsonObject(
-				Optional.ofNullable(requeteSite_).map(r -> r.getConfigSite_()).map(c1 -> c1.getAuthRessource()).orElse("")
-				)).orElse(new JsonObject());
+		String authResource = config.getString("authResource");
+		JsonObject o = Optional.ofNullable(utilisateur).map(user -> user.attributes()).map(p -> p.getJsonObject("resource_access")).map(o1 -> o1.getJsonObject(authResource)).orElse(new JsonObject());
 		c.o(o);
 	}
 
 	/**	
-	 * Var.enUS: userResourceRoles
-	 * r: configSite_
-	 * r.enUS: siteConfig_
-	 * r: utilisateurRessource
-	 * r.enUS: userResource
-	 * r: addUtilisateurRolesRessource
-	 * r.enUS: addUserResourceRoles
 	 * frFR: Les rôles de la ressource de l'utilisateur. 
 	 * **/
 	protected void _utilisateurRolesRessource(List<String> o) {
@@ -343,28 +184,9 @@ public class RequeteSiteFrFR extends RequeteSiteFrFRGen<Object> implements Seria
 	}
 
 	/**	
-	 * Var.enUS: siteUser
-	 * r: UtilisateurSite
-	 * r.enUS: SiteUser
-	 * r: utilisateurId
-	 * r.enUS: userId
-	 * r: utilisateurPrenom
-	 * r.enUS: userFirstName
-	 * r: utilisateurNomFamille
-	 * r.enUS: userLastName
-	 * r: utilisateurNom
-	 * r.enUS: userName
-	 * r: UtilisateurId
-	 * r.enUS: UserId
-	 * r: UtilisateurPrenom
-	 * r.enUS: UserFirstName
-	 * r: UtilisateurNomFamille
-	 * r.enUS: UserLastName
-	 * r: UtilisateurNom
-	 * r.enUS: UserName
 	 * L'utilisateur de la requête. 
 	 * **/ 
-	protected void _utilisateurSite(Couverture<UtilisateurSite> c) { 
+	protected void _utilisateurSite_(Couverture<UtilisateurSite> c) { 
 		if(utilisateurId != null) {
 			UtilisateurSite o = new UtilisateurSite();
 			o.setUtilisateurNom(utilisateurNom);
@@ -376,12 +198,6 @@ public class RequeteSiteFrFR extends RequeteSiteFrFRGen<Object> implements Seria
 	}
 
 	/**
-	 * Var.enUS: xmlStack
-	 */
-	protected void _xmlPile(Stack<String> o) {}
-
-	/**
-	 * Var.enUS: solrDocument
 	 */
 	protected void _documentSolr(Couverture<SolrDocument> c) {  
 	}
@@ -394,38 +210,27 @@ public class RequeteSiteFrFR extends RequeteSiteFrFRGen<Object> implements Seria
 	} 
 	
 	/**
-	 * Var.enUS: requestPk
-	 * r: operationRequete
-	 * r.enUS: operationRequest
 	 */
 	protected void _requetePk(Couverture<Long> c) {
-		if(operationRequete != null)
-			c.o(operationRequete.getParams().getLong("pk"));
+		if(requeteService != null)
+			c.o(requeteService.getParams().getLong("pk"));
 	}
 
 	/**
 	 * {@inheritDoc}
-	 * Var.enUS: requestUri
 	 **/
 	protected void _requeteUri(Couverture<String> c) {
+		c.o(Optional.ofNullable(requeteService).map(r -> r.getExtra()).map(extra -> extra.getString("uri")).orElse(null));
 	}
 
 	/**
 	 * {@inheritDoc}
-	 * Var.enUS: requestMethod
 	 **/
 	protected void _requeteMethode(Couverture<String> c) {
+		c.o(Optional.ofNullable(requeteService).map(r -> r.getExtra()).map(extra -> extra.getString("method")).orElse(null));
 	}
 
 	/**
-	 * {@inheritDoc}
-	 * Ignorer: true
-	 **/
-	protected void _tx(Couverture<Transaction> c) {
-	}
-
-	/**
-	 * Var.enUS: sqlConnection
 	 * {@inheritDoc}
 	 * Ignorer: true
 	 **/
@@ -434,75 +239,29 @@ public class RequeteSiteFrFR extends RequeteSiteFrFRGen<Object> implements Seria
 	
 	/**
 	 * {@inheritDoc}
-	 * Var.enUS: requestHeaders
 	 * Ignorer: true
 	 **/
-	protected void _requeteEnTetes(Couverture<CaseInsensitiveHeaders> c) {
+	protected void _requeteEnTetes(Couverture<MultiMap> c) {
 	}
 	
 	/**
-	 * Var.enUS: requestVars
 	 * Ignorer: true
 	 */
 	protected void _requeteVars(Map<String, String> m) {
 	}
 
 	/**
-	 * r: RequeteSiteFrFR
-	 * r.enUS: SiteRequestEnUS
-	 * r: SiteContexte
-	 * r.enUS: SiteContext
-	 * r: siteContexte
-	 * r.enUS: siteContext
-	 * r: RequeteApi
-	 * r.enUS: ApiRequest
-	 * r: requeteApi
-	 * r.enUS: apiRequest
-	 * r: ObjetJson
-	 * r.enUS: JsonObject
-	 * r: objetJson
-	 * r.enUS: jsonObject
-	 * r: RechercheSolr
-	 * r.enUS: SolrQuery
-	 * r: rechercheSolr
-	 * r.enUS: solrQuery
-	 * r: OperationRequete
-	 * r.enUS: OperationRequest
-	 * r: operationRequete
-	 * r.enUS: operationRequest
-	 * r: UtilisateurCle
-	 * r.enUS: UserKey
-	 * r: utilisateurCle
-	 * r.enUS: userKey
-	 * r: DocumentSolr
-	 * r.enUS: SolrDocument
-	 * r: documentSolr
-	 * r.enUS: solrDocument
-	 * r: ConnexionSql
-	 * r.enUS: SqlConnection
-	 * r: connexionSql
-	 * r.enUS: sqlConnection
-	 * r: RequeteEnTetes
-	 * r.enUS: RequestHeaders
-	 * r: requeteEnTetes
-	 * r.enUS: requestHeaders
-	 * r: RequeteVars
-	 * r.enUS: RequestVars
-	 * r: requeteVars
-	 * r.enUS: requestVars
 	 */
 	public RequeteSiteFrFR copy() {
 		RequeteSiteFrFR o = new RequeteSiteFrFR();
-		o.setSiteContexte_(siteContexte_);
 		o.setObjetJson(objetJson);
-		o.setRechercheSolr(rechercheSolr);
-		o.setOperationRequete(operationRequete);
+		o.setConfig(config);
+		o.setClientWeb(clientWeb);
+		o.setRequeteService(requeteService);
+		o.setUtilisateur(utilisateur);
 		o.setUtilisateurCle(utilisateurCle);
-		o.setDocumentSolr(documentSolr);
-		o.setPageAdmin(pageAdmin);
-		o.setTx(tx);
-		o.setRequeteEnTetes(requeteEnTetes);
-		o.setRequeteVars(requeteVars);
+		o.setUtilisateurId(utilisateurId);
+		o.setRequeteApi_(requeteApi_);
 		return o;
 	}
 }

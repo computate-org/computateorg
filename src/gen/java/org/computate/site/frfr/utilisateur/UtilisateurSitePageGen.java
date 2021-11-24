@@ -1,26 +1,29 @@
 package org.computate.site.frfr.utilisateur;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Arrays;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
-import org.computate.site.frfr.cluster.Cluster;
+import org.slf4j.LoggerFactory;
 import java.util.HashMap;
+import org.computate.site.frfr.base.ModeleBase;
 import org.apache.commons.lang3.StringUtils;
 import java.text.NumberFormat;
-import io.vertx.core.logging.LoggerFactory;
 import java.util.ArrayList;
+import org.computate.site.frfr.config.ConfigCles;
 import org.apache.commons.collections.CollectionUtils;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.vertx.core.logging.Logger;
 import org.computate.site.frfr.utilisateur.UtilisateurSiteGenPage;
 import java.math.RoundingMode;
+import org.slf4j.Logger;
 import java.math.MathContext;
+import io.vertx.core.Promise;
 import org.apache.commons.text.StringEscapeUtils;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import io.vertx.core.Future;
 import org.computate.site.frfr.requete.api.RequeteApi;
-import org.computate.site.frfr.ecrivain.ToutEcrivain;
 import java.util.Objects;
 import io.vertx.core.json.JsonArray;
 import org.computate.site.frfr.requete.RequeteSiteFrFR;
@@ -28,7 +31,6 @@ import org.apache.commons.lang3.math.NumberUtils;
 import java.util.Optional;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import org.computate.site.frfr.couverture.Couverture;
 
 /**	
@@ -36,45 +38,51 @@ import org.computate.site.frfr.couverture.Couverture;
  * <br/>
  **/
 public abstract class UtilisateurSitePageGen<DEV> extends UtilisateurSiteGenPage {
-	protected static final Logger LOGGER = LoggerFactory.getLogger(UtilisateurSitePage.class);
+	protected static final Logger LOG = LoggerFactory.getLogger(UtilisateurSitePage.class);
 
 	//////////////
 	// initLoin //
 	//////////////
 
-	protected boolean dejaInitialiseUtilisateurSitePage = false;
-
-	public UtilisateurSitePage initLoinUtilisateurSitePage(RequeteSiteFrFR requeteSite_) {
-		setRequeteSite_(requeteSite_);
-		if(!dejaInitialiseUtilisateurSitePage) {
-			dejaInitialiseUtilisateurSitePage = true;
-			initLoinUtilisateurSitePage();
-		}
-		return (UtilisateurSitePage)this;
+	public Future<Void> promesseLoinUtilisateurSitePage(RequeteSiteFrFR requeteSite_) {
+		return promesseLoinUtilisateurSitePage();
 	}
 
-	public void initLoinUtilisateurSitePage() {
-		initUtilisateurSitePage();
-		super.initLoinUtilisateurSiteGenPage(requeteSite_);
+	public Future<Void> promesseLoinUtilisateurSitePage() {
+		Promise<Void> promise = Promise.promise();
+		Promise<Void> promise2 = Promise.promise();
+		promesseUtilisateurSitePage(promise2);
+		promise2.future().onSuccess(a -> {
+			super.promesseLoinUtilisateurSiteGenPage(requeteSite_).onSuccess(b -> {
+				promise.complete();
+			}).onFailure(ex -> {
+				promise.fail(ex);
+			});
+		}).onFailure(ex -> {
+			promise.fail(ex);
+		});
+		return promise.future();
 	}
 
-	public void initUtilisateurSitePage() {
+	public Future<Void> promesseUtilisateurSitePage(Promise<Void> promise) {
+		Future.future(a -> a.complete()).compose(a -> {
+			Promise<Void> promise2 = Promise.promise();
+			try {
+				promise2.complete();
+			} catch(Exception ex) {
+				promise2.fail(ex);
+			}
+			return promise2.future();
+		}).onSuccess(a -> {
+			promise.complete();
+		}).onFailure(ex -> {
+			promise.fail(ex);
+		});
+		return promise.future();
 	}
 
-	@Override public void initLoinPourClasse(RequeteSiteFrFR requeteSite_) {
-		initLoinUtilisateurSitePage(requeteSite_);
-	}
-
-	/////////////////
-	// requeteSite //
-	/////////////////
-
-	public void requeteSiteUtilisateurSitePage(RequeteSiteFrFR requeteSite_) {
-			super.requeteSiteUtilisateurSiteGenPage(requeteSite_);
-	}
-
-	public void requeteSitePourClasse(RequeteSiteFrFR requeteSite_) {
-		requeteSiteUtilisateurSitePage(requeteSite_);
+	@Override public Future<Void> promesseLoinPourClasse(RequeteSiteFrFR requeteSite_) {
+		return promesseLoinUtilisateurSitePage(requeteSite_);
 	}
 
 	/////////////
@@ -87,9 +95,13 @@ public abstract class UtilisateurSitePageGen<DEV> extends UtilisateurSiteGenPage
 		for(String v : vars) {
 			if(o == null)
 				o = obtenirUtilisateurSitePage(v);
-			else if(o instanceof Cluster) {
-				Cluster cluster = (Cluster)o;
-				o = cluster.obtenirPourClasse(v);
+			else if(o instanceof ModeleBase) {
+				ModeleBase modeleBase = (ModeleBase)o;
+				o = modeleBase.obtenirPourClasse(v);
+			}
+			else if(o instanceof Map) {
+				Map<?, ?> map = (Map<?, ?>)o;
+				o = map.get(v);
 			}
 		}
 		return o;
@@ -112,9 +124,9 @@ public abstract class UtilisateurSitePageGen<DEV> extends UtilisateurSiteGenPage
 		for(String v : vars) {
 			if(o == null)
 				o = attribuerUtilisateurSitePage(v, val);
-			else if(o instanceof Cluster) {
-				Cluster cluster = (Cluster)o;
-				o = cluster.attribuerPourClasse(v, val);
+			else if(o instanceof ModeleBase) {
+				ModeleBase modeleBase = (ModeleBase)o;
+				o = modeleBase.attribuerPourClasse(v, val);
 			}
 		}
 		return o != null;
@@ -127,160 +139,86 @@ public abstract class UtilisateurSitePageGen<DEV> extends UtilisateurSiteGenPage
 		}
 	}
 
+	///////////////
+	// staticSet //
+	///////////////
+
+	public static Object staticSetPourClasse(String entiteVar, RequeteSiteFrFR requeteSite_, String o) {
+		return staticSetUtilisateurSitePage(entiteVar,  requeteSite_, o);
+	}
+	public static Object staticSetUtilisateurSitePage(String entiteVar, RequeteSiteFrFR requeteSite_, String o) {
+		switch(entiteVar) {
+			default:
+				return UtilisateurSiteGenPage.staticSetUtilisateurSiteGenPage(entiteVar,  requeteSite_, o);
+		}
+	}
+
+	////////////////
+	// staticSolr //
+	////////////////
+
+	public static Object staticSolrPourClasse(String entiteVar, RequeteSiteFrFR requeteSite_, Object o) {
+		return staticSolrUtilisateurSitePage(entiteVar,  requeteSite_, o);
+	}
+	public static Object staticSolrUtilisateurSitePage(String entiteVar, RequeteSiteFrFR requeteSite_, Object o) {
+		switch(entiteVar) {
+			default:
+				return UtilisateurSiteGenPage.staticSolrUtilisateurSiteGenPage(entiteVar,  requeteSite_, o);
+		}
+	}
+
+	///////////////////
+	// staticSolrStr //
+	///////////////////
+
+	public static String staticSolrStrPourClasse(String entiteVar, RequeteSiteFrFR requeteSite_, Object o) {
+		return staticSolrStrUtilisateurSitePage(entiteVar,  requeteSite_, o);
+	}
+	public static String staticSolrStrUtilisateurSitePage(String entiteVar, RequeteSiteFrFR requeteSite_, Object o) {
+		switch(entiteVar) {
+			default:
+				return UtilisateurSiteGenPage.staticSolrStrUtilisateurSiteGenPage(entiteVar,  requeteSite_, o);
+		}
+	}
+
+	//////////////////
+	// staticSolrFq //
+	//////////////////
+
+	public static String staticSolrFqPourClasse(String entiteVar, RequeteSiteFrFR requeteSite_, String o) {
+		return staticSolrFqUtilisateurSitePage(entiteVar,  requeteSite_, o);
+	}
+	public static String staticSolrFqUtilisateurSitePage(String entiteVar, RequeteSiteFrFR requeteSite_, String o) {
+		switch(entiteVar) {
+			default:
+				return UtilisateurSiteGenPage.staticSolrFqUtilisateurSiteGenPage(entiteVar,  requeteSite_, o);
+		}
+	}
+
 	/////////////
 	// definir //
 	/////////////
 
-	@Override public boolean definirPourClasse(String var, String val) {
+	@Override public boolean definirPourClasse(String var, Object val) {
 		String[] vars = StringUtils.split(var, ".");
 		Object o = null;
 		if(val != null) {
 			for(String v : vars) {
 				if(o == null)
 					o = definirUtilisateurSitePage(v, val);
-				else if(o instanceof Cluster) {
-					Cluster cluster = (Cluster)o;
-					o = cluster.definirPourClasse(v, val);
+				else if(o instanceof ModeleBase) {
+					ModeleBase oModeleBase = (ModeleBase)o;
+					o = oModeleBase.definirPourClasse(v, val);
 				}
 			}
 		}
 		return o != null;
 	}
-	public Object definirUtilisateurSitePage(String var, String val) {
-		switch(var) {
+	public Object definirUtilisateurSitePage(String var, Object val) {
+		switch(var.toLowerCase()) {
 			default:
 				return super.definirUtilisateurSiteGenPage(var, val);
 		}
-	}
-
-	/////////////////
-	// htmlScripts //
-	/////////////////
-
-	@Override public void htmlScripts() {
-		htmlScriptsUtilisateurSitePage();
-		super.htmlScripts();
-	}
-
-	public void htmlScriptsUtilisateurSitePage() {
-	}
-
-	////////////////
-	// htmlScript //
-	////////////////
-
-	@Override public void htmlScript() {
-		htmlScriptUtilisateurSitePage();
-		super.htmlScript();
-	}
-
-	public void htmlScriptUtilisateurSitePage() {
-	}
-
-	//////////////
-	// htmlBody //
-	//////////////
-
-	@Override public void htmlBody() {
-		htmlBodyUtilisateurSitePage();
-		super.htmlBody();
-	}
-
-	public void htmlBodyUtilisateurSitePage() {
-	}
-
-	//////////
-	// html //
-	//////////
-
-	@Override public void html() {
-		htmlUtilisateurSitePage();
-		super.html();
-	}
-
-	public void htmlUtilisateurSitePage() {
-	}
-
-	//////////////
-	// htmlMeta //
-	//////////////
-
-	@Override public void htmlMeta() {
-		htmlMetaUtilisateurSitePage();
-		super.htmlMeta();
-	}
-
-	public void htmlMetaUtilisateurSitePage() {
-	}
-
-	////////////////
-	// htmlStyles //
-	////////////////
-
-	@Override public void htmlStyles() {
-		htmlStylesUtilisateurSitePage();
-		super.htmlStyles();
-	}
-
-	public void htmlStylesUtilisateurSitePage() {
-	}
-
-	///////////////
-	// htmlStyle //
-	///////////////
-
-	@Override public void htmlStyle() {
-		htmlStyleUtilisateurSitePage();
-		super.htmlStyle();
-	}
-
-	public void htmlStyleUtilisateurSitePage() {
-	}
-
-	///////////////////
-	// htmlBodyCourt //
-	///////////////////
-
-	@Override public void htmlBodyCourt() {
-		htmlBodyCourtUtilisateurSitePage();
-		super.htmlBodyCourt();
-	}
-
-	public void htmlBodyCourtUtilisateurSitePage() {
-	}
-
-	//////////////////
-	// requeteApi //
-	//////////////////
-
-	public void requeteApiUtilisateurSitePage() {
-		RequeteApi requeteApi = Optional.ofNullable(requeteSite_).map(RequeteSiteFrFR::getRequeteApi_).orElse(null);
-		Object o = Optional.ofNullable(requeteApi).map(RequeteApi::getOriginal).orElse(null);
-		if(o != null && o instanceof UtilisateurSitePage) {
-			UtilisateurSitePage original = (UtilisateurSitePage)o;
-			super.requeteApiUtilisateurSiteGenPage();
-		}
-	}
-
-	//////////////
-	// hashCode //
-	//////////////
-
-	@Override public int hashCode() {
-		return Objects.hash(super.hashCode());
-	}
-
-	////////////
-	// equals //
-	////////////
-
-	@Override public boolean equals(Object o) {
-		if(this == o)
-			return true;
-		if(!(o instanceof UtilisateurSitePage))
-			return false;
-		UtilisateurSitePage that = (UtilisateurSitePage)o;
-		return super.equals(o);
 	}
 
 	//////////////
@@ -289,9 +227,8 @@ public abstract class UtilisateurSitePageGen<DEV> extends UtilisateurSiteGenPage
 
 	@Override public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append(super.toString() + "\n");
-		sb.append("UtilisateurSitePage { ");
-		sb.append(" }");
+		sb.append(super.toString());
 		return sb.toString();
 	}
+
 }
