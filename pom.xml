@@ -21,7 +21,7 @@
 		<handlebars-maven-plugin.version>4.2.0</handlebars-maven-plugin.version>
 		<apache-curator.version>4.3.0</apache-curator.version>
 		<postgresql.version>42.2.2.jre7</postgresql.version>
-		<solr.version>8.4.1</solr.version>
+		<solr.version>8.8.2</solr.version>
 		<junit.version>4.13.1</junit.version>
 	</properties>
 
