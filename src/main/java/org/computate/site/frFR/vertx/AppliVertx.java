@@ -511,11 +511,11 @@ public class AppliVertx extends AbstractVerticle {
 		Integer sitePort = configSite.getSitePort();
 		HttpServerOptions options = new HttpServerOptions();
 		// options.setMaxWebsocketFrameSize(1000000);
-		if(new File(configSite.getSslJksChemin()).exists()) {
-			options.setKeyStoreOptions(
-					new JksOptions().setPath(configSite.getSslJksChemin()).setPassword(configSite.getSslJksMotDePasse()));
-			options.setSsl(true);
-		}
+//		if(new File(configSite.getSslJksChemin()).exists()) {
+//			options.setKeyStoreOptions(
+//					new JksOptions().setPath(configSite.getSslJksChemin()).setPassword(configSite.getSslJksMotDePasse()));
+//			options.setSsl(true);
+//		}
 		options.setPort(sitePort);
 //		options.setHost("localhost");
 
