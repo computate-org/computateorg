@@ -2,10 +2,10 @@ package org.computate.site.enUS.cours.c001.l003;
 
 import java.util.List;
 import org.computate.site.enUS.cours.c001.C001Lecon;
-import org.computate.site.enUS.couverture.Couverture;
 import org.computate.site.enUS.page.parti.Cmd;
 import org.computate.site.enUS.page.parti.PageHtml;
 import org.computate.site.enUS.page.parti.QuestionReponse;
+import org.computate.site.site.enUS.couverture.Couverture;
 
 public class C001L003InstallerMachineVirtuelleVirtualBox extends C001L003InstallerMachineVirtuelleVirtualBoxGen<C001Lecon> {
 

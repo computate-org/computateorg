@@ -4,17 +4,19 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import org.computate.site.enUS.recherche.ListeRecherche;
-import org.computate.site.enUS.article.Article;
+import org.computate.site.enUS.request.RequeteSiteEnUS;
 import org.computate.site.frFR.cours.c001.C001FrFRPage;
+import org.computate.site.site.enUS.couverture.Couverture;
 import org.computate.site.enUS.cours.c001.C001EnUSPage;
-import org.computate.site.enUS.config.ConfigSite;
-import org.computate.site.enUS.requete.RequeteSiteEnUS;
+import org.computate.site.enUS.user.UtilisateurSite;
 import org.computate.site.enUS.contexte.SiteContexteEnUS;
-import org.computate.site.enUS.utilisateur.UtilisateurSite;
+import org.computate.site.enus.article.Article;
+import org.computate.site.enus.config.ConfigSite;
+
 import java.io.IOException;
 import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.http.HttpServerResponse;
-import org.computate.site.enUS.couverture.Couverture;
+
 import org.computate.site.enUS.page.MiseEnPage;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;

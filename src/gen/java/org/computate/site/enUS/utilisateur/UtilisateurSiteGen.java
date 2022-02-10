@@ -2,15 +2,19 @@ package org.computate.site.enUS.utilisateur;
 
 import org.computate.site.enUS.ecrivain.ToutEcrivain;
 import org.computate.site.enUS.recherche.ListeRecherche;
-import org.computate.site.enUS.couverture.Couverture;
+import org.computate.site.enUS.request.RequeteSiteEnUS;
+
 import java.util.Date;
-import org.computate.site.enUS.requete.RequeteSiteEnUS;
+
+import org.computate.site.enUS.user.UtilisateurSite;
+import org.computate.site.enus.article.Article;
+import org.computate.site.site.enUS.couverture.Couverture;
+import org.computate.site.site.enus.model.base.Cluster;
 import org.apache.commons.exec.CommandLine;
 import org.apache.commons.lang3.StringUtils;
 import java.lang.Integer;
 import io.vertx.core.logging.LoggerFactory;
 import java.util.ArrayList;
-import org.computate.site.enUS.cluster.Cluster;
 import java.lang.Long;
 import javax.imageio.ImageIO;
 import java.lang.Boolean;
@@ -22,7 +26,6 @@ import java.awt.image.BufferedImage;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import java.util.Set;
 import org.apache.commons.text.StringEscapeUtils;
-import org.computate.site.enUS.article.Article;
 import org.computate.site.enUS.contexte.SiteContexteEnUS;
 import java.io.File;
 import org.apache.solr.client.solrj.SolrClient;

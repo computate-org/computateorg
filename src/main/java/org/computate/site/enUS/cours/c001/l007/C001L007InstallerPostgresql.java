@@ -2,8 +2,8 @@ package org.computate.site.enUS.cours.c001.l007;
 
 import java.util.List;
 import org.computate.site.enUS.cours.c001.C001Lecon;
-import org.computate.site.enUS.couverture.Couverture;
 import org.computate.site.enUS.page.parti.PageHtml;
+import org.computate.site.site.enUS.couverture.Couverture;
 
 public class C001L007InstallerPostgresql extends C001L007InstallerPostgresqlGen<C001Lecon> {
 

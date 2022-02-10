@@ -2,7 +2,7 @@ package org.computate.site.enUS.cours.c001;
 
 import java.util.List;
 import org.computate.site.enUS.cours.Cours;
-import org.computate.site.enUS.couverture.Couverture;
+import org.computate.site.site.enUS.couverture.Couverture;
 
 public class C001 extends C001Gen<Cours> {
 

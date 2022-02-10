@@ -1,7 +1,7 @@
 package org.computate.site.enUS.page.parti;
 
-import org.computate.site.enUS.chaine.Chaine;
-import org.computate.site.enUS.couverture.Couverture;
+import org.computate.site.site.enUS.chaine.Chaine;
+import org.computate.site.site.enUS.couverture.Couverture;
 
 public class QuestionReponse extends QuestionReponseGen<PagePart> {
 

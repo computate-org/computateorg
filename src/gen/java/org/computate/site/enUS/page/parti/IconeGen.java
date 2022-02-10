@@ -3,12 +3,13 @@ package org.computate.site.enUS.page.parti;
 import org.computate.site.enUS.ecrivain.ToutEcrivain;
 import java.util.Objects;
 import io.vertx.core.json.JsonArray;
-import org.computate.site.enUS.cluster.Cluster;
-import org.computate.site.enUS.couverture.Couverture;
-import org.computate.site.enUS.requete.RequeteSiteEnUS;
-import org.computate.site.enUS.chaine.Chaine;
+
+import org.computate.site.site.enUS.chaine.Chaine;
+import org.computate.site.site.enUS.couverture.Couverture;
+import org.computate.site.site.enus.model.base.Cluster;
 import org.apache.commons.text.StringEscapeUtils;
 import org.computate.site.enUS.page.parti.PagePart;
+import org.computate.site.enUS.request.RequeteSiteEnUS;
 import org.computate.site.enUS.page.MiseEnPage;
 import org.apache.commons.lang3.StringUtils;
 

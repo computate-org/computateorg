@@ -3,11 +3,11 @@ package org.computate.site.enUS.page.faq;
 import java.util.List;
 import org.apache.solr.client.solrj.SolrQuery.ORDER;
 import org.apache.solr.client.solrj.util.ClientUtils;
-import org.computate.site.enUS.article.Article;
-import org.computate.site.enUS.couverture.Couverture;
 import org.computate.site.enUS.page.parti.PageHtml;
 import org.computate.site.enUS.page.parti.QuestionReponse;
 import org.computate.site.enUS.recherche.ListeRecherche;
+import org.computate.site.enus.article.Article;
+import org.computate.site.site.enUS.couverture.Couverture;
 
 public class PageFaq extends PageFaqGen<Article> {
 

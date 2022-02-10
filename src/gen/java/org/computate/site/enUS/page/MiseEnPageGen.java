@@ -1,9 +1,12 @@
 package org.computate.site.enUS.page;
 
 import org.computate.site.enUS.ecrivain.ToutEcrivain;
-import org.computate.site.enUS.couverture.Couverture;
+
 import java.util.Date;
-import org.computate.site.enUS.requete.RequeteSiteEnUS;
+
+import org.computate.site.site.enUS.couverture.Couverture;
+import org.computate.site.site.enus.model.base.Cluster;
+
 import java.time.ZonedDateTime;
 import java.time.LocalDateTime;
 import org.apache.commons.text.StringEscapeUtils;
@@ -14,13 +17,15 @@ import java.time.ZoneId;
 import java.util.Objects;
 import io.vertx.core.json.JsonArray;
 import org.apache.solr.common.SolrDocument;
-import org.computate.site.enUS.cluster.Cluster;
+
 import java.util.List;
 import java.util.Locale;
 import java.time.format.DateTimeFormatter;
 import java.lang.Boolean;
 import java.lang.Object;
 import org.computate.site.enUS.page.parti.PagePart;
+import org.computate.site.enUS.request.RequeteSiteEnUS;
+
 import java.lang.String;
 import java.time.ZoneOffset;
 

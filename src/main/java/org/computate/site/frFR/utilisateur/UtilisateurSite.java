@@ -50,7 +50,7 @@ public class UtilisateurSite extends UtilisateurSiteGen<Cluster> {
 
 	@Override protected void _classeNomsCanoniques(List<String> l) {
 		l.add(org.computate.site.frFR.utilisateur.UtilisateurSite.class.getCanonicalName());
-		l.add(org.computate.site.enUS.utilisateur.UtilisateurSite.class.getCanonicalName());
+		l.add(org.computate.site.enUS.user.UtilisateurSite.class.getCanonicalName());
 		super._classeNomsCanoniques(l);
 	}
 

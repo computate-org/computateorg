@@ -1,10 +1,11 @@
 package org.computate.site.enUS.cours.c001.l007;
 
-import org.computate.site.enUS.config.ConfigSite;
-import org.computate.site.enUS.requete.RequeteSiteEnUS;
+import org.computate.site.enUS.user.UtilisateurSite;
 import org.computate.site.enUS.contexte.SiteContexteEnUS;
-import org.computate.site.enUS.utilisateur.UtilisateurSite;
+import org.computate.site.enus.config.ConfigSite;
 import org.computate.site.enUS.recherche.ResultatRecherche;
+import org.computate.site.enUS.request.RequeteSiteEnUS;
+
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Map;

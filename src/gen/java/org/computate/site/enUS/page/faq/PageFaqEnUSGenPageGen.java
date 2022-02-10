@@ -2,14 +2,15 @@ package org.computate.site.enUS.page.faq;
 
 import java.util.Objects;
 import io.vertx.core.json.JsonArray;
-import org.computate.site.enUS.article.ArticleEnUSPage;
+
 import org.computate.site.enUS.ecrivain.ToutEcrivain;
-import org.computate.site.enUS.couverture.Couverture;
-import org.computate.site.enUS.requete.RequeteSiteEnUS;
+import org.computate.site.enus.article.ArticleEnUSPage;
+import org.computate.site.site.enUS.couverture.Couverture;
+import org.computate.site.site.enus.model.base.Cluster;
 import org.apache.commons.text.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.computate.site.enUS.cluster.Cluster;
 import org.computate.site.enUS.page.faq.PageFaq;
+import org.computate.site.enUS.request.RequeteSiteEnUS;
 
 /**	
  * <br/><a href="http://localhost:10383/solr/computate/select?q=*:*&fq=partEstClasse_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enUS.page.faq.PageFaqEnUSGenPage&fq=classeEtendGen_indexed_boolean:true">Trouver la classe  dans Solr</a>

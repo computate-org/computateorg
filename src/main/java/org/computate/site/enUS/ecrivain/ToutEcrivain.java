@@ -12,10 +12,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.commons.text.StringEscapeUtils;
 import org.apache.commons.text.WordUtils;
-import org.computate.site.enUS.chaine.Chaine;
-import org.computate.site.enUS.couverture.Couverture;
-import org.computate.site.enUS.requete.RequeteSiteEnUS;
+import org.computate.site.enUS.request.RequeteSiteEnUS;
 import org.computate.site.enUS.xml.OutilXml;
+import org.computate.site.site.enUS.chaine.Chaine;
+import org.computate.site.site.enUS.couverture.Couverture;
+
 import io.vertx.core.buffer.Buffer;
 
 public class ToutEcrivain extends ToutEcrivainGen<Object> {

@@ -2,9 +2,9 @@ package org.computate.site.enUS.cours.c001.l008;
 
 import java.util.List;
 import org.computate.site.enUS.cours.c001.C001Lecon;
-import org.computate.site.enUS.couverture.Couverture;
 import org.computate.site.enUS.page.parti.PageHtml;
-import org.computate.site.enUS.utilisateur.UtilisateurSite;
+import org.computate.site.enUS.user.UtilisateurSite;
+import org.computate.site.site.enUS.couverture.Couverture;
 
 public class C001L008CreerCertificat extends C001L008CreerCertificatGen<C001Lecon> {
 

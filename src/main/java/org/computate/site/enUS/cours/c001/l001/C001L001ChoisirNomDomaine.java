@@ -2,10 +2,10 @@ package org.computate.site.enUS.cours.c001.l001;
 
 import java.util.List;
 import org.computate.site.enUS.cours.c001.C001Lecon;
-import org.computate.site.enUS.couverture.Couverture;
 import org.computate.site.enUS.page.parti.PageHtml;
 import org.computate.site.enUS.page.parti.PageParagraphe;
 import org.computate.site.enUS.page.parti.QuestionReponse;
+import org.computate.site.site.enUS.couverture.Couverture;
 
 public class C001L001ChoisirNomDomaine extends C001L001ChoisirNomDomaineGen<C001Lecon> {
 

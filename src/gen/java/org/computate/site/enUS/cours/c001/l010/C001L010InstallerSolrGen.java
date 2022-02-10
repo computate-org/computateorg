@@ -1,16 +1,18 @@
 package org.computate.site.enUS.cours.c001.l010;
 
 import org.computate.site.enUS.ecrivain.ToutEcrivain;
-import org.computate.site.enUS.couverture.Couverture;
 import org.computate.site.enUS.page.parti.PageHtml;
-import org.computate.site.enUS.requete.RequeteSiteEnUS;
+import org.computate.site.site.enUS.couverture.Couverture;
+import org.computate.site.site.enus.model.base.Cluster;
 import org.apache.commons.exec.CommandLine;
 import org.apache.commons.lang3.StringUtils;
 import java.lang.Integer;
 import java.util.ArrayList;
-import org.computate.site.enUS.cluster.Cluster;
+
 import javax.imageio.ImageIO;
 import org.computate.site.enUS.page.parti.PagePart;
+import org.computate.site.enUS.request.RequeteSiteEnUS;
+
 import java.lang.String;
 import org.apache.commons.exec.DefaultExecutor;
 import java.awt.image.BufferedImage;

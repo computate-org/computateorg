@@ -1,6 +1,6 @@
 package org.computate.site.enUS.page.parti;
 
-import org.computate.site.enUS.chaine.Chaine;
+import org.computate.site.site.enUS.chaine.Chaine;
 
 public class PageHtml extends PageHtmlGen<PagePart> {
 

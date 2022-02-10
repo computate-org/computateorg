@@ -1,4 +1,4 @@
-package org.computate.site.enUS.article;
+package org.computate.site.enus.article;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -8,19 +8,20 @@ import java.util.regex.Pattern;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.solr.common.SolrDocument;
-import org.computate.site.enUS.cluster.Cluster;
-import org.computate.site.enUS.couverture.Couverture;
+import org.computate.site.enUS.article.ArticleGen;
 import org.computate.site.enUS.page.MiseEnPage;
 import org.computate.site.enUS.page.parti.PageHtml;
 import org.computate.site.enUS.page.parti.PagePart;
-import org.computate.site.enUS.utilisateur.UtilisateurSite;
+import org.computate.site.enUS.user.UtilisateurSite;
+import org.computate.site.site.enUS.couverture.Couverture;
+import org.computate.site.site.enus.model.base.Cluster;
 
 public class Article extends ArticleGen<Cluster> {
 
 	@Override()
 	protected void  _classeNomsCanoniques(List<String> l) {
 		l.add(Article.class.getCanonicalName());
-		l.add(org.computate.site.enUS.article.Article.class.getCanonicalName());
+		l.add(org.computate.site.enus.article.Article.class.getCanonicalName());
 		super._classeNomsCanoniques(l);
 	}
 

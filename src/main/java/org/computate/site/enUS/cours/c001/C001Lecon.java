@@ -5,9 +5,10 @@ import java.util.List;
 import java.util.Map;
 import org.apache.solr.client.solrj.SolrQuery.ORDER;
 import org.apache.solr.client.solrj.util.ClientUtils;
-import org.computate.site.enUS.article.Article;
-import org.computate.site.enUS.couverture.Couverture;
 import org.computate.site.enUS.recherche.ListeRecherche;
+import org.computate.site.enus.article.Article;
+import org.computate.site.site.enUS.couverture.Couverture;
+
 import io.vertx.ext.web.api.OperationRequest;
 
 public class C001Lecon extends C001LeconGen<C001> {

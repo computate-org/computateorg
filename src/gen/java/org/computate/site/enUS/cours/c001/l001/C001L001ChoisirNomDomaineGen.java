@@ -1,13 +1,13 @@
 package org.computate.site.enUS.cours.c001.l001;
 
 import org.computate.site.enUS.ecrivain.ToutEcrivain;
-import org.computate.site.enUS.couverture.Couverture;
 import org.computate.site.enUS.page.parti.PageHtml;
-import org.computate.site.enUS.requete.RequeteSiteEnUS;
+import org.computate.site.site.enUS.couverture.Couverture;
+import org.computate.site.site.enus.model.base.Cluster;
 import org.apache.commons.exec.CommandLine;
 import org.apache.commons.lang3.StringUtils;
 import java.util.ArrayList;
-import org.computate.site.enUS.cluster.Cluster;
+
 import javax.imageio.ImageIO;
 import org.computate.site.enUS.page.parti.PagePart;
 import java.lang.String;
@@ -21,6 +21,8 @@ import java.io.File;
 import org.apache.solr.client.solrj.SolrClient;
 import java.util.Objects;
 import org.computate.site.enUS.page.parti.QuestionReponse;
+import org.computate.site.enUS.request.RequeteSiteEnUS;
+
 import io.vertx.core.json.JsonArray;
 import org.apache.solr.common.SolrDocument;
 import java.util.List;

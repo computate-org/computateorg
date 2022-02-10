@@ -2,8 +2,8 @@ package org.computate.site.enUS.cours.c001.l009;
 
 import java.util.List;
 import org.computate.site.enUS.cours.c001.C001Lecon;
-import org.computate.site.enUS.couverture.Couverture;
 import org.computate.site.enUS.page.parti.PageHtml;
+import org.computate.site.site.enUS.couverture.Couverture;
 
 public class C001L009InstallerZookeeper extends C001L009InstallerZookeeperGen<C001Lecon> {
 

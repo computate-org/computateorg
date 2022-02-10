@@ -1,9 +1,14 @@
 package org.computate.site.enUS.contexte;
 
 import org.computate.site.enUS.ecrivain.ToutEcrivain;
+import org.computate.site.enUS.request.RequeteSiteEnUS;
+
 import io.opentracing.Tracer;
-import org.computate.site.enUS.couverture.Couverture;
-import org.computate.site.enUS.requete.RequeteSiteEnUS;
+
+import org.computate.site.enus.config.ConfigSite;
+import org.computate.site.site.enUS.couverture.Couverture;
+import org.computate.site.site.enus.model.base.Cluster;
+
 import io.vertx.core.Vertx;
 import io.vertx.ext.web.handler.OAuth2AuthHandler;
 import org.apache.commons.text.StringEscapeUtils;
@@ -12,7 +17,7 @@ import java.lang.Integer;
 import io.vertx.core.WorkerExecutor;
 import java.util.Objects;
 import io.vertx.core.json.JsonArray;
-import org.computate.site.enUS.cluster.Cluster;
+
 import org.apache.solr.client.solrj.impl.HttpSolrClient;
 import io.opentracing.contrib.vertx.ext.web.TracingHandler;
 import java.lang.Object;
@@ -21,7 +26,6 @@ import io.vertx.core.json.JsonObject;
 import io.vertx.ext.auth.oauth2.OAuth2Auth;
 import java.lang.String;
 import io.vertx.ext.sql.SQLClient;
-import org.computate.site.enUS.config.ConfigSite;
 
 /**	
  * <br/><a href="http://localhost:10383/solr/computate/select?q=*:*&fq=partEstClasse_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enUS.contexte.SiteContexteEnUS&fq=classeEtendGen_indexed_boolean:true">Trouver la classe  dans Solr</a>

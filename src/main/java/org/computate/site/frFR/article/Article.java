@@ -37,7 +37,7 @@ public class Article extends ArticleGen<Cluster> {
 
 	@Override protected void _classeNomsCanoniques(List<String> l) {
 		l.add(Article.class.getCanonicalName());
-		l.add(org.computate.site.enUS.article.Article.class.getCanonicalName());
+		l.add(org.computate.site.enus.article.Article.class.getCanonicalName());
 		super._classeNomsCanoniques(l);
 	}
 

@@ -1,9 +1,9 @@
 package org.computate.site.enUS.page.parti;
 
-import org.computate.site.enUS.cluster.Cluster;
-import org.computate.site.enUS.couverture.Couverture;
 import org.computate.site.enUS.page.MiseEnPage;
-import org.computate.site.enUS.requete.RequeteSiteEnUS;
+import org.computate.site.enUS.request.RequeteSiteEnUS;
+import org.computate.site.site.enUS.couverture.Couverture;
+import org.computate.site.site.enus.model.base.Cluster;
 
 public abstract class PagePart extends PagePartGen<Cluster> {
 

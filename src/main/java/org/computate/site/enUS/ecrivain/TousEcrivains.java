@@ -2,8 +2,9 @@ package org.computate.site.enUS.ecrivain;
 
 import java.io.IOException;
 import java.util.List;
-import org.computate.site.enUS.couverture.Couverture;
-import org.computate.site.enUS.requete.RequeteSiteEnUS;
+
+import org.computate.site.enUS.request.RequeteSiteEnUS;
+import org.computate.site.site.enUS.couverture.Couverture;
 
 public class TousEcrivains extends TousEcrivainsGen<Object> {
 

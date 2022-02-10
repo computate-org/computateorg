@@ -2,8 +2,8 @@ package org.computate.site.enUS.cours.c001.l006;
 
 import java.util.List;
 import org.computate.site.enUS.cours.c001.C001Lecon;
-import org.computate.site.enUS.couverture.Couverture;
 import org.computate.site.enUS.page.parti.PageHtml;
+import org.computate.site.site.enUS.couverture.Couverture;
 
 public class C001L006InstallerEclipse extends C001L006InstallerEclipseGen<C001Lecon> {
 

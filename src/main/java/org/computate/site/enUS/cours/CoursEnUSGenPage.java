@@ -2,15 +2,17 @@ package org.computate.site.enUS.cours;
 
 import java.lang.String;
 import org.computate.site.enUS.page.MiseEnPage;
-import org.computate.site.enUS.config.ConfigSite;
-import org.computate.site.enUS.requete.RequeteSiteEnUS;
+import org.computate.site.enUS.user.UtilisateurSite;
 import org.computate.site.enUS.contexte.SiteContexteEnUS;
-import org.computate.site.enUS.utilisateur.UtilisateurSite;
+import org.computate.site.enus.config.ConfigSite;
+import org.computate.site.site.enUS.couverture.Couverture;
+
 import java.io.IOException;
 import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.http.HttpServerResponse;
 import org.computate.site.enUS.recherche.ListeRecherche;
-import org.computate.site.enUS.couverture.Couverture;
+import org.computate.site.enUS.request.RequeteSiteEnUS;
+
 import java.time.LocalDateTime;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;

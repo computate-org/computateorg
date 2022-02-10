@@ -2,20 +2,24 @@ package org.computate.site.enUS.cours.c001;
 
 import org.computate.site.enUS.ecrivain.ToutEcrivain;
 import org.computate.site.enUS.recherche.ListeRecherche;
-import org.computate.site.enUS.couverture.Couverture;
+import org.computate.site.enUS.request.RequeteSiteEnUS;
+
 import java.util.Date;
-import org.computate.site.enUS.requete.RequeteSiteEnUS;
+
+import org.computate.site.enus.article.Article;
+import org.computate.site.site.enUS.couverture.Couverture;
+import org.computate.site.site.enus.model.base.Cluster;
+
 import java.time.ZonedDateTime;
 import java.time.LocalDateTime;
 import org.apache.commons.lang3.StringUtils;
 import org.computate.site.enUS.cours.c001.C001;
 import java.util.ArrayList;
-import org.computate.site.enUS.cluster.Cluster;
 import java.util.Locale;
 import java.time.ZoneOffset;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.commons.text.StringEscapeUtils;
-import org.computate.site.enUS.article.Article;
+
 import java.time.Instant;
 import java.time.ZoneId;
 import org.computate.site.enUS.contexte.SiteContexteEnUS;

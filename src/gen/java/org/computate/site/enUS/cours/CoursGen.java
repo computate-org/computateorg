@@ -1,11 +1,12 @@
 package org.computate.site.enUS.cours;
 
 import org.computate.site.enUS.ecrivain.ToutEcrivain;
-import org.computate.site.enUS.couverture.Couverture;
-import org.computate.site.enUS.requete.RequeteSiteEnUS;
+import org.computate.site.enUS.request.RequeteSiteEnUS;
+import org.computate.site.enus.article.Article;
+import org.computate.site.site.enUS.couverture.Couverture;
+import org.computate.site.site.enus.model.base.Cluster;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.commons.text.StringEscapeUtils;
-import org.computate.site.enUS.article.Article;
 import org.apache.commons.lang3.StringUtils;
 import org.computate.site.enUS.contexte.SiteContexteEnUS;
 import org.apache.solr.client.solrj.SolrClient;
@@ -13,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 import io.vertx.core.json.JsonArray;
 import org.apache.solr.common.SolrDocument;
-import org.computate.site.enUS.cluster.Cluster;
+
 import java.util.List;
 import org.apache.solr.client.solrj.SolrQuery;
 import java.lang.String;

@@ -1,20 +1,24 @@
 package org.computate.site.enUS.cluster;
 
 import org.computate.site.enUS.ecrivain.ToutEcrivain;
-import org.computate.site.enUS.couverture.Couverture;
+
 import java.util.Date;
-import org.computate.site.enUS.requete.RequeteSiteEnUS;
+
+import org.computate.site.site.enUS.couverture.Couverture;
+import org.computate.site.site.enus.model.base.Cluster;
+
 import java.time.ZonedDateTime;
 import java.time.LocalDateTime;
 import org.apache.commons.lang3.StringUtils;
 import io.vertx.core.logging.LoggerFactory;
 import java.util.ArrayList;
-import org.computate.site.enUS.cluster.Cluster;
 import java.lang.Long;
 import java.util.Locale;
 import java.lang.Boolean;
 import io.vertx.core.json.JsonObject;
 import org.computate.site.enUS.page.parti.PagePart;
+import org.computate.site.enUS.request.RequeteSiteEnUS;
+
 import java.lang.String;
 import java.time.ZoneOffset;
 import io.vertx.core.logging.Logger;

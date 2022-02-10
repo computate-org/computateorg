@@ -1,16 +1,19 @@
 package org.computate.site.enUS.ecrivain;
 
 import org.computate.site.enUS.ecrivain.ToutEcrivain;
+import org.computate.site.enUS.request.RequeteSiteEnUS;
+
 import java.io.PrintWriter;
-import org.computate.site.enUS.couverture.Couverture;
-import org.computate.site.enUS.requete.RequeteSiteEnUS;
+
+import org.computate.site.site.enUS.couverture.Couverture;
+import org.computate.site.site.enus.model.base.Cluster;
+
 import java.io.StringWriter;
 import org.apache.commons.text.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 import java.io.File;
 import java.util.Objects;
 import io.vertx.core.json.JsonArray;
-import org.computate.site.enUS.cluster.Cluster;
 import io.vertx.core.buffer.Buffer;
 import java.lang.Boolean;
 import java.lang.Object;

@@ -1,16 +1,20 @@
 package org.computate.site.enUS.chaine;
 
 import org.computate.site.enUS.ecrivain.ToutEcrivain;
-import org.computate.site.enUS.couverture.Couverture;
+
 import java.lang.Double;
-import org.computate.site.enUS.requete.RequeteSiteEnUS;
+
+import org.computate.site.site.enUS.couverture.Couverture;
+import org.computate.site.site.enus.model.base.Cluster;
 import org.apache.commons.text.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 import java.util.ArrayList;
 import java.util.Objects;
 import io.vertx.core.json.JsonArray;
-import org.computate.site.enUS.cluster.Cluster;
+
 import org.computate.site.enUS.page.parti.Icone;
+import org.computate.site.enUS.request.RequeteSiteEnUS;
+
 import java.lang.Boolean;
 import java.lang.Object;
 import java.lang.String;

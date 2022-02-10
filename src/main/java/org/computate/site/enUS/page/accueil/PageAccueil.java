@@ -7,11 +7,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.solr.client.solrj.SolrQuery.ORDER;
 import org.apache.solr.client.solrj.util.ClientUtils;
-import org.computate.site.enUS.article.Article;
 import org.computate.site.enUS.cours.Cours;
-import org.computate.site.enUS.couverture.Couverture;
 import org.computate.site.enUS.page.parti.PageParagraphe;
 import org.computate.site.enUS.recherche.ListeRecherche;
+import org.computate.site.enus.article.Article;
+import org.computate.site.site.enUS.couverture.Couverture;
+
 import io.vertx.core.json.JsonArray;
 import io.vertx.ext.web.api.OperationRequest;
 

@@ -1,16 +1,17 @@
 package org.computate.site.enUS.config;
 
 import org.computate.site.enUS.ecrivain.ToutEcrivain;
+import org.computate.site.enUS.request.RequeteSiteEnUS;
 import org.apache.commons.configuration2.INIConfiguration;
-import org.computate.site.enUS.couverture.Couverture;
-import org.computate.site.enUS.requete.RequeteSiteEnUS;
+import org.computate.site.site.enUS.couverture.Couverture;
+import org.computate.site.site.enus.model.base.Cluster;
 import org.apache.commons.text.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 import java.lang.Integer;
 import org.computate.site.enUS.contexte.SiteContexteEnUS;
 import java.util.Objects;
 import io.vertx.core.json.JsonArray;
-import org.computate.site.enUS.cluster.Cluster;
+
 import java.lang.Object;
 import java.lang.String;
 

@@ -14,13 +14,14 @@ import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.solr.common.SolrDocument;
-import org.computate.site.enUS.chaine.Chaine;
-import org.computate.site.enUS.config.ConfigSite;
-import org.computate.site.enUS.couverture.Couverture;
 import org.computate.site.enUS.ecrivain.ToutEcrivain;
 import org.computate.site.enUS.page.parti.PagePart;
-import org.computate.site.enUS.requete.RequeteSiteEnUS;
+import org.computate.site.enUS.request.RequeteSiteEnUS;
 import org.computate.site.enUS.xml.OutilXml;
+import org.computate.site.enus.config.ConfigSite;
+import org.computate.site.site.enUS.chaine.Chaine;
+import org.computate.site.site.enUS.couverture.Couverture;
+
 import io.vertx.core.json.JsonObject;
 
 public class MiseEnPage extends MiseEnPageGen<Object> {
