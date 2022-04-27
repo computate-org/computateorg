@@ -1,0 +1,517 @@
+{{#*inline "htmTitleCoursePage"}}		<!-- inline "htmTitleCoursePage" -->
+		<title>{{#if searchListCourse_}}{{#eq courseCount int1}}{{#eq params.query.q "*:*"}}course{{else}}course{{/eq}}{{else}}no course found{{/eq}}{{else}}courses{{/if}}</title>
+{{/inline}}
+{{#*inline "htmMetaCoursePage"}}{{> "htmMetaArticlePage"}}{{/inline}}
+{{#*inline "htmStyleCoursePage"}}{{> "htmStyleArticlePage"}}{{/inline}}
+{{#*inline "htmScriptsCoursePage"}}{{> "htmScriptsArticlePage"}}		<!-- inline "htmScriptsCoursePage" -->
+		<script src="{{staticBaseUrl}}/js/enUS/CoursePage.js"></script>
+{{/inline}}
+{{#*inline "htmScriptCoursePage"}}		<!-- inline "htmScriptCoursePage" -->
+		<script>
+			$(document).ready(function() {
+				document.onkeydown = function(evt) {
+					evt = evt || window.event;
+					var isEscape = false;
+					if ('key' in evt) {
+						isEscape = (evt.key === 'Escape' || evt.key === 'Esc');
+					} else {
+						isEscape = (evt.keyCode === 27);
+					}
+					if (isEscape) {
+						$('.w3-modal:visible').hide();
+					}
+				};
+				window.eventBus = new EventBus('/eventbus');
+				var pk = {{#if pk}}{{pk}}{{else}}null{{/if}};
+				if(pk != null) {
+				}
+				websocketCourse(websocketCourseInner);
+				window.varsFq = JSON.parse('{{{toJsonObjectStringInApostrophes varsFq}}}');
+				pageGraph();
+			});
+		</script>
+{{/inline}}
+{{#*inline "htmUrlCourse"}}{{pageUri}}?q={{query.q}}&amp;rows={{#if rows}}{{rows}}{{else}}{{pagination.rows}}{{/if}}&amp;rows={{#if start}}{{start}}{{else}}{{pagination.start}}{{/if}}{{#each query.fq}}{{#eq fq this}}{{else}}&fq={{fq}}:{{val}}{{/eq}}{{/each}}{{#each query.sort}}{{#eq sort this}}{{else}}&sort={{var}} {{order}}{{/eq}}{{/each}}{{/inline}}
+{{#*inline "htmHeadCoursePage"}}{{> "htmTitleCoursePage"}}{{> "htmMetaCoursePage"}}{{> "htmStyleCoursePage"}}{{> "htmScriptsCoursePage"}}{{> "htmScriptCoursePage"}}{{/inline}}
+{{#*inline "htmBodySearchCoursePage"}}		<!-- #*inline "htmBodySearchCoursePage" -->
+	<div>
+{{#each varsQ}}
+		<div class="w3-padding ">
+			<label for="fqCourse_{{ @key }}">{{ displayName }}<sup class="w3-tiny "> ({{ classSimpleName }})</sup></label>
+			<input id="fqCourse_{{ @key }}" placeholder="{{ displayName }}" class="w3-input " onkeyup="qChange(this); " data-var="{{ var }}" autocomplete="off="/>
+			<div class="pageSearchVal w3-tiny "></div>
+		</div>
+{{/each}}
+	</div>
+{{/inline}}
+{{#*inline "htmBodyFiltersCoursePage"}}		<!-- #*inline "htmBodyFiltersCoursePage" -->
+	<div>
+{{#each varsFq }}
+		<div class="w3-padding ">
+			<label for="fqCourse_{{ @key }}">{{ displayName }}<sup class="w3-tiny "> ({{ classSimpleName }})</sup></label>
+			<div class="w3-cell-row ">
+				<div class="w3-cell w3-cell-top ">
+					<button id="buttonFacetCourse_{{ @key }}" class="w3-button " onclick="facetFieldChange(this); " title="see values " data-var="{{ var }}" data-clear="{{#if facetField }}true{{else}}false{{/if}}"><i class="fas fa-list "></i></button>
+				</div>
+				<div class="w3-cell w3-cell-top ">
+					<input id="fqCourse_{{ @key }}" placeholder="{{ displayName }}" class="w3-input " onkeyup="fqChange(this); " data-var="{{ var }}" autocomplete="off=" value="{{ val }}"/>
+				</div>
+			</div>
+		</div>
+		<div class="w3-padding w3-tiny ">
+			<div class="pageSearchVal " id="pageSearchVal-fqCourse_{{ @key }}">{{#if val }}fq={{ var }}:{{encodeURIComponent val }}{{/if}}</div>
+			<div class="pageSearchVal " id="pageSearchVal-buttonFacetCourse_{{ @key }}">{{#if facetField.var }}facet.field={{ facetField.var }}{{/if}}</div>
+		</div>
+		<ol class="pageFacetField " id="pageFacetFieldCourse_{{ @key }}">
+{{#each facetField.counts }}
+			<li class="">{{ @key }}: {{ this }}</li>
+{{/each}}
+		</ol>
+{{/each}}
+	</div>
+{{/inline}}
+{{#*inline "htmBodyRangeCoursePage"}}		<!-- #*inline "htmBodyRangeCoursePage" -->
+	<table class="w3-padding ">
+		<tr>			<td class="w3-padding w3-tiny " colspan="2">
+				<div class="pageSearchVal " id="pageSearchVal-pageFacetRangeGap-Course">{{#if defaultRangeGap }}facet.range.gap={{encodeURIComponent defaultRangeGap }}{{/if}}</div>
+				<div class="pageSearchVal " id="pageSearchVal-pageFacetRangeStart-Course">{{#if defaultRangeStart }}facet.range.start={{encodeURIComponent defaultRangeStart }}{{/if}}</div>
+				<div class="pageSearchVal " id="pageSearchVal-pageFacetRangeEnd-Course">{{#if defaultRangeEnd }}facet.range.end={{encodeURIComponent defaultRangeEnd }}{{/if}}</div>
+				<div class="pageSearchVal " id="pageSearchVal-pageFacetRangeVar-Course">{{#if defaultRangeVar }}facet.range={!tag=r1}{{encodeURIComponent defaultRangeVar }}{{/if}}</div>
+			</td>
+		</tr>
+	</table>
+	<table class="w3-padding ">
+		<tr class="">
+			<td class="">
+			<span>Range Gap</span>
+			</td>
+			<td class="">
+				<select
+ name="facet.range.gap" id="pageFacetRangeGap-Course" onchange="facetRangeChange(this, 'Course'); ">
+					<option value="+1YEAR"{{#eq defaultRangeGap '+1YEAR'}} selected="selected"{{else}}{{/eq}}>Year</option>
+					<option value="+1MONTH"{{#eq defaultRangeGap '+1MONTH'}} selected="selected"{{else}}{{/eq}}>Month</option>
+					<option value="+1WEEK"{{#eq defaultRangeGap '+1WEEK'}} selected="selected"{{else}}{{/eq}}>Week</option>
+					<option value="+1DAY"{{#eq defaultRangeGap '+1DAY'}} selected="selected"{{else}}{{#if defaultRangeGap}}{{else}} selected="selected"{{/if}}{{/eq}}>Day</option>
+					<option value="+1HOUR"{{#eq defaultRangeGap '+1HOUR'}} selected="selected"{{else}}{{/eq}}>Hour</option>
+					<option value="+1MINUTE"{{#eq defaultRangeGap '+1MINUTE'}} selected="selected"{{else}}{{/eq}}>Minute</option>
+					<option value="+1SECOND"{{#eq defaultRangeGap '+1SECOND'}} selected="selected"{{else}}{{/eq}}>Second</option>
+				</select>
+			</td>
+		</tr>
+		<tr class="">
+			<td class="" colspan="2">
+				<span>Range Start</span>
+			</td>
+		</tr>
+		<tr class="">
+			<td class="" colspan="2">
+			<span><input type="datetime-local" name="facetRangeStart" id="pageFacetRangeStart-Course" value="{{formatZonedDateTime defaultRangeStart "yyyy-MM-dd'T'HH:mm" defaultLocaleId defaultZoneId}}" onclick="facetRangeChange(this, 'Course'); "/></span>
+			</td>
+		</tr>
+		<tr class="">
+			<td class="" colspan="2">
+				<span>Range End</span>
+			</td>
+		</tr>
+		<tr class="">
+			<td class="" colspan="2">
+			<span><input type="datetime-local" name="facetRangeEnd" id="pageFacetRangeEnd-Course" value="{{formatZonedDateTime defaultRangeEnd "yyyy-MM-dd'T'HH:mm" defaultLocaleId defaultZoneId}}" onclick="facetRangeChange(this, 'Course'); "/></span>
+			</td>
+		</tr>
+	</table>
+	<table class="w3-padding ">
+{{#each varsRange }}
+		<tr class="">
+			<td class="">
+				<span><input type="radio" name="pageFacetRange" class="pageFacetRange " id="pageFacetRangeCourse_{{ @key }}" value="{{ var }}"{{#eq defaultRangeVar var }} checked="checked"{{/eq}} onclick="facetRangeChange(this, 'Course'); "/></span>
+			</td>
+			<td class="">
+			<label for="pageFacetRangeCourse_{{ @key }}">{{ displayName }}</label>
+			</td>
+		</tr>
+{{/each}}
+	</table>
+{{#*inline "htmBodyPivotCoursePage"}}		<!-- #*inline "htmBodyPivotCoursePage" -->
+		<div class="w3-padding w3-tiny " id="pageSearchVal-pivotCourse">
+{{#if defaultPivotVars }}
+			<div class="pageSearchVal " id="pageSearchVal-pivotCourse">facet.pivot={{#each defaultPivotVars }}{{#if @index }},{{/if}}{{ this }}{{/each}}</div>
+{{/if}}
+		</div>
+		<div style="display: none; " class="w3-padding w3-tiny " id="pageSearchVal-hiddenCourse">
+{{#each defaultPivotVars }}
+			<div class="pageSearchVal pageSearchVal-hiddenCourse " id="pageSearchVal-hiddenCourse_{{ this }}">{{ this }}</div>
+{{/each}}
+		</div>
+	<table class="w3-table ">
+{{#each varsFq }}
+		<tr class="">
+			<td class="">
+				<span><input type="checkbox" name="pageFacetPivot" class="pageFacetPivot " id="pageFacetPivotCourse_{{ @key }}" value="{{ var }}"{{#if pivot }} checked="checked"{{/if}} onclick="facetPivotChange(this, 'Course'); "/></span>
+			</td>
+			<td class="w3-cell ">
+			<label for="pageFacetPivotCourse_{{ @key }}">{{ displayName }}</label>
+			</td>
+		</tr>
+{{/each}}
+	</table>
+{{/inline}}
+{{/inline}}
+{{#*inline "htmBodyMenuCoursePage"}}		<!-- #*inline "htmBodyMenuCoursePage" -->
+{{> "htmBodyMenuArticlePage"}}{{/inline}}
+{{#*inline "htmBodyGraphCoursePage"}}		<!-- #*inline "htmBodyGraphCoursePage" -->
+<div id="htmBodyGraphArticlePage" class="htmBodyGraph "></div>{{/inline}}
+{{#*inline "htmBodyCount0CoursePage"}}		<!-- #*inline "htmBodyCount0CoursePage" -->
+		<h1>
+			<a href="{{pageUri}}" class="w3-bar-item w3-btn w3-center w3-block w3-green w3-hover-green">
+				{{#if contextIconCssClasses}}
+					<i class="{{ contextIconCssClasses }} site-menu-icon "></i>
+				{{/if}}
+				<span class="">courses</span>
+			</a>
+		</h1>
+		<h2>
+			<span class="w3-bar-item w3-padding w3-center w3-block w3-green">
+				{{#if contextIconCssClasses}}
+					<i class="{{ contextIconCssClasses }}  site-menu-icon "></i>
+				{{/if}}
+				<span class="">no course found</span>
+			</span>
+		</h2>
+{{/inline}}
+{{#*inline "htmBodyCount1AllCoursePage"}}		<!-- #*inline "htmBodyCount1AllCoursePage" -->
+		<h1 class="w3-center ">
+			<a href="{{pageUri}}" class="w3-bar-item w3-btn w3-block w3-green w3-hover-green">
+			{{#if contextIconCssClasses}}
+				<i class="{{ contextIconCssClasses }} site-menu-icon "></i>
+			{{/if}}
+				<span class="">course</span>
+			</a>
+		</h1>
+		<h2 class="w3-center ">
+			<span class="w3-bar-item w3-padding w3-center w3-block w3-green">
+				<span class="">{{course_.objectTitle}}</span>
+			</span>
+		</h2>
+{{/inline}}
+{{#*inline "htmBodyCount1CoursePage"}}		<!-- #*inline "htmBodyCount1CoursePage" -->
+		<h1>
+			<a href="{{pageUri}}" class="w3-bar-item w3-btn w3-center w3-block w3-green w3-hover-green">
+	{{#if contextIconCssClasses}}
+				<i class="{{ contextIconCssClasses }} site-menu-icon "></i>
+	{{/if}}
+				<span class="">courses</span>
+			</a>
+		</h1>
+		<div>
+	{{#if pagination.pagePrevious}}
+			<a href="{{pageUri}}?start={{pagination.pagePrevious.start}}&amp;rows={{pagination.rows}}">
+				<i class="fas fa-arrow-square-left "></i>
+			</a>
+	{{else}}
+			<i class="fas fa-arrow-square-left w3-opacity "></i>
+	{{/if}}
+	{{#gte pagination.rowsPrevious pagination.1L}}
+			<a href="{{pageUri}}?start={{pagination.start}}&amp;rows={{ pagination.rowsPrevious }}">
+				<i class="fas fa-minus-square "></i>
+			</a>
+	{{else}}
+			<i class="fas fa-minus-square w3-opacity "></i>
+	{{/gte}}
+			<a href="{{pageUri}}?start={{pagination.start}}&amp;rows={{ pagination.rowsNext }}">
+				<i class="fas fa-plus-square "></i>
+			</a>
+	{{#if pagination.pageNext}}
+			<a href="{{pageUri}}?start={{pagination.pageNext.start}}&amp;rows={{pagination.rows}}">
+				<i class="fas fa-arrow-square-right "></i>
+			</a>
+	{{else}}
+			<i class="fas fa-arrow-square-right w3-opacity "></i>
+	{{/if}}
+			<span>{{ pagination.startNum }} - {{ pagination.endNum }} of {{ pagination.foundNum }}</span>
+		</div>
+{{> "table1CoursePage"}}
+{{/inline}}
+{{#*inline "htmBodyAllCoursePage"}}		<!-- #*inline "htmBodyAllCoursePage" -->
+		<h1>
+			<a href="{{pageUri}}" class="w3-bar-item w3-btn w3-center w3-block w3-green w3-hover-green">
+	{{#if contextIconCssClasses}}
+				<i class="{{ contextIconCssClasses }} site-menu-icon "></i>
+	{{/if}}
+				<span class="">courses</span>
+			</a>
+		</h1>
+		<div class="">
+			<div>
+	{{#if pagination.pagePrevious}}
+				<a href="{{pageUri}}?start={{pagination.pagePrevious.start}}&amp;rows={{pagination.rows}}">
+					<i class="fas fa-arrow-square-left "></i>
+				</a>
+	{{else}}
+				<i class="fas fa-arrow-square-left w3-opacity "></i>
+	{{/if}}
+	{{#gte pagination.rowsPrevious pagination.1L}}
+				<a href="{{pageUri}}?start={{pagination.start}}&amp;rows={{ pagination.rowsPrevious }}">
+					<i class="fas fa-minus-square "></i>
+				</a>
+	{{else}}
+				<i class="fas fa-minus-square w3-opacity "></i>
+	{{/gte}}
+				<a href="{{pageUri}}?start={{pagination.start}}&amp;rows={{ pagination.rowsNext }}">
+					<i class="fas fa-plus-square "></i>
+				</a>
+	{{#if pagination.pageNext}}
+				<a href="{{pageUri}}?start={{pagination.pageNext.start}}&amp;rows={{pagination.rows}}">
+					<i class="fas fa-arrow-square-right "></i>
+				</a>
+	{{else}}
+				<i class="fas fa-arrow-square-right w3-opacity "></i>
+	{{/if}}
+				<span>{{ pagination.startNum }} - {{ pagination.endNum }} of {{ pagination.foundNum }}</span>
+			</div>
+{{> "table1CoursePage"}}
+		</div>
+{{/inline}}
+{{#*inline "htmFormCoursePage"}}
+		<!-- #*inline "htmForm" -->
+		<form action="" id="CourseForm" class="pageForm " style="" onsubmit="event.preventDefault(); return false; ">
+{{#if id}}
+			<input name="id" class="valueId" type="hidden" value="{{id}}"/>
+{{/if}}
+			<input name="focusId" type="hidden"/>
+			<input name="pageResponse" id="pageResponse" class="pageResponse"  value='{{{toJsonObjectStringInApostrophes pageResponse }}}' type="hidden"/>
+		</form>
+{{#if id}}
+{{#block "htmForm_searchpageCourse"}}{{/block}}
+{{/if}}
+{{/inline}}
+{{#*inline "htmFormCoursePage_searchpageCourse"}}
+		<div id="searchpageCourseModal" class="">
+			<div class="">
+				<div class="w3-card-4 ">
+					<div class="" id="searchpageCourseFormValues">
+						<div id="searchpageCourseForm">
+							<div class="w3-cell-row ">
+{{> "htmCreated" classApiMethodMethod="Page"}}
+{{> "htmModified" classApiMethodMethod="Page"}}
+{{> "htmObjectId" classApiMethodMethod="Page"}}
+							</div>
+							<div class="w3-cell-row ">
+{{> "htmArchived" classApiMethodMethod="Page"}}
+{{> "htmDeleted" classApiMethodMethod="Page"}}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+{{/inline}}
+{{#*inline "htmBodySidebar"}}
+	<div class="w3-dropdown-hover w3-bar-block min-width-300px ">
+		<div class="min-width-300px ">
+			<span title="Search" class="w3-button w3-xlarge w3-green " onclick="$('.siteSidebarToggleFilters').hide(); $('.siteSidebarToggleRange').hide(); $('.siteSidebarTogglePivot').hide(); $('.siteSidebarToggleSearch').toggle(); "><i class="fad fa-magnifying-glass "></i></span>
+			<span title="Filters" class="w3-button w3-xlarge w3-green " onclick="$('.siteSidebarToggleSearch').hide(); $('.siteSidebarToggleRange').hide(); $('.siteSidebarTogglePivot').hide(); $('.siteSidebarToggleFilters').toggle(); "><i class="fad fa-filters "></i></span>
+			<span title="Range" class="w3-button w3-xlarge w3-green " onclick="$('.siteSidebarToggleSearch').hide(); $('.siteSidebarToggleFilters').hide(); $('.siteSidebarTogglePivot').hide(); $('.siteSidebarToggleRange').toggle(); "><i class="fad fa-calendar-range "></i></span>
+			<span title="Pivot" class="w3-button w3-xlarge w3-green " onclick="$('.siteSidebarToggleSearch').hide(); $('.siteSidebarToggleFilters').hide(); $('.siteSidebarToggleRange').hide(); $('.siteSidebarTogglePivot').toggle(); "><i class="fad fa-table-pivot "></i></span>
+		</div>
+		<div class="w3-dropdown-content min-width-300px w3-white w3-border ">
+			<div  class="siteSidebarToggle siteSidebarToggleSearch" style="display: none; ">
+				<div class="w3-bar w3-green ">
+					<span class="w3-bar-item w3-padding ">Search</span>
+				</div>
+				<div class="w3-bar-block ">
+{{#block "htmBodySearch"}}{{/block}}
+				</div>
+			</div>
+			<div  class="siteSidebarToggle siteSidebarToggleFilters" style="display: none; ">
+				<div class="w3-bar w3-green ">
+					<span class="w3-bar-item w3-padding ">Filters</span>
+				</div>
+				<div class="w3-bar-block ">
+{{#block "htmBodyFilters"}}{{/block}}
+				</div>
+			</div>
+			<div  class="siteSidebarToggle siteSidebarToggleRange" style="display: none; ">
+				<div class="w3-bar w3-green ">
+					<span class="w3-bar-item w3-padding ">Range</span>
+				</div>
+				<div class="w3-bar-block ">
+{{#block "htmBodyRange"}}{{/block}}
+				</div>
+			</div>
+			<div  class="siteSidebarToggle siteSidebarTogglePivot" style="display: none; ">
+				<div class="w3-bar w3-green ">
+					<span class="w3-bar-item w3-padding ">Pivot</span>
+				</div>
+				<div class="w3-bar-block ">
+{{#block "htmBodyPivot"}}{{/block}}
+				</div>
+			</div>
+		</div>
+	</div>
+{{/inline}}
+{{#*inline "htmBodyStartCoursePage"}}
+{{> "htmBodyStartArticlePage"}}
+{{/inline}}
+{{#*inline "htmBodyEndCoursePage"}}
+{{> "htmBodyEndArticlePage"}}
+{{/inline}}
+{{#*inline "htmBodyCoursePage"}}
+{{#block "htmBodyStart"}}{{/block}}
+		<div class="w3-bar ">
+			<div class="w3-bar-item ">
+{{#block "htmBodySidebar"}}{{/block}}
+			</div>
+			<div class="w3-bar-item ">
+{{#block "htmBodyMenu"}}{{/block}}
+			</div>
+		</div>
+	<div class="pageContent w3-content ">
+{{#block "htmBodyGraph"}}{{/block}}
+	{{#eq courseCount int0}}
+{{#block "htmBodyCount0"}}{{/block}}
+	{{else}}
+		{{#eq courseCount int1}}
+			{{#eq params.query.q "*:*"}}
+{{#block "htmBodyCount1All"}}{{/block}}
+			{{else}}
+{{#block "htmBodyCount1"}}{{/block}}
+			{{/eq}}
+		{{else}}
+{{#block "htmBodyAll"}}{{/block}}
+		{{/eq}}
+	{{/eq}}
+{{#block "htmForm"}}{{/block}}
+{{#block "htmForms"}}{{/block}}
+{{#block "htmBodyEnd"}}{{/block}}
+	</div>
+{{/inline}}
+{{#*inline "table1CoursePage"}}
+		<div class="w3-responsive ">
+			<table class="w3-table w3-bordered w3-striped w3-border w3-hoverable ">
+{{> table2CoursePage}}
+			</table>
+		</div>
+{{/inline}}
+{{#*inline "table2CoursePage"}}
+{{> "thead1CoursePage"}}
+{{> "tbody1CoursePage"}}
+{{> "tfoot1CoursePage"}}
+{{/inline}}
+{{#*inline "thead1CoursePage"}}
+				<thead class="w3-green w3-hover-green">
+{{> thead2CoursePage}}
+				</thead>
+{{/inline}}
+{{#*inline "thead2CoursePage"}}
+			<tr>
+						<th>created</th>
+						<th></th>
+			</tr>
+{{/inline}}
+{{#*inline "tbody1CoursePage"}}
+				<tbody>
+{{> tbody2CoursePage}}
+				</tbody>
+{{/inline}}
+{{#*inline "tbody2CoursePage"}}
+		{{#each listCourse}}
+					<tr>
+						<td>
+							<a href="{{pageUrlPk}}">
+								<span class="white-space-pre-wrap ">{{siteZonedDateTimeFormat created "MMM d, yyyy h:mm:ss a" siteLocale}}</span>
+							</a>
+						</td>
+						<td>
+							<a href="{{pageUrlPk}}">
+								<i class="far fa-university "></i>
+								<span class="white-space-pre-wrap ">{{objectTitle}}</span>
+							</a>
+						</td>
+					</tr>
+		{{/each}}
+{{/inline}}
+{{#*inline "tfoot1CoursePage"}}
+				<tfoot class="w3-green w3-hover-green">
+{{> tfoot2CoursePage}}
+				</tfoot>
+{{/inline}}
+{{#*inline "tfoot2CoursePage"}}
+			<tr>
+			{{#if getColumnCreated}}
+				<td>
+				</td>
+			{{/if}}
+			{{#if getColumnObjectTitle}}
+				<td>
+				</td>
+			{{/if}}
+			</tr>
+	{{/inline}}
+{{#*inline "htmFormsCoursePage"}}
+	{{#ifContainsAnyRoles roles rolesRequired}}
+		{{#eq courseCount int1}}
+		<button
+			class="w3-btn w3-round w3-border w3-border-black w3-ripple w3-padding w3-green "
+			id="refreshThisCourseGenPage"
+			onclick="patch{{classSimpleName}}Vals( [ {name: 'fq', value: 'id:{{id}}' } ], {}, function() { addGlow($('#refreshThisCourseGenPage')); }, function() { addError($('#refreshThisCourseGenPage')); }); return false; ">
+			<i class="fas fa-sync-alt "></i>
+			refresh this course
+		</button>
+		{{/eq}}
+	{{/ifContainsAnyRoles}}
+	{{#ifContainsAnyRoles roles authRolesAdmin}}
+	{{/ifContainsAnyRoles}}
+{{#block "htmSuggested"}}{{/block}}
+{{/inline}}
+{{#*inline "htmSuggestedCoursePage"}}
+			{{#ifContainsAnyRoles roles rolesRequired}}
+					<div class="">
+						<button id="refreshAllCourseGenPage{{id}}" class="w3-btn w3-round w3-border w3-border-black w3-ripple w3-padding w3-green "
+							onclick="patch{{classSimpleName}}Vals([], {}, function() { addGlow($('#refreshAllCourseGenPage{{id}}')); }, function() { addError($('#refreshAllCourseGenPage{{id}}')); }); "
+							>
+							<i class="fas fa-sync-alt "></i>
+							refresh all the courses
+						</button>
+					</div>
+			{{/ifContainsAnyRoles}}
+			<div class="w3-cell-row ">
+				<div class="w3-cell ">
+					<span>
+						search courses: 
+					</span>
+				</div>
+			</div>
+			<div class="w3-bar ">
+				<input
+					type="text"
+					class="suggestCourse w3-input w3-border w3-bar-item "
+					name="suggestCourse"
+					id="suggestCourse{{id}}"
+					autocomplete="off"
+					oninput="suggestCourseObjectSuggest( [ { 'name': 'q', 'value': 'objectSuggest:' + $(this).val() }, { 'name': 'rows', 'value': '10' }, { 'name': 'fl', 'value': 'classCanonicalName,,pageUrlPk,objectTitle' } ], $('#suggestListCourse{{id}}'), {{id}}; "
+					onkeyup="if (event.keyCode === 13) { event.preventDefault(); window.location.href = '/enUS/course?q={{query1}}:' + encodeURIComponent(this.value) + '{{fqs}}{{sorts}}&amp;rows={{start2}}&amp;rows={{rows1}}"
+				{{#if listCourse}}
+					value="{{query2}}"
+				{{/if}}
+				/>
+				<button
+					class="w3-btn w3-round w3-border w3-border-black w3-ripple w3-padding w3-bar-item w3-green "
+					onclick="window.location.href = '/enUS/course?q=&quot;, query1, &quot;:' + encodeURIComponent(this.previousElementSibling.value) + '&quot;, fqs, sorts, &quot;&amp;rows=&quot;, start2, &quot;&amp;rows=&quot;, rows1, &quot;'; "
+					>
+					<i class="fas fa-search "></i>
+				</button>
+			<div>
+			<div class="w3-cell-row ">
+				<div class="w3-cell w3-left-align w3-cell-top ">
+					<ul class="w3-ul w3-hoverable " id="suggestListCourse{{id}}">
+					</ul>
+				</div>
+			</div>
+			<div class="">
+				<a href="/enUS/course" class="">
+					<i class="far fa-university"></i>
+					see all the courses
+				</a>
+			</div>
+{{/inline}}
+{{> ArticlePage article_=course_}}

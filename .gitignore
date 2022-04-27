@@ -1,7 +1,6 @@
 .classpath
 .project
 .settings
-.vertx
 target/
 pom.xml.tag
 pom.xml.releaseBackup
@@ -11,10 +10,22 @@ release.properties
 dependency-reduced-pom.xml
 buildNumber.properties
 .mvn/timing.properties
-config/computate.org.config
-config/keystore.properties
-src/main/fabric8/deployment.yaml
+config/*.yml
+*.crt
+*.key
+*.jks
+*.p12
+*.jceks
+.vertx
+src/main/fabric8/*.yml
 **/*.swp
+.niogit*
+.index
+ansible/*.retry
+ansible/inventories/**
+.idea
+*.iml
+vault/**
 
 # Avoid ignoring Maven wrapper jar file (.jar files are usually ignored)
 !/.mvn/wrapper/maven-wrapper.jar

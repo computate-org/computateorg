@@ -617,15 +617,6 @@ public class MiseEnPage extends MiseEnPageGen<Object> {
 	
 								g("div");
 								e("footer").a("class", "w3-center w3-black w3-padding-48 ").f();
-									e("div").a("class", "w3-xxlarge ").f();
-										sx("Ce site est open source. ");
-									g("div");
-									e("div").a("class", "w3-large ").f();
-										String urlSource = "https://github.com/computate/computate.org/blob/master/src/main/java/" + StringUtils.replace(getClass().getSuperclass().getSuperclass().getCanonicalName(), ".", "/") + ".java";
-										e("a").a("href", urlSource).a("target", "_blank").a("class", "grow-30 ").f();
-											sx("Voir le code source ici sur github. ");
-										g("a");
-									g("div");
 									e("div").a("class", "grow-30 w3-margin ").f();
 										e("a").a("href", "https://www.openshift.com/").a("target", "_blank").f();
 											e("span").a("class", "w3-large ").f();
