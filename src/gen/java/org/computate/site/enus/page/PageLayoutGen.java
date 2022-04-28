@@ -31,9 +31,9 @@ import org.slf4j.LoggerFactory;
 import java.math.RoundingMode;
 import java.util.Map;
 import java.lang.Object;
+import java.lang.String;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.api.service.ServiceRequest;
-import java.lang.String;
 import java.lang.Long;
 import java.lang.Integer;
 import java.lang.Void;
@@ -59,7 +59,8 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	// siteRequest_ //
 	//////////////////
 
-	/**	 The entity siteRequest_
+	/**
+	 The entity siteRequest_
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonIgnore
@@ -93,11 +94,62 @@ public abstract class PageLayoutGen<DEV> extends Object {
 		return (PageLayout)this;
 	}
 
+	//////////
+	// lang //
+	//////////
+
+	/**
+	 The entity lang
+	 *	 is defined as null before being initialized. 
+	 */
+	@JsonProperty
+	@JsonInclude(Include.NON_NULL)
+	protected String lang;
+
+	/**	<br> The entity lang
+	 *  is defined as null before being initialized. 
+	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.page.PageLayout&fq=entiteVar_enUS_indexed_string:lang">Find the entity lang in Solr</a>
+	 * <br>
+	 * @param w is for wrapping a value to assign to this entity during initialization. 
+	 **/
+	protected abstract void _lang(Wrap<String> w);
+
+	public String getLang() {
+		return lang;
+	}
+	public void setLang(String o) {
+		this.lang = PageLayout.staticSetLang(siteRequest_, o);
+	}
+	public static String staticSetLang(SiteRequestEnUS siteRequest_, String o) {
+		return o;
+	}
+	protected PageLayout langInit() {
+		Wrap<String> langWrap = new Wrap<String>().var("lang");
+		if(lang == null) {
+			_lang(langWrap);
+			setLang(langWrap.o);
+		}
+		return (PageLayout)this;
+	}
+
+	public static String staticSearchLang(SiteRequestEnUS siteRequest_, String o) {
+		return o;
+	}
+
+	public static String staticSearchStrLang(SiteRequestEnUS siteRequest_, String o) {
+		return o == null ? null : o.toString();
+	}
+
+	public static String staticSearchFqLang(SiteRequestEnUS siteRequest_, String o) {
+		return PageLayout.staticSearchStrLang(siteRequest_, PageLayout.staticSearchLang(siteRequest_, PageLayout.staticSetLang(siteRequest_, o)));
+	}
+
 	/////////////////
 	// requestVars //
 	/////////////////
 
-	/**	 The entity requestVars
+	/**
+	 The entity requestVars
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
@@ -135,7 +187,8 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	// config //
 	////////////
 
-	/**	 The entity config
+	/**
+	 The entity config
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonIgnore
@@ -192,7 +245,8 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	// serviceRequest //
 	////////////////////
 
-	/**	 The entity serviceRequest
+	/**
+	 The entity serviceRequest
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
@@ -230,7 +284,8 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	// staticBaseUrl //
 	///////////////////
 
-	/**	 The entity staticBaseUrl
+	/**
+	 The entity staticBaseUrl
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
@@ -279,7 +334,8 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	// STATIC_BASE_URL //
 	/////////////////////
 
-	/**	 The entity STATIC_BASE_URL
+	/**
+	 The entity STATIC_BASE_URL
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
@@ -328,7 +384,8 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	// SITE_BASE_URL //
 	///////////////////
 
-	/**	 The entity SITE_BASE_URL
+	/**
+	 The entity SITE_BASE_URL
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
@@ -377,7 +434,8 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	// SITE_AUTH_URL //
 	///////////////////
 
-	/**	 The entity SITE_AUTH_URL
+	/**
+	 The entity SITE_AUTH_URL
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
@@ -426,7 +484,8 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	// SITE_AUTH_REALM //
 	/////////////////////
 
-	/**	 The entity SITE_AUTH_REALM
+	/**
+	 The entity SITE_AUTH_REALM
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
@@ -475,7 +534,8 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	// FONTAWESOME_KIT //
 	/////////////////////
 
-	/**	 The entity FONTAWESOME_KIT
+	/**
+	 The entity FONTAWESOME_KIT
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
@@ -524,7 +584,8 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	// pageUri //
 	/////////////
 
-	/**	 The entity pageUri
+	/**
+	 The entity pageUri
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
@@ -573,7 +634,8 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	// pageMethod //
 	////////////////
 
-	/**	 The entity pageMethod
+	/**
+	 The entity pageMethod
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
@@ -622,7 +684,8 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	// params //
 	////////////
 
-	/**	 The entity params
+	/**
+	 The entity params
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
@@ -679,7 +742,8 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	// userKey //
 	/////////////
 
-	/**	 The entity userKey
+	/**
+	 The entity userKey
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
@@ -736,7 +800,8 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	// userFullName //
 	//////////////////
 
-	/**	 The entity userFullName
+	/**
+	 The entity userFullName
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
@@ -785,7 +850,8 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	// userName //
 	//////////////
 
-	/**	 The entity userName
+	/**
+	 The entity userName
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
@@ -834,7 +900,8 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	// userEmail //
 	///////////////
 
-	/**	 The entity userEmail
+	/**
+	 The entity userEmail
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
@@ -883,7 +950,8 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	// logoutUrl //
 	///////////////
 
-	/**	 The entity logoutUrl
+	/**
+	 The entity logoutUrl
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
@@ -932,7 +1000,8 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	// long0 //
 	///////////
 
-	/**	 The entity long0
+	/**
+	 The entity long0
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
@@ -989,7 +1058,8 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	// long1 //
 	///////////
 
-	/**	 The entity long1
+	/**
+	 The entity long1
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
@@ -1046,7 +1116,8 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	// int0 //
 	//////////
 
-	/**	 The entity int0
+	/**
+	 The entity int0
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
@@ -1103,7 +1174,8 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	// int1 //
 	//////////
 
-	/**	 The entity int1
+	/**
+	 The entity int1
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
@@ -1160,7 +1232,8 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	// promiseBefore //
 	///////////////////
 
-	/**	 The entity promiseBefore
+	/**
+	 The entity promiseBefore
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonIgnore
@@ -1202,7 +1275,8 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	// classSimpleName //
 	/////////////////////
 
-	/**	 The entity classSimpleName
+	/**
+	 The entity classSimpleName
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
@@ -1251,7 +1325,8 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	// pageTitle //
 	///////////////
 
-	/**	 The entity pageTitle
+	/**
+	 The entity pageTitle
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
@@ -1300,7 +1375,8 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	// roles //
 	///////////
 
-	/**	 The entity roles
+	/**
+	 The entity roles
 	 *	 It is constructed before being initialized with the constructor by default. 
 	 */
 	@JsonProperty
@@ -1366,7 +1442,8 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	// rolesRequired //
 	///////////////////
 
-	/**	 The entity rolesRequired
+	/**
+	 The entity rolesRequired
 	 *	 It is constructed before being initialized with the constructor by default. 
 	 */
 	@JsonProperty
@@ -1432,7 +1509,8 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	// authRolesAdmin //
 	////////////////////
 
-	/**	 The entity authRolesAdmin
+	/**
+	 The entity authRolesAdmin
 	 *	 It is constructed before being initialized with the constructor by default. 
 	 */
 	@JsonProperty
@@ -1498,7 +1576,8 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	// pagination //
 	////////////////
 
-	/**	 The entity pagination
+	/**
+	 The entity pagination
 	 *	 It is constructed before being initialized with the constructor by default. 
 	 */
 	@JsonProperty
@@ -1551,7 +1630,8 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	// varsQ //
 	///////////
 
-	/**	 The entity varsQ
+	/**
+	 The entity varsQ
 	 *	 It is constructed before being initialized with the constructor by default. 
 	 */
 	@JsonProperty
@@ -1604,7 +1684,8 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	// varsFq //
 	////////////
 
-	/**	 The entity varsFq
+	/**
+	 The entity varsFq
 	 *	 It is constructed before being initialized with the constructor by default. 
 	 */
 	@JsonProperty
@@ -1657,7 +1738,8 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	// varsRange //
 	///////////////
 
-	/**	 The entity varsRange
+	/**
+	 The entity varsRange
 	 *	 It is constructed before being initialized with the constructor by default. 
 	 */
 	@JsonProperty
@@ -1710,7 +1792,8 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	// query //
 	///////////
 
-	/**	 The entity query
+	/**
+	 The entity query
 	 *	 It is constructed before being initialized with the constructor by default. 
 	 */
 	@JsonProperty
@@ -1763,7 +1846,8 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	// promiseAfter //
 	//////////////////
 
-	/**	 The entity promiseAfter
+	/**
+	 The entity promiseAfter
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonIgnore
@@ -1805,7 +1889,8 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	// pageImageUri //
 	//////////////////
 
-	/**	 The entity pageImageUri
+	/**
+	 The entity pageImageUri
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
@@ -1850,11 +1935,128 @@ public abstract class PageLayoutGen<DEV> extends Object {
 		return PageLayout.staticSearchStrPageImageUri(siteRequest_, PageLayout.staticSearchPageImageUri(siteRequest_, PageLayout.staticSetPageImageUri(siteRequest_, o)));
 	}
 
+	////////////////////
+	// pageImageWidth //
+	////////////////////
+
+	/**
+	 The entity pageImageWidth
+	 *	 is defined as null before being initialized. 
+	 */
+	@JsonProperty
+	@JsonSerialize(using = ToStringSerializer.class)
+	@JsonInclude(Include.NON_NULL)
+	protected Integer pageImageWidth;
+
+	/**	<br> The entity pageImageWidth
+	 *  is defined as null before being initialized. 
+	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.page.PageLayout&fq=entiteVar_enUS_indexed_string:pageImageWidth">Find the entity pageImageWidth in Solr</a>
+	 * <br>
+	 * @param c is for wrapping a value to assign to this entity during initialization. 
+	 **/
+	protected abstract void _pageImageWidth(Wrap<Integer> c);
+
+	public Integer getPageImageWidth() {
+		return pageImageWidth;
+	}
+
+	public void setPageImageWidth(Integer pageImageWidth) {
+		this.pageImageWidth = pageImageWidth;
+	}
+	@JsonIgnore
+	public void setPageImageWidth(String o) {
+		this.pageImageWidth = PageLayout.staticSetPageImageWidth(siteRequest_, o);
+	}
+	public static Integer staticSetPageImageWidth(SiteRequestEnUS siteRequest_, String o) {
+		if(NumberUtils.isParsable(o))
+			return Integer.parseInt(o);
+		return null;
+	}
+	protected PageLayout pageImageWidthInit() {
+		Wrap<Integer> pageImageWidthWrap = new Wrap<Integer>().var("pageImageWidth");
+		if(pageImageWidth == null) {
+			_pageImageWidth(pageImageWidthWrap);
+			setPageImageWidth(pageImageWidthWrap.o);
+		}
+		return (PageLayout)this;
+	}
+
+	public static Integer staticSearchPageImageWidth(SiteRequestEnUS siteRequest_, Integer o) {
+		return o;
+	}
+
+	public static String staticSearchStrPageImageWidth(SiteRequestEnUS siteRequest_, Integer o) {
+		return o == null ? null : o.toString();
+	}
+
+	public static String staticSearchFqPageImageWidth(SiteRequestEnUS siteRequest_, String o) {
+		return PageLayout.staticSearchStrPageImageWidth(siteRequest_, PageLayout.staticSearchPageImageWidth(siteRequest_, PageLayout.staticSetPageImageWidth(siteRequest_, o)));
+	}
+
+	/////////////////////
+	// pageImageHeight //
+	/////////////////////
+
+	/**
+	 The entity pageImageHeight
+	 *	 is defined as null before being initialized. 
+	 */
+	@JsonProperty
+	@JsonSerialize(using = ToStringSerializer.class)
+	@JsonInclude(Include.NON_NULL)
+	protected Integer pageImageHeight;
+
+	/**	<br> The entity pageImageHeight
+	 *  is defined as null before being initialized. 
+	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.page.PageLayout&fq=entiteVar_enUS_indexed_string:pageImageHeight">Find the entity pageImageHeight in Solr</a>
+	 * <br>
+	 * @param c is for wrapping a value to assign to this entity during initialization. 
+	 **/
+	protected abstract void _pageImageHeight(Wrap<Integer> c);
+
+	public Integer getPageImageHeight() {
+		return pageImageHeight;
+	}
+
+	public void setPageImageHeight(Integer pageImageHeight) {
+		this.pageImageHeight = pageImageHeight;
+	}
+	@JsonIgnore
+	public void setPageImageHeight(String o) {
+		this.pageImageHeight = PageLayout.staticSetPageImageHeight(siteRequest_, o);
+	}
+	public static Integer staticSetPageImageHeight(SiteRequestEnUS siteRequest_, String o) {
+		if(NumberUtils.isParsable(o))
+			return Integer.parseInt(o);
+		return null;
+	}
+	protected PageLayout pageImageHeightInit() {
+		Wrap<Integer> pageImageHeightWrap = new Wrap<Integer>().var("pageImageHeight");
+		if(pageImageHeight == null) {
+			_pageImageHeight(pageImageHeightWrap);
+			setPageImageHeight(pageImageHeightWrap.o);
+		}
+		return (PageLayout)this;
+	}
+
+	public static Integer staticSearchPageImageHeight(SiteRequestEnUS siteRequest_, Integer o) {
+		return o;
+	}
+
+	public static String staticSearchStrPageImageHeight(SiteRequestEnUS siteRequest_, Integer o) {
+		return o == null ? null : o.toString();
+	}
+
+	public static String staticSearchFqPageImageHeight(SiteRequestEnUS siteRequest_, String o) {
+		return PageLayout.staticSearchStrPageImageHeight(siteRequest_, PageLayout.staticSearchPageImageHeight(siteRequest_, PageLayout.staticSetPageImageHeight(siteRequest_, o)));
+	}
+
 	/////////////////
 	// pageVideoId //
 	/////////////////
 
-	/**	 The entity pageVideoId
+	/**
+	 The entity pageVideoId
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
@@ -1903,7 +2105,8 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	// contextIconGroup //
 	//////////////////////
 
-	/**	 The entity contextIconGroup
+	/**
+	 The entity contextIconGroup
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
@@ -1952,7 +2155,8 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	// contextIconName //
 	/////////////////////
 
-	/**	 The entity contextIconName
+	/**
+	 The entity contextIconName
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
@@ -2001,7 +2205,8 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	// contextIconCssClasses //
 	///////////////////////////
 
-	/**	 The entity contextIconCssClasses
+	/**
+	 The entity contextIconCssClasses
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
@@ -2050,7 +2255,8 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	// pageDescription //
 	/////////////////////
 
-	/**	 The entity pageDescription
+	/**
+	 The entity pageDescription
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
@@ -2121,6 +2327,7 @@ public abstract class PageLayoutGen<DEV> extends Object {
 			Promise<Void> promise2 = Promise.promise();
 			try {
 				siteRequest_Init();
+				langInit();
 				requestVarsInit();
 				configInit();
 				serviceRequestInit();
@@ -2185,6 +2392,8 @@ public abstract class PageLayoutGen<DEV> extends Object {
 			Promise<Void> promise2 = Promise.promise();
 			try {
 				pageImageUriInit();
+				pageImageWidthInit();
+				pageImageHeightInit();
 				pageVideoIdInit();
 				contextIconGroupInit();
 				contextIconNameInit();
@@ -2244,6 +2453,8 @@ public abstract class PageLayoutGen<DEV> extends Object {
 		switch(var) {
 			case "siteRequest_":
 				return oPageLayout.siteRequest_;
+			case "lang":
+				return oPageLayout.lang;
 			case "requestVars":
 				return oPageLayout.requestVars;
 			case "config":
@@ -2312,6 +2523,10 @@ public abstract class PageLayoutGen<DEV> extends Object {
 				return oPageLayout.promiseAfter;
 			case "pageImageUri":
 				return oPageLayout.pageImageUri;
+			case "pageImageWidth":
+				return oPageLayout.pageImageWidth;
+			case "pageImageHeight":
+				return oPageLayout.pageImageHeight;
 			case "pageVideoId":
 				return oPageLayout.pageVideoId;
 			case "contextIconGroup":
@@ -2361,6 +2576,8 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	}
 	public static Object staticSetPageLayout(String entityVar, SiteRequestEnUS siteRequest_, String o) {
 		switch(entityVar) {
+		case "lang":
+			return PageLayout.staticSetLang(siteRequest_, o);
 		case "config":
 			return PageLayout.staticSetConfig(siteRequest_, o);
 		case "staticBaseUrl":
@@ -2421,6 +2638,10 @@ public abstract class PageLayoutGen<DEV> extends Object {
 			return PageLayout.staticSetQuery(siteRequest_, o);
 		case "pageImageUri":
 			return PageLayout.staticSetPageImageUri(siteRequest_, o);
+		case "pageImageWidth":
+			return PageLayout.staticSetPageImageWidth(siteRequest_, o);
+		case "pageImageHeight":
+			return PageLayout.staticSetPageImageHeight(siteRequest_, o);
 		case "pageVideoId":
 			return PageLayout.staticSetPageVideoId(siteRequest_, o);
 		case "contextIconGroup":
@@ -2445,6 +2666,8 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	}
 	public static Object staticSearchPageLayout(String entityVar, SiteRequestEnUS siteRequest_, Object o) {
 		switch(entityVar) {
+		case "lang":
+			return PageLayout.staticSearchLang(siteRequest_, (String)o);
 		case "config":
 			return PageLayout.staticSearchConfig(siteRequest_, (JsonObject)o);
 		case "staticBaseUrl":
@@ -2505,6 +2728,10 @@ public abstract class PageLayoutGen<DEV> extends Object {
 			return PageLayout.staticSearchQuery(siteRequest_, (JsonObject)o);
 		case "pageImageUri":
 			return PageLayout.staticSearchPageImageUri(siteRequest_, (String)o);
+		case "pageImageWidth":
+			return PageLayout.staticSearchPageImageWidth(siteRequest_, (Integer)o);
+		case "pageImageHeight":
+			return PageLayout.staticSearchPageImageHeight(siteRequest_, (Integer)o);
 		case "pageVideoId":
 			return PageLayout.staticSearchPageVideoId(siteRequest_, (String)o);
 		case "contextIconGroup":
@@ -2529,6 +2756,8 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	}
 	public static String staticSearchStrPageLayout(String entityVar, SiteRequestEnUS siteRequest_, Object o) {
 		switch(entityVar) {
+		case "lang":
+			return PageLayout.staticSearchStrLang(siteRequest_, (String)o);
 		case "config":
 			return PageLayout.staticSearchStrConfig(siteRequest_, (JsonObject)o);
 		case "staticBaseUrl":
@@ -2589,6 +2818,10 @@ public abstract class PageLayoutGen<DEV> extends Object {
 			return PageLayout.staticSearchStrQuery(siteRequest_, (JsonObject)o);
 		case "pageImageUri":
 			return PageLayout.staticSearchStrPageImageUri(siteRequest_, (String)o);
+		case "pageImageWidth":
+			return PageLayout.staticSearchStrPageImageWidth(siteRequest_, (Integer)o);
+		case "pageImageHeight":
+			return PageLayout.staticSearchStrPageImageHeight(siteRequest_, (Integer)o);
 		case "pageVideoId":
 			return PageLayout.staticSearchStrPageVideoId(siteRequest_, (String)o);
 		case "contextIconGroup":
@@ -2613,6 +2846,8 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	}
 	public static String staticSearchFqPageLayout(String entityVar, SiteRequestEnUS siteRequest_, String o) {
 		switch(entityVar) {
+		case "lang":
+			return PageLayout.staticSearchFqLang(siteRequest_, o);
 		case "config":
 			return PageLayout.staticSearchFqConfig(siteRequest_, o);
 		case "staticBaseUrl":
@@ -2673,6 +2908,10 @@ public abstract class PageLayoutGen<DEV> extends Object {
 			return PageLayout.staticSearchFqQuery(siteRequest_, o);
 		case "pageImageUri":
 			return PageLayout.staticSearchFqPageImageUri(siteRequest_, o);
+		case "pageImageWidth":
+			return PageLayout.staticSearchFqPageImageWidth(siteRequest_, o);
+		case "pageImageHeight":
+			return PageLayout.staticSearchFqPageImageHeight(siteRequest_, o);
 		case "pageVideoId":
 			return PageLayout.staticSearchFqPageVideoId(siteRequest_, o);
 		case "contextIconGroup":
@@ -2699,6 +2938,7 @@ public abstract class PageLayoutGen<DEV> extends Object {
 
 	public static final String CLASS_SIMPLE_NAME = "PageLayout";
 	public static final String VAR_siteRequest_ = "siteRequest_";
+	public static final String VAR_lang = "lang";
 	public static final String VAR_requestVars = "requestVars";
 	public static final String VAR_config = "config";
 	public static final String VAR_serviceRequest = "serviceRequest";
@@ -2733,6 +2973,8 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	public static final String VAR_query = "query";
 	public static final String VAR_promiseAfter = "promiseAfter";
 	public static final String VAR_pageImageUri = "pageImageUri";
+	public static final String VAR_pageImageWidth = "pageImageWidth";
+	public static final String VAR_pageImageHeight = "pageImageHeight";
 	public static final String VAR_pageVideoId = "pageVideoId";
 	public static final String VAR_contextIconGroup = "contextIconGroup";
 	public static final String VAR_contextIconName = "contextIconName";
@@ -2740,6 +2982,7 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	public static final String VAR_pageDescription = "pageDescription";
 
 	public static final String DISPLAY_NAME_siteRequest_ = "";
+	public static final String DISPLAY_NAME_lang = "";
 	public static final String DISPLAY_NAME_requestVars = "";
 	public static final String DISPLAY_NAME_config = "";
 	public static final String DISPLAY_NAME_serviceRequest = "";
@@ -2774,6 +3017,8 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	public static final String DISPLAY_NAME_query = "";
 	public static final String DISPLAY_NAME_promiseAfter = "";
 	public static final String DISPLAY_NAME_pageImageUri = "";
+	public static final String DISPLAY_NAME_pageImageWidth = "";
+	public static final String DISPLAY_NAME_pageImageHeight = "";
 	public static final String DISPLAY_NAME_pageVideoId = "";
 	public static final String DISPLAY_NAME_contextIconGroup = "";
 	public static final String DISPLAY_NAME_contextIconName = "";
@@ -2787,6 +3032,8 @@ public abstract class PageLayoutGen<DEV> extends Object {
 		switch(var) {
 		case VAR_siteRequest_:
 			return DISPLAY_NAME_siteRequest_;
+		case VAR_lang:
+			return DISPLAY_NAME_lang;
 		case VAR_requestVars:
 			return DISPLAY_NAME_requestVars;
 		case VAR_config:
@@ -2855,6 +3102,10 @@ public abstract class PageLayoutGen<DEV> extends Object {
 			return DISPLAY_NAME_promiseAfter;
 		case VAR_pageImageUri:
 			return DISPLAY_NAME_pageImageUri;
+		case VAR_pageImageWidth:
+			return DISPLAY_NAME_pageImageWidth;
+		case VAR_pageImageHeight:
+			return DISPLAY_NAME_pageImageHeight;
 		case VAR_pageVideoId:
 			return DISPLAY_NAME_pageVideoId;
 		case VAR_contextIconGroup:

@@ -31,8 +31,7 @@ import org.slf4j.LoggerFactory;
 import java.math.RoundingMode;
 import java.util.Map;
 import org.computate.site.enus.course.c001.lesson.C001Lesson;
-import org.computate.site.frFR.page.parti.PageHtml;
-import org.computate.site.frFR.page.parti.QuestionReponse;
+import io.vertx.core.json.JsonObject;
 import java.lang.String;
 import io.vertx.core.json.JsonArray;
 import org.computate.search.wrap.Wrap;
@@ -40,7 +39,6 @@ import io.vertx.core.Promise;
 import io.vertx.core.Future;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.computate.search.response.solr.SolrResponse;
-import io.vertx.core.json.JsonObject;
 import org.apache.commons.exec.DefaultExecutor;
 import org.apache.commons.exec.CommandLine;
 import java.io.File;
@@ -117,12 +115,19 @@ public abstract class C001L001ChooseDomainNameGen<DEV> extends C001Lesson {
 	public static final String introP2_enUS = "Are you wondering what the very first step is to creating your own website? ";
 	public static final String introP_enUS = introP1_enUS + introP2_enUS;
 
-	/**	 The entity intro
+	/**
+		<p class="introP  ">
+			{{ C001L001ChooseDomainName['introP1_{{ lang }}'] }}
+			{{ C001L001ChooseDomainName['introP2_{{ lang }}'] }}
+			{{ C001L001ChooseDomainName['introP1_{{ lang }}'] }}
+			{{ C001L001ChooseDomainName['introP2_{{ lang }}'] }}
+		</p>
+	 The entity intro
 	 *	 It is constructed before being initialized with the constructor by default. 
 	 */
 	@JsonProperty
 	@JsonInclude(Include.NON_NULL)
-	protected PageHtml intro = new PageHtml();
+	protected JsonObject intro = new JsonObject();
 
 	/**	<br> The entity intro
 	 *  It is constructed before being initialized with the constructor by default. 
@@ -130,21 +135,40 @@ public abstract class C001L001ChooseDomainNameGen<DEV> extends C001Lesson {
 	 * <br>
 	 * @param o is the entity already constructed. 
 	 **/
-	protected abstract void _intro(PageHtml o);
+	protected abstract void _intro(JsonObject o);
 
-	public PageHtml getIntro() {
+	public JsonObject getIntro() {
 		return intro;
 	}
 
-	public void setIntro(PageHtml intro) {
+	public void setIntro(JsonObject intro) {
 		this.intro = intro;
 	}
-	public static PageHtml staticSetIntro(SiteRequestEnUS siteRequest_, String o) {
+	@JsonIgnore
+	public void setIntro(String o) {
+		this.intro = C001L001ChooseDomainName.staticSetIntro(siteRequest_, o);
+	}
+	public static JsonObject staticSetIntro(SiteRequestEnUS siteRequest_, String o) {
+		if(o != null) {
+				return new JsonObject(o);
+		}
 		return null;
 	}
 	protected C001L001ChooseDomainName introInit() {
 		_intro(intro);
 		return (C001L001ChooseDomainName)this;
+	}
+
+	public static JsonObject staticSearchIntro(SiteRequestEnUS siteRequest_, JsonObject o) {
+		return o;
+	}
+
+	public static String staticSearchStrIntro(SiteRequestEnUS siteRequest_, JsonObject o) {
+		return o == null ? null : o.toString();
+	}
+
+	public static String staticSearchFqIntro(SiteRequestEnUS siteRequest_, String o) {
+		return C001L001ChooseDomainName.staticSearchStrIntro(siteRequest_, C001L001ChooseDomainName.staticSearchIntro(siteRequest_, C001L001ChooseDomainName.staticSetIntro(siteRequest_, o)));
 	}
 
 	/////////
@@ -160,12 +184,21 @@ public abstract class C001L001ChooseDomainNameGen<DEV> extends C001Lesson {
 	public static final String moiP3_enUS = "The first thing you should do is choose your domain name so you can get started in the right direction. ";
 	public static final String moiP_enUS = moiP1_enUS + moiP2_enUS + moiP3_enUS;
 
-	/**	 The entity moi
+	/**
+		<p class="moiP  ">
+			{{ C001L001ChooseDomainName['moiP1_{{ lang }}'] }}
+			{{ C001L001ChooseDomainName['moiP2_{{ lang }}'] }}
+			{{ C001L001ChooseDomainName['moiP3_{{ lang }}'] }}
+			{{ C001L001ChooseDomainName['moiP1_{{ lang }}'] }}
+			{{ C001L001ChooseDomainName['moiP2_{{ lang }}'] }}
+			{{ C001L001ChooseDomainName['moiP3_{{ lang }}'] }}
+		</p>
+	 The entity moi
 	 *	 It is constructed before being initialized with the constructor by default. 
 	 */
 	@JsonProperty
 	@JsonInclude(Include.NON_NULL)
-	protected PageHtml moi = new PageHtml();
+	protected JsonObject moi = new JsonObject();
 
 	/**	<br> The entity moi
 	 *  It is constructed before being initialized with the constructor by default. 
@@ -173,21 +206,40 @@ public abstract class C001L001ChooseDomainNameGen<DEV> extends C001Lesson {
 	 * <br>
 	 * @param o is the entity already constructed. 
 	 **/
-	protected abstract void _moi(PageHtml o);
+	protected abstract void _moi(JsonObject o);
 
-	public PageHtml getMoi() {
+	public JsonObject getMoi() {
 		return moi;
 	}
 
-	public void setMoi(PageHtml moi) {
+	public void setMoi(JsonObject moi) {
 		this.moi = moi;
 	}
-	public static PageHtml staticSetMoi(SiteRequestEnUS siteRequest_, String o) {
+	@JsonIgnore
+	public void setMoi(String o) {
+		this.moi = C001L001ChooseDomainName.staticSetMoi(siteRequest_, o);
+	}
+	public static JsonObject staticSetMoi(SiteRequestEnUS siteRequest_, String o) {
+		if(o != null) {
+				return new JsonObject(o);
+		}
 		return null;
 	}
 	protected C001L001ChooseDomainName moiInit() {
 		_moi(moi);
 		return (C001L001ChooseDomainName)this;
+	}
+
+	public static JsonObject staticSearchMoi(SiteRequestEnUS siteRequest_, JsonObject o) {
+		return o;
+	}
+
+	public static String staticSearchStrMoi(SiteRequestEnUS siteRequest_, JsonObject o) {
+		return o == null ? null : o.toString();
+	}
+
+	public static String staticSearchFqMoi(SiteRequestEnUS siteRequest_, String o) {
+		return C001L001ChooseDomainName.staticSearchStrMoi(siteRequest_, C001L001ChooseDomainName.staticSearchMoi(siteRequest_, C001L001ChooseDomainName.staticSetMoi(siteRequest_, o)));
 	}
 
 	//////////////
@@ -219,12 +271,51 @@ public abstract class C001L001ChooseDomainNameGen<DEV> extends C001Lesson {
 	public static final String aLAvanceP5_enUS = "So go take some time and think of the perfect .com, .org or .whatever that will represent your vision, and then come back here and I'll help you from there. ";
 	public static final String aLAvanceP_enUS = aLAvanceP1_enUS + aLAvanceP2_enUS + aLAvanceP3_enUS + aLAvanceP4_enUS + aLAvanceP5_enUS;
 
-	/**	 The entity aLAvance
+	/**
+		<h3 class="aLAvanceH3  ">
+			<span class="aLAvanceH3Span  ">
+				{{ C001L001ChooseDomainName['aLAvanceH3Span1_{{ lang }}'] }}
+			</span>
+		</h3>
+		<h4 class="aLAvanceH4  ">
+			<span class="aLAvanceH4Span  ">
+				{{ C001L001ChooseDomainName['aLAvanceH4Span1_{{ lang }}'] }}
+			</span>
+		</h4>
+		<p class="aLAvanceP  ">
+			{{ C001L001ChooseDomainName['aLAvanceP1_{{ lang }}'] }}
+			{{ C001L001ChooseDomainName['aLAvanceP2_{{ lang }}'] }}
+			{{ C001L001ChooseDomainName['aLAvanceP3_{{ lang }}'] }}
+			{{ C001L001ChooseDomainName['aLAvanceP4_{{ lang }}'] }}
+			{{ C001L001ChooseDomainName['aLAvanceP5_{{ lang }}'] }}
+		</p>
+		<h3 class="aLAvanceH3  ">
+			<i class="aLAvanceH3I1 site-menu-icon aLAvanceH3I  ">
+			</i>
+			<span class="aLAvanceH3Span  ">
+				{{ C001L001ChooseDomainName['aLAvanceH3Span1_{{ lang }}'] }}
+			</span>
+		</h3>
+		<h4 class="aLAvanceH4  ">
+			<i class="aLAvanceH4I1 site-menu-icon aLAvanceH4I  ">
+			</i>
+			<span class="aLAvanceH4Span  ">
+				{{ C001L001ChooseDomainName['aLAvanceH4Span1_{{ lang }}'] }}
+			</span>
+		</h4>
+		<p class="aLAvanceP  ">
+			{{ C001L001ChooseDomainName['aLAvanceP1_{{ lang }}'] }}
+			{{ C001L001ChooseDomainName['aLAvanceP2_{{ lang }}'] }}
+			{{ C001L001ChooseDomainName['aLAvanceP3_{{ lang }}'] }}
+			{{ C001L001ChooseDomainName['aLAvanceP4_{{ lang }}'] }}
+			{{ C001L001ChooseDomainName['aLAvanceP5_{{ lang }}'] }}
+		</p>
+	 The entity aLAvance
 	 *	 It is constructed before being initialized with the constructor by default. 
 	 */
 	@JsonProperty
 	@JsonInclude(Include.NON_NULL)
-	protected PageHtml aLAvance = new PageHtml();
+	protected JsonObject aLAvance = new JsonObject();
 
 	/**	<br> The entity aLAvance
 	 *  It is constructed before being initialized with the constructor by default. 
@@ -232,21 +323,40 @@ public abstract class C001L001ChooseDomainNameGen<DEV> extends C001Lesson {
 	 * <br>
 	 * @param o is the entity already constructed. 
 	 **/
-	protected abstract void _aLAvance(PageHtml o);
+	protected abstract void _aLAvance(JsonObject o);
 
-	public PageHtml getALAvance() {
+	public JsonObject getALAvance() {
 		return aLAvance;
 	}
 
-	public void setALAvance(PageHtml aLAvance) {
+	public void setALAvance(JsonObject aLAvance) {
 		this.aLAvance = aLAvance;
 	}
-	public static PageHtml staticSetALAvance(SiteRequestEnUS siteRequest_, String o) {
+	@JsonIgnore
+	public void setALAvance(String o) {
+		this.aLAvance = C001L001ChooseDomainName.staticSetALAvance(siteRequest_, o);
+	}
+	public static JsonObject staticSetALAvance(SiteRequestEnUS siteRequest_, String o) {
+		if(o != null) {
+				return new JsonObject(o);
+		}
 		return null;
 	}
 	protected C001L001ChooseDomainName aLAvanceInit() {
 		_aLAvance(aLAvance);
 		return (C001L001ChooseDomainName)this;
+	}
+
+	public static JsonObject staticSearchALAvance(SiteRequestEnUS siteRequest_, JsonObject o) {
+		return o;
+	}
+
+	public static String staticSearchStrALAvance(SiteRequestEnUS siteRequest_, JsonObject o) {
+		return o == null ? null : o.toString();
+	}
+
+	public static String staticSearchFqALAvance(SiteRequestEnUS siteRequest_, String o) {
+		return C001L001ChooseDomainName.staticSearchStrALAvance(siteRequest_, C001L001ChooseDomainName.staticSearchALAvance(siteRequest_, C001L001ChooseDomainName.staticSetALAvance(siteRequest_, o)));
 	}
 
 	/////////////
@@ -290,12 +400,75 @@ public abstract class C001L001ChooseDomainNameGen<DEV> extends C001Lesson {
 	public static final String acheterPSpan31_enUS = ". Their prices vary, but they have very cheap promotional domain names, and many more options to choose from. ";
 	public static final String acheterPSpan3_enUS = acheterPSpan31_enUS;
 
-	/**	 The entity acheter
+	/**
+		<h3 class="acheterH3  ">
+			<span class="acheterH3Span  ">
+				{{ C001L001ChooseDomainName['acheterH3Span1_{{ lang }}'] }}
+			</span>
+		</h3>
+		<h4 class="acheterH4  ">
+			<span class="acheterH4Span  ">
+				{{ C001L001ChooseDomainName['acheterH4Span1_{{ lang }}'] }}
+			</span>
+		</h4>
+		<p class="acheterP  ">
+			<span class="acheterPSpan1 acheterPSpan odd  ">
+				{{ C001L001ChooseDomainName['acheterPSpan11_{{ lang }}'] }}
+				{{ C001L001ChooseDomainName['acheterPSpan12_{{ lang }}'] }}
+				<a class="acheterPSpan1A  " href="acheterPSpan1A1">
+					{{ C001L001ChooseDomainName['acheterPSpan1A1_{{ lang }}'] }}
+				</a>
+			</span>
+			<span class="acheterPSpan2 acheterPSpan even  ">
+				{{ C001L001ChooseDomainName['acheterPSpan21_{{ lang }}'] }}
+				{{ C001L001ChooseDomainName['acheterPSpan22_{{ lang }}'] }}
+				<a class="acheterPSpan2A  " href="acheterPSpan2A1">
+					{{ C001L001ChooseDomainName['acheterPSpan2A1_{{ lang }}'] }}
+				</a>
+			</span>
+			<span class="acheterPSpan3 acheterPSpan odd  ">
+				{{ C001L001ChooseDomainName['acheterPSpan31_{{ lang }}'] }}
+			</span>
+		</p>
+		<h3 class="acheterH3  ">
+			<i class="acheterH3I1 site-menu-icon acheterH3I  ">
+			</i>
+			<span class="acheterH3Span  ">
+				{{ C001L001ChooseDomainName['acheterH3Span1_{{ lang }}'] }}
+			</span>
+		</h3>
+		<h4 class="acheterH4  ">
+			<i class="acheterH4I1 site-menu-icon acheterH4I  ">
+			</i>
+			<span class="acheterH4Span  ">
+				{{ C001L001ChooseDomainName['acheterH4Span1_{{ lang }}'] }}
+			</span>
+		</h4>
+		<p class="acheterP  ">
+			<span class="acheterPSpan1 acheterPSpan odd  ">
+				{{ C001L001ChooseDomainName['acheterPSpan11_{{ lang }}'] }}
+				{{ C001L001ChooseDomainName['acheterPSpan12_{{ lang }}'] }}
+				<a class="acheterPSpan1A1 acheterPSpan1A odd  " href="acheterPSpan1A11">
+					{{ C001L001ChooseDomainName['acheterPSpan1A11_{{ lang }}'] }}
+				</a>
+			</span>
+			<span class="acheterPSpan2 acheterPSpan even  ">
+				{{ C001L001ChooseDomainName['acheterPSpan21_{{ lang }}'] }}
+				{{ C001L001ChooseDomainName['acheterPSpan22_{{ lang }}'] }}
+				<a class="acheterPSpan2A2 acheterPSpan2A even  " href="acheterPSpan2A21">
+					{{ C001L001ChooseDomainName['acheterPSpan2A21_{{ lang }}'] }}
+				</a>
+			</span>
+			<span class="acheterPSpan3 acheterPSpan odd  ">
+				{{ C001L001ChooseDomainName['acheterPSpan31_{{ lang }}'] }}
+			</span>
+		</p>
+	 The entity acheter
 	 *	 It is constructed before being initialized with the constructor by default. 
 	 */
 	@JsonProperty
 	@JsonInclude(Include.NON_NULL)
-	protected PageHtml acheter = new PageHtml();
+	protected JsonObject acheter = new JsonObject();
 
 	/**	<br> The entity acheter
 	 *  It is constructed before being initialized with the constructor by default. 
@@ -303,21 +476,40 @@ public abstract class C001L001ChooseDomainNameGen<DEV> extends C001Lesson {
 	 * <br>
 	 * @param o is the entity already constructed. 
 	 **/
-	protected abstract void _acheter(PageHtml o);
+	protected abstract void _acheter(JsonObject o);
 
-	public PageHtml getAcheter() {
+	public JsonObject getAcheter() {
 		return acheter;
 	}
 
-	public void setAcheter(PageHtml acheter) {
+	public void setAcheter(JsonObject acheter) {
 		this.acheter = acheter;
 	}
-	public static PageHtml staticSetAcheter(SiteRequestEnUS siteRequest_, String o) {
+	@JsonIgnore
+	public void setAcheter(String o) {
+		this.acheter = C001L001ChooseDomainName.staticSetAcheter(siteRequest_, o);
+	}
+	public static JsonObject staticSetAcheter(SiteRequestEnUS siteRequest_, String o) {
+		if(o != null) {
+				return new JsonObject(o);
+		}
 		return null;
 	}
 	protected C001L001ChooseDomainName acheterInit() {
 		_acheter(acheter);
 		return (C001L001ChooseDomainName)this;
+	}
+
+	public static JsonObject staticSearchAcheter(SiteRequestEnUS siteRequest_, JsonObject o) {
+		return o;
+	}
+
+	public static String staticSearchStrAcheter(SiteRequestEnUS siteRequest_, JsonObject o) {
+		return o == null ? null : o.toString();
+	}
+
+	public static String staticSearchFqAcheter(SiteRequestEnUS siteRequest_, String o) {
+		return C001L001ChooseDomainName.staticSearchStrAcheter(siteRequest_, C001L001ChooseDomainName.staticSearchAcheter(siteRequest_, C001L001ChooseDomainName.staticSetAcheter(siteRequest_, o)));
 	}
 
 	/////////////
@@ -347,12 +539,49 @@ public abstract class C001L001ChooseDomainNameGen<DEV> extends C001Lesson {
 	public static final String appelerP4_enUS = "Just make it a place you will be proud of someday! ";
 	public static final String appelerP_enUS = appelerP1_enUS + appelerP2_enUS + appelerP3_enUS + appelerP4_enUS;
 
-	/**	 The entity appeler
+	/**
+		<h3 class="appelerH3  ">
+			<span class="appelerH3Span  ">
+				{{ C001L001ChooseDomainName['appelerH3Span1_{{ lang }}'] }}
+			</span>
+		</h3>
+		<h4 class="appelerH4  ">
+			<span class="appelerH4Span  ">
+				{{ C001L001ChooseDomainName['appelerH4Span1_{{ lang }}'] }}
+			</span>
+		</h4>
+		<p class="appelerP  ">
+			{{ C001L001ChooseDomainName['appelerP1_{{ lang }}'] }}
+			{{ C001L001ChooseDomainName['appelerP2_{{ lang }}'] }}
+			{{ C001L001ChooseDomainName['appelerP3_{{ lang }}'] }}
+			{{ C001L001ChooseDomainName['appelerP4_{{ lang }}'] }}
+		</p>
+		<h3 class="appelerH3  ">
+			<i class="appelerH3I1 site-menu-icon appelerH3I  ">
+			</i>
+			<span class="appelerH3Span  ">
+				{{ C001L001ChooseDomainName['appelerH3Span1_{{ lang }}'] }}
+			</span>
+		</h3>
+		<h4 class="appelerH4  ">
+			<i class="appelerH4I1 site-menu-icon appelerH4I  ">
+			</i>
+			<span class="appelerH4Span  ">
+				{{ C001L001ChooseDomainName['appelerH4Span1_{{ lang }}'] }}
+			</span>
+		</h4>
+		<p class="appelerP  ">
+			{{ C001L001ChooseDomainName['appelerP1_{{ lang }}'] }}
+			{{ C001L001ChooseDomainName['appelerP2_{{ lang }}'] }}
+			{{ C001L001ChooseDomainName['appelerP3_{{ lang }}'] }}
+			{{ C001L001ChooseDomainName['appelerP4_{{ lang }}'] }}
+		</p>
+	 The entity appeler
 	 *	 It is constructed before being initialized with the constructor by default. 
 	 */
 	@JsonProperty
 	@JsonInclude(Include.NON_NULL)
-	protected PageHtml appeler = new PageHtml();
+	protected JsonObject appeler = new JsonObject();
 
 	/**	<br> The entity appeler
 	 *  It is constructed before being initialized with the constructor by default. 
@@ -360,21 +589,40 @@ public abstract class C001L001ChooseDomainNameGen<DEV> extends C001Lesson {
 	 * <br>
 	 * @param o is the entity already constructed. 
 	 **/
-	protected abstract void _appeler(PageHtml o);
+	protected abstract void _appeler(JsonObject o);
 
-	public PageHtml getAppeler() {
+	public JsonObject getAppeler() {
 		return appeler;
 	}
 
-	public void setAppeler(PageHtml appeler) {
+	public void setAppeler(JsonObject appeler) {
 		this.appeler = appeler;
 	}
-	public static PageHtml staticSetAppeler(SiteRequestEnUS siteRequest_, String o) {
+	@JsonIgnore
+	public void setAppeler(String o) {
+		this.appeler = C001L001ChooseDomainName.staticSetAppeler(siteRequest_, o);
+	}
+	public static JsonObject staticSetAppeler(SiteRequestEnUS siteRequest_, String o) {
+		if(o != null) {
+				return new JsonObject(o);
+		}
 		return null;
 	}
 	protected C001L001ChooseDomainName appelerInit() {
 		_appeler(appeler);
 		return (C001L001ChooseDomainName)this;
+	}
+
+	public static JsonObject staticSearchAppeler(SiteRequestEnUS siteRequest_, JsonObject o) {
+		return o;
+	}
+
+	public static String staticSearchStrAppeler(SiteRequestEnUS siteRequest_, JsonObject o) {
+		return o == null ? null : o.toString();
+	}
+
+	public static String staticSearchFqAppeler(SiteRequestEnUS siteRequest_, String o) {
+		return C001L001ChooseDomainName.staticSearchStrAppeler(siteRequest_, C001L001ChooseDomainName.staticSearchAppeler(siteRequest_, C001L001ChooseDomainName.staticSetAppeler(siteRequest_, o)));
 	}
 
 	////////////
@@ -408,12 +656,61 @@ public abstract class C001L001ChooseDomainNameGen<DEV> extends C001Lesson {
 	public static final String apres1PSpan21_enUS = ". ";
 	public static final String apres1PSpan2_enUS = apres1PSpan21_enUS;
 
-	/**	 The entity apres1
+	/**
+		<h3 class="apres1H3  ">
+			<span class="apres1H3Span  ">
+				{{ C001L001ChooseDomainName['apres1H3Span1_{{ lang }}'] }}
+			</span>
+		</h3>
+		<h4 class="apres1H4  ">
+			<span class="apres1H4Span  ">
+				{{ C001L001ChooseDomainName['apres1H4Span1_{{ lang }}'] }}
+			</span>
+		</h4>
+		<p class="apres1P  ">
+			<span class="apres1PSpan1 apres1PSpan odd  ">
+				{{ C001L001ChooseDomainName['apres1PSpan11_{{ lang }}'] }}
+				{{ C001L001ChooseDomainName['apres1PSpan12_{{ lang }}'] }}
+				<a class="apres1PSpan1A  " href="apres1PSpan1A1">
+					{{ C001L001ChooseDomainName['apres1PSpan1A1_{{ lang }}'] }}
+				</a>
+			</span>
+			<span class="apres1PSpan2 apres1PSpan even  ">
+				{{ C001L001ChooseDomainName['apres1PSpan21_{{ lang }}'] }}
+			</span>
+		</p>
+		<h3 class="apres1H3  ">
+			<i class="apres1H3I1 site-menu-icon apres1H3I  ">
+			</i>
+			<span class="apres1H3Span  ">
+				{{ C001L001ChooseDomainName['apres1H3Span1_{{ lang }}'] }}
+			</span>
+		</h3>
+		<h4 class="apres1H4  ">
+			<i class="apres1H4I1 site-menu-icon apres1H4I  ">
+			</i>
+			<span class="apres1H4Span  ">
+				{{ C001L001ChooseDomainName['apres1H4Span1_{{ lang }}'] }}
+			</span>
+		</h4>
+		<p class="apres1P  ">
+			<span class="apres1PSpan1 apres1PSpan odd  ">
+				{{ C001L001ChooseDomainName['apres1PSpan11_{{ lang }}'] }}
+				{{ C001L001ChooseDomainName['apres1PSpan12_{{ lang }}'] }}
+				<a class="apres1PSpan1A  " href="apres1PSpan1A1">
+					{{ C001L001ChooseDomainName['apres1PSpan1A1_{{ lang }}'] }}
+				</a>
+			</span>
+			<span class="apres1PSpan2 apres1PSpan even  ">
+				{{ C001L001ChooseDomainName['apres1PSpan21_{{ lang }}'] }}
+			</span>
+		</p>
+	 The entity apres1
 	 *	 It is constructed before being initialized with the constructor by default. 
 	 */
 	@JsonProperty
 	@JsonInclude(Include.NON_NULL)
-	protected PageHtml apres1 = new PageHtml();
+	protected JsonObject apres1 = new JsonObject();
 
 	/**	<br> The entity apres1
 	 *  It is constructed before being initialized with the constructor by default. 
@@ -421,21 +718,40 @@ public abstract class C001L001ChooseDomainNameGen<DEV> extends C001Lesson {
 	 * <br>
 	 * @param o is the entity already constructed. 
 	 **/
-	protected abstract void _apres1(PageHtml o);
+	protected abstract void _apres1(JsonObject o);
 
-	public PageHtml getApres1() {
+	public JsonObject getApres1() {
 		return apres1;
 	}
 
-	public void setApres1(PageHtml apres1) {
+	public void setApres1(JsonObject apres1) {
 		this.apres1 = apres1;
 	}
-	public static PageHtml staticSetApres1(SiteRequestEnUS siteRequest_, String o) {
+	@JsonIgnore
+	public void setApres1(String o) {
+		this.apres1 = C001L001ChooseDomainName.staticSetApres1(siteRequest_, o);
+	}
+	public static JsonObject staticSetApres1(SiteRequestEnUS siteRequest_, String o) {
+		if(o != null) {
+				return new JsonObject(o);
+		}
 		return null;
 	}
 	protected C001L001ChooseDomainName apres1Init() {
 		_apres1(apres1);
 		return (C001L001ChooseDomainName)this;
+	}
+
+	public static JsonObject staticSearchApres1(SiteRequestEnUS siteRequest_, JsonObject o) {
+		return o;
+	}
+
+	public static String staticSearchStrApres1(SiteRequestEnUS siteRequest_, JsonObject o) {
+		return o == null ? null : o.toString();
+	}
+
+	public static String staticSearchFqApres1(SiteRequestEnUS siteRequest_, String o) {
+		return C001L001ChooseDomainName.staticSearchStrApres1(siteRequest_, C001L001ChooseDomainName.staticSearchApres1(siteRequest_, C001L001ChooseDomainName.staticSetApres1(siteRequest_, o)));
 	}
 
 	////////////
@@ -463,12 +779,43 @@ public abstract class C001L001ChooseDomainNameGen<DEV> extends C001Lesson {
 	public static final String apres2UlLi41_enUS = "I can also manage my site, so I will click on \"Manage\". ";
 	public static final String apres2UlLi4_enUS = apres2UlLi41_enUS;
 
-	/**	 The entity apres2
+	/**
+		<ul class="apres2Ul  ">
+			<li class="apres2UlLi1 apres2UlLi odd  ">
+				{{ C001L001ChooseDomainName['apres2UlLi11_{{ lang }}'] }}
+			</li>
+			<li class="apres2UlLi2 apres2UlLi even  ">
+				{{ C001L001ChooseDomainName['apres2UlLi21_{{ lang }}'] }}
+			</li>
+			<li class="apres2UlLi3 apres2UlLi odd  ">
+				{{ C001L001ChooseDomainName['apres2UlLi31_{{ lang }}'] }}
+				{{ C001L001ChooseDomainName['apres2UlLi32_{{ lang }}'] }}
+				{{ C001L001ChooseDomainName['apres2UlLi33_{{ lang }}'] }}
+			</li>
+			<li class="apres2UlLi4 apres2UlLi even  ">
+				{{ C001L001ChooseDomainName['apres2UlLi41_{{ lang }}'] }}
+			</li>
+			<li class="apres2UlLi1 apres2UlLi odd  ">
+				{{ C001L001ChooseDomainName['apres2UlLi11_{{ lang }}'] }}
+			</li>
+			<li class="apres2UlLi2 apres2UlLi even  ">
+				{{ C001L001ChooseDomainName['apres2UlLi21_{{ lang }}'] }}
+			</li>
+			<li class="apres2UlLi3 apres2UlLi odd  ">
+				{{ C001L001ChooseDomainName['apres2UlLi31_{{ lang }}'] }}
+				{{ C001L001ChooseDomainName['apres2UlLi32_{{ lang }}'] }}
+				{{ C001L001ChooseDomainName['apres2UlLi33_{{ lang }}'] }}
+			</li>
+			<li class="apres2UlLi4 apres2UlLi even  ">
+				{{ C001L001ChooseDomainName['apres2UlLi41_{{ lang }}'] }}
+			</li>
+		</ul>
+	 The entity apres2
 	 *	 It is constructed before being initialized with the constructor by default. 
 	 */
 	@JsonProperty
 	@JsonInclude(Include.NON_NULL)
-	protected PageHtml apres2 = new PageHtml();
+	protected JsonObject apres2 = new JsonObject();
 
 	/**	<br> The entity apres2
 	 *  It is constructed before being initialized with the constructor by default. 
@@ -476,21 +823,40 @@ public abstract class C001L001ChooseDomainNameGen<DEV> extends C001Lesson {
 	 * <br>
 	 * @param o is the entity already constructed. 
 	 **/
-	protected abstract void _apres2(PageHtml o);
+	protected abstract void _apres2(JsonObject o);
 
-	public PageHtml getApres2() {
+	public JsonObject getApres2() {
 		return apres2;
 	}
 
-	public void setApres2(PageHtml apres2) {
+	public void setApres2(JsonObject apres2) {
 		this.apres2 = apres2;
 	}
-	public static PageHtml staticSetApres2(SiteRequestEnUS siteRequest_, String o) {
+	@JsonIgnore
+	public void setApres2(String o) {
+		this.apres2 = C001L001ChooseDomainName.staticSetApres2(siteRequest_, o);
+	}
+	public static JsonObject staticSetApres2(SiteRequestEnUS siteRequest_, String o) {
+		if(o != null) {
+				return new JsonObject(o);
+		}
 		return null;
 	}
 	protected C001L001ChooseDomainName apres2Init() {
 		_apres2(apres2);
 		return (C001L001ChooseDomainName)this;
+	}
+
+	public static JsonObject staticSearchApres2(SiteRequestEnUS siteRequest_, JsonObject o) {
+		return o;
+	}
+
+	public static String staticSearchStrApres2(SiteRequestEnUS siteRequest_, JsonObject o) {
+		return o == null ? null : o.toString();
+	}
+
+	public static String staticSearchFqApres2(SiteRequestEnUS siteRequest_, String o) {
+		return C001L001ChooseDomainName.staticSearchStrApres2(siteRequest_, C001L001ChooseDomainName.staticSearchApres2(siteRequest_, C001L001ChooseDomainName.staticSetApres2(siteRequest_, o)));
 	}
 
 	////////////
@@ -504,12 +870,21 @@ public abstract class C001L001ChooseDomainNameGen<DEV> extends C001Lesson {
 	public static final String apres3UlLi12_enUS = "I would recommend a P.O. Box for your business, rather than your home address, for more privacy. ";
 	public static final String apres3UlLi1_enUS = apres3UlLi11_enUS + apres3UlLi12_enUS;
 
-	/**	 The entity apres3
+	/**
+		<ul class="apres3Ul  ">
+			<li class="apres3UlLi1 apres3UlLi odd  ">
+				{{ C001L001ChooseDomainName['apres3UlLi11_{{ lang }}'] }}
+				{{ C001L001ChooseDomainName['apres3UlLi12_{{ lang }}'] }}
+				{{ C001L001ChooseDomainName['apres3UlLi11_{{ lang }}'] }}
+				{{ C001L001ChooseDomainName['apres3UlLi12_{{ lang }}'] }}
+			</li>
+		</ul>
+	 The entity apres3
 	 *	 It is constructed before being initialized with the constructor by default. 
 	 */
 	@JsonProperty
 	@JsonInclude(Include.NON_NULL)
-	protected PageHtml apres3 = new PageHtml();
+	protected JsonObject apres3 = new JsonObject();
 
 	/**	<br> The entity apres3
 	 *  It is constructed before being initialized with the constructor by default. 
@@ -517,21 +892,40 @@ public abstract class C001L001ChooseDomainNameGen<DEV> extends C001Lesson {
 	 * <br>
 	 * @param o is the entity already constructed. 
 	 **/
-	protected abstract void _apres3(PageHtml o);
+	protected abstract void _apres3(JsonObject o);
 
-	public PageHtml getApres3() {
+	public JsonObject getApres3() {
 		return apres3;
 	}
 
-	public void setApres3(PageHtml apres3) {
+	public void setApres3(JsonObject apres3) {
 		this.apres3 = apres3;
 	}
-	public static PageHtml staticSetApres3(SiteRequestEnUS siteRequest_, String o) {
+	@JsonIgnore
+	public void setApres3(String o) {
+		this.apres3 = C001L001ChooseDomainName.staticSetApres3(siteRequest_, o);
+	}
+	public static JsonObject staticSetApres3(SiteRequestEnUS siteRequest_, String o) {
+		if(o != null) {
+				return new JsonObject(o);
+		}
 		return null;
 	}
 	protected C001L001ChooseDomainName apres3Init() {
 		_apres3(apres3);
 		return (C001L001ChooseDomainName)this;
+	}
+
+	public static JsonObject staticSearchApres3(SiteRequestEnUS siteRequest_, JsonObject o) {
+		return o;
+	}
+
+	public static String staticSearchStrApres3(SiteRequestEnUS siteRequest_, JsonObject o) {
+		return o == null ? null : o.toString();
+	}
+
+	public static String staticSearchFqApres3(SiteRequestEnUS siteRequest_, String o) {
+		return C001L001ChooseDomainName.staticSearchStrApres3(siteRequest_, C001L001ChooseDomainName.staticSearchApres3(siteRequest_, C001L001ChooseDomainName.staticSetApres3(siteRequest_, o)));
 	}
 
 	////////////
@@ -547,12 +941,23 @@ public abstract class C001L001ChooseDomainNameGen<DEV> extends C001Lesson {
 	public static final String apres4UlLi13_enUS = "You don't need a different DNS provider, you can usually use your registrar for email as well, but I choose fastmail for their privacy and excellent email interface. ";
 	public static final String apres4UlLi1_enUS = apres4UlLi11_enUS + apres4UlLi12_enUS + apres4UlLi13_enUS;
 
-	/**	 The entity apres4
+	/**
+		<ul class="apres4Ul  ">
+			<li class="apres4UlLi1 apres4UlLi odd  ">
+				{{ C001L001ChooseDomainName['apres4UlLi11_{{ lang }}'] }}
+				{{ C001L001ChooseDomainName['apres4UlLi12_{{ lang }}'] }}
+				{{ C001L001ChooseDomainName['apres4UlLi13_{{ lang }}'] }}
+				{{ C001L001ChooseDomainName['apres4UlLi11_{{ lang }}'] }}
+				{{ C001L001ChooseDomainName['apres4UlLi12_{{ lang }}'] }}
+				{{ C001L001ChooseDomainName['apres4UlLi13_{{ lang }}'] }}
+			</li>
+		</ul>
+	 The entity apres4
 	 *	 It is constructed before being initialized with the constructor by default. 
 	 */
 	@JsonProperty
 	@JsonInclude(Include.NON_NULL)
-	protected PageHtml apres4 = new PageHtml();
+	protected JsonObject apres4 = new JsonObject();
 
 	/**	<br> The entity apres4
 	 *  It is constructed before being initialized with the constructor by default. 
@@ -560,21 +965,40 @@ public abstract class C001L001ChooseDomainNameGen<DEV> extends C001Lesson {
 	 * <br>
 	 * @param o is the entity already constructed. 
 	 **/
-	protected abstract void _apres4(PageHtml o);
+	protected abstract void _apres4(JsonObject o);
 
-	public PageHtml getApres4() {
+	public JsonObject getApres4() {
 		return apres4;
 	}
 
-	public void setApres4(PageHtml apres4) {
+	public void setApres4(JsonObject apres4) {
 		this.apres4 = apres4;
 	}
-	public static PageHtml staticSetApres4(SiteRequestEnUS siteRequest_, String o) {
+	@JsonIgnore
+	public void setApres4(String o) {
+		this.apres4 = C001L001ChooseDomainName.staticSetApres4(siteRequest_, o);
+	}
+	public static JsonObject staticSetApres4(SiteRequestEnUS siteRequest_, String o) {
+		if(o != null) {
+				return new JsonObject(o);
+		}
 		return null;
 	}
 	protected C001L001ChooseDomainName apres4Init() {
 		_apres4(apres4);
 		return (C001L001ChooseDomainName)this;
+	}
+
+	public static JsonObject staticSearchApres4(SiteRequestEnUS siteRequest_, JsonObject o) {
+		return o;
+	}
+
+	public static String staticSearchStrApres4(SiteRequestEnUS siteRequest_, JsonObject o) {
+		return o == null ? null : o.toString();
+	}
+
+	public static String staticSearchFqApres4(SiteRequestEnUS siteRequest_, String o) {
+		return C001L001ChooseDomainName.staticSearchStrApres4(siteRequest_, C001L001ChooseDomainName.staticSearchApres4(siteRequest_, C001L001ChooseDomainName.staticSetApres4(siteRequest_, o)));
 	}
 
 	////////////
@@ -592,12 +1016,25 @@ public abstract class C001L001ChooseDomainNameGen<DEV> extends C001Lesson {
 	public static final String apres5UlLi14_enUS = "But since I use fastmail for my DNS, I can actually create my own A records for any of my domains in my account, which is nice. ";
 	public static final String apres5UlLi1_enUS = apres5UlLi11_enUS + apres5UlLi12_enUS + apres5UlLi13_enUS + apres5UlLi14_enUS;
 
-	/**	 The entity apres5
+	/**
+		<ul class="apres5Ul  ">
+			<li class="apres5UlLi1 apres5UlLi odd  ">
+				{{ C001L001ChooseDomainName['apres5UlLi11_{{ lang }}'] }}
+				{{ C001L001ChooseDomainName['apres5UlLi12_{{ lang }}'] }}
+				{{ C001L001ChooseDomainName['apres5UlLi13_{{ lang }}'] }}
+				{{ C001L001ChooseDomainName['apres5UlLi14_{{ lang }}'] }}
+				{{ C001L001ChooseDomainName['apres5UlLi11_{{ lang }}'] }}
+				{{ C001L001ChooseDomainName['apres5UlLi12_{{ lang }}'] }}
+				{{ C001L001ChooseDomainName['apres5UlLi13_{{ lang }}'] }}
+				{{ C001L001ChooseDomainName['apres5UlLi14_{{ lang }}'] }}
+			</li>
+		</ul>
+	 The entity apres5
 	 *	 It is constructed before being initialized with the constructor by default. 
 	 */
 	@JsonProperty
 	@JsonInclude(Include.NON_NULL)
-	protected PageHtml apres5 = new PageHtml();
+	protected JsonObject apres5 = new JsonObject();
 
 	/**	<br> The entity apres5
 	 *  It is constructed before being initialized with the constructor by default. 
@@ -605,21 +1042,40 @@ public abstract class C001L001ChooseDomainNameGen<DEV> extends C001Lesson {
 	 * <br>
 	 * @param o is the entity already constructed. 
 	 **/
-	protected abstract void _apres5(PageHtml o);
+	protected abstract void _apres5(JsonObject o);
 
-	public PageHtml getApres5() {
+	public JsonObject getApres5() {
 		return apres5;
 	}
 
-	public void setApres5(PageHtml apres5) {
+	public void setApres5(JsonObject apres5) {
 		this.apres5 = apres5;
 	}
-	public static PageHtml staticSetApres5(SiteRequestEnUS siteRequest_, String o) {
+	@JsonIgnore
+	public void setApres5(String o) {
+		this.apres5 = C001L001ChooseDomainName.staticSetApres5(siteRequest_, o);
+	}
+	public static JsonObject staticSetApres5(SiteRequestEnUS siteRequest_, String o) {
+		if(o != null) {
+				return new JsonObject(o);
+		}
 		return null;
 	}
 	protected C001L001ChooseDomainName apres5Init() {
 		_apres5(apres5);
 		return (C001L001ChooseDomainName)this;
+	}
+
+	public static JsonObject staticSearchApres5(SiteRequestEnUS siteRequest_, JsonObject o) {
+		return o;
+	}
+
+	public static String staticSearchStrApres5(SiteRequestEnUS siteRequest_, JsonObject o) {
+		return o == null ? null : o.toString();
+	}
+
+	public static String staticSearchFqApres5(SiteRequestEnUS siteRequest_, String o) {
+		return C001L001ChooseDomainName.staticSearchStrApres5(siteRequest_, C001L001ChooseDomainName.staticSearchApres5(siteRequest_, C001L001ChooseDomainName.staticSetApres5(siteRequest_, o)));
 	}
 
 	//////////////
@@ -653,12 +1109,53 @@ public abstract class C001L001ChooseDomainNameGen<DEV> extends C001Lesson {
 	public static final String plusTardP6_enUS = "Now you can continue to launch your own successful website on your own computer. ";
 	public static final String plusTardP_enUS = plusTardP1_enUS + plusTardP2_enUS + plusTardP3_enUS + plusTardP4_enUS + plusTardP5_enUS + plusTardP6_enUS;
 
-	/**	 The entity plusTard
+	/**
+		<h3 class="plusTardH3  ">
+			<span class="plusTardH3Span  ">
+				{{ C001L001ChooseDomainName['plusTardH3Span1_{{ lang }}'] }}
+			</span>
+		</h3>
+		<h4 class="plusTardH4  ">
+			<span class="plusTardH4Span  ">
+				{{ C001L001ChooseDomainName['plusTardH4Span1_{{ lang }}'] }}
+			</span>
+		</h4>
+		<p class="plusTardP  ">
+			{{ C001L001ChooseDomainName['plusTardP1_{{ lang }}'] }}
+			{{ C001L001ChooseDomainName['plusTardP2_{{ lang }}'] }}
+			{{ C001L001ChooseDomainName['plusTardP3_{{ lang }}'] }}
+			{{ C001L001ChooseDomainName['plusTardP4_{{ lang }}'] }}
+			{{ C001L001ChooseDomainName['plusTardP5_{{ lang }}'] }}
+			{{ C001L001ChooseDomainName['plusTardP6_{{ lang }}'] }}
+		</p>
+		<h3 class="plusTardH3  ">
+			<i class="plusTardH3I1 site-menu-icon plusTardH3I  ">
+			</i>
+			<span class="plusTardH3Span  ">
+				{{ C001L001ChooseDomainName['plusTardH3Span1_{{ lang }}'] }}
+			</span>
+		</h3>
+		<h4 class="plusTardH4  ">
+			<i class="plusTardH4I1 site-menu-icon plusTardH4I  ">
+			</i>
+			<span class="plusTardH4Span  ">
+				{{ C001L001ChooseDomainName['plusTardH4Span1_{{ lang }}'] }}
+			</span>
+		</h4>
+		<p class="plusTardP  ">
+			{{ C001L001ChooseDomainName['plusTardP1_{{ lang }}'] }}
+			{{ C001L001ChooseDomainName['plusTardP2_{{ lang }}'] }}
+			{{ C001L001ChooseDomainName['plusTardP3_{{ lang }}'] }}
+			{{ C001L001ChooseDomainName['plusTardP4_{{ lang }}'] }}
+			{{ C001L001ChooseDomainName['plusTardP5_{{ lang }}'] }}
+			{{ C001L001ChooseDomainName['plusTardP6_{{ lang }}'] }}
+		</p>
+	 The entity plusTard
 	 *	 It is constructed before being initialized with the constructor by default. 
 	 */
 	@JsonProperty
 	@JsonInclude(Include.NON_NULL)
-	protected QuestionReponse plusTard = new QuestionReponse();
+	protected JsonObject plusTard = new JsonObject();
 
 	/**	<br> The entity plusTard
 	 *  It is constructed before being initialized with the constructor by default. 
@@ -666,21 +1163,40 @@ public abstract class C001L001ChooseDomainNameGen<DEV> extends C001Lesson {
 	 * <br>
 	 * @param o is the entity already constructed. 
 	 **/
-	protected abstract void _plusTard(QuestionReponse o);
+	protected abstract void _plusTard(JsonObject o);
 
-	public QuestionReponse getPlusTard() {
+	public JsonObject getPlusTard() {
 		return plusTard;
 	}
 
-	public void setPlusTard(QuestionReponse plusTard) {
+	public void setPlusTard(JsonObject plusTard) {
 		this.plusTard = plusTard;
 	}
-	public static QuestionReponse staticSetPlusTard(SiteRequestEnUS siteRequest_, String o) {
+	@JsonIgnore
+	public void setPlusTard(String o) {
+		this.plusTard = C001L001ChooseDomainName.staticSetPlusTard(siteRequest_, o);
+	}
+	public static JsonObject staticSetPlusTard(SiteRequestEnUS siteRequest_, String o) {
+		if(o != null) {
+				return new JsonObject(o);
+		}
 		return null;
 	}
 	protected C001L001ChooseDomainName plusTardInit() {
 		_plusTard(plusTard);
 		return (C001L001ChooseDomainName)this;
+	}
+
+	public static JsonObject staticSearchPlusTard(SiteRequestEnUS siteRequest_, JsonObject o) {
+		return o;
+	}
+
+	public static String staticSearchStrPlusTard(SiteRequestEnUS siteRequest_, JsonObject o) {
+		return o == null ? null : o.toString();
+	}
+
+	public static String staticSearchFqPlusTard(SiteRequestEnUS siteRequest_, String o) {
+		return C001L001ChooseDomainName.staticSearchStrPlusTard(siteRequest_, C001L001ChooseDomainName.staticSearchPlusTard(siteRequest_, C001L001ChooseDomainName.staticSetPlusTard(siteRequest_, o)));
 	}
 
 	//////////////////
@@ -692,12 +1208,17 @@ public abstract class C001L001ChooseDomainNameGen<DEV> extends C001Lesson {
 	public static final String recapituler1H31_enUS = "To review: ";
 	public static final String recapituler1H3_enUS = recapituler1H31_enUS;
 
-	/**	 The entity recapituler1
+	/**
+		<h3 class="recapituler1H3  ">
+			{{ C001L001ChooseDomainName['recapituler1H31_{{ lang }}'] }}
+			{{ C001L001ChooseDomainName['recapituler1H31_{{ lang }}'] }}
+		</h3>
+	 The entity recapituler1
 	 *	 It is constructed before being initialized with the constructor by default. 
 	 */
 	@JsonProperty
 	@JsonInclude(Include.NON_NULL)
-	protected PageHtml recapituler1 = new PageHtml();
+	protected JsonObject recapituler1 = new JsonObject();
 
 	/**	<br> The entity recapituler1
 	 *  It is constructed before being initialized with the constructor by default. 
@@ -705,21 +1226,40 @@ public abstract class C001L001ChooseDomainNameGen<DEV> extends C001Lesson {
 	 * <br>
 	 * @param o is the entity already constructed. 
 	 **/
-	protected abstract void _recapituler1(PageHtml o);
+	protected abstract void _recapituler1(JsonObject o);
 
-	public PageHtml getRecapituler1() {
+	public JsonObject getRecapituler1() {
 		return recapituler1;
 	}
 
-	public void setRecapituler1(PageHtml recapituler1) {
+	public void setRecapituler1(JsonObject recapituler1) {
 		this.recapituler1 = recapituler1;
 	}
-	public static PageHtml staticSetRecapituler1(SiteRequestEnUS siteRequest_, String o) {
+	@JsonIgnore
+	public void setRecapituler1(String o) {
+		this.recapituler1 = C001L001ChooseDomainName.staticSetRecapituler1(siteRequest_, o);
+	}
+	public static JsonObject staticSetRecapituler1(SiteRequestEnUS siteRequest_, String o) {
+		if(o != null) {
+				return new JsonObject(o);
+		}
 		return null;
 	}
 	protected C001L001ChooseDomainName recapituler1Init() {
 		_recapituler1(recapituler1);
 		return (C001L001ChooseDomainName)this;
+	}
+
+	public static JsonObject staticSearchRecapituler1(SiteRequestEnUS siteRequest_, JsonObject o) {
+		return o;
+	}
+
+	public static String staticSearchStrRecapituler1(SiteRequestEnUS siteRequest_, JsonObject o) {
+		return o == null ? null : o.toString();
+	}
+
+	public static String staticSearchFqRecapituler1(SiteRequestEnUS siteRequest_, String o) {
+		return C001L001ChooseDomainName.staticSearchStrRecapituler1(siteRequest_, C001L001ChooseDomainName.staticSearchRecapituler1(siteRequest_, C001L001ChooseDomainName.staticSetRecapituler1(siteRequest_, o)));
 	}
 
 	//////////////////
@@ -753,12 +1293,65 @@ public abstract class C001L001ChooseDomainNameGen<DEV> extends C001Lesson {
 	public static final String recapituler2TableTr2Td41_enUS = "By Christopher Tate";
 	public static final String recapituler2TableTr2Td4_enUS = recapituler2TableTr2Td41_enUS;
 
-	/**	 The entity recapituler2
+	/**
+		<table class="recapituler2Table  ">
+			<tr class="recapituler2TableTr1 recapituler2TableTr odd  ">
+				<td class="w3-mobile recapituler2TableTr1Td1 recapituler2TableTr1Td odd  ">
+					{{ C001L001ChooseDomainName['recapituler2TableTr1Td11_{{ lang }}'] }}
+				</td>
+			</tr>
+			<tr class="recapituler2TableTr2 recapituler2TableTr even  ">
+				<td class="w3-mobile recapituler2TableTr2Td1 recapituler2TableTr2Td odd  ">
+					{{ C001L001ChooseDomainName['recapituler2TableTr2Td11_{{ lang }}'] }}
+				</td>
+				<td class="w3-mobile recapituler2TableTr2Td2 recapituler2TableTr2Td even  ">
+					{{ C001L001ChooseDomainName['recapituler2TableTr2Td21_{{ lang }}'] }}
+				</td>
+				<td class="w3-mobile recapituler2TableTr2Td3 recapituler2TableTr2Td odd  ">
+					{{ C001L001ChooseDomainName['recapituler2TableTr2Td31_{{ lang }}'] }}
+				</td>
+				<td class="w3-mobile recapituler2TableTr2Td4 recapituler2TableTr2Td even  ">
+					{{ C001L001ChooseDomainName['recapituler2TableTr2Td41_{{ lang }}'] }}
+				</td>
+			</tr>
+			<tr class="recapituler2TableTr1 recapituler2TableTr odd  ">
+				<td class="w3-mobile recapituler2TableTr1Td1 recapituler2TableTr1Td odd  ">
+					{{ C001L001ChooseDomainName['recapituler2TableTr1Td11_{{ lang }}'] }}
+				</td>
+				<td class="w3-mobile recapituler2TableTr1Td2 recapituler2TableTr1Td even  ">
+					<i class="recapituler2TableTr1Td2I1 site-menu-icon recapituler2TableTr1Td2I  ">
+					</i>
+				</td>
+				<td class="w3-mobile recapituler2TableTr1Td3 recapituler2TableTr1Td odd  ">
+					<i class="recapituler2TableTr1Td3I1 site-menu-icon recapituler2TableTr1Td3I  ">
+					</i>
+				</td>
+				<td class="w3-mobile recapituler2TableTr1Td4 recapituler2TableTr1Td even  ">
+					<i class="recapituler2TableTr1Td4I1 site-menu-icon recapituler2TableTr1Td4I  ">
+					</i>
+				</td>
+			</tr>
+			<tr class="recapituler2TableTr2 recapituler2TableTr even  ">
+				<td class="w3-mobile recapituler2TableTr2Td1 recapituler2TableTr2Td odd  ">
+					{{ C001L001ChooseDomainName['recapituler2TableTr2Td11_{{ lang }}'] }}
+				</td>
+				<td class="w3-mobile recapituler2TableTr2Td2 recapituler2TableTr2Td even  ">
+					{{ C001L001ChooseDomainName['recapituler2TableTr2Td21_{{ lang }}'] }}
+				</td>
+				<td class="w3-mobile recapituler2TableTr2Td3 recapituler2TableTr2Td odd  ">
+					{{ C001L001ChooseDomainName['recapituler2TableTr2Td31_{{ lang }}'] }}
+				</td>
+				<td class="w3-mobile recapituler2TableTr2Td4 recapituler2TableTr2Td even  ">
+					{{ C001L001ChooseDomainName['recapituler2TableTr2Td41_{{ lang }}'] }}
+				</td>
+			</tr>
+		</table>
+	 The entity recapituler2
 	 *	 It is constructed before being initialized with the constructor by default. 
 	 */
 	@JsonProperty
 	@JsonInclude(Include.NON_NULL)
-	protected PageHtml recapituler2 = new PageHtml();
+	protected JsonObject recapituler2 = new JsonObject();
 
 	/**	<br> The entity recapituler2
 	 *  It is constructed before being initialized with the constructor by default. 
@@ -766,21 +1359,40 @@ public abstract class C001L001ChooseDomainNameGen<DEV> extends C001Lesson {
 	 * <br>
 	 * @param o is the entity already constructed. 
 	 **/
-	protected abstract void _recapituler2(PageHtml o);
+	protected abstract void _recapituler2(JsonObject o);
 
-	public PageHtml getRecapituler2() {
+	public JsonObject getRecapituler2() {
 		return recapituler2;
 	}
 
-	public void setRecapituler2(PageHtml recapituler2) {
+	public void setRecapituler2(JsonObject recapituler2) {
 		this.recapituler2 = recapituler2;
 	}
-	public static PageHtml staticSetRecapituler2(SiteRequestEnUS siteRequest_, String o) {
+	@JsonIgnore
+	public void setRecapituler2(String o) {
+		this.recapituler2 = C001L001ChooseDomainName.staticSetRecapituler2(siteRequest_, o);
+	}
+	public static JsonObject staticSetRecapituler2(SiteRequestEnUS siteRequest_, String o) {
+		if(o != null) {
+				return new JsonObject(o);
+		}
 		return null;
 	}
 	protected C001L001ChooseDomainName recapituler2Init() {
 		_recapituler2(recapituler2);
 		return (C001L001ChooseDomainName)this;
+	}
+
+	public static JsonObject staticSearchRecapituler2(SiteRequestEnUS siteRequest_, JsonObject o) {
+		return o;
+	}
+
+	public static String staticSearchStrRecapituler2(SiteRequestEnUS siteRequest_, JsonObject o) {
+		return o == null ? null : o.toString();
+	}
+
+	public static String staticSearchFqRecapituler2(SiteRequestEnUS siteRequest_, String o) {
+		return C001L001ChooseDomainName.staticSearchStrRecapituler2(siteRequest_, C001L001ChooseDomainName.staticSearchRecapituler2(siteRequest_, C001L001ChooseDomainName.staticSetRecapituler2(siteRequest_, o)));
 	}
 
 	//////////////////
@@ -860,12 +1472,159 @@ public abstract class C001L001ChooseDomainNameGen<DEV> extends C001Lesson {
 	public static final String recapituler3TableTr6Td41_enUS = "Your computer hostname will depend on it. ";
 	public static final String recapituler3TableTr6Td4_enUS = recapituler3TableTr6Td41_enUS;
 
-	/**	 The entity recapituler3
+	/**
+		<table class="recapituler3Table  ">
+			<tr class="recapituler3TableTr1 recapituler3TableTr odd  ">
+				<td class="w3-mobile recapituler3TableTr1Td2 recapituler3TableTr1Td even  ">
+					{{ C001L001ChooseDomainName['recapituler3TableTr1Td21_{{ lang }}'] }}
+				</td>
+				<td class="w3-mobile recapituler3TableTr1Td4 recapituler3TableTr1Td even  ">
+					{{ C001L001ChooseDomainName['recapituler3TableTr1Td41_{{ lang }}'] }}
+				</td>
+			</tr>
+			<tr class="recapituler3TableTr2 recapituler3TableTr even  ">
+				<td class="w3-mobile recapituler3TableTr2Td2 recapituler3TableTr2Td even  ">
+					{{ C001L001ChooseDomainName['recapituler3TableTr2Td21_{{ lang }}'] }}
+				</td>
+				<td class="w3-mobile recapituler3TableTr2Td4 recapituler3TableTr2Td even  ">
+					{{ C001L001ChooseDomainName['recapituler3TableTr2Td41_{{ lang }}'] }}
+				</td>
+			</tr>
+			<tr class="recapituler3TableTr3 recapituler3TableTr odd  ">
+				<td class="w3-mobile recapituler3TableTr3Td2 recapituler3TableTr3Td even  ">
+					{{ C001L001ChooseDomainName['recapituler3TableTr3Td21_{{ lang }}'] }}
+				</td>
+				<td class="w3-mobile recapituler3TableTr3Td4 recapituler3TableTr3Td even  ">
+					{{ C001L001ChooseDomainName['recapituler3TableTr3Td41_{{ lang }}'] }}
+				</td>
+			</tr>
+			<tr class="recapituler3TableTr4 recapituler3TableTr even  ">
+				<td class="w3-mobile recapituler3TableTr4Td2 recapituler3TableTr4Td even  ">
+					{{ C001L001ChooseDomainName['recapituler3TableTr4Td21_{{ lang }}'] }}
+				</td>
+				<td class="w3-mobile recapituler3TableTr4Td4 recapituler3TableTr4Td even  ">
+					{{ C001L001ChooseDomainName['recapituler3TableTr4Td41_{{ lang }}'] }}
+				</td>
+			</tr>
+			<tr class="recapituler3TableTr5 recapituler3TableTr odd  ">
+				<td class="w3-mobile recapituler3TableTr5Td2 recapituler3TableTr5Td even  ">
+					{{ C001L001ChooseDomainName['recapituler3TableTr5Td21_{{ lang }}'] }}
+				</td>
+				<td class="w3-mobile recapituler3TableTr5Td4 recapituler3TableTr5Td even  ">
+					{{ C001L001ChooseDomainName['recapituler3TableTr5Td41_{{ lang }}'] }}
+				</td>
+			</tr>
+			<tr class="recapituler3TableTr6 recapituler3TableTr even  ">
+				<td class="w3-mobile recapituler3TableTr6Td2 recapituler3TableTr6Td even  ">
+					{{ C001L001ChooseDomainName['recapituler3TableTr6Td21_{{ lang }}'] }}
+				</td>
+				<td class="w3-mobile recapituler3TableTr6Td4 recapituler3TableTr6Td even  ">
+					{{ C001L001ChooseDomainName['recapituler3TableTr6Td41_{{ lang }}'] }}
+				</td>
+			</tr>
+			<tr class="recapituler3TableTr1 recapituler3TableTr odd  ">
+				<td class="w3-mobile recapituler3TableTr1Td1 recapituler3TableTr1Td odd  ">
+					<i class="recapituler3TableTr1Td1I1 site-menu-icon recapituler3TableTr1Td1I  ">
+					</i>
+				</td>
+				<td class="w3-mobile recapituler3TableTr1Td2 recapituler3TableTr1Td even  ">
+					{{ C001L001ChooseDomainName['recapituler3TableTr1Td21_{{ lang }}'] }}
+				</td>
+				<td class="w3-mobile recapituler3TableTr1Td3 recapituler3TableTr1Td odd  ">
+					<i class="recapituler3TableTr1Td3I1 site-menu-icon recapituler3TableTr1Td3I  ">
+					</i>
+				</td>
+				<td class="w3-mobile recapituler3TableTr1Td4 recapituler3TableTr1Td even  ">
+					{{ C001L001ChooseDomainName['recapituler3TableTr1Td41_{{ lang }}'] }}
+				</td>
+			</tr>
+			<tr class="recapituler3TableTr2 recapituler3TableTr even  ">
+				<td class="w3-mobile recapituler3TableTr2Td1 recapituler3TableTr2Td odd  ">
+					<i class="recapituler3TableTr2Td1I1 site-menu-icon recapituler3TableTr2Td1I  ">
+					</i>
+				</td>
+				<td class="w3-mobile recapituler3TableTr2Td2 recapituler3TableTr2Td even  ">
+					{{ C001L001ChooseDomainName['recapituler3TableTr2Td21_{{ lang }}'] }}
+				</td>
+				<td class="w3-mobile recapituler3TableTr2Td3 recapituler3TableTr2Td odd  ">
+					<i class="recapituler3TableTr2Td3I1 site-menu-icon recapituler3TableTr2Td3I  ">
+					</i>
+				</td>
+				<td class="w3-mobile recapituler3TableTr2Td4 recapituler3TableTr2Td even  ">
+					{{ C001L001ChooseDomainName['recapituler3TableTr2Td41_{{ lang }}'] }}
+				</td>
+			</tr>
+			<tr class="recapituler3TableTr3 recapituler3TableTr odd  ">
+				<td class="w3-mobile recapituler3TableTr3Td1 recapituler3TableTr3Td odd  ">
+					<i class="recapituler3TableTr3Td1I1 site-menu-icon recapituler3TableTr3Td1I  ">
+					</i>
+				</td>
+				<td class="w3-mobile recapituler3TableTr3Td2 recapituler3TableTr3Td even  ">
+					{{ C001L001ChooseDomainName['recapituler3TableTr3Td21_{{ lang }}'] }}
+				</td>
+				<td class="w3-mobile recapituler3TableTr3Td3 recapituler3TableTr3Td odd  ">
+					<i class="recapituler3TableTr3Td3I1 site-menu-icon recapituler3TableTr3Td3I  ">
+					</i>
+				</td>
+				<td class="w3-mobile recapituler3TableTr3Td4 recapituler3TableTr3Td even  ">
+					{{ C001L001ChooseDomainName['recapituler3TableTr3Td41_{{ lang }}'] }}
+				</td>
+			</tr>
+			<tr class="recapituler3TableTr4 recapituler3TableTr even  ">
+				<td class="w3-mobile recapituler3TableTr4Td1 recapituler3TableTr4Td odd  ">
+					<i class="recapituler3TableTr4Td1I1 site-menu-icon recapituler3TableTr4Td1I  ">
+					</i>
+				</td>
+				<td class="w3-mobile recapituler3TableTr4Td2 recapituler3TableTr4Td even  ">
+					{{ C001L001ChooseDomainName['recapituler3TableTr4Td21_{{ lang }}'] }}
+				</td>
+				<td class="w3-mobile recapituler3TableTr4Td3 recapituler3TableTr4Td odd  ">
+					<i class="recapituler3TableTr4Td3I1 site-menu-icon recapituler3TableTr4Td3I  ">
+					</i>
+				</td>
+				<td class="w3-mobile recapituler3TableTr4Td4 recapituler3TableTr4Td even  ">
+					{{ C001L001ChooseDomainName['recapituler3TableTr4Td41_{{ lang }}'] }}
+				</td>
+			</tr>
+			<tr class="recapituler3TableTr5 recapituler3TableTr odd  ">
+				<td class="w3-mobile recapituler3TableTr5Td1 recapituler3TableTr5Td odd  ">
+					<i class="recapituler3TableTr5Td1I1 site-menu-icon recapituler3TableTr5Td1I  ">
+					</i>
+				</td>
+				<td class="w3-mobile recapituler3TableTr5Td2 recapituler3TableTr5Td even  ">
+					{{ C001L001ChooseDomainName['recapituler3TableTr5Td21_{{ lang }}'] }}
+				</td>
+				<td class="w3-mobile recapituler3TableTr5Td3 recapituler3TableTr5Td odd  ">
+					<i class="recapituler3TableTr5Td3I1 site-menu-icon recapituler3TableTr5Td3I  ">
+					</i>
+				</td>
+				<td class="w3-mobile recapituler3TableTr5Td4 recapituler3TableTr5Td even  ">
+					{{ C001L001ChooseDomainName['recapituler3TableTr5Td41_{{ lang }}'] }}
+				</td>
+			</tr>
+			<tr class="recapituler3TableTr6 recapituler3TableTr even  ">
+				<td class="w3-mobile recapituler3TableTr6Td1 recapituler3TableTr6Td odd  ">
+					<i class="recapituler3TableTr6Td1I1 site-menu-icon recapituler3TableTr6Td1I  ">
+					</i>
+				</td>
+				<td class="w3-mobile recapituler3TableTr6Td2 recapituler3TableTr6Td even  ">
+					{{ C001L001ChooseDomainName['recapituler3TableTr6Td21_{{ lang }}'] }}
+				</td>
+				<td class="w3-mobile recapituler3TableTr6Td3 recapituler3TableTr6Td odd  ">
+					<i class="recapituler3TableTr6Td3I1 site-menu-icon recapituler3TableTr6Td3I  ">
+					</i>
+				</td>
+				<td class="w3-mobile recapituler3TableTr6Td4 recapituler3TableTr6Td even  ">
+					{{ C001L001ChooseDomainName['recapituler3TableTr6Td41_{{ lang }}'] }}
+				</td>
+			</tr>
+		</table>
+	 The entity recapituler3
 	 *	 It is constructed before being initialized with the constructor by default. 
 	 */
 	@JsonProperty
 	@JsonInclude(Include.NON_NULL)
-	protected PageHtml recapituler3 = new PageHtml();
+	protected JsonObject recapituler3 = new JsonObject();
 
 	/**	<br> The entity recapituler3
 	 *  It is constructed before being initialized with the constructor by default. 
@@ -873,16 +1632,23 @@ public abstract class C001L001ChooseDomainNameGen<DEV> extends C001Lesson {
 	 * <br>
 	 * @param o is the entity already constructed. 
 	 **/
-	protected abstract void _recapituler3(PageHtml o);
+	protected abstract void _recapituler3(JsonObject o);
 
-	public PageHtml getRecapituler3() {
+	public JsonObject getRecapituler3() {
 		return recapituler3;
 	}
 
-	public void setRecapituler3(PageHtml recapituler3) {
+	public void setRecapituler3(JsonObject recapituler3) {
 		this.recapituler3 = recapituler3;
 	}
-	public static PageHtml staticSetRecapituler3(SiteRequestEnUS siteRequest_, String o) {
+	@JsonIgnore
+	public void setRecapituler3(String o) {
+		this.recapituler3 = C001L001ChooseDomainName.staticSetRecapituler3(siteRequest_, o);
+	}
+	public static JsonObject staticSetRecapituler3(SiteRequestEnUS siteRequest_, String o) {
+		if(o != null) {
+				return new JsonObject(o);
+		}
 		return null;
 	}
 	protected C001L001ChooseDomainName recapituler3Init() {
@@ -890,11 +1656,24 @@ public abstract class C001L001ChooseDomainNameGen<DEV> extends C001Lesson {
 		return (C001L001ChooseDomainName)this;
 	}
 
+	public static JsonObject staticSearchRecapituler3(SiteRequestEnUS siteRequest_, JsonObject o) {
+		return o;
+	}
+
+	public static String staticSearchStrRecapituler3(SiteRequestEnUS siteRequest_, JsonObject o) {
+		return o == null ? null : o.toString();
+	}
+
+	public static String staticSearchFqRecapituler3(SiteRequestEnUS siteRequest_, String o) {
+		return C001L001ChooseDomainName.staticSearchStrRecapituler3(siteRequest_, C001L001ChooseDomainName.staticSearchRecapituler3(siteRequest_, C001L001ChooseDomainName.staticSetRecapituler3(siteRequest_, o)));
+	}
+
 	///////////////////////
 	// lessonSearch_frFR //
 	///////////////////////
 
-	/**	 The entity lessonSearch_frFR
+	/**
+	 The entity lessonSearch_frFR
 	 *	 It is constructed before being initialized with the constructor by default. 
 	 */
 	@JsonProperty
@@ -960,7 +1739,8 @@ public abstract class C001L001ChooseDomainNameGen<DEV> extends C001Lesson {
 	// lessonSearch_enUS //
 	///////////////////////
 
-	/**	 The entity lessonSearch_enUS
+	/**
+	 The entity lessonSearch_enUS
 	 *	 It is constructed before being initialized with the constructor by default. 
 	 */
 	@JsonProperty
@@ -1191,6 +1971,34 @@ public abstract class C001L001ChooseDomainNameGen<DEV> extends C001Lesson {
 	}
 	public static Object staticSetC001L001ChooseDomainName(String entityVar, SiteRequestEnUS siteRequest_, String o) {
 		switch(entityVar) {
+		case "intro":
+			return C001L001ChooseDomainName.staticSetIntro(siteRequest_, o);
+		case "moi":
+			return C001L001ChooseDomainName.staticSetMoi(siteRequest_, o);
+		case "aLAvance":
+			return C001L001ChooseDomainName.staticSetALAvance(siteRequest_, o);
+		case "acheter":
+			return C001L001ChooseDomainName.staticSetAcheter(siteRequest_, o);
+		case "appeler":
+			return C001L001ChooseDomainName.staticSetAppeler(siteRequest_, o);
+		case "apres1":
+			return C001L001ChooseDomainName.staticSetApres1(siteRequest_, o);
+		case "apres2":
+			return C001L001ChooseDomainName.staticSetApres2(siteRequest_, o);
+		case "apres3":
+			return C001L001ChooseDomainName.staticSetApres3(siteRequest_, o);
+		case "apres4":
+			return C001L001ChooseDomainName.staticSetApres4(siteRequest_, o);
+		case "apres5":
+			return C001L001ChooseDomainName.staticSetApres5(siteRequest_, o);
+		case "plusTard":
+			return C001L001ChooseDomainName.staticSetPlusTard(siteRequest_, o);
+		case "recapituler1":
+			return C001L001ChooseDomainName.staticSetRecapituler1(siteRequest_, o);
+		case "recapituler2":
+			return C001L001ChooseDomainName.staticSetRecapituler2(siteRequest_, o);
+		case "recapituler3":
+			return C001L001ChooseDomainName.staticSetRecapituler3(siteRequest_, o);
 		case "lessonSearch_frFR":
 			return C001L001ChooseDomainName.staticSetLessonSearch_frFR(siteRequest_, o);
 		case "lessonSearch_enUS":
@@ -1209,6 +2017,34 @@ public abstract class C001L001ChooseDomainNameGen<DEV> extends C001Lesson {
 	}
 	public static Object staticSearchC001L001ChooseDomainName(String entityVar, SiteRequestEnUS siteRequest_, Object o) {
 		switch(entityVar) {
+		case "intro":
+			return C001L001ChooseDomainName.staticSearchIntro(siteRequest_, (JsonObject)o);
+		case "moi":
+			return C001L001ChooseDomainName.staticSearchMoi(siteRequest_, (JsonObject)o);
+		case "aLAvance":
+			return C001L001ChooseDomainName.staticSearchALAvance(siteRequest_, (JsonObject)o);
+		case "acheter":
+			return C001L001ChooseDomainName.staticSearchAcheter(siteRequest_, (JsonObject)o);
+		case "appeler":
+			return C001L001ChooseDomainName.staticSearchAppeler(siteRequest_, (JsonObject)o);
+		case "apres1":
+			return C001L001ChooseDomainName.staticSearchApres1(siteRequest_, (JsonObject)o);
+		case "apres2":
+			return C001L001ChooseDomainName.staticSearchApres2(siteRequest_, (JsonObject)o);
+		case "apres3":
+			return C001L001ChooseDomainName.staticSearchApres3(siteRequest_, (JsonObject)o);
+		case "apres4":
+			return C001L001ChooseDomainName.staticSearchApres4(siteRequest_, (JsonObject)o);
+		case "apres5":
+			return C001L001ChooseDomainName.staticSearchApres5(siteRequest_, (JsonObject)o);
+		case "plusTard":
+			return C001L001ChooseDomainName.staticSearchPlusTard(siteRequest_, (JsonObject)o);
+		case "recapituler1":
+			return C001L001ChooseDomainName.staticSearchRecapituler1(siteRequest_, (JsonObject)o);
+		case "recapituler2":
+			return C001L001ChooseDomainName.staticSearchRecapituler2(siteRequest_, (JsonObject)o);
+		case "recapituler3":
+			return C001L001ChooseDomainName.staticSearchRecapituler3(siteRequest_, (JsonObject)o);
 		case "lessonSearch_frFR":
 			return C001L001ChooseDomainName.staticSearchLessonSearch_frFR(siteRequest_, (String)o);
 		case "lessonSearch_enUS":
@@ -1227,6 +2063,34 @@ public abstract class C001L001ChooseDomainNameGen<DEV> extends C001Lesson {
 	}
 	public static String staticSearchStrC001L001ChooseDomainName(String entityVar, SiteRequestEnUS siteRequest_, Object o) {
 		switch(entityVar) {
+		case "intro":
+			return C001L001ChooseDomainName.staticSearchStrIntro(siteRequest_, (JsonObject)o);
+		case "moi":
+			return C001L001ChooseDomainName.staticSearchStrMoi(siteRequest_, (JsonObject)o);
+		case "aLAvance":
+			return C001L001ChooseDomainName.staticSearchStrALAvance(siteRequest_, (JsonObject)o);
+		case "acheter":
+			return C001L001ChooseDomainName.staticSearchStrAcheter(siteRequest_, (JsonObject)o);
+		case "appeler":
+			return C001L001ChooseDomainName.staticSearchStrAppeler(siteRequest_, (JsonObject)o);
+		case "apres1":
+			return C001L001ChooseDomainName.staticSearchStrApres1(siteRequest_, (JsonObject)o);
+		case "apres2":
+			return C001L001ChooseDomainName.staticSearchStrApres2(siteRequest_, (JsonObject)o);
+		case "apres3":
+			return C001L001ChooseDomainName.staticSearchStrApres3(siteRequest_, (JsonObject)o);
+		case "apres4":
+			return C001L001ChooseDomainName.staticSearchStrApres4(siteRequest_, (JsonObject)o);
+		case "apres5":
+			return C001L001ChooseDomainName.staticSearchStrApres5(siteRequest_, (JsonObject)o);
+		case "plusTard":
+			return C001L001ChooseDomainName.staticSearchStrPlusTard(siteRequest_, (JsonObject)o);
+		case "recapituler1":
+			return C001L001ChooseDomainName.staticSearchStrRecapituler1(siteRequest_, (JsonObject)o);
+		case "recapituler2":
+			return C001L001ChooseDomainName.staticSearchStrRecapituler2(siteRequest_, (JsonObject)o);
+		case "recapituler3":
+			return C001L001ChooseDomainName.staticSearchStrRecapituler3(siteRequest_, (JsonObject)o);
 		case "lessonSearch_frFR":
 			return C001L001ChooseDomainName.staticSearchStrLessonSearch_frFR(siteRequest_, (String)o);
 		case "lessonSearch_enUS":
@@ -1245,6 +2109,34 @@ public abstract class C001L001ChooseDomainNameGen<DEV> extends C001Lesson {
 	}
 	public static String staticSearchFqC001L001ChooseDomainName(String entityVar, SiteRequestEnUS siteRequest_, String o) {
 		switch(entityVar) {
+		case "intro":
+			return C001L001ChooseDomainName.staticSearchFqIntro(siteRequest_, o);
+		case "moi":
+			return C001L001ChooseDomainName.staticSearchFqMoi(siteRequest_, o);
+		case "aLAvance":
+			return C001L001ChooseDomainName.staticSearchFqALAvance(siteRequest_, o);
+		case "acheter":
+			return C001L001ChooseDomainName.staticSearchFqAcheter(siteRequest_, o);
+		case "appeler":
+			return C001L001ChooseDomainName.staticSearchFqAppeler(siteRequest_, o);
+		case "apres1":
+			return C001L001ChooseDomainName.staticSearchFqApres1(siteRequest_, o);
+		case "apres2":
+			return C001L001ChooseDomainName.staticSearchFqApres2(siteRequest_, o);
+		case "apres3":
+			return C001L001ChooseDomainName.staticSearchFqApres3(siteRequest_, o);
+		case "apres4":
+			return C001L001ChooseDomainName.staticSearchFqApres4(siteRequest_, o);
+		case "apres5":
+			return C001L001ChooseDomainName.staticSearchFqApres5(siteRequest_, o);
+		case "plusTard":
+			return C001L001ChooseDomainName.staticSearchFqPlusTard(siteRequest_, o);
+		case "recapituler1":
+			return C001L001ChooseDomainName.staticSearchFqRecapituler1(siteRequest_, o);
+		case "recapituler2":
+			return C001L001ChooseDomainName.staticSearchFqRecapituler2(siteRequest_, o);
+		case "recapituler3":
+			return C001L001ChooseDomainName.staticSearchFqRecapituler3(siteRequest_, o);
 		case "lessonSearch_frFR":
 			return C001L001ChooseDomainName.staticSearchFqLessonSearch_frFR(siteRequest_, o);
 		case "lessonSearch_enUS":
@@ -1453,33 +2345,33 @@ public abstract class C001L001ChooseDomainNameGen<DEV> extends C001Lesson {
 	public static String classSimpleNameC001L001ChooseDomainName(String var) {
 		switch(var) {
 		case VAR_intro:
-			return "PageHtml";
+			return "JsonObject";
 		case VAR_moi:
-			return "PageHtml";
+			return "JsonObject";
 		case VAR_aLAvance:
-			return "PageHtml";
+			return "JsonObject";
 		case VAR_acheter:
-			return "PageHtml";
+			return "JsonObject";
 		case VAR_appeler:
-			return "PageHtml";
+			return "JsonObject";
 		case VAR_apres1:
-			return "PageHtml";
+			return "JsonObject";
 		case VAR_apres2:
-			return "PageHtml";
+			return "JsonObject";
 		case VAR_apres3:
-			return "PageHtml";
+			return "JsonObject";
 		case VAR_apres4:
-			return "PageHtml";
+			return "JsonObject";
 		case VAR_apres5:
-			return "PageHtml";
+			return "JsonObject";
 		case VAR_plusTard:
-			return "QuestionReponse";
+			return "JsonObject";
 		case VAR_recapituler1:
-			return "PageHtml";
+			return "JsonObject";
 		case VAR_recapituler2:
-			return "PageHtml";
+			return "JsonObject";
 		case VAR_recapituler3:
-			return "PageHtml";
+			return "JsonObject";
 		case VAR_lessonSearch_frFR:
 			return "List";
 		case VAR_lessonSearch_enUS:

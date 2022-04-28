@@ -1,8 +1,7 @@
 package org.computate.site.enus.course.c001.lesson.l001;
 
 import org.computate.site.enus.course.c001.lesson.l001.C001L001ChooseDomainName;
-import org.computate.site.frFR.page.parti.PageHtml;
-import org.computate.site.frFR.page.parti.QuestionReponse;
+import io.vertx.core.json.JsonObject;
 import java.util.List;
 import java.lang.String;
 import org.computate.site.enus.course.c001.C001Page;
@@ -20,7 +19,6 @@ import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
-import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.api.service.ServiceRequest;
 import io.vertx.core.json.JsonArray;
 import java.net.URLDecoder;
@@ -364,6 +362,16 @@ public class C001L001ChooseDomainNameGenPage extends C001L001ChooseDomainNameGen
 	@Override
 	protected void _pageImageUri(Wrap<String> c) {
 			c.o("/png-999.png");
+	}
+
+	@Override
+	protected void _pageImageWidth(Wrap<Integer> c) {
+			c.o(800);
+	}
+
+	@Override
+	protected void _pageImageHeight(Wrap<Integer> c) {
+			c.o(781);
 	}
 
 	@Override

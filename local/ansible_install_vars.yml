@@ -129,3 +129,29 @@ CONFIG_TEMPLATE: |2
 CONFIG_KEYS: |2
 
 README_END: |
+
+WORKER_IMPORT_DATA: |2
+  
+  	/**
+  	 * Description: Import initial data
+  	 * Val.Complete.enUS:Configuring the import of %s data completed. 
+  	 * Val.Fail.enUS:Configuring the import of %s data failed. 
+  	 */
+  	private void importDataClass(String classSimpleName, ZonedDateTime startDateTime) {
+  	}
+  
+  	/**	
+  	 * Import initial data
+  	 * Val.Skip.enUS:The data import is disabled. 
+  	 **/
+  	private Future<Void> importData() {
+  		Promise<Void> promise = Promise.promise();
+  		if(config().getBoolean(ConfigKeys.ENABLE_IMPORT_DATA)) {
+  			promise.complete();
+  		}
+  		else {
+  			LOG.info(importDataSkip);
+  			promise.complete();
+  		}
+  		return promise.future();
+  	}

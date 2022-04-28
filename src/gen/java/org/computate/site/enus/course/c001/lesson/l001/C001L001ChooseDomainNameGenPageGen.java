@@ -68,7 +68,8 @@ public abstract class C001L001ChooseDomainNameGenPageGen<DEV> extends C001Page {
 	// searchListC001L001ChooseDomainName_ //
 	/////////////////////////////////////////
 
-	/**	 The entity searchListC001L001ChooseDomainName_
+	/**
+	 The entity searchListC001L001ChooseDomainName_
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonIgnore
@@ -106,7 +107,8 @@ public abstract class C001L001ChooseDomainNameGenPageGen<DEV> extends C001Page {
 	// pageResponse //
 	//////////////////
 
-	/**	 The entity pageResponse
+	/**
+	 The entity pageResponse
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
@@ -155,7 +157,8 @@ public abstract class C001L001ChooseDomainNameGenPageGen<DEV> extends C001Page {
 	// defaultZoneId //
 	///////////////////
 
-	/**	 The entity defaultZoneId
+	/**
+	 The entity defaultZoneId
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
@@ -204,7 +207,8 @@ public abstract class C001L001ChooseDomainNameGenPageGen<DEV> extends C001Page {
 	// defaultTimeZone //
 	/////////////////////
 
-	/**	 The entity defaultTimeZone
+	/**
+	 The entity defaultTimeZone
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonIgnore
@@ -242,7 +246,8 @@ public abstract class C001L001ChooseDomainNameGenPageGen<DEV> extends C001Page {
 	// defaultLocaleId //
 	/////////////////////
 
-	/**	 The entity defaultLocaleId
+	/**
+	 The entity defaultLocaleId
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
@@ -291,7 +296,8 @@ public abstract class C001L001ChooseDomainNameGenPageGen<DEV> extends C001Page {
 	// defaultLocale //
 	///////////////////
 
-	/**	 The entity defaultLocale
+	/**
+	 The entity defaultLocale
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonIgnore
@@ -329,7 +335,8 @@ public abstract class C001L001ChooseDomainNameGenPageGen<DEV> extends C001Page {
 	// defaultRangeGap //
 	/////////////////////
 
-	/**	 The entity defaultRangeGap
+	/**
+	 The entity defaultRangeGap
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
@@ -378,7 +385,8 @@ public abstract class C001L001ChooseDomainNameGenPageGen<DEV> extends C001Page {
 	// defaultRangeEnd //
 	/////////////////////
 
-	/**	 The entity defaultRangeEnd
+	/**
+	 The entity defaultRangeEnd
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
@@ -449,7 +457,8 @@ public abstract class C001L001ChooseDomainNameGenPageGen<DEV> extends C001Page {
 	// defaultRangeStart //
 	///////////////////////
 
-	/**	 The entity defaultRangeStart
+	/**
+	 The entity defaultRangeStart
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
@@ -520,7 +529,8 @@ public abstract class C001L001ChooseDomainNameGenPageGen<DEV> extends C001Page {
 	// defaultRangeVar //
 	/////////////////////
 
-	/**	 The entity defaultRangeVar
+	/**
+	 The entity defaultRangeVar
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
@@ -569,7 +579,8 @@ public abstract class C001L001ChooseDomainNameGenPageGen<DEV> extends C001Page {
 	// defaultFacetSort //
 	//////////////////////
 
-	/**	 The entity defaultFacetSort
+	/**
+	 The entity defaultFacetSort
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
@@ -618,7 +629,8 @@ public abstract class C001L001ChooseDomainNameGenPageGen<DEV> extends C001Page {
 	// defaultFacetLimit //
 	///////////////////////
 
-	/**	 The entity defaultFacetLimit
+	/**
+	 The entity defaultFacetLimit
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
@@ -675,7 +687,8 @@ public abstract class C001L001ChooseDomainNameGenPageGen<DEV> extends C001Page {
 	// defaultFacetMinCount //
 	//////////////////////////
 
-	/**	 The entity defaultFacetMinCount
+	/**
+	 The entity defaultFacetMinCount
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
@@ -732,7 +745,8 @@ public abstract class C001L001ChooseDomainNameGenPageGen<DEV> extends C001Page {
 	// defaultPivotMinCount //
 	//////////////////////////
 
-	/**	 The entity defaultPivotMinCount
+	/**
+	 The entity defaultPivotMinCount
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
@@ -789,7 +803,8 @@ public abstract class C001L001ChooseDomainNameGenPageGen<DEV> extends C001Page {
 	// listC001L001ChooseDomainName //
 	//////////////////////////////////
 
-	/**	 The entity listC001L001ChooseDomainName
+	/**
+	 The entity listC001L001ChooseDomainName
 	 *	 It is constructed before being initialized with the constructor by default. 
 	 */
 	@JsonProperty
@@ -823,7 +838,8 @@ public abstract class C001L001ChooseDomainNameGenPageGen<DEV> extends C001Page {
 	// facetCounts //
 	/////////////////
 
-	/**	 The entity facetCounts
+	/**
+	 The entity facetCounts
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
@@ -861,7 +877,8 @@ public abstract class C001L001ChooseDomainNameGenPageGen<DEV> extends C001Page {
 	// c001L001ChooseDomainNameCount //
 	///////////////////////////////////
 
-	/**	 The entity c001L001ChooseDomainNameCount
+	/**
+	 The entity c001L001ChooseDomainNameCount
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
@@ -918,7 +935,8 @@ public abstract class C001L001ChooseDomainNameGenPageGen<DEV> extends C001Page {
 	// c001L001ChooseDomainName_ //
 	///////////////////////////////
 
-	/**	 The entity c001L001ChooseDomainName_
+	/**
+	 The entity c001L001ChooseDomainName_
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
@@ -956,7 +974,8 @@ public abstract class C001L001ChooseDomainNameGenPageGen<DEV> extends C001Page {
 	// id //
 	////////
 
-	/**	 The entity id
+	/**
+	 The entity id
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty

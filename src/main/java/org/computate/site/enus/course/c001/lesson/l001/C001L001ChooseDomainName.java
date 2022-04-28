@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.computate.search.wrap.Wrap;
 import org.computate.site.enus.course.c001.lesson.C001Lesson;
-import org.computate.site.frFR.page.parti.PageHtml;
-import org.computate.site.frFR.page.parti.QuestionReponse;
+
+import io.vertx.core.json.JsonObject;
 
 /**
  * Page: true
@@ -36,10 +36,10 @@ import org.computate.site.frFR.page.parti.QuestionReponse;
  * IconGroup: regular
  * IconName: book
  * Image: true
- * ImageLargeur.frFR: 800
- * ImageHauteur.frFR: 781
- * ImageLargeur.enUS: 800
- * ImageHauteur.enUS: 781
+ * ImageWidth.frFR: 800
+ * ImageHeight.frFR: 781
+ * ImageWidth.enUS: 800
+ * ImageHeight.enUS: 781
  * VideoId.frFR: ZJTDpIpan8M
  * VideoId.enUS: sBcDnQj9_QM
 */
@@ -100,7 +100,7 @@ public class C001L001ChooseDomainName extends C001L001ChooseDomainNameGen<C001Le
 	 * Val.P.enUS:Are you thinking about launching your own website? 
 	 * Val.P.enUS:Are you wondering what the very first step is to creating your own website? 
 	 */
-	protected void _intro(PageHtml o) {
+	protected void _intro(JsonObject o) {
 	}
 
 	/**
@@ -112,7 +112,7 @@ public class C001L001ChooseDomainName extends C001L001ChooseDomainNameGen<C001Le
 	 * Val.P.enUS:I will help you create your own successful website, on your own computer, using open-source software. 
 	 * Val.P.enUS:The first thing you should do is choose your domain name so you can get started in the right direction. 
 	 */
-	protected void _moi(PageHtml o) {
+	protected void _moi(JsonObject o) {
 	}
 
 	/**
@@ -134,7 +134,7 @@ public class C001L001ChooseDomainName extends C001L001ChooseDomainNameGen<C001Le
 	 * Val.P.enUS:All the applications that are part of the website will need to know it. 
 	 * Val.P.enUS:So go take some time and think of the perfect .com, .org or .whatever that will represent your vision, and then come back here and I'll help you from there. 
 	 */  
-	protected void _aLAvance(PageHtml o) {      
+	protected void _aLAvance(JsonObject o) {      
 	}
 
 	/**  
@@ -160,7 +160,7 @@ public class C001L001ChooseDomainName extends C001L001ChooseDomainNameGen<C001Le
 	 * Val.PSpan2A2.enUS:https://www.gandi.net/en
 	 * Val.PSpan3.enUS:. Their prices vary, but they have very cheap promotional domain names, and many more options to choose from. 
 	 */   
-	protected void _acheter(PageHtml o) {      
+	protected void _acheter(JsonObject o) {      
 	}
 
 	/**  
@@ -180,7 +180,7 @@ public class C001L001ChooseDomainName extends C001L001ChooseDomainNameGen<C001Le
 	 * Val.P.enUS:Whether it is a .com, or .org, or .net or whatever is up to you too. 
 	 * Val.P.enUS:Just make it a place you will be proud of someday! 
 	 */     
-	protected void _appeler(PageHtml o) {      
+	protected void _appeler(JsonObject o) {      
 	}
 
 	/**  
@@ -200,7 +200,7 @@ public class C001L001ChooseDomainName extends C001L001ChooseDomainNameGen<C001Le
 	 * Val.PSpan1A.enUS:https://secure.brinkster.com/
 	 * Val.PSpan2.enUS:. 
 	 */     
-	protected void _apres1(PageHtml o) {      
+	protected void _apres1(JsonObject o) {      
 	}
 
 	/**  
@@ -218,7 +218,7 @@ public class C001L001ChooseDomainName extends C001L001ChooseDomainNameGen<C001Le
 	 * Val.UlLi3.enUS:So domains expire yearly, and they can be renewed each year. 
 	 * Val.UlLi4.enUS:I can also manage my site, so I will click on "Manage". 
 	 */     
-	protected void _apres2(PageHtml o) {      
+	protected void _apres2(JsonObject o) {      
 	}
 	public void htmlBodyApres2() { 
 	}
@@ -230,7 +230,7 @@ public class C001L001ChooseDomainName extends C001L001ChooseDomainNameGen<C001Le
 	 * Val.UlLi1.enUS:If I click on "Update Domain Registrant Information" I can update my name and address information to make sure I receive spam from everyone on the Web who noticed I created a new domain. 
 	 * Val.UlLi1.enUS:I would recommend a P.O. Box for your business, rather than your home address, for more privacy. 
 	 */     
-	protected void _apres3(PageHtml o) {      
+	protected void _apres3(JsonObject o) {      
 	}
 
 	/**  
@@ -242,7 +242,7 @@ public class C001L001ChooseDomainName extends C001L001ChooseDomainNameGen<C001Le
 	 * Val.UlLi1.enUS:This is handy for me, because I actually use my email SMTP provider fastmail.com as my DNS provider, so I put in the name servers of my DNS provider there. 
 	 * Val.UlLi1.enUS:You don't need a different DNS provider, you can usually use your registrar for email as well, but I choose fastmail for their privacy and excellent email interface. 
 	 */     
-	protected void _apres4(PageHtml o) {      
+	protected void _apres4(JsonObject o) {      
 	}
 
 	/**  
@@ -256,7 +256,7 @@ public class C001L001ChooseDomainName extends C001L001ChooseDomainNameGen<C001Le
 	 * Val.UlLi1.enUS:For example, I would ask for two A records to be created for "computate.org" and "*.computate.org" to my static IP address. 
 	 * Val.UlLi1.enUS:But since I use fastmail for my DNS, I can actually create my own A records for any of my domains in my account, which is nice. 
 	 */     
-	protected void _apres5(PageHtml o) {      
+	protected void _apres5(JsonObject o) {      
 	}
 
 	/**  
@@ -280,7 +280,8 @@ public class C001L001ChooseDomainName extends C001L001ChooseDomainNameGen<C001Le
 	 * Val.P.enUS:So instead of making it harder on yourself, take this exciting opportunity to buy your domain name, it's less than $20 per year! 
 	 * Val.P.enUS:Now you can continue to launch your own successful website on your own computer. 
 	 */     
-	protected void _plusTard(QuestionReponse o) {      
+//	protected void _plusTard(QuestionReponse o) {      
+	protected void _plusTard(JsonObject o) {      
 	}
 
 	/**
@@ -288,7 +289,7 @@ public class C001L001ChooseDomainName extends C001L001ChooseDomainNameGen<C001Le
 	 * Val.H3.frFR:À récapituler : 
 	 * Val.H3.enUS:To review: 
 	 */
-	protected void _recapituler1(PageHtml o) {      
+	protected void _recapituler1(JsonObject o) {      
 	}
 
 	/**
@@ -307,7 +308,7 @@ public class C001L001ChooseDomainName extends C001L001ChooseDomainNameGen<C001Le
 	 * Val.TableTr2Td4.frFR:Par Christophe Tate
 	 * Val.TableTr2Td4.enUS:By Christopher Tate
 	 */  
-	protected void _recapituler2(PageHtml o) {      
+	protected void _recapituler2(JsonObject o) {      
 	}
 
 	/**
@@ -354,7 +355,7 @@ public class C001L001ChooseDomainName extends C001L001ChooseDomainNameGen<C001Le
 	 * Val.TableTr6Td4.frFR:Le nom d'hôte de votre ordinateur le dépendra. 
 	 * Val.TableTr6Td4.enUS:Your computer hostname will depend on it. 
 	 */  
-	protected void _recapituler3(PageHtml o) {      
+	protected void _recapituler3(JsonObject o) {      
 	}
 
 	/**

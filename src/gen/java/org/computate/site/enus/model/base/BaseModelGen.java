@@ -66,7 +66,8 @@ import org.computate.search.response.solr.SolrResponse;
 public abstract class BaseModelGen<DEV> extends Object {
 	protected static final Logger LOG = LoggerFactory.getLogger(BaseModel.class);
 
-	public static final String BaseModelPage_enUS_ImageUri = "/png-999.png";
+
+
 
 	//////////////////
 	// siteRequest_ //

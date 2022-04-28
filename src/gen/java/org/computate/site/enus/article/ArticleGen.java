@@ -4271,6 +4271,20 @@ public abstract class ArticleGen<DEV> extends Object {
 		}
 	}
 
+	/////////////
+	// populate //
+	/////////////
+
+	public void populateForClass(SolrResponse.Doc doc) {
+		populateArticle(doc);
+	}
+	public void populateArticle(SolrResponse.Doc doc) {
+		Article oArticle = (Article)this;
+		saves = doc.get("saves_docvalues_strings");
+		if(saves != null) {
+		}
+	}
+
 	public void indexArticle(JsonObject doc) {
 		if(inheritPk != null) {
 			doc.put("inheritPk_docvalues_string", inheritPk);

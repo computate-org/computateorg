@@ -17,8 +17,8 @@ import org.computate.search.wrap.Wrap;
 import org.computate.site.enus.config.ConfigKeys;
 import org.computate.site.enus.model.base.BaseModel;
 import org.computate.site.enus.model.user.SiteUser;
+import org.computate.site.enus.page.PageLayout;
 import org.computate.site.enus.request.SiteRequestEnUS;
-import org.computate.site.frFR.page.MiseEnPage;
 
 import io.vertx.core.Promise;
 
@@ -405,7 +405,7 @@ public class Article extends ArticleGen<Object> {
 	 */
 	protected void _pageH3(Wrap<String> w) { 
 		if(pageCreated != null)
-			w.o("Crée : " + pageCreated.format(MiseEnPage.FORMATAffichage));
+			w.o("Crée : " + pageCreated.format(PageLayout.FORMATDateTimeShort));
 	}
 
 	/**

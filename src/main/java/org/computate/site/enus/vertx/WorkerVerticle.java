@@ -262,6 +262,29 @@ public class WorkerVerticle extends WorkerVerticleGen<AbstractVerticle> {
 	}
 
 	/**
+	 * Description: Import initial data
+	 * Val.Complete.enUS:Configuring the import of %s data completed. 
+	 * Val.Fail.enUS:Configuring the import of %s data failed. 
+	 */
+	private void importDataClass(String classSimpleName, ZonedDateTime startDateTime) {
+	}
+
+	/**	
+	 * Import initial data
+	 * Val.Skip.enUS:The data import is disabled. 
+	 **/
+	private Future<Void> importData() {
+		Promise<Void> promise = Promise.promise();
+		if(config().getBoolean(ConfigKeys.ENABLE_IMPORT_DATA)) {
+		}
+		else {
+			LOG.info(importDataSkip);
+			promise.complete();
+		}
+		return promise.future();
+	}
+
+	/**
 	 * Val.Complete.enUS:Refresh all data completed. 
 	 * Val.Started.enUS:Refresh all data started. 
 	 * Val.Fail.enUS:Refresh all data failed. 

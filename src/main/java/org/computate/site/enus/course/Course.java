@@ -11,6 +11,7 @@ import org.computate.site.enus.article.Article;
  * SuperPage.enUS: ArticlePage
  * Map.Integer.classSort: 2
  * 
+ * ApiTag: Course
  * ApiUri: /api/course
  * ApiMethod: SearchPage
  * ApiMethod: Search
