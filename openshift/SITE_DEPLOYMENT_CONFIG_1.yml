@@ -210,6 +210,14 @@ spec:
               value: "{{ API_COUNTER_FETCH }}"
             - name: ENABLE_IMPORT_DATA
               value: "{{ ENABLE_IMPORT_DATA }}"
+            - name: ENABLE_IMPORT_DATA_C001Lesson
+              value: '{{ ENABLE_IMPORT_DATA_C001Lesson | to_json }}'
+            - name: ENABLE_IMPORT_DATA_C001
+              value: '{{ ENABLE_IMPORT_DATA_C001 | to_json }}'
+            - name: ENABLE_IMPORT_DATA_Course
+              value: '{{ ENABLE_IMPORT_DATA_Course | to_json }}'
+            - name: ENABLE_IMPORT_DATA_Article
+              value: '{{ ENABLE_IMPORT_DATA_Article | to_json }}'
             - name: ENABLE_REFRESH_DATA
               value: "{{ ENABLE_REFRESH_DATA }}"
             - name: TIMER_DB_SOLR_SYNC_IN_SECONDS
@@ -218,6 +226,14 @@ spec:
               value: '{{ AUTH_ROLES_ADMIN | to_json }}'
             - name: AUTH_ROLES_REQUIRED_SiteUser
               value: '{{ AUTH_ROLES_REQUIRED_SiteUser | to_json }}'
+            - name: AUTH_ROLES_REQUIRED_C001Lesson
+              value: '{{ AUTH_ROLES_REQUIRED_C001Lesson | to_json }}'
+            - name: AUTH_ROLES_REQUIRED_C001
+              value: '{{ AUTH_ROLES_REQUIRED_C001 | to_json }}'
+            - name: AUTH_ROLES_REQUIRED_Course
+              value: '{{ AUTH_ROLES_REQUIRED_Course | to_json }}'
+            - name: AUTH_ROLES_REQUIRED_Article
+              value: '{{ AUTH_ROLES_REQUIRED_Article | to_json }}'
 
           volumeMounts:
       volumes:

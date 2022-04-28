@@ -59,8 +59,20 @@ REFRESH_DATA_PAUSE_IN_SECONDS: 10
 ENABLE_REFRESH_DATA: false
 
 ENABLE_IMPORT_DATA: true
+ENABLE_IMPORT_DATA_C001Lesson: true
+ENABLE_IMPORT_DATA_C001: true
+ENABLE_IMPORT_DATA_Course: true
+ENABLE_IMPORT_DATA_Article: true
 
 # The Auth roles required to be an admin in the site. 
 AUTH_ROLES_ADMIN: ['SiteAdmin']
 # The Auth roles required to add and modify site user records. 
 AUTH_ROLES_REQUIRED_SiteUser: ['SiteAdmin']
+# The Auth roles required to add and modify  records. 
+AUTH_ROLES_REQUIRED_C001Lesson: ['SiteAdmin']
+# The Auth roles required to add and modify course #1 records. 
+AUTH_ROLES_REQUIRED_C001: ['SiteAdmin']
+# The Auth roles required to add and modify course records. 
+AUTH_ROLES_REQUIRED_Course: ['SiteAdmin']
+# The Auth roles required to add and modify article records. 
+AUTH_ROLES_REQUIRED_Article: ['SiteAdmin']

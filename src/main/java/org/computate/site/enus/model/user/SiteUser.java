@@ -12,7 +12,6 @@ import org.computate.vertx.model.user.ComputateVertxSiteUser;
 import org.computate.vertx.request.ComputateVertxSiteRequest;
 import org.computate.vertx.search.list.SearchList;
 
-import io.vertx.core.Future;
 import io.vertx.core.Promise;
 
 /**

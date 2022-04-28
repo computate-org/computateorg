@@ -59,8 +59,8 @@ import org.computate.search.response.solr.SolrResponse;
 public abstract class SiteUserGen<DEV> extends BaseModel {
 	protected static final Logger LOG = LoggerFactory.getLogger(SiteUser.class);
 
-	public static final String PUTImport_frFR_Uri = "null/import";
-	public static final String PUTImport_frFR_ImageUri = "/pngnull/import-999.png";
+	public static final String PUTImport_frFR_Uri = "null-import";
+	public static final String PUTImport_frFR_ImageUri = "/pngnull-import-999.png";
 
 	public static final String SiteUser_AName_enUS = "a site user";
 	public static final String SiteUser_This_enUS = "this ";
@@ -86,8 +86,8 @@ public abstract class SiteUserGen<DEV> extends BaseModel {
 	public static final String PATCH_enUS_ImageUri = "/png/api/user-999.png";
 	public static final String POST_enUS_Uri = "/api/user";
 	public static final String POST_enUS_ImageUri = "/png/api/user-999.png";
-	public static final String PUTImport_enUS_Uri = "/api/user/import";
-	public static final String PUTImport_enUS_ImageUri = "/png/api/user/import-999.png";
+	public static final String PUTImport_enUS_Uri = "/api/user-import";
+	public static final String PUTImport_enUS_ImageUri = "/png/api/user-import-999.png";
 	public static final String SearchPage_enUS_Uri = "/user";
 	public static final String SearchPage_enUS_ImageUri = "/png/user-999.png";
 

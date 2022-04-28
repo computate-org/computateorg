@@ -27,6 +27,10 @@ import org.computate.site.enus.page.PageLayout;
 import org.computate.site.enus.page.HomePage;
 import org.computate.site.enus.request.SiteRequestEnUS;
 import org.computate.site.enus.model.user.SiteUserEnUSGenApiService;
+import org.computate.site.enus.course.c001.lesson.C001LessonEnUSGenApiService;
+import org.computate.site.enus.course.c001.C001EnUSGenApiService;
+import org.computate.site.enus.course.CourseEnUSGenApiService;
+import org.computate.site.enus.article.ArticleEnUSGenApiService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -696,6 +700,10 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 			templateEngine = HandlebarsTemplateEngine.create(vertx);
 
 			SiteUserEnUSGenApiService.registerService(vertx.eventBus(), config(), workerExecutor, pgPool, webClient, oauth2AuthenticationProvider, authorizationProvider, templateEngine, vertx);
+			C001LessonEnUSGenApiService.registerService(vertx.eventBus(), config(), workerExecutor, pgPool, webClient, oauth2AuthenticationProvider, authorizationProvider, templateEngine, vertx);
+			C001EnUSGenApiService.registerService(vertx.eventBus(), config(), workerExecutor, pgPool, webClient, oauth2AuthenticationProvider, authorizationProvider, templateEngine, vertx);
+			CourseEnUSGenApiService.registerService(vertx.eventBus(), config(), workerExecutor, pgPool, webClient, oauth2AuthenticationProvider, authorizationProvider, templateEngine, vertx);
+			ArticleEnUSGenApiService.registerService(vertx.eventBus(), config(), workerExecutor, pgPool, webClient, oauth2AuthenticationProvider, authorizationProvider, templateEngine, vertx);
 
 			LOG.info(configureApiComplete);
 			promise.complete();

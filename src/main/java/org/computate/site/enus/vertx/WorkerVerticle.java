@@ -276,6 +276,7 @@ public class WorkerVerticle extends WorkerVerticleGen<AbstractVerticle> {
 	private Future<Void> importData() {
 		Promise<Void> promise = Promise.promise();
 		if(config().getBoolean(ConfigKeys.ENABLE_IMPORT_DATA)) {
+			promise.complete();
 		}
 		else {
 			LOG.info(importDataSkip);
