@@ -8,29 +8,28 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
 import org.apache.camel.CamelContext;
-import org.apache.camel.Exchange;
-import org.apache.camel.LoggingLevel;
-import org.apache.camel.builder.ExpressionBuilder;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.vertx.VertxComponent;
 import org.apache.camel.impl.DefaultCamelContext;
-import org.apache.camel.model.dataformat.JsonLibrary;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.computate.search.tool.SearchTool;
+import org.computate.site.enus.article.Article;
+import org.computate.site.enus.article.ArticleEnUSGenApiService;
+import org.computate.site.enus.config.ConfigKeys;
+import org.computate.site.enus.course.CourseEnUSGenApiService;
+import org.computate.site.enus.course.c001.C001EnUSGenApiService;
+import org.computate.site.enus.course.c001.lesson.C001LessonEnUSGenApiService;
+import org.computate.site.enus.model.user.SiteUserEnUSGenApiService;
+import org.computate.site.enus.page.HomePage;
+import org.computate.site.enus.page.PageLayout;
+import org.computate.site.enus.request.SiteRequestEnUS;
 import org.computate.vertx.handlebars.AuthHelpers;
 import org.computate.vertx.handlebars.DateHelpers;
 import org.computate.vertx.handlebars.SiteHelpers;
 import org.computate.vertx.openapi.OpenApi3Generator;
+import org.computate.vertx.search.list.SearchList;
 import org.computate.vertx.verticle.EmailVerticle;
-import org.computate.site.enus.config.ConfigKeys;
-import org.computate.site.enus.page.PageLayout;
-import org.computate.site.enus.page.HomePage;
-import org.computate.site.enus.request.SiteRequestEnUS;
-import org.computate.site.enus.model.user.SiteUserEnUSGenApiService;
-import org.computate.site.enus.course.c001.lesson.C001LessonEnUSGenApiService;
-import org.computate.site.enus.course.c001.C001EnUSGenApiService;
-import org.computate.site.enus.course.CourseEnUSGenApiService;
-import org.computate.site.enus.article.ArticleEnUSGenApiService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,7 +47,6 @@ import io.vertx.core.Promise;
 import io.vertx.core.Vertx;
 import io.vertx.core.VertxOptions;
 import io.vertx.core.WorkerExecutor;
-import io.vertx.core.eventbus.DeliveryOptions;
 import io.vertx.core.eventbus.EventBusOptions;
 import io.vertx.core.http.Cookie;
 import io.vertx.core.http.HttpHeaders;
@@ -160,7 +158,19 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 		api.initDeepOpenApi3Generator(siteRequest);
 		api.writeOpenApi().onSuccess(a -> {
 			LOG.info("Write OpenAPI completed. ");
-			vertx.close();
+			api.writeModels().onSuccess(b -> {
+				LOG.info("Write Models completed. ");
+				api.writeIndexed().onSuccess(c -> {
+					LOG.info("Write Indexed completed. ");
+					vertx.close();
+				}).onFailure(ex -> {
+					LOG.error("Write Models failed. ", ex);
+					vertx.close();
+				});
+			}).onFailure(ex -> {
+				LOG.error("Write Models failed. ", ex);
+				vertx.close();
+			});
 		}).onFailure(ex -> {
 			LOG.error("Write OpenAPI failed. ", ex);
 			vertx.close();
@@ -752,6 +762,52 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 				siteRequest.setConfig(config());
 				siteRequest.setRequestHeaders(ctx.response().headers());
 				siteRequest.initDeepSiteRequestEnUS();
+				t.promiseDeepForClass(siteRequest).onSuccess(a -> {
+					JsonObject json = JsonObject.mapFrom(t);
+					json.forEach(entry -> {
+						ctx.put(entry.getKey(), entry.getValue());
+					});
+					ctx.next();
+				}).onFailure(ex -> {
+					ctx.fail(ex);
+				});
+			});
+
+			router.getWithRegex("(?<uri>\\/(?<lang>[a-z][a-z][A-Z][A-Z])\\/.*)").handler(ctx -> {
+				String uri = ctx.pathParam("uri");
+				String lang = ctx.pathParam("lang");
+
+				SiteRequestEnUS siteRequest = new SiteRequestEnUS();
+				siteRequest.setConfig(config());
+				siteRequest.setRequestHeaders(ctx.response().headers());
+				siteRequest.initDeepSiteRequestEnUS();
+				SearchList<Article> l = new SearchList<>();
+				l.setC(Article.class);
+				l.fq(String.format("%s_docvalues_string:", Article.VAR_pageUrlId, SearchTool.escapeQueryChars(uri)));
+				l.promiseDeepForClass(siteRequest).onSuccess(a -> {
+					Article article = l.first();
+					try {
+						PageLayout page = (PageLayout)Class.forName(article.getClassCanonicalName() + "Page").getDeclaredConstructor().newInstance();
+						page.promiseDeepForClass(siteRequest).onSuccess(b -> {
+							JsonObject json = JsonObject.mapFrom(page);
+							templateEngine.render(json, Optional.ofNullable(config().getString(ConfigKeys.TEMPLATE_PATH)).orElse("templates") + "/enUS/" + page.getClass().getSimpleName()).onSuccess(buffer -> {
+								ctx.end(buffer);
+		//						promise.complete(new ServiceResponse(200, "OK", buffer, requestHeaders));
+							}).onFailure(ex -> {
+								promise.fail(ex);
+							});
+						}).onFailure(ex -> {
+							ctx.fail(ex);
+						});
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+				}).onFailure(ex -> {
+					ctx.fail(ex);
+				});
+				HomePage t = new HomePage();
 				t.promiseDeepForClass(siteRequest).onSuccess(a -> {
 					JsonObject json = JsonObject.mapFrom(t);
 					json.forEach(entry -> {

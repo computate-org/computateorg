@@ -86,12 +86,16 @@ public abstract class ArticleGen<DEV> extends Object {
 	public static final String Article_OfName_frFR = "d'article";
 	public static final String Article_NameAdjectiveSingular_frFR = "article";
 	public static final String Article_NameAdjectivePlural_frFR = "articles";
-	public static final String SearchPage_frFR_Uri = "/api/article/{id}";
-	public static final String SearchPage_frFR_ImageUri = "/png/api/article/{id}-999.png";
 	public static final String Search_frFR_Uri = "/api/article/{id}";
 	public static final String Search_frFR_ImageUri = "/png/api/article/{id}-999.png";
 	public static final String GET_frFR_Uri = "/api/article/{id}";
 	public static final String GET_frFR_ImageUri = "/png/api/article/{id}-999.png";
+	public static final String PATCH_frFR_Uri = "/api/article";
+	public static final String PATCH_frFR_ImageUri = "/png/api/article-999.png";
+	public static final String POST_frFR_Uri = "/api/article";
+	public static final String POST_frFR_ImageUri = "/png/api/article-999.png";
+	public static final String PUTImport_frFR_Uri = "/api/article-import";
+	public static final String PUTImport_frFR_ImageUri = "/png/api/article-import-999.png";
 
 	public static final String Article_AName_enUS = "an article";
 	public static final String Article_This_enUS = "this ";
@@ -111,12 +115,18 @@ public abstract class ArticleGen<DEV> extends Object {
 	public static final String Article_ANameAdjective_enUS = "an article";
 	public static final String Article_NameAdjectiveSingular_enUS = "article";
 	public static final String Article_NameAdjectivePlural_enUS = "articles";
-	public static final String SearchPage_enUS_Uri = "/enUS/article";
-	public static final String SearchPage_enUS_ImageUri = "/png/enUS/article-999.png";
 	public static final String Search_enUS_Uri = "/api/article";
 	public static final String Search_enUS_ImageUri = "/png/api/article-999.png";
 	public static final String GET_enUS_Uri = "/api/article/{id}";
 	public static final String GET_enUS_ImageUri = "/png/api/article/{id}-999.png";
+	public static final String PATCH_enUS_Uri = "/api/article";
+	public static final String PATCH_enUS_ImageUri = "/png/api/article-999.png";
+	public static final String POST_enUS_Uri = "/api/article";
+	public static final String POST_enUS_ImageUri = "/png/api/article-999.png";
+	public static final String PUTImport_enUS_Uri = "/api/article-import";
+	public static final String PUTImport_enUS_ImageUri = "/png/api/article-import-999.png";
+	public static final String SearchPage_enUS_Uri = "/article";
+	public static final String SearchPage_enUS_ImageUri = "/png/article-999.png";
 
 	public static final String Article_Color = "green";
 	public static final String Article_IconGroup = "regular";

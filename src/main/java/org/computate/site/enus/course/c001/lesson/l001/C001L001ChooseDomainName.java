@@ -9,13 +9,15 @@ import io.vertx.core.json.JsonObject;
 
 /**
  * Page: true
+ * Indexed: true
+ * SimplePage: true
  * SuperPage.enUS: C001Page
  * Map.Integer.classSort: 4
  * 
  * ApiMethod.enUS: SearchPage
  * ApiMethod.frFR: SearchPage
- * ApiUriSearchPage.enUS: /enUS/course/001/001-choose-domain-name
- * ApiUriSearchPage.frFR: /frFR/cours/001/001-choisir-nom-domaine
+ * Uri.enUS: /enUS/course/001/001-choose-domain-name
+ * Uri.frFR: /frFR/cours/001/001-choisir-nom-domaine
  * AName.frFR: un leçon
  * AName.enUS: a lesson
  * 
@@ -66,11 +68,11 @@ public class C001L001ChooseDomainName extends C001L001ChooseDomainNameGen<C001Le
 	}
 
 	@Override protected void _pageUri_enUS(Wrap<String> c) {
-		c.o(SearchPage_enUS_Uri);
+		c.o(C001L001ChooseDomainName_Uri_enUS);
 	}
 
 	@Override protected void _pageUri_frFR(Wrap<String> c) {
-		c.o(SearchPage_frFR_Uri);
+		c.o(C001L001ChooseDomainName_Uri_frFR);
 	}
 
 	@Override protected void _pageImageUri_enUS(Wrap<String> c) {
@@ -375,6 +377,11 @@ public class C001L001ChooseDomainName extends C001L001ChooseDomainNameGen<C001Le
 	 * Langue: enUS
 	 **/
 	protected void _lessonSearch_enUS(List<String> l) {
+		
+	}
+
+	@Override
+	protected void _pageUrlId(Wrap<String> w) {
 		
 	}
 }

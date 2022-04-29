@@ -1,18 +1,8 @@
 package org.computate.site.enus.article;
 
-import org.computate.site.enus.article.Article;
-import java.lang.Void;
-import java.lang.String;
-import java.lang.Boolean;
-import java.lang.Integer;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Locale;
-import java.util.List;
-import org.computate.site.enus.model.user.SiteUser;
-import org.computate.site.enus.request.SiteRequestEnUS;
-import java.lang.Long;
 import org.computate.site.enus.page.PageLayout;
+import org.computate.site.enus.request.SiteRequestEnUS;
+import org.computate.site.enus.model.user.SiteUser;
 import java.io.IOException;
 import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.http.HttpServerResponse;
@@ -21,6 +11,9 @@ import org.computate.search.wrap.Wrap;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.LocalDate;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.api.service.ServiceRequest;
 import io.vertx.core.json.JsonArray;
@@ -28,6 +21,7 @@ import java.net.URLDecoder;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.commons.lang3.StringUtils;
 import java.util.Map;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 import java.util.stream.Collectors;
@@ -181,7 +175,7 @@ public class ArticleGenPage extends ArticleGenPageGen<PageLayout> {
 
 	@Override
 	protected void _pageUri(Wrap<String> c) {
-		c.o("/enUS/article");
+		c.o("/article");
 	}
 
 	@Override
@@ -358,7 +352,7 @@ public class ArticleGenPage extends ArticleGenPageGen<PageLayout> {
 
 	@Override
 	protected void _pageImageUri(Wrap<String> c) {
-			c.o("/png/enUS/article-999.png");
+			c.o("/png/article-999.png");
 	}
 
 	@Override

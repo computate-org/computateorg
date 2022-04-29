@@ -31,10 +31,16 @@ import io.vertx.core.Promise;
  * 
  * ApiTag: Article
  * ApiUri: /api/article
- * ApiMethod: SearchPage
  * ApiMethod: Search
  * ApiMethod: GET
- * ApiUriSearchPage.enUS: /enUS/article
+ * ApiMethod: PATCH
+ * ApiMethod: POST
+ * ApiMethod: PUTImport
+ * 
+ * ApiMethod.enUS: SearchPage
+ * PageSearchPage.enUS: ArticlePage
+ * PageSuperSearchPage.enUS: PageLayout
+ * ApiUriSearchPage.enUS: /article
  * 
  * AName.frFR: un article
  * AName.enUS: an article

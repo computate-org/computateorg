@@ -30,7 +30,14 @@ public interface ArticleEnUSGenApiService {
 		new ServiceBinder(vertx).setAddress("computate.org-enUS-Article").register(ArticleEnUSGenApiService.class, new ArticleEnUSApiServiceImpl(eventBus, config, workerExecutor, pgPool, webClient, oauth2AuthenticationProvider, authorizationProvider, templateEngine));
 	}
 
-	public void searchpageArticle(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler);
 	public void searchArticle(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler);
 	public void getArticle(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler);
+	public void patchArticle(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler);
+	public void patchArticleFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler);
+	public void postArticle(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler);
+	public void postArticleFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler);
+	public void putimportArticle(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler);
+	public void putimportArticleFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler);
+	public void searchpageArticleId(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler);
+	public void searchpageArticle(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler);
 }

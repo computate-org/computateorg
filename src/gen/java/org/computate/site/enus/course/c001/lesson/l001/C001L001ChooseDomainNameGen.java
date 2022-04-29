@@ -58,6 +58,8 @@ import javax.imageio.ImageIO;
 public abstract class C001L001ChooseDomainNameGen<DEV> extends C001Lesson {
 	protected static final Logger LOG = LoggerFactory.getLogger(C001L001ChooseDomainName.class);
 
+	public static final String C001L001ChooseDomainName_Uri_frFR = "/frFR/cours/001/001-choisir-nom-domaine";
+	public static final String C001L001ChooseDomainName_Description_frFR = "Quel est l'étape première pour créer mon propre site Web ? Choisir un nom de domaine. ";
 	public static final String C001L001ChooseDomainName_AName_frFR = "un leçon";
 	public static final String C001L001ChooseDomainName_This_frFR = "ce ";
 	public static final String C001L001ChooseDomainName_ThisName_frFR = "ce leçon";
@@ -79,6 +81,8 @@ public abstract class C001L001ChooseDomainNameGen<DEV> extends C001Lesson {
 	public static final String C001L001ChooseDomainName_NameAdjectiveSingular_frFR = "leçon";
 	public static final String C001L001ChooseDomainName_NameAdjectivePlural_frFR = "lessons";
 
+	public static final String C001L001ChooseDomainName_Uri_enUS = "/enUS/course/001/001-choose-domain-name";
+	public static final String C001L001ChooseDomainName_Description_enUS = "What is the first step to creating my own website? Choose a domain name. ";
 	public static final String C001L001ChooseDomainName_AName_enUS = "a lesson";
 	public static final String C001L001ChooseDomainName_This_enUS = "this ";
 	public static final String C001L001ChooseDomainName_ThisName_enUS = "this lesson";
@@ -115,8 +119,7 @@ public abstract class C001L001ChooseDomainNameGen<DEV> extends C001Lesson {
 	public static final String introP2_enUS = "Are you wondering what the very first step is to creating your own website? ";
 	public static final String introP_enUS = introP1_enUS + introP2_enUS;
 
-	/**
-		<p class="introP  ">
+	/**		<p class="introP  ">
 			{{ C001L001ChooseDomainName['introP1_{{ lang }}'] }}
 			{{ C001L001ChooseDomainName['introP2_{{ lang }}'] }}
 			{{ C001L001ChooseDomainName['introP1_{{ lang }}'] }}
@@ -184,8 +187,7 @@ public abstract class C001L001ChooseDomainNameGen<DEV> extends C001Lesson {
 	public static final String moiP3_enUS = "The first thing you should do is choose your domain name so you can get started in the right direction. ";
 	public static final String moiP_enUS = moiP1_enUS + moiP2_enUS + moiP3_enUS;
 
-	/**
-		<p class="moiP  ">
+	/**		<p class="moiP  ">
 			{{ C001L001ChooseDomainName['moiP1_{{ lang }}'] }}
 			{{ C001L001ChooseDomainName['moiP2_{{ lang }}'] }}
 			{{ C001L001ChooseDomainName['moiP3_{{ lang }}'] }}
@@ -271,8 +273,7 @@ public abstract class C001L001ChooseDomainNameGen<DEV> extends C001Lesson {
 	public static final String aLAvanceP5_enUS = "So go take some time and think of the perfect .com, .org or .whatever that will represent your vision, and then come back here and I'll help you from there. ";
 	public static final String aLAvanceP_enUS = aLAvanceP1_enUS + aLAvanceP2_enUS + aLAvanceP3_enUS + aLAvanceP4_enUS + aLAvanceP5_enUS;
 
-	/**
-		<h3 class="aLAvanceH3  ">
+	/**		<h3 class="aLAvanceH3  ">
 			<span class="aLAvanceH3Span  ">
 				{{ C001L001ChooseDomainName['aLAvanceH3Span1_{{ lang }}'] }}
 			</span>
@@ -400,8 +401,7 @@ public abstract class C001L001ChooseDomainNameGen<DEV> extends C001Lesson {
 	public static final String acheterPSpan31_enUS = ". Their prices vary, but they have very cheap promotional domain names, and many more options to choose from. ";
 	public static final String acheterPSpan3_enUS = acheterPSpan31_enUS;
 
-	/**
-		<h3 class="acheterH3  ">
+	/**		<h3 class="acheterH3  ">
 			<span class="acheterH3Span  ">
 				{{ C001L001ChooseDomainName['acheterH3Span1_{{ lang }}'] }}
 			</span>
@@ -539,8 +539,7 @@ public abstract class C001L001ChooseDomainNameGen<DEV> extends C001Lesson {
 	public static final String appelerP4_enUS = "Just make it a place you will be proud of someday! ";
 	public static final String appelerP_enUS = appelerP1_enUS + appelerP2_enUS + appelerP3_enUS + appelerP4_enUS;
 
-	/**
-		<h3 class="appelerH3  ">
+	/**		<h3 class="appelerH3  ">
 			<span class="appelerH3Span  ">
 				{{ C001L001ChooseDomainName['appelerH3Span1_{{ lang }}'] }}
 			</span>
@@ -656,8 +655,7 @@ public abstract class C001L001ChooseDomainNameGen<DEV> extends C001Lesson {
 	public static final String apres1PSpan21_enUS = ". ";
 	public static final String apres1PSpan2_enUS = apres1PSpan21_enUS;
 
-	/**
-		<h3 class="apres1H3  ">
+	/**		<h3 class="apres1H3  ">
 			<span class="apres1H3Span  ">
 				{{ C001L001ChooseDomainName['apres1H3Span1_{{ lang }}'] }}
 			</span>
@@ -779,8 +777,7 @@ public abstract class C001L001ChooseDomainNameGen<DEV> extends C001Lesson {
 	public static final String apres2UlLi41_enUS = "I can also manage my site, so I will click on \"Manage\". ";
 	public static final String apres2UlLi4_enUS = apres2UlLi41_enUS;
 
-	/**
-		<ul class="apres2Ul  ">
+	/**		<ul class="apres2Ul  ">
 			<li class="apres2UlLi1 apres2UlLi odd  ">
 				{{ C001L001ChooseDomainName['apres2UlLi11_{{ lang }}'] }}
 			</li>
@@ -870,8 +867,7 @@ public abstract class C001L001ChooseDomainNameGen<DEV> extends C001Lesson {
 	public static final String apres3UlLi12_enUS = "I would recommend a P.O. Box for your business, rather than your home address, for more privacy. ";
 	public static final String apres3UlLi1_enUS = apres3UlLi11_enUS + apres3UlLi12_enUS;
 
-	/**
-		<ul class="apres3Ul  ">
+	/**		<ul class="apres3Ul  ">
 			<li class="apres3UlLi1 apres3UlLi odd  ">
 				{{ C001L001ChooseDomainName['apres3UlLi11_{{ lang }}'] }}
 				{{ C001L001ChooseDomainName['apres3UlLi12_{{ lang }}'] }}
@@ -941,8 +937,7 @@ public abstract class C001L001ChooseDomainNameGen<DEV> extends C001Lesson {
 	public static final String apres4UlLi13_enUS = "You don't need a different DNS provider, you can usually use your registrar for email as well, but I choose fastmail for their privacy and excellent email interface. ";
 	public static final String apres4UlLi1_enUS = apres4UlLi11_enUS + apres4UlLi12_enUS + apres4UlLi13_enUS;
 
-	/**
-		<ul class="apres4Ul  ">
+	/**		<ul class="apres4Ul  ">
 			<li class="apres4UlLi1 apres4UlLi odd  ">
 				{{ C001L001ChooseDomainName['apres4UlLi11_{{ lang }}'] }}
 				{{ C001L001ChooseDomainName['apres4UlLi12_{{ lang }}'] }}
@@ -1016,8 +1011,7 @@ public abstract class C001L001ChooseDomainNameGen<DEV> extends C001Lesson {
 	public static final String apres5UlLi14_enUS = "But since I use fastmail for my DNS, I can actually create my own A records for any of my domains in my account, which is nice. ";
 	public static final String apres5UlLi1_enUS = apres5UlLi11_enUS + apres5UlLi12_enUS + apres5UlLi13_enUS + apres5UlLi14_enUS;
 
-	/**
-		<ul class="apres5Ul  ">
+	/**		<ul class="apres5Ul  ">
 			<li class="apres5UlLi1 apres5UlLi odd  ">
 				{{ C001L001ChooseDomainName['apres5UlLi11_{{ lang }}'] }}
 				{{ C001L001ChooseDomainName['apres5UlLi12_{{ lang }}'] }}
@@ -1109,8 +1103,7 @@ public abstract class C001L001ChooseDomainNameGen<DEV> extends C001Lesson {
 	public static final String plusTardP6_enUS = "Now you can continue to launch your own successful website on your own computer. ";
 	public static final String plusTardP_enUS = plusTardP1_enUS + plusTardP2_enUS + plusTardP3_enUS + plusTardP4_enUS + plusTardP5_enUS + plusTardP6_enUS;
 
-	/**
-		<h3 class="plusTardH3  ">
+	/**		<h3 class="plusTardH3  ">
 			<span class="plusTardH3Span  ">
 				{{ C001L001ChooseDomainName['plusTardH3Span1_{{ lang }}'] }}
 			</span>
@@ -1208,8 +1201,7 @@ public abstract class C001L001ChooseDomainNameGen<DEV> extends C001Lesson {
 	public static final String recapituler1H31_enUS = "To review: ";
 	public static final String recapituler1H3_enUS = recapituler1H31_enUS;
 
-	/**
-		<h3 class="recapituler1H3  ">
+	/**		<h3 class="recapituler1H3  ">
 			{{ C001L001ChooseDomainName['recapituler1H31_{{ lang }}'] }}
 			{{ C001L001ChooseDomainName['recapituler1H31_{{ lang }}'] }}
 		</h3>
@@ -1293,8 +1285,7 @@ public abstract class C001L001ChooseDomainNameGen<DEV> extends C001Lesson {
 	public static final String recapituler2TableTr2Td41_enUS = "By Christopher Tate";
 	public static final String recapituler2TableTr2Td4_enUS = recapituler2TableTr2Td41_enUS;
 
-	/**
-		<table class="recapituler2Table  ">
+	/**		<table class="recapituler2Table  ">
 			<tr class="recapituler2TableTr1 recapituler2TableTr odd  ">
 				<td class="w3-mobile recapituler2TableTr1Td1 recapituler2TableTr1Td odd  ">
 					{{ C001L001ChooseDomainName['recapituler2TableTr1Td11_{{ lang }}'] }}
@@ -1472,8 +1463,7 @@ public abstract class C001L001ChooseDomainNameGen<DEV> extends C001Lesson {
 	public static final String recapituler3TableTr6Td41_enUS = "Your computer hostname will depend on it. ";
 	public static final String recapituler3TableTr6Td4_enUS = recapituler3TableTr6Td41_enUS;
 
-	/**
-		<table class="recapituler3Table  ">
+	/**		<table class="recapituler3Table  ">
 			<tr class="recapituler3TableTr1 recapituler3TableTr odd  ">
 				<td class="w3-mobile recapituler3TableTr1Td2 recapituler3TableTr1Td even  ">
 					{{ C001L001ChooseDomainName['recapituler3TableTr1Td21_{{ lang }}'] }}
@@ -1672,8 +1662,7 @@ public abstract class C001L001ChooseDomainNameGen<DEV> extends C001Lesson {
 	// lessonSearch_frFR //
 	///////////////////////
 
-	/**
-	 The entity lessonSearch_frFR
+	/**	 The entity lessonSearch_frFR
 	 *	 It is constructed before being initialized with the constructor by default. 
 	 */
 	@JsonProperty
@@ -1739,8 +1728,7 @@ public abstract class C001L001ChooseDomainNameGen<DEV> extends C001Lesson {
 	// lessonSearch_enUS //
 	///////////////////////
 
-	/**
-	 The entity lessonSearch_enUS
+	/**	 The entity lessonSearch_enUS
 	 *	 It is constructed before being initialized with the constructor by default. 
 	 */
 	@JsonProperty
