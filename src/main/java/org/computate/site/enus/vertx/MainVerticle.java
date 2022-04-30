@@ -131,11 +131,34 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 		String configPath = System.getenv(ConfigKeys.CONFIG_PATH);
 		configureConfig(vertx).onSuccess(config -> {
 			try {
+				Future<Void> originalFuture = Future.future(a -> a.complete());
+				Future<Void> future = originalFuture;
+				OpenApi3Generator api = new OpenApi3Generator();
+				WebClient webClient = WebClient.create(vertx);
+				SiteRequestEnUS siteRequest = new SiteRequestEnUS();
+				siteRequest.setConfig(config);
+				siteRequest.setWebClient(webClient);
+				api.setWebClient(webClient);
+				api.setConfig(config);
+				siteRequest.initDeepSiteRequestEnUS();
+				api.initDeepOpenApi3Generator(siteRequest);
 				Boolean runOpenApi3Generator = Optional.ofNullable(config.getBoolean(ConfigKeys.RUN_OPENAPI3_GENERATOR)).orElse(false);
-				if(runOpenApi3Generator)
-					runOpenApi3Generator(args, vertx, config);
-				else
-					run(config);
+				Boolean runSqlGenerator = Optional.ofNullable(config.getBoolean(ConfigKeys.RUN_SQL_GENERATOR)).orElse(false);
+				Boolean runArticleGenerator = Optional.ofNullable(config.getBoolean(ConfigKeys.RUN_ARTICLE_GENERATOR)).orElse(false);
+
+				if(runOpenApi3Generator || runSqlGenerator || runArticleGenerator) {
+					if(runOpenApi3Generator)
+						future = future.compose(a -> api.writeOpenApi());
+					if(runSqlGenerator)
+						future = future.compose(a -> api.writeSql());
+					if(runArticleGenerator)
+						future = future.compose(a -> api.writeArticle());
+					future.compose(a -> vertx.close());
+				} else {
+					future = future.compose(a -> run(config));
+					future.compose(a -> vertx.close());
+				}
+//				future.toCompletionStage();
 			} catch(Exception ex) {
 				LOG.error(String.format("Error loading config: %s", configPath), ex);
 				vertx.close();
@@ -146,37 +169,8 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 		});
 	}
 
-	public static void  runOpenApi3Generator(String[] args, Vertx vertx, JsonObject config) {
-		OpenApi3Generator api = new OpenApi3Generator();
-		WebClient webClient = WebClient.create(vertx);
-		SiteRequestEnUS siteRequest = new SiteRequestEnUS();
-		siteRequest.setConfig(config);
-		siteRequest.setWebClient(webClient);
-		api.setWebClient(webClient);
-		api.setConfig(config);
-		siteRequest.initDeepSiteRequestEnUS();
-		api.initDeepOpenApi3Generator(siteRequest);
-		api.writeOpenApi().onSuccess(a -> {
-			LOG.info("Write OpenAPI completed. ");
-			api.writeModels().onSuccess(b -> {
-				LOG.info("Write Models completed. ");
-				api.writeIndexed().onSuccess(c -> {
-					LOG.info("Write Indexed completed. ");
-					vertx.close();
-				}).onFailure(ex -> {
-					LOG.error("Write Models failed. ", ex);
-					vertx.close();
-				});
-			}).onFailure(ex -> {
-				LOG.error("Write Models failed. ", ex);
-				vertx.close();
-			});
-		}).onFailure(ex -> {
-			LOG.error("Write OpenAPI failed. ", ex);
-			vertx.close();
-		});
-	}
-	public static void  run(JsonObject config) {
+	public static Future<Void> run(JsonObject config) {
+		Promise<Void> promise = Promise.promise();
 		Boolean enableZookeeperCluster = Optional.ofNullable(config.getBoolean(ConfigKeys.ENABLE_ZOOKEEPER_CLUSTER)).orElse(false);
 		VertxOptions vertxOptions = new VertxOptions();
 		EventBusOptions eventBusOptions = new EventBusOptions();
@@ -277,14 +271,17 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 		if(enableZookeeperCluster) {
 			Vertx.clusteredVertx(vertxOptions).onSuccess(vertx -> {
 				runner.accept(vertx);
+				promise.complete();
 			}).onFailure(ex -> {
 				LOG.error("Creating clustered Vertx failed. ", ex);
-				ExceptionUtils.rethrow(ex);
+				promise.fail(ex);
 			});
 		} else {
 			Vertx vertx = Vertx.vertx(vertxOptions);
 			runner.accept(vertx);
+			promise.complete();
 		}
+		return promise.future();
 	}
 
 	/**

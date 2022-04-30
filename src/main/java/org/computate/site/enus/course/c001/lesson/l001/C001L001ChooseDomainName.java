@@ -13,6 +13,7 @@ import io.vertx.core.json.JsonObject;
  * SimplePage: true
  * SuperPage.enUS: C001Page
  * Map.Integer.classSort: 4
+ * Map.Boolean.article: true
  * 
  * ApiMethod.enUS: SearchPage
  * ApiMethod.frFR: SearchPage
