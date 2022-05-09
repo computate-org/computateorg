@@ -144,8 +144,8 @@ public class C001EnUSGenApiServiceImpl extends BaseApiServiceImpl implements C00
 		Promise<ServiceResponse> promise = Promise.promise();
 		try {
 			SiteRequestEnUS siteRequest = listC001.getSiteRequest_(SiteRequestEnUS.class);
-			SolrResponse responseSearch = listC001.getQueryResponse();
-			List<SolrResponse.Doc> solrDocuments = listC001.getQueryResponse().getResponse().getDocs();
+			SolrResponse responseSearch = listC001.getResponse();
+			List<SolrResponse.Doc> solrDocuments = listC001.getResponse().getResponse().getDocs();
 			Long searchInMillis = Long.valueOf(responseSearch.getResponseHeader().getqTime());
 			Long startNum = listC001.getRequest().getStart();
 			Long foundNum = responseSearch.getResponse().getNumFound();

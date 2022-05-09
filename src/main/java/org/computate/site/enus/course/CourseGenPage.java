@@ -56,7 +56,7 @@ public class CourseGenPage extends CourseGenPageGen<ArticlePage> {
 
 	protected void _pageResponse(Wrap<String> w) {
 		if(searchListCourse_ != null)
-			w.o(JsonObject.mapFrom(searchListCourse_.getQueryResponse()).toString());
+			w.o(JsonObject.mapFrom(searchListCourse_.getResponse()).toString());
 	}
 
 	protected void _defaultZoneId(Wrap<String> w) {
@@ -138,7 +138,7 @@ public class CourseGenPage extends CourseGenPageGen<ArticlePage> {
 	}
 
 	protected void _facetCounts(Wrap<SolrResponse.FacetCounts> w) {
-		w.o(searchListCourse_.getQueryResponse().getFacetCounts());
+		w.o(searchListCourse_.getResponse().getFacetCounts());
 	}
 
 	protected void _courseCount(Wrap<Integer> w) {
@@ -194,7 +194,7 @@ public class CourseGenPage extends CourseGenPageGen<ArticlePage> {
 		JsonArray pages = new JsonArray();
 		Long start = searchListCourse_.getStart().longValue();
 		Long rows = searchListCourse_.getRows().longValue();
-		Long foundNum = searchListCourse_.getQueryResponse().getResponse().getNumFound().longValue();
+		Long foundNum = searchListCourse_.getResponse().getResponse().getNumFound().longValue();
 		Long startNum = start + 1L;
 		Long endNum = start + rows;
 		Long floorMod = Math.floorMod(foundNum, rows);
@@ -295,7 +295,7 @@ public class CourseGenPage extends CourseGenPageGen<ArticlePage> {
 		JsonObject params = serviceRequest.getParams();
 
 		JsonObject queryParams = Optional.ofNullable(serviceRequest).map(ServiceRequest::getParams).map(or -> or.getJsonObject("query")).orElse(new JsonObject());
-		Long num = searchListCourse_.getQueryResponse().getResponse().getNumFound().longValue();
+		Long num = searchListCourse_.getResponse().getResponse().getNumFound().longValue();
 		String q = "*:*";
 		String q1 = "objectText";
 		String q2 = "";

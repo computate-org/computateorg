@@ -144,8 +144,8 @@ public class C001LessonEnUSGenApiServiceImpl extends BaseApiServiceImpl implemen
 		Promise<ServiceResponse> promise = Promise.promise();
 		try {
 			SiteRequestEnUS siteRequest = listC001Lesson.getSiteRequest_(SiteRequestEnUS.class);
-			SolrResponse responseSearch = listC001Lesson.getQueryResponse();
-			List<SolrResponse.Doc> solrDocuments = listC001Lesson.getQueryResponse().getResponse().getDocs();
+			SolrResponse responseSearch = listC001Lesson.getResponse();
+			List<SolrResponse.Doc> solrDocuments = listC001Lesson.getResponse().getResponse().getDocs();
 			Long searchInMillis = Long.valueOf(responseSearch.getResponseHeader().getqTime());
 			Long startNum = listC001Lesson.getRequest().getStart();
 			Long foundNum = responseSearch.getResponse().getNumFound();

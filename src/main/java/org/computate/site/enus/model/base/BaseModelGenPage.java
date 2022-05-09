@@ -57,7 +57,7 @@ public class BaseModelGenPage extends BaseModelGenPageGen<PageLayout> {
 
 	protected void _pageResponse(Wrap<String> w) {
 		if(searchListBaseModel_ != null)
-			w.o(JsonObject.mapFrom(searchListBaseModel_.getQueryResponse()).toString());
+			w.o(JsonObject.mapFrom(searchListBaseModel_.getResponse()).toString());
 	}
 
 	protected void _defaultPivotVars(List<String> l) {
@@ -84,7 +84,7 @@ public class BaseModelGenPage extends BaseModelGenPageGen<PageLayout> {
 	}
 
 	protected void _facetCounts(Wrap<SolrResponse.FacetCounts> w) {
-		w.o(searchListBaseModel_.getQueryResponse().getFacetCounts());
+		w.o(searchListBaseModel_.getResponse().getFacetCounts());
 	}
 
 	protected void _baseModelCount(Wrap<Integer> w) {
@@ -143,7 +143,7 @@ public class BaseModelGenPage extends BaseModelGenPageGen<PageLayout> {
 		JsonArray pages = new JsonArray();
 		Long start = searchListBaseModel_.getStart().longValue();
 		Long rows = searchListBaseModel_.getRows().longValue();
-		Long foundNum = searchListBaseModel_.getQueryResponse().getResponse().getNumFound().longValue();
+		Long foundNum = searchListBaseModel_.getResponse().getResponse().getNumFound().longValue();
 		Long startNum = start + 1L;
 		Long endNum = start + rows;
 		Long floorMod = Math.floorMod(foundNum, rows);
@@ -244,7 +244,7 @@ public class BaseModelGenPage extends BaseModelGenPageGen<PageLayout> {
 		JsonObject params = serviceRequest.getParams();
 
 		JsonObject queryParams = Optional.ofNullable(serviceRequest).map(ServiceRequest::getParams).map(or -> or.getJsonObject("query")).orElse(new JsonObject());
-		Long num = searchListBaseModel_.getQueryResponse().getResponse().getNumFound().longValue();
+		Long num = searchListBaseModel_.getResponse().getResponse().getNumFound().longValue();
 		String q = "*:*";
 		String q1 = "objectText";
 		String q2 = "";

@@ -144,8 +144,8 @@ public class CourseEnUSGenApiServiceImpl extends BaseApiServiceImpl implements C
 		Promise<ServiceResponse> promise = Promise.promise();
 		try {
 			SiteRequestEnUS siteRequest = listCourse.getSiteRequest_(SiteRequestEnUS.class);
-			SolrResponse responseSearch = listCourse.getQueryResponse();
-			List<SolrResponse.Doc> solrDocuments = listCourse.getQueryResponse().getResponse().getDocs();
+			SolrResponse responseSearch = listCourse.getResponse();
+			List<SolrResponse.Doc> solrDocuments = listCourse.getResponse().getResponse().getDocs();
 			Long searchInMillis = Long.valueOf(responseSearch.getResponseHeader().getqTime());
 			Long startNum = listCourse.getRequest().getStart();
 			Long foundNum = responseSearch.getResponse().getNumFound();
@@ -327,8 +327,8 @@ public class CourseEnUSGenApiServiceImpl extends BaseApiServiceImpl implements C
 		Promise<ServiceResponse> promise = Promise.promise();
 		try {
 			SiteRequestEnUS siteRequest = listCourse.getSiteRequest_(SiteRequestEnUS.class);
-			SolrResponse responseSearch = listCourse.getQueryResponse();
-			List<SolrResponse.Doc> solrDocuments = listCourse.getQueryResponse().getResponse().getDocs();
+			SolrResponse responseSearch = listCourse.getResponse();
+			List<SolrResponse.Doc> solrDocuments = listCourse.getResponse().getResponse().getDocs();
 			Long searchInMillis = Long.valueOf(responseSearch.getResponseHeader().getqTime());
 			Long startNum = listCourse.getRequest().getStart();
 			Long foundNum = responseSearch.getResponse().getNumFound();

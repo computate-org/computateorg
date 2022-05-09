@@ -144,8 +144,8 @@ public class SiteUserEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 		Promise<ServiceResponse> promise = Promise.promise();
 		try {
 			SiteRequestEnUS siteRequest = listSiteUser.getSiteRequest_(SiteRequestEnUS.class);
-			SolrResponse responseSearch = listSiteUser.getQueryResponse();
-			List<SolrResponse.Doc> solrDocuments = listSiteUser.getQueryResponse().getResponse().getDocs();
+			SolrResponse responseSearch = listSiteUser.getResponse();
+			List<SolrResponse.Doc> solrDocuments = listSiteUser.getResponse().getResponse().getDocs();
 			Long searchInMillis = Long.valueOf(responseSearch.getResponseHeader().getqTime());
 			Long startNum = listSiteUser.getRequest().getStart();
 			Long foundNum = responseSearch.getResponse().getNumFound();
@@ -295,7 +295,7 @@ public class SiteUserEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 					searchSiteUserList(siteRequest, false, true, true).onSuccess(listSiteUser -> {
 						try {
 							List<String> roles2 = Optional.ofNullable(config.getValue(ConfigKeys.AUTH_ROLES_ADMIN)).map(v -> v instanceof JsonArray ? (JsonArray)v : new JsonArray(v.toString())).orElse(new JsonArray()).getList();
-							if(listSiteUser.getQueryResponse().getResponse().getNumFound() > 1
+							if(listSiteUser.getResponse().getResponse().getNumFound() > 1
 									&& !CollectionUtils.containsAny(siteRequest.getUserResourceRoles(), roles2)
 									&& !CollectionUtils.containsAny(siteRequest.getUserRealmRoles(), roles2)
 									) {
@@ -306,7 +306,7 @@ public class SiteUserEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 
 								ApiRequest apiRequest = new ApiRequest();
 								apiRequest.setRows(listSiteUser.getRequest().getRows());
-								apiRequest.setNumFound(listSiteUser.getQueryResponse().getResponse().getNumFound());
+								apiRequest.setNumFound(listSiteUser.getResponse().getResponse().getNumFound());
 								apiRequest.setNumPATCH(0L);
 								apiRequest.initDeepApiRequest(siteRequest);
 								siteRequest.setApiRequest_(apiRequest);
@@ -376,7 +376,7 @@ public class SiteUserEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 		});
 		CompositeFuture.all(futures).onSuccess( a -> {
 			if(apiRequest != null) {
-				apiRequest.setNumPATCH(apiRequest.getNumPATCH() + listSiteUser.getQueryResponse().getResponse().getDocs().size());
+				apiRequest.setNumPATCH(apiRequest.getNumPATCH() + listSiteUser.getResponse().getResponse().getDocs().size());
 				if(apiRequest.getNumFound() == 1L)
 					listSiteUser.first().apiRequestSiteUser();
 				eventBus.publish("websocketSiteUser", JsonObject.mapFrom(apiRequest).toString());
@@ -412,7 +412,7 @@ public class SiteUserEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 				searchSiteUserList(siteRequest, false, true, true).onSuccess(listSiteUser -> {
 					try {
 						SiteUser o = listSiteUser.first();
-						if(o != null && listSiteUser.getQueryResponse().getResponse().getNumFound() == 1) {
+						if(o != null && listSiteUser.getResponse().getResponse().getNumFound() == 1) {
 							ApiRequest apiRequest = new ApiRequest();
 							apiRequest.setRows(1L);
 							apiRequest.setNumFound(1L);

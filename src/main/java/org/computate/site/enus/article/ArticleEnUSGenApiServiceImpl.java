@@ -144,8 +144,8 @@ public class ArticleEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
 		Promise<ServiceResponse> promise = Promise.promise();
 		try {
 			SiteRequestEnUS siteRequest = listArticle.getSiteRequest_(SiteRequestEnUS.class);
-			SolrResponse responseSearch = listArticle.getQueryResponse();
-			List<SolrResponse.Doc> solrDocuments = listArticle.getQueryResponse().getResponse().getDocs();
+			SolrResponse responseSearch = listArticle.getResponse();
+			List<SolrResponse.Doc> solrDocuments = listArticle.getResponse().getResponse().getDocs();
 			Long searchInMillis = Long.valueOf(responseSearch.getResponseHeader().getqTime());
 			Long startNum = listArticle.getRequest().getStart();
 			Long foundNum = responseSearch.getResponse().getNumFound();
@@ -348,7 +348,7 @@ public class ArticleEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
 					searchArticleList(siteRequest, true, false, true).onSuccess(listArticle -> {
 						try {
 							List<String> roles2 = Optional.ofNullable(config.getValue(ConfigKeys.AUTH_ROLES_ADMIN)).map(v -> v instanceof JsonArray ? (JsonArray)v : new JsonArray(v.toString())).orElse(new JsonArray()).getList();
-							if(listArticle.getQueryResponse().getResponse().getNumFound() > 1
+							if(listArticle.getResponse().getResponse().getNumFound() > 1
 									&& !CollectionUtils.containsAny(siteRequest.getUserResourceRoles(), roles2)
 									&& !CollectionUtils.containsAny(siteRequest.getUserRealmRoles(), roles2)
 									) {
@@ -359,7 +359,7 @@ public class ArticleEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
 
 								ApiRequest apiRequest = new ApiRequest();
 								apiRequest.setRows(listArticle.getRequest().getRows());
-								apiRequest.setNumFound(listArticle.getQueryResponse().getResponse().getNumFound());
+								apiRequest.setNumFound(listArticle.getResponse().getResponse().getNumFound());
 								apiRequest.setNumPATCH(0L);
 								apiRequest.initDeepApiRequest(siteRequest);
 								siteRequest.setApiRequest_(apiRequest);
@@ -428,7 +428,7 @@ public class ArticleEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
 		});
 		CompositeFuture.all(futures).onSuccess( a -> {
 			if(apiRequest != null) {
-				apiRequest.setNumPATCH(apiRequest.getNumPATCH() + listArticle.getQueryResponse().getResponse().getDocs().size());
+				apiRequest.setNumPATCH(apiRequest.getNumPATCH() + listArticle.getResponse().getResponse().getDocs().size());
 				if(apiRequest.getNumFound() == 1L)
 					listArticle.first().apiRequestArticle();
 				eventBus.publish("websocketArticle", JsonObject.mapFrom(apiRequest).toString());
@@ -464,7 +464,7 @@ public class ArticleEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
 				searchArticleList(siteRequest, false, true, true).onSuccess(listArticle -> {
 					try {
 						Article o = listArticle.first();
-						if(o != null && listArticle.getQueryResponse().getResponse().getNumFound() == 1) {
+						if(o != null && listArticle.getResponse().getResponse().getNumFound() == 1) {
 							ApiRequest apiRequest = new ApiRequest();
 							apiRequest.setRows(1L);
 							apiRequest.setNumFound(1L);

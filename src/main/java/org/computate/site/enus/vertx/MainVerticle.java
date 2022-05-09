@@ -158,7 +158,6 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 					future = future.compose(a -> run(config));
 					future.compose(a -> vertx.close());
 				}
-//				future.toCompletionStage();
 			} catch(Exception ex) {
 				LOG.error(String.format("Error loading config: %s", configPath), ex);
 				vertx.close();
