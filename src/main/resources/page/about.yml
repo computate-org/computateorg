@@ -1,0 +1,422 @@
+---
+uri: /en-us/about
+h1: Who is Christopher Tate? 
+h2: All about me. 
+created: "2019-04-23"
+author:
+  name: Christopher Tate
+  title: Red Hat Principal Software Consultant
+htmTitle:
+  - text: "{{ h1 }}{{ h2 }}"
+pageImageUri: /jpg/france.jpg
+htmBody:
+  - e: div
+    a:
+      class: w3-card w3-padding w3-margin-top w3-show w3-white 
+    in:
+      - e: h1
+        a:
+          class: ""
+        in:
+          - e: i
+            a:
+              class: fa-solid fa-male
+          - e: span
+            text: "{{ h1 }}"
+      - e: h2
+        a:
+          class: ""
+        in:
+          - e: i
+            a:
+              class: fa-solid fa-images
+          - e: span
+            text: "{{ h2 }}"
+      - e: div
+        a:
+          class: w3-row w3-mobile 
+        in:
+          - e: div
+            a:
+              class: w3-quarter w3-mobile 
+            in:
+              - e: a
+                a:
+                  href: "{{ page.STATIC_BASE_URL }}/jpg/idaho-winter.jpg"
+                in:
+                  - e: img
+                    a:
+                      class: w3-image w3-hover-opacity 
+                      src: "{{ page.STATIC_BASE_URL }}/jpg/idaho-winter.jpg"
+              - e: a
+                a:
+                  href: "{{ page.STATIC_BASE_URL }}/jpg/utah-mountains2.jpg"
+                in:
+                  - e: img
+                    a:
+                      class: w3-image w3-hover-opacity 
+                      src: "{{ page.STATIC_BASE_URL }}/jpg/utah-mountains2.jpg"
+          - e: div
+            a:
+              class: w3-quarter w3-mobile 
+            in:
+              - e: a
+                a:
+                  href: "{{ page.STATIC_BASE_URL }}/jpg/utah-mountains.jpg"
+                in:
+                  - e: img
+                    a:
+                      class: w3-image w3-hover-opacity 
+                      src: "{{ page.STATIC_BASE_URL }}/jpg/utah-mountains.jpg"
+          - e: div
+            a:
+              class: w3-quarter w3-mobile 
+            in:
+              - e: a
+                a:
+                  href: "{{ page.STATIC_BASE_URL }}/jpg/idaho.jpg"
+                in:
+                  - e: img
+                    a:
+                      class: w3-image w3-hover-opacity 
+                      src: "{{ page.STATIC_BASE_URL }}/jpg/idaho.jpg"
+              - e: a
+                a:
+                  href: "{{ page.STATIC_BASE_URL }}/jpg/quebec.jpg"
+                in:
+                  - e: img
+                    a:
+                      class: w3-image w3-hover-opacity 
+                      src: "{{ page.STATIC_BASE_URL }}/jpg/quebec.jpg"
+          - e: div
+            a:
+              class: w3-quarter w3-mobile 
+            in:
+              - e: a
+                a:
+                  href: "{{ page.STATIC_BASE_URL }}/jpg/france.jpg"
+                in:
+                  - e: img
+                    a:
+                      class: w3-image w3-hover-opacity 
+                      src: "{{ page.STATIC_BASE_URL }}/jpg/france.jpg"
+      - e: div
+        a:
+          class: w3-padding 
+        in:
+          - e: h3
+            a:
+              class: ""
+            in:
+              - e: i
+                a:
+                  class: fa-solid fa-male
+              - e: span
+                text: Where are you from? 
+          - e: h4
+            a:
+              class: ""
+            in:
+              - e: i
+                a:
+                  class: fa-solid fa-globe-americas
+              - e: span
+                text: I am from Utah (and a wanderer at heart). 
+          - e: p
+            in:
+              - e: div
+                in:
+                  - e: i
+                    a:
+                      class: fa-solid fa-mountains
+                  - e: span
+                    text: I love spending time in the great outdoors with my family. 
+              - e: div
+                in:
+                  - e: i
+                    a:
+                      class: fa-solid fa-globe-africa
+                  - e: span
+                    text: I've also lived in Florida, Idaho, Ontario, Quebec and France. 
+              - e: div
+                in:
+                  - e: i
+                    a:
+                      class: fa-solid fa-heart-square
+                  - e: span
+                    text: I love the time I lived and worked in other countries, and the ways open source software brings the world together.
+              - e: div
+                in:
+                  - e: i
+                    a:
+                      class: fa-solid fa-robot
+                  - e: span
+                    text: I know the challenges of building good software systems in non-English speaking countries. 
+      - e: div
+        a:
+          class: w3-padding 
+        in:
+          - e: h3
+            a:
+              class: ""
+            in:
+              - e: i
+                a:
+                  class: fa-solid fa-book
+              - e: span
+                text: How did you learn computer programming? 
+          - e: h4
+            a:
+              class: ""
+            in:
+              - e: i
+                a:
+                  class: fa-solid fa-save
+              - e: span
+                text: A love for computers all my life. 
+          - e: p
+            in:
+              - e: div
+                in:
+                  - e: i
+                    a:
+                      class: fa-solid fa-male
+                  - e: span
+                    text: My dad has been a Lotus Notes database programmer as long as I can remember. 
+              - e: div
+                in:
+                  - e: i
+                    a:
+                      class: fa-solid fa-window-alt
+                  - e: span
+                    text: He always had a nice computer with the latest Microsoft suite at home for the family to use. 
+              - e: div
+                in:
+                  - e: i
+                    a:
+                      class: fa-solid fa-keyboard
+                  - e: span
+                    text: I spent hours every day figuring out everything I could possibly do on the computer. 
+              - e: div
+                in:
+                  - e: i
+                    a:
+                      class: fa-solid fa-folders
+                  - e: span
+                    text: I became familiar with every application, every directory, every file, every menu item, every keyboard shortcut. 
+              - e: div
+                in:
+                  - e: i
+                    a:
+                      class: fa-solid fa-database
+                  - e: span
+                    text: >-
+                      I asked my dad many important questions, like: "how do I write code?" "How do I make a database?" 
+              - e: div
+                in:
+                  - e: i
+                    a:
+                      class: fa-solid fa-book-spells
+                  - e: span
+                    text: I was then gifted a large Visual Basic manual, and he pointed me to Microsoft Access. 
+      - e: div
+        a:
+          class: w3-padding 
+        in:
+          - e: h3
+            a:
+              class: ""
+            in:
+              - e: i
+                a:
+                  class: fa-solid fa-briefcase
+              - e: span
+                text: How did you start working as a computer programmer? 
+          - e: h4
+            a:
+              class: ""
+            in:
+              - e: i
+                a:
+                  class: fa-solid fa-rocket
+              - e: span
+                text: I had the drive to finish each project, and be at the next opportunity to grow my career. 
+          - e: p
+            in:
+              - e: div
+                in:
+                  - e: i
+                    a:
+                      class: fa-solid fa-calculator
+                  - e: span
+                    text: I started writing calculator programs and games on my TI-86 calculator. 
+              - e: div
+                in:
+                  - e: i
+                    a:
+                      class: fa-solid fa-university
+                  - e: span
+                    text: I went on to study Computer Science at University. 
+              - e: div
+                in:
+                  - e: i
+                    a:
+                      class: fa-solid fa-hands-helping
+                  - e: span
+                    text: At the same time, I became the part time computer guy for a local humanitarian organization, doing my best to solve world problems with databases. 
+              - e: div
+                in:
+                  - e: i
+                    a:
+                      class: fa-solid fa-building
+                  - e: span
+                    text: After graduation, I started as a Software Consultant and worked on many exciting projects at large companies. 
+              - e: div
+                in:
+                  - e: i
+                    a:
+                      class: fa-solid fa-flag-alt
+                  - e: span
+                    text: After 5 years, I had the opportunity to take a job in France, where I worked with a tiny company, which specialized in open source search technology, specifically Lucene. 
+              - e: div
+                in:
+                  - e: i
+                    a:
+                      class: fa-brand fa-linux
+                  - e: span
+                    text: I then worked with a Linux training company in Utah where I became very familiar with the whys of the origin of Linux. 
+              - e: div
+                in:
+                  - e: i
+                    a:
+                      class: fa-brand fa-redhat
+                  - e: span
+                    text: My love for consulting, my experience, and being at the right place at the right time then led me to Red Hat. 
+              - e: div
+                in:
+                  - e: i
+                    a:
+                      class: fa-solid fa-laugh-beam
+                  - e: span
+                    text: I have found my people, at long last, here at Red Hat and I am here to stay. 
+      - e: div
+        a:
+          class: w3-padding 
+        in:
+          - e: h3
+            a:
+              class: ""
+            in:
+              - e: i
+                a:
+                  class: fa-solid fa-heart
+              - e: span
+                text: How did you become so passionate about open source? 
+          - e: h4
+            a:
+              class: ""
+            in:
+              - e: i
+                a:
+                  class: fa-solid fa-dove
+              - e: span
+                text: I love the freedom to build upon greatness. 
+          - e: p
+            in:
+              - e: div
+                in:
+                  - e: i
+                    a:
+                      class: fa-solid fa-hat-wizard
+                  - e: span
+                    text: I met my first Linux computer at the University Linux computer lab, where I figured only the noble wizards of computer programming lived and slept. 
+              - e: div
+                in:
+                  - e: i
+                    a:
+                      class: fa-solid fa-laptop
+                  - e: span
+                    text: Around the same time, my cousin introduced me to Linux, and gave me some encouragement to try it myself. 
+              - e: div
+                in:
+                  - e: i
+                    a:
+                      class: fa-solid fa-strikethrough
+                  - e: span
+                    text: One night, after realizing that Microsoft and the .NET Framework would forsake me after graduation with exorbitant fees, I made the switch. 
+              - e: div
+                in:
+                  - e: i
+                    a:
+                      class: fa-solid fa-save
+                  - e: span
+                    text: I backed up my digital life on an expensive zip disk from the bookstore and installed Ubuntu Linux, wiping Microsoft out of my personal life forever. 
+              - e: div
+                in:
+                  - e: i
+                    a:
+                      class: fa-solid fa-arrow-alt-square-right
+                  - e: span
+                    text: I never looked back, and never regretted that decision. 
+      - e: table
+        a:
+          id: tableReview
+        in:
+          - e: tbody
+            in:
+              - e: tr
+                a:
+                  class: odd 
+                in:
+                  - e: td
+                    a:
+                      class: w3-mobile odd 
+                    in:
+                      - e: span
+                        text: 'Created {{formatZonedDateTime created "EEEE" "en-US" "America/Denver" }}'
+    #              - e: td
+    #                a:
+    #                  class: w3-mobile odd 
+    #                in:
+    #                  - e: i
+    #                    text: "{{ htmBody[0].in[0].a.class }}"
+    #              - e: td
+    #                a:
+    #                  class: w3-mobile odd 
+    #                in:
+    #                  - e: i
+    #                    text: "{{ htmBody[1].in[0].a.class }}"
+                  - e: td
+                    a:
+                      class: w3-mobile odd 
+                    in:
+                      - e: span
+                        text: "fa-solid fa-pen-nib"
+              - e: tr
+                a:
+                  class: odd 
+                in:
+                  - e: td
+                    a:
+                      class: w3-mobile odd 
+                    in:
+                      - e: span
+                        text: 'Created {{formatZonedDateTime created "MMMM d yyyy" "en-US" "America/Denver" }}'
+                  - e: td
+                    a:
+                      class: w3-mobile odd 
+                    in:
+                      - e: span
+                        text: "{{ h1 }}"
+                  - e: td
+                    a:
+                      class: w3-mobile odd 
+                    in:
+                      - e: span
+                        text: "{{ h2 }}"
+                  - e: td
+                    a:
+                      class: w3-mobile odd 
+                    in:
+                      - e: span
+                        text: "{{ author.name }}"
