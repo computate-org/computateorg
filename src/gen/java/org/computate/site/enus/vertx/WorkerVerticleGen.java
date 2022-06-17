@@ -48,6 +48,11 @@ import io.vertx.core.json.JsonArray;
  **/
 public abstract class WorkerVerticleGen<DEV> extends AbstractVerticle {
 	protected static final Logger LOG = LoggerFactory.getLogger(WorkerVerticle.class);
+	public static final String configureHandlebarsFail1 = "Handlebars was not configured properly. ";
+	public static final String configureHandlebarsFail = configureHandlebarsFail1;
+	public static final String configureHandlebarsComplete1 = "Handlebars was configured properly. ";
+	public static final String configureHandlebarsComplete = configureHandlebarsComplete1;
+
 	public static final String configureDataConnectionError1 = "Could not open the database client connection. ";
 	public static final String configureDataConnectionError = configureDataConnectionError1;
 	public static final String configureDataConnectionSuccess1 = "The database client connection was successful. ";
@@ -71,6 +76,8 @@ public abstract class WorkerVerticleGen<DEV> extends AbstractVerticle {
 	public static final String importTimerScheduling = importTimerScheduling1;
 	public static final String importTimerSkip1 = "Skip importing %s data. ";
 	public static final String importTimerSkip = importTimerSkip1;
+	public static final String importTimerFail1 = "Scheduling the import of %s data failed. ";
+	public static final String importTimerFail = importTimerFail1;
 
 	public static final String importDataClassComplete1 = "Configuring the import of %s data completed. ";
 	public static final String importDataClassComplete = importDataClassComplete1;
@@ -79,6 +86,16 @@ public abstract class WorkerVerticleGen<DEV> extends AbstractVerticle {
 
 	public static final String importDataSkip1 = "The data import is disabled. ";
 	public static final String importDataSkip = importDataSkip1;
+
+	public static final String importDataSitePageComplete1 = "Importing %s data completed. ";
+	public static final String importDataSitePageComplete = importDataSitePageComplete1;
+	public static final String importDataSitePageFail1 = "Importing %s data failed. ";
+	public static final String importDataSitePageFail = importDataSitePageFail1;
+
+	public static final String importSitePageComplete1 = "Importing page %s completed. ";
+	public static final String importSitePageComplete = importSitePageComplete1;
+	public static final String importSitePageFail1 = "Importing page %s failed. ";
+	public static final String importSitePageFail = importSitePageFail1;
 
 	public static final String refreshAllDataComplete1 = "Refresh all data completed. ";
 	public static final String refreshAllDataComplete = refreshAllDataComplete1;
@@ -240,7 +257,7 @@ public abstract class WorkerVerticleGen<DEV> extends AbstractVerticle {
 		return sb.toString();
 	}
 
-	public static final String[] WorkerVerticleVals = new String[] { configureDataConnectionError1, configureDataConnectionSuccess1, configureDataInitError1, configureDataInitSuccess1, configureSharedWorkerExecutorFail1, configureSharedWorkerExecutorComplete1, configureEmailComplete1, configureEmailFail1, importTimerScheduling1, importTimerSkip1, importDataClassComplete1, importDataClassFail1, importDataSkip1, refreshAllDataComplete1, refreshAllDataStarted1, refreshAllDataFail1, refreshAllDataSkip1, refreshDataComplete1, refreshDataStarted1, refreshDataSkip1, refreshDataFail1, refreshDataCounterResetFail1 };
+	public static final String[] WorkerVerticleVals = new String[] { configureHandlebarsFail1, configureHandlebarsComplete1, configureDataConnectionError1, configureDataConnectionSuccess1, configureDataInitError1, configureDataInitSuccess1, configureSharedWorkerExecutorFail1, configureSharedWorkerExecutorComplete1, configureEmailComplete1, configureEmailFail1, importTimerScheduling1, importTimerSkip1, importTimerFail1, importDataClassComplete1, importDataClassFail1, importDataSkip1, importDataSitePageComplete1, importDataSitePageFail1, importSitePageComplete1, importSitePageFail1, refreshAllDataComplete1, refreshAllDataStarted1, refreshAllDataFail1, refreshAllDataSkip1, refreshDataComplete1, refreshDataStarted1, refreshDataSkip1, refreshDataFail1, refreshDataCounterResetFail1 };
 
 	public static final String CLASS_SIMPLE_NAME = "WorkerVerticle";
 

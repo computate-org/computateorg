@@ -1,9 +1,18 @@
 ---
 GITHUB_ORG: "computate-org"
+PROJECT_POWERED_BY_URL: "https://access.redhat.com/products/openshift-online-red-hat"
+PROJECT_POWERED_BY_NAME: "OpenShift Online"
+PROJECT_POWERED_BY_IMAGE_URI: "/svg/openshift.svg"
 SITE_NAME: "computate.org"
+SITE_DISPLAY_NAME: "computate.org"
 SITE_SERVICES:
   - SITE_NAME: "computate.org"
     SITE_SRC: "/home/ctate/.local/src/computate.org"
+RELATIVE_PACKAGE_MainVerticle: "vertx"
+CLASS_SIMPLE_NAME_MainVerticle: "MainVerticle"
+RUN_OPENAPI3_GENERATOR: true
+RUN_SQL_GENERATOR: true
+RUN_ARTICLE_GENERATOR: false
 
 LANGUAGE_NAME: "enUS"
 SITE_PATH_enUS: "/home/ctate/.local/src/computate.org"
@@ -13,6 +22,8 @@ SITE_JAVA_PACKAGE: "org.computate.site.enus"
 SUFFIX_SRC_MAIN_JAVA: "/src/main/java"
 SUFFIX_SRC_GEN_JAVA: "/src/gen/java"
 RELATIVE_PATHS_TO_WATCH: "src/main/java/org/computate/site/enus"
+API_COUNTER_FETCH: 50
+API_COUNTER_RESUME: 10
 
 SITE_HOST_NAME: "localhost"
 SITE_BASE_URL: "http://localhost:10180"
@@ -40,10 +51,10 @@ AUTH_SECRET: "0518f65a-f86d-42e8-ad65-00f46920443d"
 AUTH_URL: "https://sso.computate.org/auth"
 AUTH_TOKEN_URI: "/auth/realms/RH-IMPACT/protocol/openid-connect/token"
 
+SOLR_COLLECTION: "computate.org"
 SOLR_URL: "http://localhost:8983/solr/computate.org"
 SOLR_HOST_NAME: localhost
 SOLR_PORT: 8983
-SOLR_COLLECTION: "computate.org"
 SOLR_URL_COMPUTATE: "http://localhost:8983/solr/computate"
 
 EMAIL_HOST: 

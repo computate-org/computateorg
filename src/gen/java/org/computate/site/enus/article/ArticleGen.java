@@ -39,6 +39,7 @@ import java.time.ZonedDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.time.format.DateTimeFormatter;
@@ -67,35 +68,6 @@ import io.vertx.core.json.JsonObject;
  **/
 public abstract class ArticleGen<DEV> extends Object {
 	protected static final Logger LOG = LoggerFactory.getLogger(Article.class);
-
-	public static final String Article_AName_frFR = "un article";
-	public static final String Article_This_frFR = "ce ";
-	public static final String Article_ThisName_frFR = "cet article";
-	public static final String Article_A_frFR = "un ";
-	public static final String Article_TheName_frFR = "l'article";
-	public static final String Article_NameSingular_frFR = "article";
-	public static final String Article_NamePlural_frFR = "articles";
-	public static final String Article_NameActual_frFR = "article actuel";
-	public static final String Article_AllName_frFR = "tous les articles";
-	public static final String Article_SearchAllNameBy_frFR = "rechercher articles par ";
-	public static final String Article_SearchAllName_frFR = "rechercher articles";
-	public static final String Article_Title_frFR = "articles";
-	public static final String Article_ThePluralName_frFR = "les articles";
-	public static final String Article_NoNameFound_frFR = "aucun article trouvé";
-	public static final String Article_NameVar_frFR = "article";
-	public static final String Article_OfName_frFR = "d'article";
-	public static final String Article_NameAdjectiveSingular_frFR = "article";
-	public static final String Article_NameAdjectivePlural_frFR = "articles";
-	public static final String Search_frFR_Uri = "/api/article/{id}";
-	public static final String Search_frFR_ImageUri = "/png/api/article/{id}-999.png";
-	public static final String GET_frFR_Uri = "/api/article/{id}";
-	public static final String GET_frFR_ImageUri = "/png/api/article/{id}-999.png";
-	public static final String PATCH_frFR_Uri = "/api/article";
-	public static final String PATCH_frFR_ImageUri = "/png/api/article-999.png";
-	public static final String POST_frFR_Uri = "/api/article";
-	public static final String POST_frFR_ImageUri = "/png/api/article-999.png";
-	public static final String PUTImport_frFR_Uri = "/api/article-import";
-	public static final String PUTImport_frFR_ImageUri = "/png/api/article-import-999.png";
 
 	public static final String Article_AName_enUS = "an article";
 	public static final String Article_This_enUS = "this ";
@@ -1373,10 +1345,12 @@ public abstract class ArticleGen<DEV> extends Object {
 	public static ZonedDateTime staticSetArticleCreated(SiteRequestEnUS siteRequest_, String o) {
 		if(StringUtils.endsWith(o, "]"))
 			return o == null ? null : ZonedDateTime.parse(o, ComputateZonedDateTimeSerializer.ZONED_DATE_TIME_FORMATTER);
-		if(StringUtils.endsWith(o, "Z"))
+		else if(StringUtils.endsWith(o, "Z"))
 			return o == null ? null : Instant.parse(o).atZone(ZoneId.of(siteRequest_.getConfig().getString(ConfigKeys.SITE_ZONE))).truncatedTo(ChronoUnit.MILLIS);
-		else
+		else if(StringUtils.contains(o, "T"))
 			return o == null ? null : ZonedDateTime.parse(o, DateTimeFormatter.ISO_DATE_TIME).truncatedTo(ChronoUnit.MILLIS);
+		else
+			return o == null ? null : LocalDate.parse(o, DateTimeFormatter.ISO_DATE).atStartOfDay(ZoneId.of(siteRequest_.getConfig().getString(ConfigKeys.SITE_ZONE))).truncatedTo(ChronoUnit.MILLIS);
 	}
 	@JsonIgnore
 	public void setArticleCreated(Date o) {
@@ -1738,10 +1712,12 @@ public abstract class ArticleGen<DEV> extends Object {
 	public static ZonedDateTime staticSetPageCreated(SiteRequestEnUS siteRequest_, String o) {
 		if(StringUtils.endsWith(o, "]"))
 			return o == null ? null : ZonedDateTime.parse(o, ComputateZonedDateTimeSerializer.ZONED_DATE_TIME_FORMATTER);
-		if(StringUtils.endsWith(o, "Z"))
+		else if(StringUtils.endsWith(o, "Z"))
 			return o == null ? null : Instant.parse(o).atZone(ZoneId.of(siteRequest_.getConfig().getString(ConfigKeys.SITE_ZONE))).truncatedTo(ChronoUnit.MILLIS);
-		else
+		else if(StringUtils.contains(o, "T"))
 			return o == null ? null : ZonedDateTime.parse(o, DateTimeFormatter.ISO_DATE_TIME).truncatedTo(ChronoUnit.MILLIS);
+		else
+			return o == null ? null : LocalDate.parse(o, DateTimeFormatter.ISO_DATE).atStartOfDay(ZoneId.of(siteRequest_.getConfig().getString(ConfigKeys.SITE_ZONE))).truncatedTo(ChronoUnit.MILLIS);
 	}
 	@JsonIgnore
 	public void setPageCreated(Date o) {
@@ -2183,55 +2159,6 @@ public abstract class ArticleGen<DEV> extends Object {
 		return Article.staticSearchStrUserId(siteRequest_, Article.staticSearchUserId(siteRequest_, Article.staticSetUserId(siteRequest_, o)));
 	}
 
-	////////////////////////
-	// SiteUserNomDomaine //
-	////////////////////////
-
-	/**	 The entity SiteUserNomDomaine
-	 *	 is defined as null before being initialized. 
-	 */
-	@JsonProperty
-	@JsonInclude(Include.NON_NULL)
-	protected String SiteUserNomDomaine;
-
-	/**	<br> The entity SiteUserNomDomaine
-	 *  is defined as null before being initialized. 
-	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:SiteUserNomDomaine">Find the entity SiteUserNomDomaine in Solr</a>
-	 * <br>
-	 * @param w is for wrapping a value to assign to this entity during initialization. 
-	 **/
-	protected abstract void _SiteUserNomDomaine(Wrap<String> w);
-
-	public String getSiteUserNomDomaine() {
-		return SiteUserNomDomaine;
-	}
-	public void setSiteUserNomDomaine(String o) {
-		this.SiteUserNomDomaine = Article.staticSetSiteUserNomDomaine(siteRequest_, o);
-	}
-	public static String staticSetSiteUserNomDomaine(SiteRequestEnUS siteRequest_, String o) {
-		return o;
-	}
-	protected Article SiteUserNomDomaineInit() {
-		Wrap<String> SiteUserNomDomaineWrap = new Wrap<String>().var("SiteUserNomDomaine");
-		if(SiteUserNomDomaine == null) {
-			_SiteUserNomDomaine(SiteUserNomDomaineWrap);
-			setSiteUserNomDomaine(SiteUserNomDomaineWrap.o);
-		}
-		return (Article)this;
-	}
-
-	public static String staticSearchSiteUserNomDomaine(SiteRequestEnUS siteRequest_, String o) {
-		return o;
-	}
-
-	public static String staticSearchStrSiteUserNomDomaine(SiteRequestEnUS siteRequest_, String o) {
-		return o == null ? null : o.toString();
-	}
-
-	public static String staticSearchFqSiteUserNomDomaine(SiteRequestEnUS siteRequest_, String o) {
-		return Article.staticSearchStrSiteUserNomDomaine(siteRequest_, Article.staticSearchSiteUserNomDomaine(siteRequest_, Article.staticSetSiteUserNomDomaine(siteRequest_, o)));
-	}
-
 	//////////////////
 	// siteRequest_ //
 	//////////////////
@@ -2364,10 +2291,12 @@ public abstract class ArticleGen<DEV> extends Object {
 	public static ZonedDateTime staticSetCreated(SiteRequestEnUS siteRequest_, String o) {
 		if(StringUtils.endsWith(o, "]"))
 			return o == null ? null : ZonedDateTime.parse(o, ComputateZonedDateTimeSerializer.ZONED_DATE_TIME_FORMATTER);
-		if(StringUtils.endsWith(o, "Z"))
+		else if(StringUtils.endsWith(o, "Z"))
 			return o == null ? null : Instant.parse(o).atZone(ZoneId.of(siteRequest_.getConfig().getString(ConfigKeys.SITE_ZONE))).truncatedTo(ChronoUnit.MILLIS);
-		else
+		else if(StringUtils.contains(o, "T"))
 			return o == null ? null : ZonedDateTime.parse(o, DateTimeFormatter.ISO_DATE_TIME).truncatedTo(ChronoUnit.MILLIS);
+		else
+			return o == null ? null : LocalDate.parse(o, DateTimeFormatter.ISO_DATE).atStartOfDay(ZoneId.of(siteRequest_.getConfig().getString(ConfigKeys.SITE_ZONE))).truncatedTo(ChronoUnit.MILLIS);
 	}
 	@JsonIgnore
 	public void setCreated(Date o) {
@@ -2439,10 +2368,12 @@ public abstract class ArticleGen<DEV> extends Object {
 	public static ZonedDateTime staticSetModified(SiteRequestEnUS siteRequest_, String o) {
 		if(StringUtils.endsWith(o, "]"))
 			return o == null ? null : ZonedDateTime.parse(o, ComputateZonedDateTimeSerializer.ZONED_DATE_TIME_FORMATTER);
-		if(StringUtils.endsWith(o, "Z"))
+		else if(StringUtils.endsWith(o, "Z"))
 			return o == null ? null : Instant.parse(o).atZone(ZoneId.of(siteRequest_.getConfig().getString(ConfigKeys.SITE_ZONE))).truncatedTo(ChronoUnit.MILLIS);
-		else
+		else if(StringUtils.contains(o, "T"))
 			return o == null ? null : ZonedDateTime.parse(o, DateTimeFormatter.ISO_DATE_TIME).truncatedTo(ChronoUnit.MILLIS);
+		else
+			return o == null ? null : LocalDate.parse(o, DateTimeFormatter.ISO_DATE).atStartOfDay(ZoneId.of(siteRequest_.getConfig().getString(ConfigKeys.SITE_ZONE))).truncatedTo(ChronoUnit.MILLIS);
 	}
 	@JsonIgnore
 	public void setModified(Date o) {
@@ -3454,7 +3385,6 @@ public abstract class ArticleGen<DEV> extends Object {
 				pageSearch_frFRInit();
 				siteUser_Init();
 				userIdInit();
-				SiteUserNomDomaineInit();
 				siteRequest_Init();
 				inheritPkInit();
 				createdInit();
@@ -3608,8 +3538,6 @@ public abstract class ArticleGen<DEV> extends Object {
 				return oArticle.siteUser_;
 			case "userId":
 				return oArticle.userId;
-			case "SiteUserNomDomaine":
-				return oArticle.SiteUserNomDomaine;
 			case "siteRequest_":
 				return oArticle.siteRequest_;
 			case "inheritPk":
@@ -3767,8 +3695,6 @@ public abstract class ArticleGen<DEV> extends Object {
 			return Article.staticSetPageSearch_frFR(siteRequest_, o);
 		case "userId":
 			return Article.staticSetUserId(siteRequest_, o);
-		case "SiteUserNomDomaine":
-			return Article.staticSetSiteUserNomDomaine(siteRequest_, o);
 		case "inheritPk":
 			return Article.staticSetInheritPk(siteRequest_, o);
 		case "created":
@@ -3899,8 +3825,6 @@ public abstract class ArticleGen<DEV> extends Object {
 			return Article.staticSearchPageSearch_frFR(siteRequest_, (String)o);
 		case "userId":
 			return Article.staticSearchUserId(siteRequest_, (String)o);
-		case "SiteUserNomDomaine":
-			return Article.staticSearchSiteUserNomDomaine(siteRequest_, (String)o);
 		case "inheritPk":
 			return Article.staticSearchInheritPk(siteRequest_, (String)o);
 		case "created":
@@ -4031,8 +3955,6 @@ public abstract class ArticleGen<DEV> extends Object {
 			return Article.staticSearchStrPageSearch_frFR(siteRequest_, (String)o);
 		case "userId":
 			return Article.staticSearchStrUserId(siteRequest_, (String)o);
-		case "SiteUserNomDomaine":
-			return Article.staticSearchStrSiteUserNomDomaine(siteRequest_, (String)o);
 		case "inheritPk":
 			return Article.staticSearchStrInheritPk(siteRequest_, (String)o);
 		case "created":
@@ -4163,8 +4085,6 @@ public abstract class ArticleGen<DEV> extends Object {
 			return Article.staticSearchFqPageSearch_frFR(siteRequest_, o);
 		case "userId":
 			return Article.staticSearchFqUserId(siteRequest_, o);
-		case "SiteUserNomDomaine":
-			return Article.staticSearchFqSiteUserNomDomaine(siteRequest_, o);
 		case "inheritPk":
 			return Article.staticSearchFqInheritPk(siteRequest_, o);
 		case "created":
@@ -4348,7 +4268,6 @@ public abstract class ArticleGen<DEV> extends Object {
 		}
 		if(objectText != null) {
 			doc.put("objectText_text_enUS", objectText.toString());
-			doc.put("objectText_docvalues_string", objectText);
 		}
 		if(pageUrlId != null) {
 			doc.put("pageUrlId_docvalues_string", pageUrlId);
@@ -4450,6 +4369,51 @@ public abstract class ArticleGen<DEV> extends Object {
 		}
 	}
 
+	public static String searchVarArticle(String searchVar) {
+		switch(searchVar) {
+			case "inheritPk_docvalues_string":
+				return "inheritPk";
+			case "created_docvalues_date":
+				return "created";
+			case "modified_docvalues_date":
+				return "modified";
+			case "archived_docvalues_boolean":
+				return "archived";
+			case "deleted_docvalues_boolean":
+				return "deleted";
+			case "classCanonicalName_docvalues_string":
+				return "classCanonicalName";
+			case "classSimpleName_docvalues_string":
+				return "classSimpleName";
+			case "classCanonicalNames_docvalues_strings":
+				return "classCanonicalNames";
+			case "sessionId_docvalues_string":
+				return "sessionId";
+			case "userKey_docvalues_long":
+				return "userKey";
+			case "saves_docvalues_strings":
+				return "saves";
+			case "objectTitle_docvalues_string":
+				return "objectTitle";
+			case "objectId_docvalues_string":
+				return "objectId";
+			case "objectSuggest_suggested":
+				return "objectSuggest";
+			case "objectText_text_enUS":
+				return "objectText";
+			case "pageUrlId_docvalues_string":
+				return "pageUrlId";
+			case "pageUrlPk_docvalues_string":
+				return "pageUrlPk";
+			case "pageUrlApi_docvalues_string":
+				return "pageUrlApi";
+			case "id":
+				return "id";
+			default:
+				return null;
+		}
+	}
+
 	public static String varSearchArticle(String entityVar) {
 		switch(entityVar) {
 			case "objectText":
@@ -4497,8 +4461,7 @@ public abstract class ArticleGen<DEV> extends Object {
 		});
 		oArticle.setObjectTitle(Optional.ofNullable(doc.get("objectTitle_docvalues_string")).map(v -> v.toString()).orElse(null));
 		oArticle.setObjectId(Optional.ofNullable(doc.get("objectId_docvalues_string")).map(v -> v.toString()).orElse(null));
-		String objectSuggest = (String)doc.get("objectSuggest_suggested");
-		oArticle.setObjectSuggest(objectSuggest);
+		oArticle.setObjectSuggest(Optional.ofNullable(doc.get("objectSuggest_suggested")).map(v -> v.toString()).orElse(null));
 		oArticle.setObjectText(Optional.ofNullable(doc.get("objectText_docvalues_string")).map(v -> v.toString()).orElse(null));
 		oArticle.setPageUrlId(Optional.ofNullable(doc.get("pageUrlId_docvalues_string")).map(v -> v.toString()).orElse(null));
 		oArticle.setPageUrlPk(Optional.ofNullable(doc.get("pageUrlPk_docvalues_string")).map(v -> v.toString()).orElse(null));
@@ -4626,7 +4589,6 @@ public abstract class ArticleGen<DEV> extends Object {
 	public static final String VAR_pageSearch_frFR = "pageSearch_frFR";
 	public static final String VAR_siteUser_ = "siteUser_";
 	public static final String VAR_userId = "userId";
-	public static final String VAR_SiteUserNomDomaine = "SiteUserNomDomaine";
 	public static final String VAR_siteRequest_ = "siteRequest_";
 	public static final String VAR_inheritPk = "inheritPk";
 	public static final String VAR_created = "created";
@@ -4662,15 +4624,6 @@ public abstract class ArticleGen<DEV> extends Object {
 		return Article.varsFqArticle(new ArrayList<String>());
 	}
 	public static List<String> varsFqArticle(List<String> vars) {
-		vars.add(VAR_inheritPk);
-		vars.add(VAR_created);
-		vars.add(VAR_modified);
-		vars.add(VAR_objectTitle);
-		vars.add(VAR_objectId);
-		vars.add(VAR_pageUrlId);
-		vars.add(VAR_pageUrlPk);
-		vars.add(VAR_pageUrlApi);
-		vars.add(VAR_id);
 		return vars;
 	}
 
@@ -4678,8 +4631,6 @@ public abstract class ArticleGen<DEV> extends Object {
 		return Article.varsRangeArticle(new ArrayList<String>());
 	}
 	public static List<String> varsRangeArticle(List<String> vars) {
-		vars.add(VAR_created);
-		vars.add(VAR_modified);
 		return vars;
 	}
 
@@ -4723,7 +4674,6 @@ public abstract class ArticleGen<DEV> extends Object {
 	public static final String DISPLAY_NAME_pageSearch_frFR = "";
 	public static final String DISPLAY_NAME_siteUser_ = "";
 	public static final String DISPLAY_NAME_userId = "";
-	public static final String DISPLAY_NAME_SiteUserNomDomaine = "";
 	public static final String DISPLAY_NAME_siteRequest_ = "";
 	public static final String DISPLAY_NAME_inheritPk = "";
 	public static final String DISPLAY_NAME_created = "created";
@@ -4831,8 +4781,6 @@ public abstract class ArticleGen<DEV> extends Object {
 			return DISPLAY_NAME_siteUser_;
 		case VAR_userId:
 			return DISPLAY_NAME_userId;
-		case VAR_SiteUserNomDomaine:
-			return DISPLAY_NAME_SiteUserNomDomaine;
 		case VAR_siteRequest_:
 			return DISPLAY_NAME_siteRequest_;
 		case VAR_inheritPk:
@@ -5010,8 +4958,6 @@ public abstract class ArticleGen<DEV> extends Object {
 		case VAR_siteUser_:
 			return "SiteUser";
 		case VAR_userId:
-			return "String";
-		case VAR_SiteUserNomDomaine:
 			return "String";
 		case VAR_siteRequest_:
 			return "SiteRequestEnUS";

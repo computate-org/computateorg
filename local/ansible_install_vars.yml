@@ -1,6 +1,11 @@
 ---
 GITHUB_ORG: computate-org
+QUAYIO_ORG: computate
+PROJECT_POWERED_BY_NAME: OpenShift Online
+PROJECT_POWERED_BY_URL: https://access.redhat.com/products/openshift-online-red-hat
+PROJECT_POWERED_BY_IMAGE_URI: /svg/openshift.svg
 PROJECT_NAME: computate.org
+PROJECT_DISPLAY_NAME: computate.org
 PROJECT_REPO: "git@github.com:{{ GITHUB_ORG }}/{{ PROJECT_NAME }}.git"
 PROJECT_REPO_HTTPS: "{{ PROJECT_REPO | replace('git@github.com:', 'https://github.com/') }}"
 PROJECT_LANG: enUS
@@ -33,6 +38,8 @@ PROJECTS:
     PROJECT_SRC: "{{ PROJECT_SRC }}"
     PROJECT_JAVA_PACKAGE: "{{ PROJECT_JAVA_PACKAGE }}"
     PROJECT_FILES: 
+      - path: "{{ PROJECT_SRC }}/bin/touch.sh"
+        template: touch.sh
       - path: "{{ PROJECT_SRC }}/pom.xml"
         template: java/pom.xml
       - path: "{{ PROJECT_SRC }}/install.yml"
@@ -51,6 +58,10 @@ PROJECTS:
         template: page/HomePage.java
       - path: "{{ PROJECT_SRC }}/src/main/resources/templates/{{ PROJECT_LANG }}/{{ CLASS_SIMPLE_NAME_HomePage }}.hbs"
         template: page/{{ CLASS_SIMPLE_NAME_HomePage }}.hbs
+      - path: "{{ PROJECT_SRC }}/src/main/resources/templates/{{ PROJECT_LANG }}/{{ CLASS_SIMPLE_NAME_DynamicPage }}.hbs"
+        template: page/{{ CLASS_SIMPLE_NAME_DynamicPage }}.hbs
+      - path: "{{ PROJECT_SRC }}/src/main/resources/templates/{{ PROJECT_LANG }}/{{ CLASS_SIMPLE_NAME_DynamicGenPage }}.hbs"
+        template: page/{{ CLASS_SIMPLE_NAME_DynamicGenPage }}.hbs
       - path: "{{ PROJECT_SRC }}/src/main/java/{{ PROJECT_JAVA_PACKAGE | replace('.', '/') }}/{{ RELATIVE_PACKAGE_MainVerticle | replace('.', '/') }}/{{ CLASS_SIMPLE_NAME_MainVerticle }}.java"
         template: vertx/MainVerticle.java
       - path: "{{ PROJECT_SRC }}/src/main/java/{{ PROJECT_JAVA_PACKAGE | replace('.', '/') }}/{{ RELATIVE_PACKAGE_WorkerVerticle | replace('.', '/') }}/{{ CLASS_SIMPLE_NAME_WorkerVerticle }}.java"
@@ -59,6 +70,12 @@ PROJECTS:
         template: base/BaseModel.java
       - path: "{{ PROJECT_SRC }}/src/main/java/{{ PROJECT_JAVA_PACKAGE | replace('.', '/') }}/{{ RELATIVE_PACKAGE_SiteUser | replace('.', '/') }}/{{ CLASS_SIMPLE_NAME_SiteUser }}.java"
         template: user/SiteUser.java
+      - path: "{{ PROJECT_SRC }}/src/main/java/{{ PROJECT_JAVA_PACKAGE | replace('.', '/') }}/{{ RELATIVE_PACKAGE_SitePage | replace('.', '/') }}/{{ CLASS_SIMPLE_NAME_SitePage }}.java"
+        template: page/SitePage.java
+      - path: "{{ PROJECT_SRC }}/src/main/java/{{ PROJECT_JAVA_PACKAGE | replace('.', '/') }}/{{ RELATIVE_PACKAGE_SiteHtm | replace('.', '/') }}/{{ CLASS_SIMPLE_NAME_SiteHtm }}.java"
+        template: htm/SiteHtm.java
+      - path: "{{ PROJECT_SRC }}/src/main/java/{{ PROJECT_JAVA_PACKAGE | replace('.', '/') }}/{{ RELATIVE_PACKAGE_DynamicPage | replace('.', '/') }}/{{ CLASS_SIMPLE_NAME_DynamicPage }}.java"
+        template: page/DynamicPage.java
       - path: "{{ PROJECT_SRC }}/src/main/resources/application.yml"
         template: java/application.yml
       - path: "{{ PROJECT_SRC }}/src/main/resources/log4j.properties"
@@ -100,7 +117,7 @@ PROJECTS:
       - path: "{{ PROJECT_SRC }}-static/css/jquery-ui.css"
         template: css/jquery-ui.css
       - path: "{{ PROJECT_SRC }}-static/css/site-{{ PROJECT_LANG }}.css"
-        template: css/site.css
+        template: css/site-enUS.css
       - path: "{{ PROJECT_SRC }}-static/css/w3.css"
         template: css/w3.css
       - path: "{{ PROJECT_SRC }}-static/svg/openshift.svg"

@@ -13,8 +13,8 @@ import org.computate.site.enus.config.ConfigKeys;
 import org.computate.site.enus.request.SiteRequestEnUS;
 
 /**
- * Model: true
  * Indexed: true
+ * Model: true
  * Page: true
  * SuperPage: PageLayout
  * Keyword: classSimpleNameBaseModel
@@ -35,11 +35,13 @@ public class BaseModel extends BaseModelGen<Object> implements ComputateVertxBas
 	 * {@inheritDoc}
 	 * DocValues: true
 	 * PrimaryKey: true
+	 * UrlVar: pageUrlApi
 	 * Modify: false
 	 * HtmlRow: 1
 	 * HtmlCell: 1
 	 * DisplayName.enUS: primary key
 	 * Description: The primary key of this object in the database
+	 * Facet: true
 	 */
 	protected void _pk(Wrap<Long> w) {}
 
@@ -64,6 +66,7 @@ public class BaseModel extends BaseModelGen<Object> implements ComputateVertxBas
 	 * DisplayName.enUS: created
 	 * FormatHtm: MMM d, yyyy h:mm:ss a
 	 * Description: A created timestamp for this record in the database
+	 * Facet: true
 	 */
 	protected void _created(Wrap<ZonedDateTime> w) {}
 
@@ -182,6 +185,7 @@ public class BaseModel extends BaseModelGen<Object> implements ComputateVertxBas
 	 * {@inheritDoc}
 	 * DocValues: true
 	 * VarId: true
+	 * UrlVar: pageUrlId
 	 * HtmlRow: 1
 	 * HtmlCell: 4
 	 * DisplayName.enUS: ID
@@ -249,7 +253,6 @@ public class BaseModel extends BaseModelGen<Object> implements ComputateVertxBas
 	/**
 	 * {@inheritDoc}
 	 * Text: true
-	 * DocValues: true
 	 * Description: The full text search field in the search engine for this record while using autosuggest
 	 * DisplayName: text
 	 */
@@ -297,6 +300,7 @@ public class BaseModel extends BaseModelGen<Object> implements ComputateVertxBas
 	/**
 	 * {@inheritDoc}
 	 * DocValues: true
+	 * VarUrlApi: true
 	 * Description: The link to this object in the API
 	 */
 	protected void _pageUrlApi(Wrap<String> w) {

@@ -31,6 +31,7 @@ import java.util.Collection;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Date;
+import org.computate.search.serialize.ComputateZonedDateTimeSerializer;
 import java.time.format.DateTimeFormatter;
 import java.time.ZoneId;
 import java.util.List;
@@ -90,7 +91,6 @@ import org.computate.vertx.search.list.SearchList;
 
 /**
  * Translate: false
- * CanonicalName.frFR: org.computate.site.enus.model.user.SiteUserFrFRGenApiServiceImpl
  **/
 public class SiteUserEnUSGenApiServiceImpl extends BaseApiServiceImpl implements SiteUserEnUSGenApiService {
 
@@ -144,27 +144,8 @@ public class SiteUserEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 		Promise<ServiceResponse> promise = Promise.promise();
 		try {
 			SiteRequestEnUS siteRequest = listSiteUser.getSiteRequest_(SiteRequestEnUS.class);
-			SolrResponse responseSearch = listSiteUser.getResponse();
-			List<SolrResponse.Doc> solrDocuments = listSiteUser.getResponse().getResponse().getDocs();
-			Long searchInMillis = Long.valueOf(responseSearch.getResponseHeader().getqTime());
-			Long startNum = listSiteUser.getRequest().getStart();
-			Long foundNum = responseSearch.getResponse().getNumFound();
-			Integer returnedNum = responseSearch.getResponse().getDocs().size();
-			String searchTime = String.format("%d.%03d sec", TimeUnit.MILLISECONDS.toSeconds(searchInMillis), TimeUnit.MILLISECONDS.toMillis(searchInMillis) - TimeUnit.SECONDS.toMillis(TimeUnit.MILLISECONDS.toSeconds(searchInMillis)));
-			String nextCursorMark = responseSearch.getNextCursorMark();
-			String exceptionSearch = Optional.ofNullable(responseSearch.getError()).map(error -> error.getMsg()).orElse(null);
 			List<String> fls = listSiteUser.getRequest().getFields();
-
 			JsonObject json = new JsonObject();
-			json.put("startNum", startNum);
-			json.put("foundNum", foundNum);
-			json.put("returnedNum", returnedNum);
-			if(fls.size() == 1 && fls.stream().findFirst().orElse(null).equals("saves")) {
-				json.put("searchTime", searchTime);
-			}
-			if(nextCursorMark != null) {
-				json.put("nextCursorMark", nextCursorMark);
-			}
 			JsonArray l = new JsonArray();
 			listSiteUser.getList().stream().forEach(o -> {
 				JsonObject json2 = JsonObject.mapFrom(o);
@@ -191,56 +172,7 @@ public class SiteUserEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 				l.add(json2);
 			});
 			json.put("list", l);
-
-			SolrResponse.FacetFields facetFields = Optional.ofNullable(responseSearch.getFacetCounts()).map(f -> f.getFacetFields()).orElse(null);
-			if(facetFields != null) {
-				JsonObject facetFieldsJson = new JsonObject();
-				json.put("facet_fields", facetFieldsJson);
-				for(SolrResponse.FacetField facetField : facetFields.getFacets().values()) {
-					String facetFieldVar = StringUtils.substringBefore(facetField.getName(), "_docvalues_");
-					JsonObject facetFieldCounts = new JsonObject();
-					facetFieldsJson.put(facetFieldVar, facetFieldCounts);
-					facetField.getCounts().forEach((name, count) -> {
-						facetFieldCounts.put(name, count);
-					});
-				}
-			}
-
-			SolrResponse.FacetRanges facetRanges = Optional.ofNullable(responseSearch.getFacetCounts()).map(f -> f.getFacetRanges()).orElse(null);
-			if(facetRanges != null) {
-				JsonObject rangeJson = new JsonObject();
-				json.put("facet_ranges", rangeJson);
-				for(SolrResponse.FacetRange rangeFacet : facetRanges.getRanges().values()) {
-					JsonObject rangeFacetJson = new JsonObject();
-					String rangeFacetVar = StringUtils.substringBefore(rangeFacet.getName(), "_docvalues_");
-					rangeJson.put(rangeFacetVar, rangeFacetJson);
-					JsonObject rangeFacetCountsMap = new JsonObject();
-					rangeFacetJson.put("counts", rangeFacetCountsMap);
-					rangeFacet.getCounts().forEach((name, count) -> {
-						rangeFacetCountsMap.put(name, count);
-					});
-				}
-			}
-
-			SolrResponse.FacetPivot facetPivot = Optional.ofNullable(responseSearch.getFacetCounts()).map(f -> f.getFacetPivot()).orElse(null);
-			if(facetPivot != null) {
-				JsonObject facetPivotJson = new JsonObject();
-				json.put("facet_pivot", facetPivotJson);
-				for(SolrResponse.Pivot pivot : facetPivot.getPivotMap().values()) {
-					String[] varsIndexed = pivot.getName().trim().split(",");
-					String[] entityVars = new String[varsIndexed.length];
-					for(Integer i = 0; i < entityVars.length; i++) {
-						String entityIndexed = varsIndexed[i];
-						entityVars[i] = StringUtils.substringBefore(entityIndexed, "_docvalues_");
-					}
-					JsonArray pivotArray = new JsonArray();
-					facetPivotJson.put(StringUtils.join(entityVars, ","), pivotArray);
-					responsePivotSearchSiteUser(pivot.getPivotList(), pivotArray);
-				}
-			}
-			if(exceptionSearch != null) {
-				json.put("exceptionSearch", exceptionSearch);
-			}
+			response200Search(listSiteUser.getRequest(), listSiteUser.getResponse(), json);
 			promise.complete(ServiceResponse.completedWithJson(Buffer.buffer(Optional.ofNullable(json).orElse(new JsonObject()).encodePrettily())));
 		} catch(Exception ex) {
 			LOG.error(String.format("response200SearchSiteUser failed. "), ex);
@@ -612,62 +544,6 @@ public class SiteUserEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 							bSql.append(SiteUser.VAR_seeDeleted + "=$" + num);
 							num++;
 							bParams.add(o2.sqlSeeDeleted());
-						break;
-					case "setSiteDomainName":
-							o2.setSiteDomainName(jsonObject.getString(entityVar));
-							if(bParams.size() > 0)
-								bSql.append(", ");
-							bSql.append(SiteUser.VAR_siteDomainName + "=$" + num);
-							num++;
-							bParams.add(o2.sqlSiteDomainName());
-						break;
-					case "setZookeeperVersion":
-							o2.setZookeeperVersion(jsonObject.getString(entityVar));
-							if(bParams.size() > 0)
-								bSql.append(", ");
-							bSql.append(SiteUser.VAR_zookeeperVersion + "=$" + num);
-							num++;
-							bParams.add(o2.sqlZookeeperVersion());
-						break;
-					case "setZookeeperPortClient":
-							o2.setZookeeperPortClient(jsonObject.getString(entityVar));
-							if(bParams.size() > 0)
-								bSql.append(", ");
-							bSql.append(SiteUser.VAR_zookeeperPortClient + "=$" + num);
-							num++;
-							bParams.add(o2.sqlZookeeperPortClient());
-						break;
-					case "setSolrVersion":
-							o2.setSolrVersion(jsonObject.getString(entityVar));
-							if(bParams.size() > 0)
-								bSql.append(", ");
-							bSql.append(SiteUser.VAR_solrVersion + "=$" + num);
-							num++;
-							bParams.add(o2.sqlSolrVersion());
-						break;
-					case "setSolrPortClient":
-							o2.setSolrPortClient(jsonObject.getString(entityVar));
-							if(bParams.size() > 0)
-								bSql.append(", ");
-							bSql.append(SiteUser.VAR_solrPortClient + "=$" + num);
-							num++;
-							bParams.add(o2.sqlSolrPortClient());
-						break;
-					case "setSolrConfigset":
-							o2.setSolrConfigset(jsonObject.getString(entityVar));
-							if(bParams.size() > 0)
-								bSql.append(", ");
-							bSql.append(SiteUser.VAR_solrConfigset + "=$" + num);
-							num++;
-							bParams.add(o2.sqlSolrConfigset());
-						break;
-					case "setSolrCollection":
-							o2.setSolrCollection(jsonObject.getString(entityVar));
-							if(bParams.size() > 0)
-								bSql.append(", ");
-							bSql.append(SiteUser.VAR_solrCollection + "=$" + num);
-							num++;
-							bParams.add(o2.sqlSolrCollection());
 						break;
 				}
 			}
@@ -1055,69 +931,6 @@ public class SiteUserEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 						num++;
 						bParams.add(o2.sqlSeeDeleted());
 						break;
-					case SiteUser.VAR_siteDomainName:
-						o2.setSiteDomainName(jsonObject.getString(entityVar));
-						if(bParams.size() > 0) {
-							bSql.append(", ");
-						}
-						bSql.append(SiteUser.VAR_siteDomainName + "=$" + num);
-						num++;
-						bParams.add(o2.sqlSiteDomainName());
-						break;
-					case SiteUser.VAR_zookeeperVersion:
-						o2.setZookeeperVersion(jsonObject.getString(entityVar));
-						if(bParams.size() > 0) {
-							bSql.append(", ");
-						}
-						bSql.append(SiteUser.VAR_zookeeperVersion + "=$" + num);
-						num++;
-						bParams.add(o2.sqlZookeeperVersion());
-						break;
-					case SiteUser.VAR_zookeeperPortClient:
-						o2.setZookeeperPortClient(jsonObject.getString(entityVar));
-						if(bParams.size() > 0) {
-							bSql.append(", ");
-						}
-						bSql.append(SiteUser.VAR_zookeeperPortClient + "=$" + num);
-						num++;
-						bParams.add(o2.sqlZookeeperPortClient());
-						break;
-					case SiteUser.VAR_solrVersion:
-						o2.setSolrVersion(jsonObject.getString(entityVar));
-						if(bParams.size() > 0) {
-							bSql.append(", ");
-						}
-						bSql.append(SiteUser.VAR_solrVersion + "=$" + num);
-						num++;
-						bParams.add(o2.sqlSolrVersion());
-						break;
-					case SiteUser.VAR_solrPortClient:
-						o2.setSolrPortClient(jsonObject.getString(entityVar));
-						if(bParams.size() > 0) {
-							bSql.append(", ");
-						}
-						bSql.append(SiteUser.VAR_solrPortClient + "=$" + num);
-						num++;
-						bParams.add(o2.sqlSolrPortClient());
-						break;
-					case SiteUser.VAR_solrConfigset:
-						o2.setSolrConfigset(jsonObject.getString(entityVar));
-						if(bParams.size() > 0) {
-							bSql.append(", ");
-						}
-						bSql.append(SiteUser.VAR_solrConfigset + "=$" + num);
-						num++;
-						bParams.add(o2.sqlSolrConfigset());
-						break;
-					case SiteUser.VAR_solrCollection:
-						o2.setSolrCollection(jsonObject.getString(entityVar));
-						if(bParams.size() > 0) {
-							bSql.append(", ");
-						}
-						bSql.append(SiteUser.VAR_solrCollection + "=$" + num);
-						num++;
-						bParams.add(o2.sqlSolrCollection());
-						break;
 					}
 				}
 			}
@@ -1466,6 +1279,13 @@ public class SiteUserEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 			page.setSiteRequest_(siteRequest);
 			page.promiseDeepSiteUserPage(siteRequest).onSuccess(a -> {
 				JsonObject json = JsonObject.mapFrom(page);
+				json.put(ConfigKeys.STATIC_BASE_URL, config.getString(ConfigKeys.STATIC_BASE_URL));
+				json.put(ConfigKeys.GITHUB_ORG, config.getString(ConfigKeys.GITHUB_ORG));
+				json.put(ConfigKeys.SITE_NAME, config.getString(ConfigKeys.SITE_NAME));
+				json.put(ConfigKeys.SITE_DISPLAY_NAME, config.getString(ConfigKeys.SITE_DISPLAY_NAME));
+				json.put(ConfigKeys.PROJECT_POWERED_BY_URL, config.getString(ConfigKeys.PROJECT_POWERED_BY_URL));
+				json.put(ConfigKeys.PROJECT_POWERED_BY_NAME, config.getString(ConfigKeys.PROJECT_POWERED_BY_NAME));
+				json.put(ConfigKeys.PROJECT_POWERED_BY_IMAGE_URI, config.getString(ConfigKeys.PROJECT_POWERED_BY_IMAGE_URI));
 				templateEngine.render(json, templateSearchPageSiteUser()).onSuccess(buffer -> {
 					promise.complete(new ServiceResponse(200, "OK", buffer, requestHeaders));
 				}).onFailure(ex -> {
@@ -1489,7 +1309,7 @@ public class SiteUserEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 			SqlConnection sqlConnection = siteRequest.getSqlConnection();
 			String userId = siteRequest.getUserId();
 			Long userKey = siteRequest.getUserKey();
-			ZonedDateTime created = Optional.ofNullable(siteRequest.getJsonObject()).map(j -> j.getString("created")).map(s -> ZonedDateTime.parse(s, DateTimeFormatter.ISO_DATE_TIME.withZone(ZoneId.of(config.getString(ConfigKeys.SITE_ZONE))))).orElse(ZonedDateTime.now(ZoneId.of(config.getString(ConfigKeys.SITE_ZONE))));
+			ZonedDateTime created = Optional.ofNullable(siteRequest.getJsonObject()).map(j -> j.getString("created")).map(s -> ZonedDateTime.parse(s, ComputateZonedDateTimeSerializer.ZONED_DATE_TIME_FORMATTER.withZone(ZoneId.of(config.getString(ConfigKeys.SITE_ZONE))))).orElse(ZonedDateTime.now(ZoneId.of(config.getString(ConfigKeys.SITE_ZONE))));
 
 			sqlConnection.preparedQuery("INSERT INTO SiteUser(created, userKey) VALUES($1, $2) RETURNING pk")
 					.collecting(Collectors.toList())
@@ -1697,6 +1517,15 @@ public class SiteUserEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 								case "rows":
 									valueRows = paramObject instanceof Long ? (Long)paramObject : Long.parseLong(paramObject.toString());
 									searchSiteUserRows(searchList, valueRows);
+									break;
+								case "stats":
+									searchList.stats((Boolean)paramObject);
+									break;
+								case "stats.field":
+									entityVar = (String)paramObject;
+									varIndexed = SiteUser.varIndexedSiteUser(entityVar);
+									if(varIndexed != null)
+										searchList.statsField(varIndexed);
 									break;
 								case "facet":
 									searchList.facet((Boolean)paramObject);

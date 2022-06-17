@@ -1,5 +1,7 @@
 ---
 
+SITE_NAME: computate.org
+SITE_DISPLAY_NAME: computate.org
 SITE_HOST_NAME: localhost
 SITE_PORT: 10180
 SITE_BASE_URL: "http://localhost:10180"
@@ -10,6 +12,11 @@ WORKER_POOL_SIZE: 2
 VERTX_WARNING_EXCEPTION_SECONDS: 10
 CLUSTER_HOST_NAME: localhost
 CLUSTER_PORT: 10181
+GITHUB_ORG: "computate-org"
+QUAYIO_ORG: "computate"
+PROJECT_POWERED_BY_URL: "https://access.redhat.com/products/openshift-online-red-hat"
+PROJECT_POWERED_BY_NAME: "OpenShift Online"
+PROJECT_POWERED_BY_IMAGE_URI: "/svg/openshift.svg"
 
 STATIC_BASE_URL: "http://localhost:10180/static"
 STATIC_PATH: "/usr/local/src/computate.org-static"
@@ -57,22 +64,18 @@ EMAIL_ADMIN:
 
 REFRESH_DATA_PAUSE_IN_SECONDS: 10
 ENABLE_REFRESH_DATA: false
+ENABLE_REFRESH_DATA_SitePage: true
+ENABLE_REFRESH_DATA_SiteHtm: true
 
 ENABLE_IMPORT_DATA: true
-ENABLE_IMPORT_DATA_C001Lesson: true
-ENABLE_IMPORT_DATA_C001: true
-ENABLE_IMPORT_DATA_Course: true
-ENABLE_IMPORT_DATA_Article: true
+ENABLE_IMPORT_DATA_SitePage: true
+ENABLE_IMPORT_DATA_SiteHtm: true
 
 # The Auth roles required to be an admin in the site. 
 AUTH_ROLES_ADMIN: ['SiteAdmin']
 # The Auth roles required to add and modify site user records. 
 AUTH_ROLES_REQUIRED_SiteUser: ['SiteAdmin']
-# The Auth roles required to add and modify  records. 
-AUTH_ROLES_REQUIRED_C001Lesson: ['SiteAdmin']
-# The Auth roles required to add and modify course #1 records. 
-AUTH_ROLES_REQUIRED_C001: ['SiteAdmin']
-# The Auth roles required to add and modify course records. 
-AUTH_ROLES_REQUIRED_Course: ['SiteAdmin']
 # The Auth roles required to add and modify article records. 
-AUTH_ROLES_REQUIRED_Article: ['SiteAdmin']
+AUTH_ROLES_REQUIRED_SitePage: ['SiteAdmin']
+# The Auth roles required to add and modify HTML records. 
+AUTH_ROLES_REQUIRED_SiteHtm: ['SiteAdmin']

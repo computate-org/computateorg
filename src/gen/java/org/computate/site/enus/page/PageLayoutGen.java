@@ -59,8 +59,7 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	// siteRequest_ //
 	//////////////////
 
-	/**
-	 The entity siteRequest_
+	/**	 The entity siteRequest_
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonIgnore
@@ -98,8 +97,7 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	// lang //
 	//////////
 
-	/**
-	 The entity lang
+	/**	 The entity lang
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
@@ -148,8 +146,7 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	// requestVars //
 	/////////////////
 
-	/**
-	 The entity requestVars
+	/**	 The entity requestVars
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
@@ -187,8 +184,7 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	// config //
 	////////////
 
-	/**
-	 The entity config
+	/**	 The entity config
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonIgnore
@@ -245,8 +241,7 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	// serviceRequest //
 	////////////////////
 
-	/**
-	 The entity serviceRequest
+	/**	 The entity serviceRequest
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
@@ -284,8 +279,7 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	// staticBaseUrl //
 	///////////////////
 
-	/**
-	 The entity staticBaseUrl
+	/**	 The entity staticBaseUrl
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
@@ -334,8 +328,7 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	// STATIC_BASE_URL //
 	/////////////////////
 
-	/**
-	 The entity STATIC_BASE_URL
+	/**	 The entity STATIC_BASE_URL
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
@@ -384,8 +377,7 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	// SITE_BASE_URL //
 	///////////////////
 
-	/**
-	 The entity SITE_BASE_URL
+	/**	 The entity SITE_BASE_URL
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
@@ -434,8 +426,7 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	// SITE_AUTH_URL //
 	///////////////////
 
-	/**
-	 The entity SITE_AUTH_URL
+	/**	 The entity SITE_AUTH_URL
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
@@ -484,8 +475,7 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	// SITE_AUTH_REALM //
 	/////////////////////
 
-	/**
-	 The entity SITE_AUTH_REALM
+	/**	 The entity SITE_AUTH_REALM
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
@@ -534,8 +524,7 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	// FONTAWESOME_KIT //
 	/////////////////////
 
-	/**
-	 The entity FONTAWESOME_KIT
+	/**	 The entity FONTAWESOME_KIT
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
@@ -584,8 +573,7 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	// pageUri //
 	/////////////
 
-	/**
-	 The entity pageUri
+	/**	 The entity pageUri
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
@@ -634,8 +622,7 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	// pageMethod //
 	////////////////
 
-	/**
-	 The entity pageMethod
+	/**	 The entity pageMethod
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
@@ -684,8 +671,7 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	// params //
 	////////////
 
-	/**
-	 The entity params
+	/**	 The entity params
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
@@ -742,8 +728,7 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	// userKey //
 	/////////////
 
-	/**
-	 The entity userKey
+	/**	 The entity userKey
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
@@ -800,8 +785,7 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	// userFullName //
 	//////////////////
 
-	/**
-	 The entity userFullName
+	/**	 The entity userFullName
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
@@ -850,8 +834,7 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	// userName //
 	//////////////
 
-	/**
-	 The entity userName
+	/**	 The entity userName
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
@@ -900,8 +883,7 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	// userEmail //
 	///////////////
 
-	/**
-	 The entity userEmail
+	/**	 The entity userEmail
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
@@ -950,8 +932,7 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	// logoutUrl //
 	///////////////
 
-	/**
-	 The entity logoutUrl
+	/**	 The entity logoutUrl
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
@@ -1000,8 +981,7 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	// long0 //
 	///////////
 
-	/**
-	 The entity long0
+	/**	 The entity long0
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
@@ -1058,8 +1038,7 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	// long1 //
 	///////////
 
-	/**
-	 The entity long1
+	/**	 The entity long1
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
@@ -1116,8 +1095,7 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	// int0 //
 	//////////
 
-	/**
-	 The entity int0
+	/**	 The entity int0
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
@@ -1174,8 +1152,7 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	// int1 //
 	//////////
 
-	/**
-	 The entity int1
+	/**	 The entity int1
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
@@ -1232,8 +1209,7 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	// promiseBefore //
 	///////////////////
 
-	/**
-	 The entity promiseBefore
+	/**	 The entity promiseBefore
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonIgnore
@@ -1275,8 +1251,7 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	// classSimpleName //
 	/////////////////////
 
-	/**
-	 The entity classSimpleName
+	/**	 The entity classSimpleName
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
@@ -1325,8 +1300,7 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	// pageTitle //
 	///////////////
 
-	/**
-	 The entity pageTitle
+	/**	 The entity pageTitle
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
@@ -1375,8 +1349,7 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	// roles //
 	///////////
 
-	/**
-	 The entity roles
+	/**	 The entity roles
 	 *	 It is constructed before being initialized with the constructor by default. 
 	 */
 	@JsonProperty
@@ -1442,8 +1415,7 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	// rolesRequired //
 	///////////////////
 
-	/**
-	 The entity rolesRequired
+	/**	 The entity rolesRequired
 	 *	 It is constructed before being initialized with the constructor by default. 
 	 */
 	@JsonProperty
@@ -1509,8 +1481,7 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	// authRolesAdmin //
 	////////////////////
 
-	/**
-	 The entity authRolesAdmin
+	/**	 The entity authRolesAdmin
 	 *	 It is constructed before being initialized with the constructor by default. 
 	 */
 	@JsonProperty
@@ -1576,8 +1547,7 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	// pagination //
 	////////////////
 
-	/**
-	 The entity pagination
+	/**	 The entity pagination
 	 *	 It is constructed before being initialized with the constructor by default. 
 	 */
 	@JsonProperty
@@ -1630,8 +1600,7 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	// varsQ //
 	///////////
 
-	/**
-	 The entity varsQ
+	/**	 The entity varsQ
 	 *	 It is constructed before being initialized with the constructor by default. 
 	 */
 	@JsonProperty
@@ -1684,8 +1653,7 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	// varsFq //
 	////////////
 
-	/**
-	 The entity varsFq
+	/**	 The entity varsFq
 	 *	 It is constructed before being initialized with the constructor by default. 
 	 */
 	@JsonProperty
@@ -1738,8 +1706,7 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	// varsRange //
 	///////////////
 
-	/**
-	 The entity varsRange
+	/**	 The entity varsRange
 	 *	 It is constructed before being initialized with the constructor by default. 
 	 */
 	@JsonProperty
@@ -1792,8 +1759,7 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	// query //
 	///////////
 
-	/**
-	 The entity query
+	/**	 The entity query
 	 *	 It is constructed before being initialized with the constructor by default. 
 	 */
 	@JsonProperty
@@ -1846,8 +1812,7 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	// promiseAfter //
 	//////////////////
 
-	/**
-	 The entity promiseAfter
+	/**	 The entity promiseAfter
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonIgnore
@@ -1889,8 +1854,7 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	// pageImageUri //
 	//////////////////
 
-	/**
-	 The entity pageImageUri
+	/**	 The entity pageImageUri
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
@@ -1939,8 +1903,7 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	// pageImageWidth //
 	////////////////////
 
-	/**
-	 The entity pageImageWidth
+	/**	 The entity pageImageWidth
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
@@ -1997,8 +1960,7 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	// pageImageHeight //
 	/////////////////////
 
-	/**
-	 The entity pageImageHeight
+	/**	 The entity pageImageHeight
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
@@ -2055,8 +2017,7 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	// pageVideoId //
 	/////////////////
 
-	/**
-	 The entity pageVideoId
+	/**	 The entity pageVideoId
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
@@ -2105,8 +2066,7 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	// contextIconGroup //
 	//////////////////////
 
-	/**
-	 The entity contextIconGroup
+	/**	 The entity contextIconGroup
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
@@ -2155,8 +2115,7 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	// contextIconName //
 	/////////////////////
 
-	/**
-	 The entity contextIconName
+	/**	 The entity contextIconName
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
@@ -2205,8 +2164,7 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	// contextIconCssClasses //
 	///////////////////////////
 
-	/**
-	 The entity contextIconCssClasses
+	/**	 The entity contextIconCssClasses
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
@@ -2255,8 +2213,7 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	// pageDescription //
 	/////////////////////
 
-	/**
-	 The entity pageDescription
+	/**	 The entity pageDescription
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty

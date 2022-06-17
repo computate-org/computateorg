@@ -8,28 +8,33 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
 import org.apache.camel.CamelContext;
+import org.apache.camel.Exchange;
+import org.apache.camel.LoggingLevel;
+import org.apache.camel.builder.ExpressionBuilder;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.vertx.VertxComponent;
 import org.apache.camel.impl.DefaultCamelContext;
+import org.apache.camel.model.dataformat.JsonLibrary;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.computate.search.tool.SearchTool;
-import org.computate.site.enus.article.Article;
-import org.computate.site.enus.article.ArticleEnUSGenApiService;
-import org.computate.site.enus.config.ConfigKeys;
-import org.computate.site.enus.course.CourseEnUSGenApiService;
-import org.computate.site.enus.course.c001.C001EnUSGenApiService;
-import org.computate.site.enus.course.c001.lesson.C001LessonEnUSGenApiService;
-import org.computate.site.enus.model.user.SiteUserEnUSGenApiService;
-import org.computate.site.enus.page.HomePage;
-import org.computate.site.enus.page.PageLayout;
-import org.computate.site.enus.request.SiteRequestEnUS;
 import org.computate.vertx.handlebars.AuthHelpers;
 import org.computate.vertx.handlebars.DateHelpers;
 import org.computate.vertx.handlebars.SiteHelpers;
 import org.computate.vertx.openapi.OpenApi3Generator;
 import org.computate.vertx.search.list.SearchList;
 import org.computate.vertx.verticle.EmailVerticle;
+import org.computate.site.enus.config.ConfigKeys;
+import org.computate.site.enus.page.PageLayout;
+import org.computate.site.enus.page.HomePage;
+import org.computate.site.enus.request.SiteRequestEnUS;
+import org.computate.site.enus.model.page.SitePage;
+import org.computate.site.enus.page.dynamic.DynamicPage;
+import org.computate.site.enus.model.user.SiteUserEnUSGenApiService;
+import org.computate.site.enus.model.page.SitePageEnUSGenApiService;
+import org.computate.site.enus.model.htm.SiteHtmEnUSGenApiService;
+import org.computate.site.enus.model.page.SitePageEnUSGenApiService;
+import org.computate.site.enus.model.htm.SiteHtmEnUSGenApiService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,6 +52,7 @@ import io.vertx.core.Promise;
 import io.vertx.core.Vertx;
 import io.vertx.core.VertxOptions;
 import io.vertx.core.WorkerExecutor;
+import io.vertx.core.eventbus.DeliveryOptions;
 import io.vertx.core.eventbus.EventBusOptions;
 import io.vertx.core.http.Cookie;
 import io.vertx.core.http.HttpHeaders;
@@ -123,6 +129,10 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 
 	HandlebarsTemplateEngine templateEngine;
 
+	Handlebars handlebars;
+
+	TemplateHandler templateHandler;
+
 	/**	
 	 *	The main method for the Vert.x application that runs the Vert.x Runner class
 	 **/
@@ -133,20 +143,20 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 			try {
 				Future<Void> originalFuture = Future.future(a -> a.complete());
 				Future<Void> future = originalFuture;
-				OpenApi3Generator api = new OpenApi3Generator();
 				WebClient webClient = WebClient.create(vertx);
-				SiteRequestEnUS siteRequest = new SiteRequestEnUS();
-				siteRequest.setConfig(config);
-				siteRequest.setWebClient(webClient);
-				api.setWebClient(webClient);
-				api.setConfig(config);
-				siteRequest.initDeepSiteRequestEnUS();
-				api.initDeepOpenApi3Generator(siteRequest);
 				Boolean runOpenApi3Generator = Optional.ofNullable(config.getBoolean(ConfigKeys.RUN_OPENAPI3_GENERATOR)).orElse(false);
 				Boolean runSqlGenerator = Optional.ofNullable(config.getBoolean(ConfigKeys.RUN_SQL_GENERATOR)).orElse(false);
 				Boolean runArticleGenerator = Optional.ofNullable(config.getBoolean(ConfigKeys.RUN_ARTICLE_GENERATOR)).orElse(false);
 
 				if(runOpenApi3Generator || runSqlGenerator || runArticleGenerator) {
+					SiteRequestEnUS siteRequest = new SiteRequestEnUS();
+					siteRequest.setConfig(config);
+					siteRequest.setWebClient(webClient);
+					siteRequest.initDeepSiteRequestEnUS();
+					OpenApi3Generator api = new OpenApi3Generator();
+					api.setWebClient(webClient);
+					api.setConfig(config);
+					api.initDeepOpenApi3Generator(siteRequest);
 					if(runOpenApi3Generator)
 						future = future.compose(a -> api.writeOpenApi());
 					if(runSqlGenerator)
@@ -164,6 +174,25 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 			}
 		}).onFailure(ex -> {
 			LOG.error(String.format("Error loading config: %s", configPath), ex);
+			vertx.close();
+		});
+	}
+
+	public static void  runOpenApi3Generator(String[] args, Vertx vertx, JsonObject config) {
+		OpenApi3Generator api = new OpenApi3Generator();
+		WebClient webClient = WebClient.create(vertx);
+		SiteRequestEnUS siteRequest = new SiteRequestEnUS();
+		siteRequest.setConfig(config);
+		siteRequest.setWebClient(webClient);
+		api.setWebClient(webClient);
+		api.setConfig(config);
+		siteRequest.initDeepSiteRequestEnUS();
+		api.initDeepOpenApi3Generator(siteRequest);
+		api.writeOpenApi().onSuccess(a -> {
+			LOG.info("Write OpenAPI completed. ");
+			vertx.close();
+		}).onFailure(ex -> {
+			LOG.error("Write OpenAPI failed. ", ex);
 			vertx.close();
 		});
 	}
@@ -188,7 +217,7 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 			zkConfig.put("zookeeperHosts", zookeeperHosts);
 			zkConfig.put("sessionTimeout", 500000);
 			zkConfig.put("connectTimeout", 3000);
-			zkConfig.put("rootPath", "eventphenomenon");
+			zkConfig.put("rootPath", "computate.org");
 			zkConfig.put("retry", new JsonObject()
 					.put("initialSleepTime", 100)
 					.put("intervalTimes", 10000)
@@ -298,10 +327,12 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 							configureSharedWorkerExecutor().onComplete(f -> 
 								configureWebsockets().onComplete(g -> 
 									configureEmail().onComplete(i -> 
-										configureApi().onComplete(j -> 
-											configureUi().onComplete(k -> 
-												configureCamel().onComplete(l -> 
-													startServer().onComplete(m -> startPromise.complete())
+										configureHandlebars().onComplete(j -> 
+											configureApi().onComplete(k -> 
+												configureUi().onComplete(l -> 
+													configureCamel().onComplete(m -> 
+														startServer().onComplete(n -> startPromise.complete())
+													).onFailure(ex -> startPromise.fail(ex))
 												).onFailure(ex -> startPromise.fail(ex))
 											).onFailure(ex -> startPromise.fail(ex))
 										).onFailure(ex -> startPromise.fail(ex))
@@ -485,7 +516,9 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 									}
 								});
 							});
-							routerBuilder.operation("callback").failureHandler(c -> {});
+							routerBuilder.operation("callback").failureHandler(ex -> {
+								LOG.error("Failed callback. ", ex);
+							});
 			
 							routerBuilder.operation("logout").handler(rc -> {
 								String redirectUri = rc.request().params().get("redirect_uri");
@@ -697,19 +730,46 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 	}
 
 	/**
+	 * Val.Fail.enUS:Handlebars was not configured properly. 
+	 * Val.Complete.enUS:Handlebars was configured properly. 
+	 */
+	private Future<Void> configureHandlebars() {
+		Promise<Void> promise = Promise.promise();
+		try {
+			templateEngine = HandlebarsTemplateEngine.create(vertx);
+			handlebars = (Handlebars)templateEngine.unwrap();
+
+			handlebars.registerHelpers(ConditionalHelpers.class);
+			handlebars.registerHelpers(StringHelpers.class);
+			handlebars.registerHelpers(AuthHelpers.class);
+			handlebars.registerHelpers(SiteHelpers.class);
+			handlebars.registerHelpers(DateHelpers.class);
+
+			String templatePath = config().getString(ConfigKeys.TEMPLATE_PATH);
+			if(StringUtils.isBlank(templatePath))
+				templateHandler = TemplateHandler.create(templateEngine);
+			else
+				templateHandler = TemplateHandler.create(templateEngine, templatePath, "text/html");
+
+			LOG.info(configureHandlebarsComplete);
+			promise.complete();
+		} catch(Exception ex) {
+			LOG.error(configureHandlebarsFail, ex);
+			promise.fail(ex);
+		}
+		return promise.future();
+	}
+
+	/**
 	 * Val.Fail.enUS:The API was not configured properly. 
 	 * Val.Complete.enUS:The API was configured properly. 
 	 */
 	private Future<Void> configureApi() {
 		Promise<Void> promise = Promise.promise();
 		try {
-			templateEngine = HandlebarsTemplateEngine.create(vertx);
-
 			SiteUserEnUSGenApiService.registerService(vertx.eventBus(), config(), workerExecutor, pgPool, webClient, oauth2AuthenticationProvider, authorizationProvider, templateEngine, vertx);
-			C001LessonEnUSGenApiService.registerService(vertx.eventBus(), config(), workerExecutor, pgPool, webClient, oauth2AuthenticationProvider, authorizationProvider, templateEngine, vertx);
-			C001EnUSGenApiService.registerService(vertx.eventBus(), config(), workerExecutor, pgPool, webClient, oauth2AuthenticationProvider, authorizationProvider, templateEngine, vertx);
-			CourseEnUSGenApiService.registerService(vertx.eventBus(), config(), workerExecutor, pgPool, webClient, oauth2AuthenticationProvider, authorizationProvider, templateEngine, vertx);
-			ArticleEnUSGenApiService.registerService(vertx.eventBus(), config(), workerExecutor, pgPool, webClient, oauth2AuthenticationProvider, authorizationProvider, templateEngine, vertx);
+			SitePageEnUSGenApiService.registerService(vertx.eventBus(), config(), workerExecutor, pgPool, webClient, oauth2AuthenticationProvider, authorizationProvider, templateEngine, vertx);
+			SiteHtmEnUSGenApiService.registerService(vertx.eventBus(), config(), workerExecutor, pgPool, webClient, oauth2AuthenticationProvider, authorizationProvider, templateEngine, vertx);
 
 			LOG.info(configureApiComplete);
 			promise.complete();
@@ -728,21 +788,6 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 		Promise<Void> promise = Promise.promise();
 		try {
 			String staticPath = config().getString(ConfigKeys.STATIC_PATH);
-			String staticBaseUrl = config().getString(ConfigKeys.STATIC_BASE_URL);
-			String siteBaseUrl = config().getString(ConfigKeys.SITE_BASE_URL);
-			String templatePath = config().getString(ConfigKeys.TEMPLATE_PATH);
-			Handlebars handlebars = (Handlebars)templateEngine.unwrap();
-			TemplateHandler templateHandler;
-			if(StringUtils.isBlank(templatePath))
-				templateHandler = TemplateHandler.create(templateEngine);
-			else
-				templateHandler = TemplateHandler.create(templateEngine, templatePath, "text/html");
-
-			handlebars.registerHelpers(ConditionalHelpers.class);
-			handlebars.registerHelpers(StringHelpers.class);
-			handlebars.registerHelpers(AuthHelpers.class);
-			handlebars.registerHelpers(SiteHelpers.class);
-			handlebars.registerHelpers(DateHelpers.class);
 
 			router.get("/").handler(a -> {
 				a.reroute("/template/enUS/HomePage");
@@ -753,10 +798,12 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 			});
 
 			router.get("/template/enUS/HomePage").handler(ctx -> {
+				ctx.put(ConfigKeys.STATIC_BASE_URL, config().getString(ConfigKeys.STATIC_BASE_URL));
 				HomePage t = new HomePage();
 				SiteRequestEnUS siteRequest = new SiteRequestEnUS();
 				siteRequest.setConfig(config());
-				siteRequest.setRequestHeaders(ctx.response().headers());
+				siteRequest.setRequestHeaders(ctx.request().headers());
+				siteRequest.setWebClient(webClient);
 				siteRequest.initDeepSiteRequestEnUS();
 				t.promiseDeepForClass(siteRequest).onSuccess(a -> {
 					JsonObject json = JsonObject.mapFrom(t);
@@ -765,62 +812,78 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 					});
 					ctx.next();
 				}).onFailure(ex -> {
+					LOG.error("Failed to load home page. ", ex);
 					ctx.fail(ex);
 				});
 			});
 
-			router.getWithRegex("(?<uri>\\/(?<lang>[a-z][a-z][A-Z][A-Z])\\/.*)").handler(ctx -> {
+			router.getWithRegex("(?<uri>\\/(?<lang>(?<lang1>[a-z][a-z])-(?<lang2>[a-z][a-z]))\\/.*)").handler(ctx -> {
 				String uri = ctx.pathParam("uri");
-				String lang = ctx.pathParam("lang");
+				String lang = String.format("%s%s", ctx.pathParam("lang1"), ctx.pathParam("lang2").toUpperCase());
 
 				SiteRequestEnUS siteRequest = new SiteRequestEnUS();
 				siteRequest.setConfig(config());
-				siteRequest.setRequestHeaders(ctx.response().headers());
+				siteRequest.setWebClient(webClient);
+				siteRequest.setRequestHeaders(ctx.request().headers());
 				siteRequest.initDeepSiteRequestEnUS();
-				SearchList<Article> l = new SearchList<>();
-				l.setC(Article.class);
-				l.fq(String.format("%s_docvalues_string:", Article.VAR_pageUrlId, SearchTool.escapeQueryChars(uri)));
+				SearchList<SitePage> l = new SearchList<>();
+				l.q("*:*");
+				l.setC(SitePage.class);
+				l.fq(String.format("%s_docvalues_string:%s", SitePage.VAR_uri, SearchTool.escapeQueryChars(uri)));
+				l.setStore(true);
+				ctx.response().headers().add("Content-Type", "text/html");
 				l.promiseDeepForClass(siteRequest).onSuccess(a -> {
-					Article article = l.first();
+					SitePage result = l.first();
 					try {
-						PageLayout page = (PageLayout)Class.forName(article.getClassCanonicalName() + "Page").getDeclaredConstructor().newInstance();
+						DynamicPage page = new DynamicPage();
+						page.setPage(JsonObject.mapFrom(result));
+						page.setUri(uri);
 						page.promiseDeepForClass(siteRequest).onSuccess(b -> {
 							JsonObject json = JsonObject.mapFrom(page);
-							templateEngine.render(json, Optional.ofNullable(config().getString(ConfigKeys.TEMPLATE_PATH)).orElse("templates") + "/enUS/" + page.getClass().getSimpleName()).onSuccess(buffer -> {
-								ctx.end(buffer);
-		//						promise.complete(new ServiceResponse(200, "OK", buffer, requestHeaders));
+							json.put(ConfigKeys.STATIC_BASE_URL, config().getString(ConfigKeys.STATIC_BASE_URL));
+							json.put(ConfigKeys.GITHUB_ORG, config().getString(ConfigKeys.GITHUB_ORG));
+							json.put(ConfigKeys.SITE_NAME, config().getString(ConfigKeys.SITE_NAME));
+							json.put(ConfigKeys.SITE_DISPLAY_NAME, config().getString(ConfigKeys.SITE_DISPLAY_NAME));
+							json.put(ConfigKeys.PROJECT_POWERED_BY_URL, config().getString(ConfigKeys.PROJECT_POWERED_BY_URL));
+							json.put(ConfigKeys.PROJECT_POWERED_BY_NAME, config().getString(ConfigKeys.PROJECT_POWERED_BY_NAME));
+							json.put(ConfigKeys.PROJECT_POWERED_BY_IMAGE_URI, config().getString(ConfigKeys.PROJECT_POWERED_BY_IMAGE_URI));
+							templateEngine.render(json, Optional.ofNullable(config().getString(ConfigKeys.TEMPLATE_PATH)).orElse("templates") + "/" + lang + "/DynamicPage").onSuccess(buffer -> {
+								try {
+									ctx.response().end(buffer);
+								} catch(Exception ex) {
+									LOG.error(String.format("Failed to render page %s", uri), ex);
+									ctx.fail(ex);
+								}
 							}).onFailure(ex -> {
-								promise.fail(ex);
+								LOG.error(String.format("Failed to render page %s", uri), ex);
+								ctx.fail(ex);
 							});
 						}).onFailure(ex -> {
+							LOG.error(String.format("Failed to render page %s", uri), ex);
 							ctx.fail(ex);
 						});
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+					} catch (Exception ex) {
+						LOG.error(String.format("Failed to render page %s", uri), ex);
+						ctx.fail(ex);
 					}
 					
 				}).onFailure(ex -> {
-					ctx.fail(ex);
-				});
-				HomePage t = new HomePage();
-				t.promiseDeepForClass(siteRequest).onSuccess(a -> {
-					JsonObject json = JsonObject.mapFrom(t);
-					json.forEach(entry -> {
-						ctx.put(entry.getKey(), entry.getValue());
-					});
-					ctx.next();
-				}).onFailure(ex -> {
+					LOG.error(String.format("Failed to render page %s", uri), ex);
 					ctx.fail(ex);
 				});
 			});
 
-			router.get("/template/*").handler(templateHandler);
-			router.errorHandler(500,  ctx -> {
-				Throwable ex = ctx.failure();
-				LOG.error("Error occured. ", ex);
-				ctx.json(new JsonObject().put("error", new JsonObject().put("message", ex.getMessage())));
+			router.get("/template/*").handler(ctx -> {
+				ctx.put(ConfigKeys.STATIC_BASE_URL, config().getString(ConfigKeys.STATIC_BASE_URL));
+				ctx.put(ConfigKeys.GITHUB_ORG, config().getString(ConfigKeys.GITHUB_ORG));
+				ctx.put(ConfigKeys.SITE_NAME, config().getString(ConfigKeys.SITE_NAME));
+				ctx.put(ConfigKeys.SITE_DISPLAY_NAME, config().getString(ConfigKeys.SITE_DISPLAY_NAME));
+				ctx.put(ConfigKeys.PROJECT_POWERED_BY_URL, config().getString(ConfigKeys.PROJECT_POWERED_BY_URL));
+				ctx.put(ConfigKeys.PROJECT_POWERED_BY_NAME, config().getString(ConfigKeys.PROJECT_POWERED_BY_NAME));
+				ctx.put(ConfigKeys.PROJECT_POWERED_BY_IMAGE_URI, config().getString(ConfigKeys.PROJECT_POWERED_BY_IMAGE_URI));
+				ctx.next();
 			});
+			router.get("/template/*").handler(templateHandler);
 
 			StaticHandler staticHandler = StaticHandler.create().setCachingEnabled(false).setFilesReadOnly(false);
 			if(staticPath != null) {

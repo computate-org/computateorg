@@ -33,128 +33,217 @@
 {{/inline}}
 {{#*inline "htmUrlSiteUser"}}{{pageUri}}?q={{query.q}}&amp;rows={{#if rows}}{{rows}}{{else}}{{pagination.rows}}{{/if}}&amp;rows={{#if start}}{{start}}{{else}}{{pagination.start}}{{/if}}{{#each query.fq}}{{#eq fq this}}{{else}}&fq={{fq}}:{{val}}{{/eq}}{{/each}}{{#each query.sort}}{{#eq sort this}}{{else}}&sort={{var}} {{order}}{{/eq}}{{/each}}{{/inline}}
 {{#*inline "htmHeadSiteUserPage"}}{{> "htmTitleSiteUserPage"}}{{> "htmMetaSiteUserPage"}}{{> "htmStyleSiteUserPage"}}{{> "htmScriptsSiteUserPage"}}{{> "htmScriptSiteUserPage"}}{{/inline}}
-{{#*inline "htmBodySearchSiteUserPage"}}		<!-- #*inline "htmBodySearchSiteUserPage" -->
-	<div>
+{{#*inline "htmBodySearchSiteUserPage"}}								<!-- #*inline "htmBodySearchSiteUserPage" -->
+								<div>
 {{#each varsQ}}
-		<div class="w3-padding ">
-			<label for="fqSiteUser_{{ @key }}">{{ displayName }}<sup class="w3-tiny "> ({{ classSimpleName }})</sup></label>
-			<input id="fqSiteUser_{{ @key }}" placeholder="{{ displayName }}" class="w3-input " {{#eq ../var 'objectSuggest' }}onkeyup{{else}}onchange{{/eq}}="qChange(this); " data-var="{{ var }}" autocomplete="off="/>
-			<div class="pageSearchVal w3-tiny "></div>
-		</div>
+									<div class="w3-cell-row ">
+										<div class="w3-cell w3-cell-top ">
+											<label for="qSiteUser_{{ @key }}">{{ displayName }}<sup class="w3-tiny "> ({{ classSimpleName }})</sup></label>
+										</div>
+									</div>
+									<div class="w3-cell-row ">
+										<div class="w3-cell w3-cell-top ">
+											<input id="qSiteUser_{{ @key }}" placeholder="{{ displayName }}" class="" {{#eq ../var 'objectSuggest' }}onkeyup{{else}}onchange{{/eq}}="qChange(this); " data-var="{{ var }}" autocomplete="off="/>
+											<div class="pageSearchVal w3-tiny "></div>
+										</div>
+									</div>
 {{/each}}
-	</div>
+									<div class="w3-cell-row ">
+										<div class="w3-cell w3-cell-top ">
+											<label for="qSiteUser_Start">start<sup class="w3-tiny "> (Long)</sup></label>
+										</div>
+									</div>
+									<div class="w3-cell-row ">
+										<div class="w3-cell w3-cell-top ">
+											<input id="qSiteUser_start" placeholder="{{ displayName }}" class="" onchange="paramChange(this); " data-var="start" autocomplete="off="/>
+											<div class="pageSearchVal w3-tiny "></div>
+										</div>
+									</div>
+									<div class="w3-cell-row ">
+										<div class="w3-cell w3-cell-top ">
+											<label for="qSiteUser_Rows">rows<sup class="w3-tiny "> (Long)</sup></label>
+										</div>
+									</div>
+									<div class="w3-cell-row ">
+										<div class="w3-cell w3-cell-top ">
+											<input id="qSiteUser_rows" placeholder="{{ displayName }}" class="" onchange="paramChange(this); " data-var="rows" autocomplete="off="/>
+											<div class="pageSearchVal w3-tiny "></div>
+										</div>
+									</div>
+								</div>
 {{/inline}}
-{{#*inline "htmBodyFiltersSiteUserPage"}}		<!-- #*inline "htmBodyFiltersSiteUserPage" -->
-	<div>
+{{#*inline "htmBodyFiltersSiteUserPage"}}								<!-- #*inline "htmBodyFiltersSiteUserPage" -->
+								<div>
 {{#each varsFq }}
-		<div class="w3-padding ">
-			<label for="fqSiteUser_{{ @key }}">{{ displayName }}<sup class="w3-tiny "> ({{ classSimpleName }})</sup></label>
-			<div class="w3-cell-row ">
-				<div class="w3-cell w3-cell-top ">
-					<button id="buttonFacetSiteUser_{{ @key }}" class="w3-button " onclick="facetFieldChange(this); " title="see values " data-var="{{ var }}" data-clear="{{#if facetField }}true{{else}}false{{/if}}"><i class="fas fa-list "></i></button>
-				</div>
-				<div class="w3-cell w3-cell-top ">
-					<input id="fqSiteUser_{{ @key }}" placeholder="{{ displayName }}" class="w3-input " onchange="fqChange(this); " data-var="{{ var }}" autocomplete="off=" value="{{ val }}"/>
-				</div>
-			</div>
-		</div>
-		<div class="w3-padding w3-tiny ">
-			<div class="pageSearchVal " id="pageSearchVal-fqSiteUser_{{ @key }}">{{#if val }}fq={{ var }}:{{encodeURIComponent val }}{{/if}}</div>
-			<div class="pageSearchVal " id="pageSearchVal-buttonFacetSiteUser_{{ @key }}">{{#if facetField.var }}facet.field={{ facetField.var }}{{/if}}</div>
-		</div>
-		<ol class="pageFacetField " id="pageFacetFieldSiteUser_{{ @key }}">
+									<div class="">
+										<label for="fqSiteUser_{{ @key }}">{{ displayName }}<sup class="w3-tiny "> ({{ classSimpleName }})</sup></label>
+										<div class="w3-cell-row ">
+											<div class="w3-cell w3-cell-top ">
+												<button id="buttonFacetSiteUser_{{ @key }}" class="" onclick="facetFieldChange(this); " title="see values " data-var="{{ var }}" data-clear="{{#if facetField }}true{{else}}false{{/if}}"><i class="fas fa-list "></i></button>
+											</div>
+											<div class="w3-cell w3-cell-top ">
+												<input id="fqSiteUser_{{ @key }}" placeholder="{{ displayName }}" class="" onchange="fqChange(this); " data-var="{{ var }}" autocomplete="off=" value="{{ val }}"/>
+											</div>
+										</div>
+									</div>
+									<div class="w3-tiny ">
+										<div class="pageSearchVal " id="pageSearchVal-fqSiteUser_{{ @key }}">{{#if val }}fq={{ var }}:{{encodeURIComponent val }}{{/if}}</div>
+										<div class="pageSearchVal " id="pageSearchVal-buttonFacetSiteUser_{{ @key }}">{{#if facetField.var }}facet.field={{ facetField.var }}{{/if}}</div>
+										<ol class="pageFacetField w3-small pageFacetFieldSiteUser_{{ @key }} " id="pageFacetFieldSiteUser_{{ @key }}">
 {{#each facetField.counts }}
-			<li class="cursor-pointer " data-class="SiteUser" data-var="{{ ../var }}" data-val="{{ @key }}" onclick="fqReplace(this); ">{{ @key }}: {{ this }}</li>
+											<li class="cursor-pointer " data-class="SiteUser" data-var="{{ ../var }}" data-val="{{ @key }}" onclick="fqReplace(this); ">{{ @key }}: {{ this }}</li>
 {{/each}}
-		</ol>
+										</ol>
+									</div>
 {{/each}}
-	</div>
+								</div>
 {{/inline}}
-{{#*inline "htmBodyRangeSiteUserPage"}}		<!-- #*inline "htmBodyRangeSiteUserPage" -->
-	<table class="w3-padding ">
-		<tr>			<td class="w3-padding w3-tiny " colspan="2">
-				<div class="pageSearchVal " id="pageSearchVal-pageFacetRangeGap-SiteUser">{{#if defaultRangeGap }}facet.range.gap={{encodeURIComponent defaultRangeGap }}{{/if}}</div>
-				<div class="pageSearchVal " id="pageSearchVal-pageFacetRangeStart-SiteUser">{{#if defaultRangeStart }}facet.range.start={{encodeURIComponent defaultRangeStart }}{{/if}}</div>
-				<div class="pageSearchVal " id="pageSearchVal-pageFacetRangeEnd-SiteUser">{{#if defaultRangeEnd }}facet.range.end={{encodeURIComponent defaultRangeEnd }}{{/if}}</div>
-				<div class="pageSearchVal " id="pageSearchVal-pageFacetRangeVar-SiteUser">{{#if defaultRangeVar }}facet.range={!tag=r1}{{encodeURIComponent defaultRangeVar }}{{/if}}</div>
-			</td>
-		</tr>
-	</table>
-	<table class="w3-padding ">
-		<tr class="">
-			<td class="">
-			<span>Range Gap</span>
-			</td>
-			<td class="">
-				<select
- name="facet.range.gap" id="pageFacetRangeGap-SiteUser" onchange="facetRangeChange(this, 'SiteUser'); ">
-					<option value="+1YEAR"{{#eq defaultRangeGap '+1YEAR'}} selected="selected"{{else}}{{/eq}}>Year</option>
-					<option value="+1MONTH"{{#eq defaultRangeGap '+1MONTH'}} selected="selected"{{else}}{{/eq}}>Month</option>
-					<option value="+1WEEK"{{#eq defaultRangeGap '+1WEEK'}} selected="selected"{{else}}{{/eq}}>Week</option>
-					<option value="+1DAY"{{#eq defaultRangeGap '+1DAY'}} selected="selected"{{else}}{{#if defaultRangeGap}}{{else}} selected="selected"{{/if}}{{/eq}}>Day</option>
-					<option value="+1HOUR"{{#eq defaultRangeGap '+1HOUR'}} selected="selected"{{else}}{{/eq}}>Hour</option>
-					<option value="+1MINUTE"{{#eq defaultRangeGap '+1MINUTE'}} selected="selected"{{else}}{{/eq}}>Minute</option>
-					<option value="+1SECOND"{{#eq defaultRangeGap '+1SECOND'}} selected="selected"{{else}}{{/eq}}>Second</option>
-				</select>
-			</td>
-		</tr>
-		<tr class="">
-			<td class="" colspan="2">
-				<span>Range Start</span>
-			</td>
-		</tr>
-		<tr class="">
-			<td class="" colspan="2">
-			<span><input type="datetime-local" name="facetRangeStart" id="pageFacetRangeStart-SiteUser" value="{{formatZonedDateTime defaultRangeStart "yyyy-MM-dd'T'HH:mm" defaultLocaleId defaultZoneId}}" onclick="facetRangeChange(this, 'SiteUser'); "/></span>
-			</td>
-		</tr>
-		<tr class="">
-			<td class="" colspan="2">
-				<span>Range End</span>
-			</td>
-		</tr>
-		<tr class="">
-			<td class="" colspan="2">
-			<span><input type="datetime-local" name="facetRangeEnd" id="pageFacetRangeEnd-SiteUser" value="{{formatZonedDateTime defaultRangeEnd "yyyy-MM-dd'T'HH:mm" defaultLocaleId defaultZoneId}}" onclick="facetRangeChange(this, 'SiteUser'); "/></span>
-			</td>
-		</tr>
-	</table>
-	<table class="w3-padding ">
+{{#*inline "htmBodyRangeSiteUserPage"}}								<!-- #*inline "htmBodyRangeSiteUserPage" -->
+								<table class="w3-padding ">
+									<tr>
+										<td class="w3-padding w3-tiny " colspan="2">
+											<div class="pageSearchVal " id="pageSearchVal-pageFacetRangeGap-SiteUser">{{#if defaultRangeGap }}facet.range.gap={{encodeURIComponent defaultRangeGap }}{{/if}}</div>
+											<div class="pageSearchVal " id="pageSearchVal-pageFacetRangeStart-SiteUser">{{#if defaultRangeStart }}facet.range.start={{encodeURIComponent defaultRangeStart }}{{/if}}</div>
+											<div class="pageSearchVal " id="pageSearchVal-pageFacetRangeEnd-SiteUser">{{#if defaultRangeEnd }}facet.range.end={{encodeURIComponent defaultRangeEnd }}{{/if}}</div>
+											<div class="pageSearchVal " id="pageSearchVal-pageFacetRangeVar-SiteUser">{{#if defaultRangeVar }}facet.range={!tag=r1}{{encodeURIComponent defaultRangeVar }}{{/if}}</div>
+										</td>
+									</tr>
+								</table>
+								<table class="w3-padding ">
+									<tr class="">
+										<td class="">
+											<span>Range Gap</span>
+										</td>
+										<td class="">
+											<select name="facet.range.gap" id="pageFacetRangeGap-SiteUser" onchange="facetRangeChange(this, 'SiteUser'); ">
+												<option value="+1YEAR"{{#eq defaultRangeGap '+1YEAR'}} selected="selected"{{else}}{{/eq}}>Year</option>
+												<option value="+1MONTH"{{#eq defaultRangeGap '+1MONTH'}} selected="selected"{{else}}{{/eq}}>Month</option>
+												<option value="+1WEEK"{{#eq defaultRangeGap '+1WEEK'}} selected="selected"{{else}}{{/eq}}>Week</option>
+												<option value="+1DAY"{{#eq defaultRangeGap '+1DAY'}} selected="selected"{{else}}{{#if defaultRangeGap}}{{else}} selected="selected"{{/if}}{{/eq}}>Day</option>
+												<option value="+1HOUR"{{#eq defaultRangeGap '+1HOUR'}} selected="selected"{{else}}{{/eq}}>Hour</option>
+												<option value="+1MINUTE"{{#eq defaultRangeGap '+1MINUTE'}} selected="selected"{{else}}{{/eq}}>Minute</option>
+												<option value="+1SECOND"{{#eq defaultRangeGap '+1SECOND'}} selected="selected"{{else}}{{/eq}}>Second</option>
+											</select>
+										</td>
+									</tr>
+									<tr class="">
+										<td class="" colspan="2">
+											<span>Range Start</span>
+										</td>
+									</tr>
+									<tr class="">
+										<td class="" colspan="2">
+											<span><input type="datetime-local" name="facetRangeStart" id="pageFacetRangeStart-SiteUser" value="{{formatZonedDateTime defaultRangeStart "yyyy-MM-dd'T'HH:mm" defaultLocaleId defaultZoneId}}" onclick="facetRangeChange(this, 'SiteUser'); "/></span>
+										</td>
+									</tr>
+									<tr class="">
+										<td class="" colspan="2">
+											<span>Range End</span>
+										</td>
+									</tr>
+									<tr class="">
+										<td class="" colspan="2">
+											<span><input type="datetime-local" name="facetRangeEnd" id="pageFacetRangeEnd-SiteUser" value="{{formatZonedDateTime defaultRangeEnd "yyyy-MM-dd'T'HH:mm" defaultLocaleId defaultZoneId}}" onclick="facetRangeChange(this, 'SiteUser'); "/></span>
+										</td>
+									</tr>
+								</table>
+								<table class="w3-padding ">
 {{#each varsRange }}
-		<tr class="">
-			<td class="">
-				<span><input type="radio" name="pageFacetRange" class="pageFacetRange " id="pageFacetRangeSiteUser_{{ @key }}" value="{{ var }}"{{#eq defaultRangeVar var }} checked="checked"{{/eq}} onclick="facetRangeChange(this, 'SiteUser'); "/></span>
-			</td>
-			<td class="">
-			<label for="pageFacetRangeSiteUser_{{ @key }}">{{ displayName }}</label>
-			</td>
-		</tr>
+									<tr class="">
+										<td class="">
+											<span><input type="radio" name="pageFacetRange" class="pageFacetRange " id="pageFacetRangeSiteUser_{{ @key }}" value="{{ var }}"{{#eq defaultRangeVar var }} checked="checked"{{/eq}} onclick="facetRangeChange(this, 'SiteUser'); "/></span>
+										</td>
+										<td class="">
+											<label for="pageFacetRangeSiteUser_{{ @key }}">{{ displayName }}</label>
+										</td>
+									</tr>
 {{/each}}
-	</table>
-{{#*inline "htmBodyPivotSiteUserPage"}}		<!-- #*inline "htmBodyPivotSiteUserPage" -->
-		<div class="w3-padding w3-tiny " id="pageSearchVal-pivotSiteUser">
-{{#if defaultPivotVars }}
-			<div class="pageSearchVal " id="pageSearchVal-pivotSiteUser">facet.pivot={{#each defaultPivotVars }}{{#if @index }},{{/if}}{{ this }}{{/each}}</div>
-{{/if}}
-		</div>
-		<div style="display: none; " class="w3-padding w3-tiny " id="pageSearchVal-hiddenSiteUser">
-{{#each defaultPivotVars }}
-			<div class="pageSearchVal pageSearchVal-hiddenSiteUser " id="pageSearchVal-hiddenSiteUser_{{ this }}">{{ this }}</div>
-{{/each}}
-		</div>
-	<table class="w3-table ">
-{{#each varsFq }}
-		<tr class="">
-			<td class="">
-				<span><input type="checkbox" name="pageFacetPivot" class="pageFacetPivot " id="pageFacetPivotSiteUser_{{ @key }}" value="{{ var }}"{{#if pivot }} checked="checked"{{/if}} onclick="facetPivotChange(this, 'SiteUser'); "/></span>
-			</td>
-			<td class="w3-cell ">
-			<label for="pageFacetPivotSiteUser_{{ @key }}">{{ displayName }}</label>
-			</td>
-		</tr>
-{{/each}}
-	</table>
+								</table>
 {{/inline}}
+{{#*inline "htmBodyPivotSiteUserPage"}}								<!-- #*inline "htmBodyPivotSiteUserPage" -->
+								<div style="display: none; " class="w3-padding w3-tiny " id="pageSearchVal-PivotSiteUserHidden">
+{{#each defaultPivotVars }}
+									<div class="pageSearchVal-PivotSiteUserHidden " id="pageSearchVal-PivotSiteUserHidden_{{ this }}">{{ this }}</div>
+{{/each}}
+								</div>
+								<div class="w3-padding w3-tiny " id="pageSearchVal-PivotSiteUser">
+{{#if defaultPivotVars }}
+									<div class="pageSearchVal pageSearchVal-PivotSiteUser " id="pageSearchVal-PivotSiteUser_1">facet.pivot={{#each defaultPivotVars }}{{#if @index }},{{/if}}{{ this }}{{/each}}</div>
+{{/if}}
+								</div>
+								<table class="w3-table ">
+{{#each varsFq }}
+									<tr class="">
+										<td class="">
+											<span><input type="checkbox" name="pageFacetPivot" class="pageFacetPivot " id="pageFacetPivotSiteUser_{{ @key }}" value="{{ var }}"{{#if pivot }} checked="checked"{{/if}} onclick="facetPivotChange(this, 'SiteUser'); "/></span>
+										</td>
+										<td class="w3-cell ">
+											<label for="pageFacetPivotSiteUser_{{ @key }}">{{ displayName }}</label>
+										</td>
+									</tr>
+{{/each}}
+								</table>
+{{/inline}}
+{{#*inline "htmBodyFieldListSiteUserPage"}}								<!-- #*inline "htmBodyFieldListSiteUserPage" -->
+								<div style="display: none; " class="w3-padding w3-tiny " id="pageSearchVal-FieldListSiteUserHidden">
+{{#each defaultFieldListVars }}
+									<div class="pageSearchVal-FieldListSiteUserHidden " id="pageSearchVal-FieldListSiteUserHidden_{{ this }}">{{ this }}</div>
+{{/each}}
+								</div>
+								<div class="w3-padding w3-tiny " id="pageSearchVal-FieldListSiteUser">
+{{#if defaultFieldListVars }}
+									<div class="pageSearchVal pageSearchVal-FieldListSiteUser " id="pageSearchVal-FieldListSiteUser_1">fl={{#each defaultFieldListVars }}{{#if @index }},{{/if}}{{ this }}{{/each}}</div>
+{{/if}}
+								</div>
+								<table class="w3-table ">
+{{#each varsFq }}
+									<tr class="">
+										<td class="">
+											<span><input type="checkbox" name="pageFieldList" class="pageFieldList " id="pageFieldListSiteUser_{{ @key }}" value="{{ var }}"{{#if fieldList }} checked="checked"{{/if}} onclick="facetFieldListChange(this, 'SiteUser'); "/></span>
+										</td>
+										<td class="w3-cell ">
+											<label for="pageFieldListSiteUser_{{ @key }}">{{ displayName }}</label>
+										</td>
+									</tr>
+{{/each}}
+								</table>
+{{/inline}}
+{{#*inline "htmBodyStatsSiteUserPage"}}								<!-- #*inline "htmBodyStatsSiteUserPage" -->
+								<div style="display: none; " class="w3-padding w3-tiny " id="pageSearchVal-StatsSiteUserHidden">
+{{#each defaultStatsVars }}
+									<div class="pageSearchVal-StatsSiteUserHidden " id="pageSearchVal-StatsSiteUserHidden_{{ this }}">{{ this }}</div>
+{{/each}}
+								</div>
+								<div class="w3-padding w3-tiny " id="pageSearchVal-StatsSiteUser">
+{{#if defaultStatsVars }}
+{{#each defaultStatsVars }}									<div class="pageSearchVal pageSearchVal-StatsSiteUser_{{ this }} " id="pageSearchVal-StatsSiteUser_{{ this }}">stats.field={{ this }}</div>
+{{/each}}{{/if}}
+								</div>
+								<table class="w3-table ">
+{{#each varsFq }}
+{{#if enableStats }}
+									<tr class="">
+										<td class="">
+											<span><input type="checkbox" name="pageStats" class="pageStats " id="pageStatsSiteUser_{{ @key }}" value="{{ var }}"{{#if ./stats }} checked="checked"{{/if}} onclick="facetStatsChange(this, 'SiteUser'); "/></span>
+										</td>
+										<td class="w3-cell ">
+											<div>
+												<label for="pageStatsSiteUser_{{ @key }}">{{ displayName }}</label>
+											</div>
+											<div class="pageStatsField w3-small pageStatsFieldSiteUser_{{ @key }} " id="pageStatsFieldSiteUser_{{ @key }}">
+{{#if ./stats }}
+{{#each ./stats }}
+{{#eq @key 'name' }}{{else}}
+												<div data-class="SiteUser" data-var="{{ ../var }}" data-val="{{ @key }}">{{ @key }}: {{ this }}</div>
+{{/eq}}
+{{/each}}
+{{/if}}
+											</div>
+										</td>
+									</tr>
+{{/if}}
+{{/each}}
+								</table>
 {{/inline}}
 {{#*inline "htmBodyMenuSiteUserPage"}}		<!-- #*inline "htmBodyMenuSiteUserPage" -->
 {{> "htmBodyMenuBaseModelPage"}}{{/inline}}
@@ -312,19 +401,6 @@
 							<div class="w3-cell-row ">
 {{> "htmSeeArchived" classApiMethodMethod="PATCH"}}
 {{> "htmSeeDeleted" classApiMethodMethod="PATCH"}}
-{{> "htmSiteDomainName" classApiMethodMethod="PATCH"}}
-							</div>
-							<div class="w3-cell-row ">
-{{> "htmZookeeperVersion" classApiMethodMethod="PATCH"}}
-{{> "htmZookeeperPortClient" classApiMethodMethod="PATCH"}}
-							</div>
-							<div class="w3-cell-row ">
-{{> "htmSolrVersion" classApiMethodMethod="PATCH"}}
-{{> "htmSolrPortClient" classApiMethodMethod="PATCH"}}
-							</div>
-							<div class="w3-cell-row ">
-{{> "htmSolrConfigset" classApiMethodMethod="PATCH"}}
-{{> "htmSolrCollection" classApiMethodMethod="PATCH"}}
 							</div>
 						<button
 							class="w3-btn w3-round w3-border w3-border-black w3-ripple w3-padding w3-margin w3-gray "
@@ -364,19 +440,6 @@
 							<div class="w3-cell-row ">
 {{> "htmSeeArchived" classApiMethodMethod="POST"}}
 {{> "htmSeeDeleted" classApiMethodMethod="POST"}}
-{{> "htmSiteDomainName" classApiMethodMethod="POST"}}
-							</div>
-							<div class="w3-cell-row ">
-{{> "htmZookeeperVersion" classApiMethodMethod="POST"}}
-{{> "htmZookeeperPortClient" classApiMethodMethod="POST"}}
-							</div>
-							<div class="w3-cell-row ">
-{{> "htmSolrVersion" classApiMethodMethod="POST"}}
-{{> "htmSolrPortClient" classApiMethodMethod="POST"}}
-							</div>
-							<div class="w3-cell-row ">
-{{> "htmSolrConfigset" classApiMethodMethod="POST"}}
-{{> "htmSolrCollection" classApiMethodMethod="POST"}}
 							</div>
 						</div>
 						<button
@@ -448,49 +511,73 @@
 			</div>
 		</div>
 {{/inline}}
-{{#*inline "htmBodySidebar"}}
-	<div class="w3-dropdown-hover w3-bar-block min-width-300px ">
-		<div class="min-width-300px ">
-			<span title="Search" class="w3-button w3-xlarge w3-gray " onclick="$('.siteSidebarToggleFilters').hide(); $('.siteSidebarToggleRange').hide(); $('.siteSidebarTogglePivot').hide(); $('.siteSidebarToggleSearch').toggle(); "><i class="fad fa-magnifying-glass "></i></span>
-			<span title="Filters" class="w3-button w3-xlarge w3-gray " onclick="$('.siteSidebarToggleSearch').hide(); $('.siteSidebarToggleRange').hide(); $('.siteSidebarTogglePivot').hide(); $('.siteSidebarToggleFilters').toggle(); "><i class="fad fa-filters "></i></span>
-			<span title="Range" class="w3-button w3-xlarge w3-gray " onclick="$('.siteSidebarToggleSearch').hide(); $('.siteSidebarToggleFilters').hide(); $('.siteSidebarTogglePivot').hide(); $('.siteSidebarToggleRange').toggle(); "><i class="fad fa-calendar-range "></i></span>
-			<span title="Pivot" class="w3-button w3-xlarge w3-gray " onclick="$('.siteSidebarToggleSearch').hide(); $('.siteSidebarToggleFilters').hide(); $('.siteSidebarToggleRange').hide(); $('.siteSidebarTogglePivot').toggle(); "><i class="fad fa-table-pivot "></i></span>
-		</div>
-		<div class="w3-dropdown-content min-width-300px w3-white w3-border ">
-			<div  class="siteSidebarToggle siteSidebarToggleSearch" style="display: none; ">
-				<div class="w3-bar w3-gray ">
-					<span class="w3-bar-item w3-padding ">Search</span>
-				</div>
-				<div class="w3-bar-block ">
+{{#*inline "htmBodySidebarSiteUserPage"}}
+				<div class="w3-dropdown-hover w3-bar-block min-width-300px ">
+					<div class="min-width-300px w3-gray ">
+						<span title="Search" class="siteSidebarToggle w3-xlarge " onclick="$('.siteSidebarToggleStats').hide(); $('.siteSidebarToggleFieldList').hide(); $('.siteSidebarToggleFilters').hide(); $('.siteSidebarToggleRange').hide(); $('.siteSidebarTogglePivot').hide(); $('.siteSidebarToggleSearch').toggle(); "><i class="fad fa-magnifying-glass hover-box-shadow "></i></span>
+						<span title="Filters" class="siteSidebarToggle w3-xlarge " onclick="$('.siteSidebarToggleStats').hide(); $('.siteSidebarToggleFieldList').hide(); $('.siteSidebarToggleSearch').hide(); $('.siteSidebarToggleRange').hide(); $('.siteSidebarTogglePivot').hide(); $('.siteSidebarToggleFilters').toggle(); "><i class="fad fa-filters hover-box-shadow "></i></span>
+						<span title="Range" class="siteSidebarToggle w3-xlarge " onclick="$('.siteSidebarToggleStats').hide(); $('.siteSidebarToggleFieldList').hide(); $('.siteSidebarToggleSearch').hide(); $('.siteSidebarToggleFilters').hide(); $('.siteSidebarTogglePivot').hide(); $('.siteSidebarToggleRange').toggle(); "><i class="fad fa-calendar-range hover-box-shadow "></i></span>
+						<span title="Pivot" class="siteSidebarToggle w3-xlarge " onclick="$('.siteSidebarToggleStats').hide(); $('.siteSidebarToggleFieldList').hide(); $('.siteSidebarToggleSearch').hide(); $('.siteSidebarToggleFilters').hide(); $('.siteSidebarToggleRange').hide(); $('.siteSidebarTogglePivot').toggle(); "><i class="fad fa-table-pivot hover-box-shadow "></i></span>
+						<span title="FieldList" class="siteSidebarToggle w3-xlarge " onclick="$('.siteSidebarToggleStats').hide(); $('.siteSidebarTogglePivot').hide(); $('.siteSidebarToggleSearch').hide(); $('.siteSidebarToggleFilters').hide(); $('.siteSidebarToggleRange').hide(); $('.siteSidebarToggleFieldList').toggle(); "><i class="fad fa-list-ul hover-box-shadow "></i></span>
+						<span title="Stats" class="siteSidebarToggle w3-xlarge " onclick="$('.siteSidebarToggleFieldList').hide(); $('.siteSidebarTogglePivot').hide(); $('.siteSidebarToggleSearch').hide(); $('.siteSidebarToggleFilters').hide(); $('.siteSidebarToggleRange').hide(); $('.siteSidebarToggleStats').toggle(); "><i class="fad fa-chart-candlestick hover-box-shadow "></i></span>
+					</div>
+					<div class="w3-dropdown-content min-width-300px w3-white w3-border w3-border-gray ">
+						<div class="siteSidebarToggle siteSidebarToggleSearch" style="display: none; ">
+							<div class="w3-bar w3-gray ">
+								<span class="w3-bar-item ">
+								<i class="fad fa-magnifying-glass "></i> Search</span>
+							</div>
+							<div class="w3-bar-block ">
 {{#block "htmBodySearch"}}{{/block}}
-				</div>
-			</div>
-			<div  class="siteSidebarToggle siteSidebarToggleFilters" style="display: none; ">
-				<div class="w3-bar w3-gray ">
-					<span class="w3-bar-item w3-padding ">Filters</span>
-				</div>
-				<div class="w3-bar-block ">
+							</div>
+						</div>
+						<div  class="siteSidebarToggle siteSidebarToggleFilters" style="display: none; ">
+							<div class="w3-bar w3-gray ">
+								<span class="w3-bar-item ">
+								<i class="fad fa-filters "></i> Filters</span>
+							</div>
+							<div class="w3-bar-block ">
 {{#block "htmBodyFilters"}}{{/block}}
-				</div>
-			</div>
-			<div  class="siteSidebarToggle siteSidebarToggleRange" style="display: none; ">
-				<div class="w3-bar w3-gray ">
-					<span class="w3-bar-item w3-padding ">Range</span>
-				</div>
-				<div class="w3-bar-block ">
+							</div>
+						</div>
+						<div  class="siteSidebarToggle siteSidebarToggleRange" style="display: none; ">
+							<div class="w3-bar w3-gray ">
+								<span class="w3-bar-item ">
+								<i class="fad fa-calendar-range "></i> Range</span>
+							</div>
+							<div class="w3-bar-block ">
 {{#block "htmBodyRange"}}{{/block}}
-				</div>
-			</div>
-			<div  class="siteSidebarToggle siteSidebarTogglePivot" style="display: none; ">
-				<div class="w3-bar w3-gray ">
-					<span class="w3-bar-item w3-padding ">Pivot</span>
-				</div>
-				<div class="w3-bar-block ">
+							</div>
+						</div>
+						<div  class="siteSidebarToggle siteSidebarTogglePivot" style="display: none; ">
+							<div class="w3-bar w3-gray ">
+								<span class="w3-bar-item ">
+								<i class="fad fa-table-pivot "></i> Pivot</span>
+							</div>
+							<div class="w3-bar-block ">
 {{#block "htmBodyPivot"}}{{/block}}
+							</div>
+						</div>
+						<div  class="siteSidebarToggle siteSidebarToggleFieldList" style="display: none; ">
+							<div class="w3-bar w3-gray ">
+								<span class="w3-bar-item ">
+								<i class="fad fa-list-ul "></i> Field List</span>
+							</div>
+							<div class="w3-bar-block ">
+{{#block "htmBodyFieldList"}}{{/block}}
+							</div>
+						</div>
+						<div  class="siteSidebarToggle siteSidebarToggleStats" style="display: none; ">
+							<div class="w3-bar w3-gray ">
+								<span class="w3-bar-item ">
+								<i class="fad fa-chart-candlestick "></i> Stats</span>
+							</div>
+							<div class="w3-bar-block ">
+{{#block "htmBodyStats"}}{{/block}}
+							</div>
+						</div>
+					</div>
 				</div>
-			</div>
-		</div>
-	</div>
 {{/inline}}
 {{#*inline "htmBodyStartSiteUserPage"}}
 {{> "htmBodyStartBaseModelPage"}}
@@ -1151,426 +1238,5 @@
 
 													{{else}}
 															<span class="varSiteUser{{pk}}SeeDeleted ">{{siteUser_.seeDeleted}}</span>
-		{{/ifContainsAnyRoles}}
-{{/inline}}
-
-{{#*inline "htmSiteDomainName"}}
-								<div class="w3-cell w3-cell-top w3-center w3-mobile ">
-									<div class="w3-padding ">
-										<div id="suggest{{classApiMethodMethod}}SiteUserSiteDomainName">
-											<div class="w3-card ">
-												<div class="w3-cell-row w3-padding ">
-													<div class="w3-cell ">
-														{{> "inputSiteDomainName"}}
-													</div>
-	{{#ifContainsAnyRoles roles rolesRequired}}
-		{{#eq 'Page' classApiMethodMethod}}
-															<div class="w3-cell w3-left-align w3-cell-top ">
-																<button
-																		tabindex="-1"
-																		class="w3-btn w3-round w3-border w3-border-black w3-ripple w3-padding w3-bar-item w3-gray "
-																		onclick="removeGlow($('#{{classApiMethodMethod}}_siteDomainName')); $('#{{classApiMethodMethod}}_siteDomainName').val(null); patch{{classSimpleName}}Val([{ name: 'softCommit', value: 'true' }, { name: 'fq', value: 'pk:' + $('#SiteUserForm :input[name=pk]').val() }], 'setSiteDomainName', null, function() { addGlow($('#{{classApiMethodMethod}}_siteDomainName')); }, function() { addError($('#{{classApiMethodMethod}}_siteDomainName')); }); "
-																		>
-																	<i class="far fa-eraser "></i>
-																</button>
-															</div>
-														{{/eq}}
-	{{/ifContainsAnyRoles}}
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-{{/inline}}
-
-{{#*inline "inputSiteDomainName"}}
-		{{#ifContainsAnyRoles roles rolesRequired}}
-														<input
-															type="text"
-															title="A domain name is your website name. A domain name is the address where Internet users can access your website. "
-															id="{{classApiMethodMethod}}_siteDomainName"
-	{{#eq "Page" classApiMethodMethod}}
-																class="setSiteDomainName classSiteUser inputSiteUser{{pk}}SiteDomainName w3-input w3-border "
-																name="setSiteDomainName"
-	{{else}}
-		{{#eq "PATCH" classApiMethodMethod}}
-																class="setSiteDomainName classSiteUser inputSiteUser{{pk}}SiteDomainName w3-input w3-border "
-																name="setSiteDomainName"
-		{{else}}
-																class="valueSiteDomainName w3-input w3-border classSiteUser inputSiteUser{{pk}}SiteDomainName w3-input w3-border "
-																name="siteDomainName"
-		{{/eq}}
-	{{/eq}}
-	{{#eq "Page" classApiMethodMethod}}
-																onclick="removeGlow($(this)); "
-																onchange="patch{{classSimpleName}}Val([{ name: 'softCommit', value: 'true' }, { name: 'fq', value: 'pk:{{pk}}' }], 'setSiteDomainName', $(this).val(), function() { addGlow($('#{{classApiMethodMethod}}_siteDomainName')); }, function() { addError($('#{{classApiMethodMethod}}_siteDomainName')); }); "
-	{{/eq}}
-	{{#eq "Page" classApiMethodMethod}}
-															value="{{siteUser_.siteDomainName}}"
-	{{/eq}}
-														/>
-
-													{{else}}
-															<span class="varSiteUser{{pk}}SiteDomainName ">{{siteUser_.siteDomainName}}</span>
-		{{/ifContainsAnyRoles}}
-{{/inline}}
-
-{{#*inline "htmZookeeperVersion"}}
-								<div class="w3-cell w3-cell-top w3-center w3-mobile ">
-									<div class="w3-padding ">
-										<div id="suggest{{classApiMethodMethod}}SiteUserZookeeperVersion">
-											<div class="w3-card ">
-												<div class="w3-cell-row w3-padding ">
-													<div class="w3-cell ">
-														{{> "inputZookeeperVersion"}}
-													</div>
-	{{#ifContainsAnyRoles roles rolesRequired}}
-		{{#eq 'Page' classApiMethodMethod}}
-															<div class="w3-cell w3-left-align w3-cell-top ">
-																<button
-																		tabindex="-1"
-																		class="w3-btn w3-round w3-border w3-border-black w3-ripple w3-padding w3-bar-item w3-gray "
-																		onclick="removeGlow($('#{{classApiMethodMethod}}_zookeeperVersion')); $('#{{classApiMethodMethod}}_zookeeperVersion').val(null); patch{{classSimpleName}}Val([{ name: 'softCommit', value: 'true' }, { name: 'fq', value: 'pk:' + $('#SiteUserForm :input[name=pk]').val() }], 'setZookeeperVersion', null, function() { addGlow($('#{{classApiMethodMethod}}_zookeeperVersion')); }, function() { addError($('#{{classApiMethodMethod}}_zookeeperVersion')); }); "
-																		>
-																	<i class="far fa-eraser "></i>
-																</button>
-															</div>
-														{{/eq}}
-	{{/ifContainsAnyRoles}}
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-{{/inline}}
-
-{{#*inline "inputZookeeperVersion"}}
-		{{#ifContainsAnyRoles roles rolesRequired}}
-														<input
-															type="text"
-															id="{{classApiMethodMethod}}_zookeeperVersion"
-	{{#eq "Page" classApiMethodMethod}}
-																class="setZookeeperVersion classSiteUser inputSiteUser{{pk}}ZookeeperVersion w3-input w3-border "
-																name="setZookeeperVersion"
-	{{else}}
-		{{#eq "PATCH" classApiMethodMethod}}
-																class="setZookeeperVersion classSiteUser inputSiteUser{{pk}}ZookeeperVersion w3-input w3-border "
-																name="setZookeeperVersion"
-		{{else}}
-																class="valueZookeeperVersion w3-input w3-border classSiteUser inputSiteUser{{pk}}ZookeeperVersion w3-input w3-border "
-																name="zookeeperVersion"
-		{{/eq}}
-	{{/eq}}
-	{{#eq "Page" classApiMethodMethod}}
-																onclick="removeGlow($(this)); "
-																onchange="patch{{classSimpleName}}Val([{ name: 'softCommit', value: 'true' }, { name: 'fq', value: 'pk:{{pk}}' }], 'setZookeeperVersion', $(this).val(), function() { addGlow($('#{{classApiMethodMethod}}_zookeeperVersion')); }, function() { addError($('#{{classApiMethodMethod}}_zookeeperVersion')); }); "
-	{{/eq}}
-	{{#eq "Page" classApiMethodMethod}}
-															value="{{siteUser_.zookeeperVersion}}"
-	{{/eq}}
-														/>
-
-													{{else}}
-															<span class="varSiteUser{{pk}}ZookeeperVersion ">{{siteUser_.zookeeperVersion}}</span>
-		{{/ifContainsAnyRoles}}
-{{/inline}}
-
-{{#*inline "htmZookeeperPortClient"}}
-								<div class="w3-cell w3-cell-top w3-center w3-mobile ">
-									<div class="w3-padding ">
-										<div id="suggest{{classApiMethodMethod}}SiteUserZookeeperPortClient">
-											<div class="w3-card ">
-												<div class="w3-cell-row w3-padding ">
-													<div class="w3-cell ">
-														{{> "inputZookeeperPortClient"}}
-													</div>
-	{{#ifContainsAnyRoles roles rolesRequired}}
-		{{#eq 'Page' classApiMethodMethod}}
-															<div class="w3-cell w3-left-align w3-cell-top ">
-																<button
-																		tabindex="-1"
-																		class="w3-btn w3-round w3-border w3-border-black w3-ripple w3-padding w3-bar-item w3-gray "
-																		onclick="removeGlow($('#{{classApiMethodMethod}}_zookeeperPortClient')); $('#{{classApiMethodMethod}}_zookeeperPortClient').val(null); patch{{classSimpleName}}Val([{ name: 'softCommit', value: 'true' }, { name: 'fq', value: 'pk:' + $('#SiteUserForm :input[name=pk]').val() }], 'setZookeeperPortClient', null, function() { addGlow($('#{{classApiMethodMethod}}_zookeeperPortClient')); }, function() { addError($('#{{classApiMethodMethod}}_zookeeperPortClient')); }); "
-																		>
-																	<i class="far fa-eraser "></i>
-																</button>
-															</div>
-														{{/eq}}
-	{{/ifContainsAnyRoles}}
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-{{/inline}}
-
-{{#*inline "inputZookeeperPortClient"}}
-		{{#ifContainsAnyRoles roles rolesRequired}}
-														<input
-															type="text"
-															id="{{classApiMethodMethod}}_zookeeperPortClient"
-	{{#eq "Page" classApiMethodMethod}}
-																class="setZookeeperPortClient classSiteUser inputSiteUser{{pk}}ZookeeperPortClient w3-input w3-border "
-																name="setZookeeperPortClient"
-	{{else}}
-		{{#eq "PATCH" classApiMethodMethod}}
-																class="setZookeeperPortClient classSiteUser inputSiteUser{{pk}}ZookeeperPortClient w3-input w3-border "
-																name="setZookeeperPortClient"
-		{{else}}
-																class="valueZookeeperPortClient w3-input w3-border classSiteUser inputSiteUser{{pk}}ZookeeperPortClient w3-input w3-border "
-																name="zookeeperPortClient"
-		{{/eq}}
-	{{/eq}}
-	{{#eq "Page" classApiMethodMethod}}
-																onclick="removeGlow($(this)); "
-																onchange="patch{{classSimpleName}}Val([{ name: 'softCommit', value: 'true' }, { name: 'fq', value: 'pk:{{pk}}' }], 'setZookeeperPortClient', $(this).val(), function() { addGlow($('#{{classApiMethodMethod}}_zookeeperPortClient')); }, function() { addError($('#{{classApiMethodMethod}}_zookeeperPortClient')); }); "
-	{{/eq}}
-	{{#eq "Page" classApiMethodMethod}}
-															value="{{siteUser_.zookeeperPortClient}}"
-	{{/eq}}
-														/>
-
-													{{else}}
-															<span class="varSiteUser{{pk}}ZookeeperPortClient ">{{siteUser_.zookeeperPortClient}}</span>
-		{{/ifContainsAnyRoles}}
-{{/inline}}
-
-{{#*inline "htmSolrVersion"}}
-								<div class="w3-cell w3-cell-top w3-center w3-mobile ">
-									<div class="w3-padding ">
-										<div id="suggest{{classApiMethodMethod}}SiteUserSolrVersion">
-											<div class="w3-card ">
-												<div class="w3-cell-row w3-padding ">
-													<div class="w3-cell ">
-														{{> "inputSolrVersion"}}
-													</div>
-	{{#ifContainsAnyRoles roles rolesRequired}}
-		{{#eq 'Page' classApiMethodMethod}}
-															<div class="w3-cell w3-left-align w3-cell-top ">
-																<button
-																		tabindex="-1"
-																		class="w3-btn w3-round w3-border w3-border-black w3-ripple w3-padding w3-bar-item w3-gray "
-																		onclick="removeGlow($('#{{classApiMethodMethod}}_solrVersion')); $('#{{classApiMethodMethod}}_solrVersion').val(null); patch{{classSimpleName}}Val([{ name: 'softCommit', value: 'true' }, { name: 'fq', value: 'pk:' + $('#SiteUserForm :input[name=pk]').val() }], 'setSolrVersion', null, function() { addGlow($('#{{classApiMethodMethod}}_solrVersion')); }, function() { addError($('#{{classApiMethodMethod}}_solrVersion')); }); "
-																		>
-																	<i class="far fa-eraser "></i>
-																</button>
-															</div>
-														{{/eq}}
-	{{/ifContainsAnyRoles}}
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-{{/inline}}
-
-{{#*inline "inputSolrVersion"}}
-		{{#ifContainsAnyRoles roles rolesRequired}}
-														<input
-															type="text"
-															id="{{classApiMethodMethod}}_solrVersion"
-	{{#eq "Page" classApiMethodMethod}}
-																class="setSolrVersion classSiteUser inputSiteUser{{pk}}SolrVersion w3-input w3-border "
-																name="setSolrVersion"
-	{{else}}
-		{{#eq "PATCH" classApiMethodMethod}}
-																class="setSolrVersion classSiteUser inputSiteUser{{pk}}SolrVersion w3-input w3-border "
-																name="setSolrVersion"
-		{{else}}
-																class="valueSolrVersion w3-input w3-border classSiteUser inputSiteUser{{pk}}SolrVersion w3-input w3-border "
-																name="solrVersion"
-		{{/eq}}
-	{{/eq}}
-	{{#eq "Page" classApiMethodMethod}}
-																onclick="removeGlow($(this)); "
-																onchange="patch{{classSimpleName}}Val([{ name: 'softCommit', value: 'true' }, { name: 'fq', value: 'pk:{{pk}}' }], 'setSolrVersion', $(this).val(), function() { addGlow($('#{{classApiMethodMethod}}_solrVersion')); }, function() { addError($('#{{classApiMethodMethod}}_solrVersion')); }); "
-	{{/eq}}
-	{{#eq "Page" classApiMethodMethod}}
-															value="{{siteUser_.solrVersion}}"
-	{{/eq}}
-														/>
-
-													{{else}}
-															<span class="varSiteUser{{pk}}SolrVersion ">{{siteUser_.solrVersion}}</span>
-		{{/ifContainsAnyRoles}}
-{{/inline}}
-
-{{#*inline "htmSolrPortClient"}}
-								<div class="w3-cell w3-cell-top w3-center w3-mobile ">
-									<div class="w3-padding ">
-										<div id="suggest{{classApiMethodMethod}}SiteUserSolrPortClient">
-											<div class="w3-card ">
-												<div class="w3-cell-row w3-padding ">
-													<div class="w3-cell ">
-														{{> "inputSolrPortClient"}}
-													</div>
-	{{#ifContainsAnyRoles roles rolesRequired}}
-		{{#eq 'Page' classApiMethodMethod}}
-															<div class="w3-cell w3-left-align w3-cell-top ">
-																<button
-																		tabindex="-1"
-																		class="w3-btn w3-round w3-border w3-border-black w3-ripple w3-padding w3-bar-item w3-gray "
-																		onclick="removeGlow($('#{{classApiMethodMethod}}_solrPortClient')); $('#{{classApiMethodMethod}}_solrPortClient').val(null); patch{{classSimpleName}}Val([{ name: 'softCommit', value: 'true' }, { name: 'fq', value: 'pk:' + $('#SiteUserForm :input[name=pk]').val() }], 'setSolrPortClient', null, function() { addGlow($('#{{classApiMethodMethod}}_solrPortClient')); }, function() { addError($('#{{classApiMethodMethod}}_solrPortClient')); }); "
-																		>
-																	<i class="far fa-eraser "></i>
-																</button>
-															</div>
-														{{/eq}}
-	{{/ifContainsAnyRoles}}
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-{{/inline}}
-
-{{#*inline "inputSolrPortClient"}}
-		{{#ifContainsAnyRoles roles rolesRequired}}
-														<input
-															type="text"
-															id="{{classApiMethodMethod}}_solrPortClient"
-	{{#eq "Page" classApiMethodMethod}}
-																class="setSolrPortClient classSiteUser inputSiteUser{{pk}}SolrPortClient w3-input w3-border "
-																name="setSolrPortClient"
-	{{else}}
-		{{#eq "PATCH" classApiMethodMethod}}
-																class="setSolrPortClient classSiteUser inputSiteUser{{pk}}SolrPortClient w3-input w3-border "
-																name="setSolrPortClient"
-		{{else}}
-																class="valueSolrPortClient w3-input w3-border classSiteUser inputSiteUser{{pk}}SolrPortClient w3-input w3-border "
-																name="solrPortClient"
-		{{/eq}}
-	{{/eq}}
-	{{#eq "Page" classApiMethodMethod}}
-																onclick="removeGlow($(this)); "
-																onchange="patch{{classSimpleName}}Val([{ name: 'softCommit', value: 'true' }, { name: 'fq', value: 'pk:{{pk}}' }], 'setSolrPortClient', $(this).val(), function() { addGlow($('#{{classApiMethodMethod}}_solrPortClient')); }, function() { addError($('#{{classApiMethodMethod}}_solrPortClient')); }); "
-	{{/eq}}
-	{{#eq "Page" classApiMethodMethod}}
-															value="{{siteUser_.solrPortClient}}"
-	{{/eq}}
-														/>
-
-													{{else}}
-															<span class="varSiteUser{{pk}}SolrPortClient ">{{siteUser_.solrPortClient}}</span>
-		{{/ifContainsAnyRoles}}
-{{/inline}}
-
-{{#*inline "htmSolrConfigset"}}
-								<div class="w3-cell w3-cell-top w3-center w3-mobile ">
-									<div class="w3-padding ">
-										<div id="suggest{{classApiMethodMethod}}SiteUserSolrConfigset">
-											<div class="w3-card ">
-												<div class="w3-cell-row w3-padding ">
-													<div class="w3-cell ">
-														{{> "inputSolrConfigset"}}
-													</div>
-	{{#ifContainsAnyRoles roles rolesRequired}}
-		{{#eq 'Page' classApiMethodMethod}}
-															<div class="w3-cell w3-left-align w3-cell-top ">
-																<button
-																		tabindex="-1"
-																		class="w3-btn w3-round w3-border w3-border-black w3-ripple w3-padding w3-bar-item w3-gray "
-																		onclick="removeGlow($('#{{classApiMethodMethod}}_solrConfigset')); $('#{{classApiMethodMethod}}_solrConfigset').val(null); patch{{classSimpleName}}Val([{ name: 'softCommit', value: 'true' }, { name: 'fq', value: 'pk:' + $('#SiteUserForm :input[name=pk]').val() }], 'setSolrConfigset', null, function() { addGlow($('#{{classApiMethodMethod}}_solrConfigset')); }, function() { addError($('#{{classApiMethodMethod}}_solrConfigset')); }); "
-																		>
-																	<i class="far fa-eraser "></i>
-																</button>
-															</div>
-														{{/eq}}
-	{{/ifContainsAnyRoles}}
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-{{/inline}}
-
-{{#*inline "inputSolrConfigset"}}
-		{{#ifContainsAnyRoles roles rolesRequired}}
-														<input
-															type="text"
-															id="{{classApiMethodMethod}}_solrConfigset"
-	{{#eq "Page" classApiMethodMethod}}
-																class="setSolrConfigset classSiteUser inputSiteUser{{pk}}SolrConfigset w3-input w3-border "
-																name="setSolrConfigset"
-	{{else}}
-		{{#eq "PATCH" classApiMethodMethod}}
-																class="setSolrConfigset classSiteUser inputSiteUser{{pk}}SolrConfigset w3-input w3-border "
-																name="setSolrConfigset"
-		{{else}}
-																class="valueSolrConfigset w3-input w3-border classSiteUser inputSiteUser{{pk}}SolrConfigset w3-input w3-border "
-																name="solrConfigset"
-		{{/eq}}
-	{{/eq}}
-	{{#eq "Page" classApiMethodMethod}}
-																onclick="removeGlow($(this)); "
-																onchange="patch{{classSimpleName}}Val([{ name: 'softCommit', value: 'true' }, { name: 'fq', value: 'pk:{{pk}}' }], 'setSolrConfigset', $(this).val(), function() { addGlow($('#{{classApiMethodMethod}}_solrConfigset')); }, function() { addError($('#{{classApiMethodMethod}}_solrConfigset')); }); "
-	{{/eq}}
-	{{#eq "Page" classApiMethodMethod}}
-															value="{{siteUser_.solrConfigset}}"
-	{{/eq}}
-														/>
-
-													{{else}}
-															<span class="varSiteUser{{pk}}SolrConfigset ">{{siteUser_.solrConfigset}}</span>
-		{{/ifContainsAnyRoles}}
-{{/inline}}
-
-{{#*inline "htmSolrCollection"}}
-								<div class="w3-cell w3-cell-top w3-center w3-mobile ">
-									<div class="w3-padding ">
-										<div id="suggest{{classApiMethodMethod}}SiteUserSolrCollection">
-											<div class="w3-card ">
-												<div class="w3-cell-row w3-padding ">
-													<div class="w3-cell ">
-														{{> "inputSolrCollection"}}
-													</div>
-	{{#ifContainsAnyRoles roles rolesRequired}}
-		{{#eq 'Page' classApiMethodMethod}}
-															<div class="w3-cell w3-left-align w3-cell-top ">
-																<button
-																		tabindex="-1"
-																		class="w3-btn w3-round w3-border w3-border-black w3-ripple w3-padding w3-bar-item w3-gray "
-																		onclick="removeGlow($('#{{classApiMethodMethod}}_solrCollection')); $('#{{classApiMethodMethod}}_solrCollection').val(null); patch{{classSimpleName}}Val([{ name: 'softCommit', value: 'true' }, { name: 'fq', value: 'pk:' + $('#SiteUserForm :input[name=pk]').val() }], 'setSolrCollection', null, function() { addGlow($('#{{classApiMethodMethod}}_solrCollection')); }, function() { addError($('#{{classApiMethodMethod}}_solrCollection')); }); "
-																		>
-																	<i class="far fa-eraser "></i>
-																</button>
-															</div>
-														{{/eq}}
-	{{/ifContainsAnyRoles}}
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-{{/inline}}
-
-{{#*inline "inputSolrCollection"}}
-		{{#ifContainsAnyRoles roles rolesRequired}}
-														<input
-															type="text"
-															id="{{classApiMethodMethod}}_solrCollection"
-	{{#eq "Page" classApiMethodMethod}}
-																class="setSolrCollection classSiteUser inputSiteUser{{pk}}SolrCollection w3-input w3-border "
-																name="setSolrCollection"
-	{{else}}
-		{{#eq "PATCH" classApiMethodMethod}}
-																class="setSolrCollection classSiteUser inputSiteUser{{pk}}SolrCollection w3-input w3-border "
-																name="setSolrCollection"
-		{{else}}
-																class="valueSolrCollection w3-input w3-border classSiteUser inputSiteUser{{pk}}SolrCollection w3-input w3-border "
-																name="solrCollection"
-		{{/eq}}
-	{{/eq}}
-	{{#eq "Page" classApiMethodMethod}}
-																onclick="removeGlow($(this)); "
-																onchange="patch{{classSimpleName}}Val([{ name: 'softCommit', value: 'true' }, { name: 'fq', value: 'pk:{{pk}}' }], 'setSolrCollection', $(this).val(), function() { addGlow($('#{{classApiMethodMethod}}_solrCollection')); }, function() { addError($('#{{classApiMethodMethod}}_solrCollection')); }); "
-	{{/eq}}
-	{{#eq "Page" classApiMethodMethod}}
-															value="{{siteUser_.solrCollection}}"
-	{{/eq}}
-														/>
-
-													{{else}}
-															<span class="varSiteUser{{pk}}SolrCollection ">{{siteUser_.solrCollection}}</span>
 		{{/ifContainsAnyRoles}}
 {{/inline}}

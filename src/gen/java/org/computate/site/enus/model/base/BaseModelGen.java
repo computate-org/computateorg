@@ -40,6 +40,7 @@ import java.time.ZonedDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.time.format.DateTimeFormatter;
 import java.time.Instant;
@@ -66,7 +67,7 @@ import org.computate.search.response.solr.SolrResponse;
 public abstract class BaseModelGen<DEV> extends Object {
 	protected static final Logger LOG = LoggerFactory.getLogger(BaseModel.class);
 
-
+	public static final String BaseModel_Description_enUS = "A reusable base class for all database model classes";
 
 
 	//////////////////
@@ -258,10 +259,12 @@ public abstract class BaseModelGen<DEV> extends Object {
 	public static ZonedDateTime staticSetCreated(SiteRequestEnUS siteRequest_, String o) {
 		if(StringUtils.endsWith(o, "]"))
 			return o == null ? null : ZonedDateTime.parse(o, ComputateZonedDateTimeSerializer.ZONED_DATE_TIME_FORMATTER);
-		if(StringUtils.endsWith(o, "Z"))
+		else if(StringUtils.endsWith(o, "Z"))
 			return o == null ? null : Instant.parse(o).atZone(ZoneId.of(siteRequest_.getConfig().getString(ConfigKeys.SITE_ZONE))).truncatedTo(ChronoUnit.MILLIS);
-		else
+		else if(StringUtils.contains(o, "T"))
 			return o == null ? null : ZonedDateTime.parse(o, DateTimeFormatter.ISO_DATE_TIME).truncatedTo(ChronoUnit.MILLIS);
+		else
+			return o == null ? null : LocalDate.parse(o, DateTimeFormatter.ISO_DATE).atStartOfDay(ZoneId.of(siteRequest_.getConfig().getString(ConfigKeys.SITE_ZONE))).truncatedTo(ChronoUnit.MILLIS);
 	}
 	@JsonIgnore
 	public void setCreated(Date o) {
@@ -333,10 +336,12 @@ public abstract class BaseModelGen<DEV> extends Object {
 	public static ZonedDateTime staticSetModified(SiteRequestEnUS siteRequest_, String o) {
 		if(StringUtils.endsWith(o, "]"))
 			return o == null ? null : ZonedDateTime.parse(o, ComputateZonedDateTimeSerializer.ZONED_DATE_TIME_FORMATTER);
-		if(StringUtils.endsWith(o, "Z"))
+		else if(StringUtils.endsWith(o, "Z"))
 			return o == null ? null : Instant.parse(o).atZone(ZoneId.of(siteRequest_.getConfig().getString(ConfigKeys.SITE_ZONE))).truncatedTo(ChronoUnit.MILLIS);
-		else
+		else if(StringUtils.contains(o, "T"))
 			return o == null ? null : ZonedDateTime.parse(o, DateTimeFormatter.ISO_DATE_TIME).truncatedTo(ChronoUnit.MILLIS);
+		else
+			return o == null ? null : LocalDate.parse(o, DateTimeFormatter.ISO_DATE).atStartOfDay(ZoneId.of(siteRequest_.getConfig().getString(ConfigKeys.SITE_ZONE))).truncatedTo(ChronoUnit.MILLIS);
 	}
 	@JsonIgnore
 	public void setModified(Date o) {
@@ -1805,7 +1810,6 @@ public abstract class BaseModelGen<DEV> extends Object {
 		}
 		if(objectText != null) {
 			doc.put("objectText_text_enUS", objectText.toString());
-			doc.put("objectText_docvalues_string", objectText);
 		}
 		if(pageUrlId != null) {
 			doc.put("pageUrlId_docvalues_string", pageUrlId);
@@ -1851,8 +1855,6 @@ public abstract class BaseModelGen<DEV> extends Object {
 				return "objectTitle_docvalues_string";
 			case "objectId":
 				return "objectId_docvalues_string";
-			case "objectText":
-				return "objectText_docvalues_string";
 			case "pageUrlId":
 				return "pageUrlId_docvalues_string";
 			case "pageUrlPk":
@@ -1911,6 +1913,53 @@ public abstract class BaseModelGen<DEV> extends Object {
 		}
 	}
 
+	public static String searchVarBaseModel(String searchVar) {
+		switch(searchVar) {
+			case "pk_docvalues_long":
+				return "pk";
+			case "inheritPk_docvalues_string":
+				return "inheritPk";
+			case "created_docvalues_date":
+				return "created";
+			case "modified_docvalues_date":
+				return "modified";
+			case "archived_docvalues_boolean":
+				return "archived";
+			case "deleted_docvalues_boolean":
+				return "deleted";
+			case "classCanonicalName_docvalues_string":
+				return "classCanonicalName";
+			case "classSimpleName_docvalues_string":
+				return "classSimpleName";
+			case "classCanonicalNames_docvalues_strings":
+				return "classCanonicalNames";
+			case "sessionId_docvalues_string":
+				return "sessionId";
+			case "userKey_docvalues_long":
+				return "userKey";
+			case "saves_docvalues_strings":
+				return "saves";
+			case "objectTitle_docvalues_string":
+				return "objectTitle";
+			case "objectId_docvalues_string":
+				return "objectId";
+			case "objectSuggest_suggested":
+				return "objectSuggest";
+			case "objectText_text_enUS":
+				return "objectText";
+			case "pageUrlId_docvalues_string":
+				return "pageUrlId";
+			case "pageUrlPk_docvalues_string":
+				return "pageUrlPk";
+			case "pageUrlApi_docvalues_string":
+				return "pageUrlApi";
+			case "id":
+				return "id";
+			default:
+				return null;
+		}
+	}
+
 	public static String varSearchBaseModel(String entityVar) {
 		switch(entityVar) {
 			case "objectText":
@@ -1959,9 +2008,8 @@ public abstract class BaseModelGen<DEV> extends Object {
 		});
 		oBaseModel.setObjectTitle(Optional.ofNullable(doc.get("objectTitle_docvalues_string")).map(v -> v.toString()).orElse(null));
 		oBaseModel.setObjectId(Optional.ofNullable(doc.get("objectId_docvalues_string")).map(v -> v.toString()).orElse(null));
-		String objectSuggest = (String)doc.get("objectSuggest_suggested");
-		oBaseModel.setObjectSuggest(objectSuggest);
-		oBaseModel.setObjectText(Optional.ofNullable(doc.get("objectText_docvalues_string")).map(v -> v.toString()).orElse(null));
+		oBaseModel.setObjectSuggest(Optional.ofNullable(doc.get("objectSuggest_suggested")).map(v -> v.toString()).orElse(null));
+		oBaseModel.setObjectText(Optional.ofNullable(doc.get("objectText_indexedstored_string")).map(v -> v.toString()).orElse(null));
 		oBaseModel.setPageUrlId(Optional.ofNullable(doc.get("pageUrlId_docvalues_string")).map(v -> v.toString()).orElse(null));
 		oBaseModel.setPageUrlPk(Optional.ofNullable(doc.get("pageUrlPk_docvalues_string")).map(v -> v.toString()).orElse(null));
 		oBaseModel.setPageUrlApi(Optional.ofNullable(doc.get("pageUrlApi_docvalues_string")).map(v -> v.toString()).orElse(null));
@@ -2088,15 +2136,7 @@ public abstract class BaseModelGen<DEV> extends Object {
 	}
 	public static List<String> varsFqBaseModel(List<String> vars) {
 		vars.add(VAR_pk);
-		vars.add(VAR_inheritPk);
 		vars.add(VAR_created);
-		vars.add(VAR_modified);
-		vars.add(VAR_objectTitle);
-		vars.add(VAR_objectId);
-		vars.add(VAR_pageUrlId);
-		vars.add(VAR_pageUrlPk);
-		vars.add(VAR_pageUrlApi);
-		vars.add(VAR_id);
 		return vars;
 	}
 
@@ -2106,7 +2146,6 @@ public abstract class BaseModelGen<DEV> extends Object {
 	public static List<String> varsRangeBaseModel(List<String> vars) {
 		vars.add(VAR_pk);
 		vars.add(VAR_created);
-		vars.add(VAR_modified);
 		return vars;
 	}
 

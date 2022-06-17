@@ -73,20 +73,20 @@ Here is an example of creating a vault directory and creating a new vault, it wi
 Be sure to not commit your vault to source control, it should be ignored by default in the .gitignore file that is created in the project. 
 
 ```bash
-install -d ~/.local/src/computate.org/vault
-ansible-vault create ~/.local/src/computate.org/vault/$USER-local
+install -d ~/.local/src/computate.org-ansible/vault
+ansible-vault create ~/.local/src/computate.org-ansible/vault/$USER-local
 ```
 
 You can edit the vault, it will ask for the password. 
 
 ```bash
-ansible-vault edit ~/.local/src/computate.org/vault/$USER-local
+ansible-vault edit ~/.local/src/computate.org-ansible/vault/$USER-local
 ```
 
 You can then run the project install automation again with the secrets in the vault, it will ask for the password. 
 
 ```bash
-ansible-playbook ~/.ansible/roles/computate.computate_project/install.yml -e SITE_NAME=computate.org -e ENABLE_CODE_GENERATION_SERVICE=true -e @~/.local/src/computate.org/vault/$USER-local --vault-id @prompt
+ansible-playbook ~/.ansible/roles/computate.computate_project/install.yml -e SITE_NAME=computate.org -e ENABLE_CODE_GENERATION_SERVICE=true -e @~/.local/src/computate.org-ansible/vault/$USER-local --vault-id @prompt
 ```
 
 # Configure Red Hat CodeReady Studio
@@ -127,6 +127,11 @@ Add these update sites and install these useful plugins:
 - http://www.genuitec.com/updates/devstyle/ci/
     - Choose "DevStyle Features" for themes
 
+### YAML Editor
+
+- http://www.genuitec.com/updates/devstyle/ci/
+    - Choose "DevStyle Features" for themes
+
 ## Import the computate.org project into CodeReady Studio
 
 * In CodeReady Studio, go to File -> Import...
@@ -135,11 +140,29 @@ Add these update sites and install these useful plugins:
 * Browse to the directory: ~/.local/src/computate.org
 * Click [ Finish ]
 
+## Setup a CodeReady Studio Debug/Run configuration to generate the OpenAPI 3 spec and the SQL create and drop scripts in computate.org
+
+* In CodeReady Studio, go to File -> Debug Configurations...
+* Right click on Java Application -> New Configuration
+* Name: computate.org-OpenAPIGenerator
+* Project: computate.org
+* Main class: org.computate.site.enus.vertx.MainVerticle
+
+### In the Environment tab
+
+Setup the following variables to setup the Vert.x verticle. 
+
+* CONFIG_PATH: ~/.local/src/computate.org/config/computate.org.yml
+* RUN_OPENAPI3_GENERATOR: true
+* RUN_SQL_GENERATOR: true
+
+Click [ Apply ] and [ Debug ] to debug the generation of the OpenAPI Spec src/main/resources/webroot and the SQL create and drop scripts in src/main/resources/sql. 
+
 ## Setup a CodeReady Studio Debug/Run configuration to run and debug computate.org
 
 * In CodeReady Studio, go to File -> Debug Configurations...
 * Right click on Java Application -> New Configuration
-* Name: computate.org MainVerticle
+* Name: computate.org
 * Project: computate.org
 * Main class: org.computate.site.enus.vertx.MainVerticle
 

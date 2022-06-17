@@ -37,9 +37,6 @@ import java.lang.Long;
 import java.lang.String;
 import io.vertx.core.json.JsonArray;
 import java.lang.Boolean;
-import java.lang.Integer;
-import org.computate.vertx.search.list.SearchList;
-import org.computate.site.enus.article.Article;
 import org.computate.search.wrap.Wrap;
 import io.vertx.core.Promise;
 import io.vertx.core.Future;
@@ -59,9 +56,7 @@ import org.computate.search.response.solr.SolrResponse;
 public abstract class SiteUserGen<DEV> extends BaseModel {
 	protected static final Logger LOG = LoggerFactory.getLogger(SiteUser.class);
 
-	public static final String PUTImport_frFR_Uri = "null-import";
-	public static final String PUTImport_frFR_ImageUri = "/pngnull-import-999.png";
-
+	public static final String SiteUser_Description_enUS = "A user record for each site user";
 	public static final String SiteUser_AName_enUS = "a site user";
 	public static final String SiteUser_This_enUS = "this ";
 	public static final String SiteUser_ThisName_enUS = "this site user";
@@ -611,492 +606,6 @@ public abstract class SiteUserGen<DEV> extends BaseModel {
 		return seeDeleted;
 	}
 
-	////////////////////
-	// siteDomainName //
-	////////////////////
-
-	/**	 The entity siteDomainName
-	 *	 is defined as null before being initialized. 
-	 */
-	@JsonProperty
-	@JsonInclude(Include.NON_NULL)
-	protected String siteDomainName;
-
-	/**	<br> The entity siteDomainName
-	 *  is defined as null before being initialized. 
-	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.model.user.SiteUser&fq=entiteVar_enUS_indexed_string:siteDomainName">Find the entity siteDomainName in Solr</a>
-	 * <br>
-	 * @param c is for wrapping a value to assign to this entity during initialization. 
-	 **/
-	protected abstract void _siteDomainName(Wrap<String> c);
-
-	public String getSiteDomainName() {
-		return siteDomainName;
-	}
-	public void setSiteDomainName(String o) {
-		this.siteDomainName = SiteUser.staticSetSiteDomainName(siteRequest_, o);
-	}
-	public static String staticSetSiteDomainName(SiteRequestEnUS siteRequest_, String o) {
-		return o;
-	}
-	protected SiteUser siteDomainNameInit() {
-		Wrap<String> siteDomainNameWrap = new Wrap<String>().var("siteDomainName");
-		if(siteDomainName == null) {
-			_siteDomainName(siteDomainNameWrap);
-			setSiteDomainName(siteDomainNameWrap.o);
-		}
-		return (SiteUser)this;
-	}
-
-	public static String staticSearchSiteDomainName(SiteRequestEnUS siteRequest_, String o) {
-		return o;
-	}
-
-	public static String staticSearchStrSiteDomainName(SiteRequestEnUS siteRequest_, String o) {
-		return o == null ? null : o.toString();
-	}
-
-	public static String staticSearchFqSiteDomainName(SiteRequestEnUS siteRequest_, String o) {
-		return SiteUser.staticSearchStrSiteDomainName(siteRequest_, SiteUser.staticSearchSiteDomainName(siteRequest_, SiteUser.staticSetSiteDomainName(siteRequest_, o)));
-	}
-
-	public String sqlSiteDomainName() {
-		return siteDomainName;
-	}
-
-	//////////////////////
-	// zookeeperVersion //
-	//////////////////////
-
-	/**	 The entity zookeeperVersion
-	 *	 is defined as null before being initialized. 
-	 */
-	@JsonProperty
-	@JsonInclude(Include.NON_NULL)
-	protected String zookeeperVersion;
-
-	/**	<br> The entity zookeeperVersion
-	 *  is defined as null before being initialized. 
-	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.model.user.SiteUser&fq=entiteVar_enUS_indexed_string:zookeeperVersion">Find the entity zookeeperVersion in Solr</a>
-	 * <br>
-	 * @param c is for wrapping a value to assign to this entity during initialization. 
-	 **/
-	protected abstract void _zookeeperVersion(Wrap<String> c);
-
-	public String getZookeeperVersion() {
-		return zookeeperVersion;
-	}
-	public void setZookeeperVersion(String o) {
-		this.zookeeperVersion = SiteUser.staticSetZookeeperVersion(siteRequest_, o);
-	}
-	public static String staticSetZookeeperVersion(SiteRequestEnUS siteRequest_, String o) {
-		return o;
-	}
-	protected SiteUser zookeeperVersionInit() {
-		Wrap<String> zookeeperVersionWrap = new Wrap<String>().var("zookeeperVersion");
-		if(zookeeperVersion == null) {
-			_zookeeperVersion(zookeeperVersionWrap);
-			setZookeeperVersion(zookeeperVersionWrap.o);
-		}
-		return (SiteUser)this;
-	}
-
-	public static String staticSearchZookeeperVersion(SiteRequestEnUS siteRequest_, String o) {
-		return o;
-	}
-
-	public static String staticSearchStrZookeeperVersion(SiteRequestEnUS siteRequest_, String o) {
-		return o == null ? null : o.toString();
-	}
-
-	public static String staticSearchFqZookeeperVersion(SiteRequestEnUS siteRequest_, String o) {
-		return SiteUser.staticSearchStrZookeeperVersion(siteRequest_, SiteUser.staticSearchZookeeperVersion(siteRequest_, SiteUser.staticSetZookeeperVersion(siteRequest_, o)));
-	}
-
-	public String sqlZookeeperVersion() {
-		return zookeeperVersion;
-	}
-
-	/////////////////////////
-	// zookeeperPortClient //
-	/////////////////////////
-
-	/**	 The entity zookeeperPortClient
-	 *	 is defined as null before being initialized. 
-	 */
-	@JsonProperty
-	@JsonSerialize(using = ToStringSerializer.class)
-	@JsonInclude(Include.NON_NULL)
-	protected Integer zookeeperPortClient;
-
-	/**	<br> The entity zookeeperPortClient
-	 *  is defined as null before being initialized. 
-	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.model.user.SiteUser&fq=entiteVar_enUS_indexed_string:zookeeperPortClient">Find the entity zookeeperPortClient in Solr</a>
-	 * <br>
-	 * @param c is for wrapping a value to assign to this entity during initialization. 
-	 **/
-	protected abstract void _zookeeperPortClient(Wrap<Integer> c);
-
-	public Integer getZookeeperPortClient() {
-		return zookeeperPortClient;
-	}
-
-	public void setZookeeperPortClient(Integer zookeeperPortClient) {
-		this.zookeeperPortClient = zookeeperPortClient;
-	}
-	@JsonIgnore
-	public void setZookeeperPortClient(String o) {
-		this.zookeeperPortClient = SiteUser.staticSetZookeeperPortClient(siteRequest_, o);
-	}
-	public static Integer staticSetZookeeperPortClient(SiteRequestEnUS siteRequest_, String o) {
-		if(NumberUtils.isParsable(o))
-			return Integer.parseInt(o);
-		return null;
-	}
-	protected SiteUser zookeeperPortClientInit() {
-		Wrap<Integer> zookeeperPortClientWrap = new Wrap<Integer>().var("zookeeperPortClient");
-		if(zookeeperPortClient == null) {
-			_zookeeperPortClient(zookeeperPortClientWrap);
-			setZookeeperPortClient(zookeeperPortClientWrap.o);
-		}
-		return (SiteUser)this;
-	}
-
-	public static Integer staticSearchZookeeperPortClient(SiteRequestEnUS siteRequest_, Integer o) {
-		return o;
-	}
-
-	public static String staticSearchStrZookeeperPortClient(SiteRequestEnUS siteRequest_, Integer o) {
-		return o == null ? null : o.toString();
-	}
-
-	public static String staticSearchFqZookeeperPortClient(SiteRequestEnUS siteRequest_, String o) {
-		return SiteUser.staticSearchStrZookeeperPortClient(siteRequest_, SiteUser.staticSearchZookeeperPortClient(siteRequest_, SiteUser.staticSetZookeeperPortClient(siteRequest_, o)));
-	}
-
-	public Integer sqlZookeeperPortClient() {
-		return zookeeperPortClient;
-	}
-
-	/////////////////
-	// solrVersion //
-	/////////////////
-
-	/**	 The entity solrVersion
-	 *	 is defined as null before being initialized. 
-	 */
-	@JsonProperty
-	@JsonInclude(Include.NON_NULL)
-	protected String solrVersion;
-
-	/**	<br> The entity solrVersion
-	 *  is defined as null before being initialized. 
-	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.model.user.SiteUser&fq=entiteVar_enUS_indexed_string:solrVersion">Find the entity solrVersion in Solr</a>
-	 * <br>
-	 * @param c is for wrapping a value to assign to this entity during initialization. 
-	 **/
-	protected abstract void _solrVersion(Wrap<String> c);
-
-	public String getSolrVersion() {
-		return solrVersion;
-	}
-	public void setSolrVersion(String o) {
-		this.solrVersion = SiteUser.staticSetSolrVersion(siteRequest_, o);
-	}
-	public static String staticSetSolrVersion(SiteRequestEnUS siteRequest_, String o) {
-		return o;
-	}
-	protected SiteUser solrVersionInit() {
-		Wrap<String> solrVersionWrap = new Wrap<String>().var("solrVersion");
-		if(solrVersion == null) {
-			_solrVersion(solrVersionWrap);
-			setSolrVersion(solrVersionWrap.o);
-		}
-		return (SiteUser)this;
-	}
-
-	public static String staticSearchSolrVersion(SiteRequestEnUS siteRequest_, String o) {
-		return o;
-	}
-
-	public static String staticSearchStrSolrVersion(SiteRequestEnUS siteRequest_, String o) {
-		return o == null ? null : o.toString();
-	}
-
-	public static String staticSearchFqSolrVersion(SiteRequestEnUS siteRequest_, String o) {
-		return SiteUser.staticSearchStrSolrVersion(siteRequest_, SiteUser.staticSearchSolrVersion(siteRequest_, SiteUser.staticSetSolrVersion(siteRequest_, o)));
-	}
-
-	public String sqlSolrVersion() {
-		return solrVersion;
-	}
-
-	////////////////////
-	// solrPortClient //
-	////////////////////
-
-	/**	 The entity solrPortClient
-	 *	 is defined as null before being initialized. 
-	 */
-	@JsonProperty
-	@JsonSerialize(using = ToStringSerializer.class)
-	@JsonInclude(Include.NON_NULL)
-	protected Integer solrPortClient;
-
-	/**	<br> The entity solrPortClient
-	 *  is defined as null before being initialized. 
-	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.model.user.SiteUser&fq=entiteVar_enUS_indexed_string:solrPortClient">Find the entity solrPortClient in Solr</a>
-	 * <br>
-	 * @param c is for wrapping a value to assign to this entity during initialization. 
-	 **/
-	protected abstract void _solrPortClient(Wrap<Integer> c);
-
-	public Integer getSolrPortClient() {
-		return solrPortClient;
-	}
-
-	public void setSolrPortClient(Integer solrPortClient) {
-		this.solrPortClient = solrPortClient;
-	}
-	@JsonIgnore
-	public void setSolrPortClient(String o) {
-		this.solrPortClient = SiteUser.staticSetSolrPortClient(siteRequest_, o);
-	}
-	public static Integer staticSetSolrPortClient(SiteRequestEnUS siteRequest_, String o) {
-		if(NumberUtils.isParsable(o))
-			return Integer.parseInt(o);
-		return null;
-	}
-	protected SiteUser solrPortClientInit() {
-		Wrap<Integer> solrPortClientWrap = new Wrap<Integer>().var("solrPortClient");
-		if(solrPortClient == null) {
-			_solrPortClient(solrPortClientWrap);
-			setSolrPortClient(solrPortClientWrap.o);
-		}
-		return (SiteUser)this;
-	}
-
-	public static Integer staticSearchSolrPortClient(SiteRequestEnUS siteRequest_, Integer o) {
-		return o;
-	}
-
-	public static String staticSearchStrSolrPortClient(SiteRequestEnUS siteRequest_, Integer o) {
-		return o == null ? null : o.toString();
-	}
-
-	public static String staticSearchFqSolrPortClient(SiteRequestEnUS siteRequest_, String o) {
-		return SiteUser.staticSearchStrSolrPortClient(siteRequest_, SiteUser.staticSearchSolrPortClient(siteRequest_, SiteUser.staticSetSolrPortClient(siteRequest_, o)));
-	}
-
-	public Integer sqlSolrPortClient() {
-		return solrPortClient;
-	}
-
-	///////////////////
-	// solrConfigset //
-	///////////////////
-
-	/**	 The entity solrConfigset
-	 *	 is defined as null before being initialized. 
-	 */
-	@JsonProperty
-	@JsonInclude(Include.NON_NULL)
-	protected String solrConfigset;
-
-	/**	<br> The entity solrConfigset
-	 *  is defined as null before being initialized. 
-	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.model.user.SiteUser&fq=entiteVar_enUS_indexed_string:solrConfigset">Find the entity solrConfigset in Solr</a>
-	 * <br>
-	 * @param c is for wrapping a value to assign to this entity during initialization. 
-	 **/
-	protected abstract void _solrConfigset(Wrap<String> c);
-
-	public String getSolrConfigset() {
-		return solrConfigset;
-	}
-	public void setSolrConfigset(String o) {
-		this.solrConfigset = SiteUser.staticSetSolrConfigset(siteRequest_, o);
-	}
-	public static String staticSetSolrConfigset(SiteRequestEnUS siteRequest_, String o) {
-		return o;
-	}
-	protected SiteUser solrConfigsetInit() {
-		Wrap<String> solrConfigsetWrap = new Wrap<String>().var("solrConfigset");
-		if(solrConfigset == null) {
-			_solrConfigset(solrConfigsetWrap);
-			setSolrConfigset(solrConfigsetWrap.o);
-		}
-		return (SiteUser)this;
-	}
-
-	public static String staticSearchSolrConfigset(SiteRequestEnUS siteRequest_, String o) {
-		return o;
-	}
-
-	public static String staticSearchStrSolrConfigset(SiteRequestEnUS siteRequest_, String o) {
-		return o == null ? null : o.toString();
-	}
-
-	public static String staticSearchFqSolrConfigset(SiteRequestEnUS siteRequest_, String o) {
-		return SiteUser.staticSearchStrSolrConfigset(siteRequest_, SiteUser.staticSearchSolrConfigset(siteRequest_, SiteUser.staticSetSolrConfigset(siteRequest_, o)));
-	}
-
-	public String sqlSolrConfigset() {
-		return solrConfigset;
-	}
-
-	////////////////////
-	// solrCollection //
-	////////////////////
-
-	/**	 The entity solrCollection
-	 *	 is defined as null before being initialized. 
-	 */
-	@JsonProperty
-	@JsonInclude(Include.NON_NULL)
-	protected String solrCollection;
-
-	/**	<br> The entity solrCollection
-	 *  is defined as null before being initialized. 
-	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.model.user.SiteUser&fq=entiteVar_enUS_indexed_string:solrCollection">Find the entity solrCollection in Solr</a>
-	 * <br>
-	 * @param c is for wrapping a value to assign to this entity during initialization. 
-	 **/
-	protected abstract void _solrCollection(Wrap<String> c);
-
-	public String getSolrCollection() {
-		return solrCollection;
-	}
-	public void setSolrCollection(String o) {
-		this.solrCollection = SiteUser.staticSetSolrCollection(siteRequest_, o);
-	}
-	public static String staticSetSolrCollection(SiteRequestEnUS siteRequest_, String o) {
-		return o;
-	}
-	protected SiteUser solrCollectionInit() {
-		Wrap<String> solrCollectionWrap = new Wrap<String>().var("solrCollection");
-		if(solrCollection == null) {
-			_solrCollection(solrCollectionWrap);
-			setSolrCollection(solrCollectionWrap.o);
-		}
-		return (SiteUser)this;
-	}
-
-	public static String staticSearchSolrCollection(SiteRequestEnUS siteRequest_, String o) {
-		return o;
-	}
-
-	public static String staticSearchStrSolrCollection(SiteRequestEnUS siteRequest_, String o) {
-		return o == null ? null : o.toString();
-	}
-
-	public static String staticSearchFqSolrCollection(SiteRequestEnUS siteRequest_, String o) {
-		return SiteUser.staticSearchStrSolrCollection(siteRequest_, SiteUser.staticSearchSolrCollection(siteRequest_, SiteUser.staticSetSolrCollection(siteRequest_, o)));
-	}
-
-	public String sqlSolrCollection() {
-		return solrCollection;
-	}
-
-	/////////////////////
-	// statiqueUrlBase //
-	/////////////////////
-
-	/**	 The entity statiqueUrlBase
-	 *	 is defined as null before being initialized. 
-	 */
-	@JsonProperty
-	@JsonInclude(Include.NON_NULL)
-	protected String statiqueUrlBase;
-
-	/**	<br> The entity statiqueUrlBase
-	 *  is defined as null before being initialized. 
-	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.model.user.SiteUser&fq=entiteVar_enUS_indexed_string:statiqueUrlBase">Find the entity statiqueUrlBase in Solr</a>
-	 * <br>
-	 * @param c is for wrapping a value to assign to this entity during initialization. 
-	 **/
-	protected abstract void _statiqueUrlBase(Wrap<String> c);
-
-	public String getStatiqueUrlBase() {
-		return statiqueUrlBase;
-	}
-	public void setStatiqueUrlBase(String o) {
-		this.statiqueUrlBase = SiteUser.staticSetStatiqueUrlBase(siteRequest_, o);
-	}
-	public static String staticSetStatiqueUrlBase(SiteRequestEnUS siteRequest_, String o) {
-		return o;
-	}
-	protected SiteUser statiqueUrlBaseInit() {
-		Wrap<String> statiqueUrlBaseWrap = new Wrap<String>().var("statiqueUrlBase");
-		if(statiqueUrlBase == null) {
-			_statiqueUrlBase(statiqueUrlBaseWrap);
-			setStatiqueUrlBase(statiqueUrlBaseWrap.o);
-		}
-		return (SiteUser)this;
-	}
-
-	public static String staticSearchStatiqueUrlBase(SiteRequestEnUS siteRequest_, String o) {
-		return o;
-	}
-
-	public static String staticSearchStrStatiqueUrlBase(SiteRequestEnUS siteRequest_, String o) {
-		return o == null ? null : o.toString();
-	}
-
-	public static String staticSearchFqStatiqueUrlBase(SiteRequestEnUS siteRequest_, String o) {
-		return SiteUser.staticSearchStrStatiqueUrlBase(siteRequest_, SiteUser.staticSearchStatiqueUrlBase(siteRequest_, SiteUser.staticSetStatiqueUrlBase(siteRequest_, o)));
-	}
-
-	///////////////////
-	// searchArticle //
-	///////////////////
-
-	/**	 The entity searchArticle
-	 *	 is defined as null before being initialized. 
-	 */
-	@JsonProperty
-	@JsonInclude(Include.NON_NULL)
-	protected SearchList<Article> searchArticle;
-
-	/**	<br> The entity searchArticle
-	 *  is defined as null before being initialized. 
-	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.model.user.SiteUser&fq=entiteVar_enUS_indexed_string:searchArticle">Find the entity searchArticle in Solr</a>
-	 * <br>
-	 * @param promise is for wrapping a value to assign to this entity during initialization. 
-	 **/
-	protected abstract void _searchArticle(Promise<SearchList<Article>> promise);
-
-	public SearchList<Article> getSearchArticle() {
-		return searchArticle;
-	}
-
-	public void setSearchArticle(SearchList<Article> searchArticle) {
-		this.searchArticle = searchArticle;
-	}
-	public static SearchList<Article> staticSetSearchArticle(SiteRequestEnUS siteRequest_, String o) {
-		return null;
-	}
-	protected Future<SearchList<Article>> searchArticlePromise() {
-		Promise<SearchList<Article>> promise = Promise.promise();
-		Promise<SearchList<Article>> promise2 = Promise.promise();
-		_searchArticle(promise2);
-		promise2.future().onSuccess(o -> {
-			if(o != null && searchArticle == null) {
-				o.promiseDeepForClass(siteRequest_).onSuccess(a -> {
-					setSearchArticle(o);
-					promise.complete(o);
-				}).onFailure(ex -> {
-					promise.fail(ex);
-				});
-			} else {
-				promise.complete(o);
-			}
-		}).onFailure(ex -> {
-			promise.fail(ex);
-		});
-		return promise.future();
-	}
-
 	//////////////
 	// initDeep //
 	//////////////
@@ -1135,30 +644,6 @@ public abstract class SiteUserGen<DEV> extends BaseModel {
 				userFullNameInit();
 				seeArchivedInit();
 				seeDeletedInit();
-				siteDomainNameInit();
-				zookeeperVersionInit();
-				zookeeperPortClientInit();
-				solrVersionInit();
-				solrPortClientInit();
-				solrConfigsetInit();
-				solrCollectionInit();
-				statiqueUrlBaseInit();
-				promise2.complete();
-			} catch(Exception ex) {
-				promise2.fail(ex);
-			}
-			return promise2.future();
-		}).compose(a -> {
-			Promise<Void> promise2 = Promise.promise();
-			searchArticlePromise().onSuccess(searchArticle -> {
-				promise2.complete();
-			}).onFailure(ex -> {
-				promise2.fail(ex);
-			});
-			return promise2.future();
-		}).compose(a -> {
-			Promise<Void> promise2 = Promise.promise();
-			try {
 				promise2.complete();
 			} catch(Exception ex) {
 				promise2.fail(ex);
@@ -1182,8 +667,6 @@ public abstract class SiteUserGen<DEV> extends BaseModel {
 
 	public void siteRequestSiteUser(SiteRequestEnUS siteRequest_) {
 			super.siteRequestBaseModel(siteRequest_);
-		if(searchArticle != null)
-			searchArticle.setSiteRequest_(siteRequest_);
 	}
 
 	public void siteRequestForClass(SiteRequestEnUS siteRequest_) {
@@ -1232,24 +715,6 @@ public abstract class SiteUserGen<DEV> extends BaseModel {
 				return oSiteUser.seeArchived;
 			case "seeDeleted":
 				return oSiteUser.seeDeleted;
-			case "siteDomainName":
-				return oSiteUser.siteDomainName;
-			case "zookeeperVersion":
-				return oSiteUser.zookeeperVersion;
-			case "zookeeperPortClient":
-				return oSiteUser.zookeeperPortClient;
-			case "solrVersion":
-				return oSiteUser.solrVersion;
-			case "solrPortClient":
-				return oSiteUser.solrPortClient;
-			case "solrConfigset":
-				return oSiteUser.solrConfigset;
-			case "solrCollection":
-				return oSiteUser.solrCollection;
-			case "statiqueUrlBase":
-				return oSiteUser.statiqueUrlBase;
-			case "searchArticle":
-				return oSiteUser.searchArticle;
 			default:
 				return super.obtainBaseModel(var);
 		}
@@ -1307,22 +772,6 @@ public abstract class SiteUserGen<DEV> extends BaseModel {
 			return SiteUser.staticSetSeeArchived(siteRequest_, o);
 		case "seeDeleted":
 			return SiteUser.staticSetSeeDeleted(siteRequest_, o);
-		case "siteDomainName":
-			return SiteUser.staticSetSiteDomainName(siteRequest_, o);
-		case "zookeeperVersion":
-			return SiteUser.staticSetZookeeperVersion(siteRequest_, o);
-		case "zookeeperPortClient":
-			return SiteUser.staticSetZookeeperPortClient(siteRequest_, o);
-		case "solrVersion":
-			return SiteUser.staticSetSolrVersion(siteRequest_, o);
-		case "solrPortClient":
-			return SiteUser.staticSetSolrPortClient(siteRequest_, o);
-		case "solrConfigset":
-			return SiteUser.staticSetSolrConfigset(siteRequest_, o);
-		case "solrCollection":
-			return SiteUser.staticSetSolrCollection(siteRequest_, o);
-		case "statiqueUrlBase":
-			return SiteUser.staticSetStatiqueUrlBase(siteRequest_, o);
 			default:
 				return BaseModel.staticSetBaseModel(entityVar,  siteRequest_, o);
 		}
@@ -1355,22 +804,6 @@ public abstract class SiteUserGen<DEV> extends BaseModel {
 			return SiteUser.staticSearchSeeArchived(siteRequest_, (Boolean)o);
 		case "seeDeleted":
 			return SiteUser.staticSearchSeeDeleted(siteRequest_, (Boolean)o);
-		case "siteDomainName":
-			return SiteUser.staticSearchSiteDomainName(siteRequest_, (String)o);
-		case "zookeeperVersion":
-			return SiteUser.staticSearchZookeeperVersion(siteRequest_, (String)o);
-		case "zookeeperPortClient":
-			return SiteUser.staticSearchZookeeperPortClient(siteRequest_, (Integer)o);
-		case "solrVersion":
-			return SiteUser.staticSearchSolrVersion(siteRequest_, (String)o);
-		case "solrPortClient":
-			return SiteUser.staticSearchSolrPortClient(siteRequest_, (Integer)o);
-		case "solrConfigset":
-			return SiteUser.staticSearchSolrConfigset(siteRequest_, (String)o);
-		case "solrCollection":
-			return SiteUser.staticSearchSolrCollection(siteRequest_, (String)o);
-		case "statiqueUrlBase":
-			return SiteUser.staticSearchStatiqueUrlBase(siteRequest_, (String)o);
 			default:
 				return BaseModel.staticSearchBaseModel(entityVar,  siteRequest_, o);
 		}
@@ -1403,22 +836,6 @@ public abstract class SiteUserGen<DEV> extends BaseModel {
 			return SiteUser.staticSearchStrSeeArchived(siteRequest_, (Boolean)o);
 		case "seeDeleted":
 			return SiteUser.staticSearchStrSeeDeleted(siteRequest_, (Boolean)o);
-		case "siteDomainName":
-			return SiteUser.staticSearchStrSiteDomainName(siteRequest_, (String)o);
-		case "zookeeperVersion":
-			return SiteUser.staticSearchStrZookeeperVersion(siteRequest_, (String)o);
-		case "zookeeperPortClient":
-			return SiteUser.staticSearchStrZookeeperPortClient(siteRequest_, (Integer)o);
-		case "solrVersion":
-			return SiteUser.staticSearchStrSolrVersion(siteRequest_, (String)o);
-		case "solrPortClient":
-			return SiteUser.staticSearchStrSolrPortClient(siteRequest_, (Integer)o);
-		case "solrConfigset":
-			return SiteUser.staticSearchStrSolrConfigset(siteRequest_, (String)o);
-		case "solrCollection":
-			return SiteUser.staticSearchStrSolrCollection(siteRequest_, (String)o);
-		case "statiqueUrlBase":
-			return SiteUser.staticSearchStrStatiqueUrlBase(siteRequest_, (String)o);
 			default:
 				return BaseModel.staticSearchStrBaseModel(entityVar,  siteRequest_, o);
 		}
@@ -1451,22 +868,6 @@ public abstract class SiteUserGen<DEV> extends BaseModel {
 			return SiteUser.staticSearchFqSeeArchived(siteRequest_, o);
 		case "seeDeleted":
 			return SiteUser.staticSearchFqSeeDeleted(siteRequest_, o);
-		case "siteDomainName":
-			return SiteUser.staticSearchFqSiteDomainName(siteRequest_, o);
-		case "zookeeperVersion":
-			return SiteUser.staticSearchFqZookeeperVersion(siteRequest_, o);
-		case "zookeeperPortClient":
-			return SiteUser.staticSearchFqZookeeperPortClient(siteRequest_, o);
-		case "solrVersion":
-			return SiteUser.staticSearchFqSolrVersion(siteRequest_, o);
-		case "solrPortClient":
-			return SiteUser.staticSearchFqSolrPortClient(siteRequest_, o);
-		case "solrConfigset":
-			return SiteUser.staticSearchFqSolrConfigset(siteRequest_, o);
-		case "solrCollection":
-			return SiteUser.staticSearchFqSolrCollection(siteRequest_, o);
-		case "statiqueUrlBase":
-			return SiteUser.staticSearchFqStatiqueUrlBase(siteRequest_, o);
 			default:
 				return BaseModel.staticSearchFqBaseModel(entityVar,  siteRequest_, o);
 		}
@@ -1537,45 +938,6 @@ public abstract class SiteUserGen<DEV> extends BaseModel {
 					setSeeDeleted((String)val);
 				saves.add("seeDeleted");
 				return val;
-			case "sitedomainname":
-				if(val instanceof String)
-					setSiteDomainName((String)val);
-				saves.add("siteDomainName");
-				return val;
-			case "zookeeperversion":
-				if(val instanceof String)
-					setZookeeperVersion((String)val);
-				saves.add("zookeeperVersion");
-				return val;
-			case "zookeeperportclient":
-				if(val instanceof Integer)
-					setZookeeperPortClient((Integer)val);
-				else if(val instanceof String)
-					setZookeeperPortClient((String)val);
-				saves.add("zookeeperPortClient");
-				return val;
-			case "solrversion":
-				if(val instanceof String)
-					setSolrVersion((String)val);
-				saves.add("solrVersion");
-				return val;
-			case "solrportclient":
-				if(val instanceof Integer)
-					setSolrPortClient((Integer)val);
-				else if(val instanceof String)
-					setSolrPortClient((String)val);
-				saves.add("solrPortClient");
-				return val;
-			case "solrconfigset":
-				if(val instanceof String)
-					setSolrConfigset((String)val);
-				saves.add("solrConfigset");
-				return val;
-			case "solrcollection":
-				if(val instanceof String)
-					setSolrCollection((String)val);
-				saves.add("solrCollection");
-				return val;
 			default:
 				return super.persistBaseModel(var, val);
 		}
@@ -1629,27 +991,6 @@ public abstract class SiteUserGen<DEV> extends BaseModel {
 		if(seeDeleted != null) {
 			doc.put("seeDeleted_docvalues_boolean", seeDeleted);
 		}
-		if(siteDomainName != null) {
-			doc.put("siteDomainName_docvalues_string", siteDomainName);
-		}
-		if(zookeeperVersion != null) {
-			doc.put("zookeeperVersion_docvalues_string", zookeeperVersion);
-		}
-		if(zookeeperPortClient != null) {
-			doc.put("zookeeperPortClient_docvalues_int", zookeeperPortClient);
-		}
-		if(solrVersion != null) {
-			doc.put("solrVersion_docvalues_string", solrVersion);
-		}
-		if(solrPortClient != null) {
-			doc.put("solrPortClient_docvalues_int", solrPortClient);
-		}
-		if(solrConfigset != null) {
-			doc.put("solrConfigset_docvalues_string", solrConfigset);
-		}
-		if(solrCollection != null) {
-			doc.put("solrCollection_docvalues_string", solrCollection);
-		}
 		super.indexBaseModel(doc);
 
 	}
@@ -1674,20 +1015,6 @@ public abstract class SiteUserGen<DEV> extends BaseModel {
 				return "seeArchived_docvalues_boolean";
 			case "seeDeleted":
 				return "seeDeleted_docvalues_boolean";
-			case "siteDomainName":
-				return "siteDomainName_docvalues_string";
-			case "zookeeperVersion":
-				return "zookeeperVersion_docvalues_string";
-			case "zookeeperPortClient":
-				return "zookeeperPortClient_docvalues_int";
-			case "solrVersion":
-				return "solrVersion_docvalues_string";
-			case "solrPortClient":
-				return "solrPortClient_docvalues_int";
-			case "solrConfigset":
-				return "solrConfigset_docvalues_string";
-			case "solrCollection":
-				return "solrCollection_docvalues_string";
 			default:
 				return BaseModel.varStoredBaseModel(entityVar);
 		}
@@ -1713,22 +1040,33 @@ public abstract class SiteUserGen<DEV> extends BaseModel {
 				return "seeArchived_docvalues_boolean";
 			case "seeDeleted":
 				return "seeDeleted_docvalues_boolean";
-			case "siteDomainName":
-				return "siteDomainName_docvalues_string";
-			case "zookeeperVersion":
-				return "zookeeperVersion_docvalues_string";
-			case "zookeeperPortClient":
-				return "zookeeperPortClient_docvalues_int";
-			case "solrVersion":
-				return "solrVersion_docvalues_string";
-			case "solrPortClient":
-				return "solrPortClient_docvalues_int";
-			case "solrConfigset":
-				return "solrConfigset_docvalues_string";
-			case "solrCollection":
-				return "solrCollection_docvalues_string";
 			default:
 				return BaseModel.varIndexedBaseModel(entityVar);
+		}
+	}
+
+	public static String searchVarSiteUser(String searchVar) {
+		switch(searchVar) {
+			case "userKeys_docvalues_longs":
+				return "userKeys";
+			case "userId_docvalues_string":
+				return "userId";
+			case "userName_docvalues_string":
+				return "userName";
+			case "userEmail_docvalues_string":
+				return "userEmail";
+			case "userFirstName_docvalues_string":
+				return "userFirstName";
+			case "userLastName_docvalues_string":
+				return "userLastName";
+			case "userFullName_docvalues_string":
+				return "userFullName";
+			case "seeArchived_docvalues_boolean":
+				return "seeArchived";
+			case "seeDeleted_docvalues_boolean":
+				return "seeDeleted";
+			default:
+				return BaseModel.searchVarBaseModel(searchVar);
 		}
 	}
 
@@ -1767,13 +1105,6 @@ public abstract class SiteUserGen<DEV> extends BaseModel {
 		oSiteUser.setUserFullName(Optional.ofNullable(doc.get("userFullName_docvalues_string")).map(v -> v.toString()).orElse(null));
 		oSiteUser.setSeeArchived(Optional.ofNullable(doc.get("seeArchived_docvalues_boolean")).map(v -> v.toString()).orElse(null));
 		oSiteUser.setSeeDeleted(Optional.ofNullable(doc.get("seeDeleted_docvalues_boolean")).map(v -> v.toString()).orElse(null));
-		oSiteUser.setSiteDomainName(Optional.ofNullable(doc.get("siteDomainName_docvalues_string")).map(v -> v.toString()).orElse(null));
-		oSiteUser.setZookeeperVersion(Optional.ofNullable(doc.get("zookeeperVersion_docvalues_string")).map(v -> v.toString()).orElse(null));
-		oSiteUser.setZookeeperPortClient(Optional.ofNullable(doc.get("zookeeperPortClient_docvalues_int")).map(v -> v.toString()).orElse(null));
-		oSiteUser.setSolrVersion(Optional.ofNullable(doc.get("solrVersion_docvalues_string")).map(v -> v.toString()).orElse(null));
-		oSiteUser.setSolrPortClient(Optional.ofNullable(doc.get("solrPortClient_docvalues_int")).map(v -> v.toString()).orElse(null));
-		oSiteUser.setSolrConfigset(Optional.ofNullable(doc.get("solrConfigset_docvalues_string")).map(v -> v.toString()).orElse(null));
-		oSiteUser.setSolrCollection(Optional.ofNullable(doc.get("solrCollection_docvalues_string")).map(v -> v.toString()).orElse(null));
 
 		super.storeBaseModel(doc);
 	}
@@ -1805,20 +1136,6 @@ public abstract class SiteUserGen<DEV> extends BaseModel {
 				apiRequest.addVars("seeArchived");
 			if(!Objects.equals(seeDeleted, original.getSeeDeleted()))
 				apiRequest.addVars("seeDeleted");
-			if(!Objects.equals(siteDomainName, original.getSiteDomainName()))
-				apiRequest.addVars("siteDomainName");
-			if(!Objects.equals(zookeeperVersion, original.getZookeeperVersion()))
-				apiRequest.addVars("zookeeperVersion");
-			if(!Objects.equals(zookeeperPortClient, original.getZookeeperPortClient()))
-				apiRequest.addVars("zookeeperPortClient");
-			if(!Objects.equals(solrVersion, original.getSolrVersion()))
-				apiRequest.addVars("solrVersion");
-			if(!Objects.equals(solrPortClient, original.getSolrPortClient()))
-				apiRequest.addVars("solrPortClient");
-			if(!Objects.equals(solrConfigset, original.getSolrConfigset()))
-				apiRequest.addVars("solrConfigset");
-			if(!Objects.equals(solrCollection, original.getSolrCollection()))
-				apiRequest.addVars("solrCollection");
 			super.apiRequestBaseModel();
 		}
 	}
@@ -1839,13 +1156,6 @@ public abstract class SiteUserGen<DEV> extends BaseModel {
 		sb.append(Optional.ofNullable(userFullName).map(v -> "userFullName: \"" + v + "\"\n" ).orElse(""));
 		sb.append(Optional.ofNullable(seeArchived).map(v -> "seeArchived: " + v + "\n").orElse(""));
 		sb.append(Optional.ofNullable(seeDeleted).map(v -> "seeDeleted: " + v + "\n").orElse(""));
-		sb.append(Optional.ofNullable(siteDomainName).map(v -> "siteDomainName: \"" + v + "\"\n" ).orElse(""));
-		sb.append(Optional.ofNullable(zookeeperVersion).map(v -> "zookeeperVersion: \"" + v + "\"\n" ).orElse(""));
-		sb.append(Optional.ofNullable(zookeeperPortClient).map(v -> "zookeeperPortClient: " + v + "\n").orElse(""));
-		sb.append(Optional.ofNullable(solrVersion).map(v -> "solrVersion: \"" + v + "\"\n" ).orElse(""));
-		sb.append(Optional.ofNullable(solrPortClient).map(v -> "solrPortClient: " + v + "\n").orElse(""));
-		sb.append(Optional.ofNullable(solrConfigset).map(v -> "solrConfigset: \"" + v + "\"\n" ).orElse(""));
-		sb.append(Optional.ofNullable(solrCollection).map(v -> "solrCollection: \"" + v + "\"\n" ).orElse(""));
 		return sb.toString();
 	}
 
@@ -1859,15 +1169,6 @@ public abstract class SiteUserGen<DEV> extends BaseModel {
 	public static final String VAR_userFullName = "userFullName";
 	public static final String VAR_seeArchived = "seeArchived";
 	public static final String VAR_seeDeleted = "seeDeleted";
-	public static final String VAR_siteDomainName = "siteDomainName";
-	public static final String VAR_zookeeperVersion = "zookeeperVersion";
-	public static final String VAR_zookeeperPortClient = "zookeeperPortClient";
-	public static final String VAR_solrVersion = "solrVersion";
-	public static final String VAR_solrPortClient = "solrPortClient";
-	public static final String VAR_solrConfigset = "solrConfigset";
-	public static final String VAR_solrCollection = "solrCollection";
-	public static final String VAR_statiqueUrlBase = "statiqueUrlBase";
-	public static final String VAR_searchArticle = "searchArticle";
 
 	public static List<String> varsQForClass() {
 		return SiteUser.varsQSiteUser(new ArrayList<String>());
@@ -1881,22 +1182,6 @@ public abstract class SiteUserGen<DEV> extends BaseModel {
 		return SiteUser.varsFqSiteUser(new ArrayList<String>());
 	}
 	public static List<String> varsFqSiteUser(List<String> vars) {
-		vars.add(VAR_userKeys);
-		vars.add(VAR_userId);
-		vars.add(VAR_userName);
-		vars.add(VAR_userEmail);
-		vars.add(VAR_userFirstName);
-		vars.add(VAR_userLastName);
-		vars.add(VAR_userFullName);
-		vars.add(VAR_seeArchived);
-		vars.add(VAR_seeDeleted);
-		vars.add(VAR_siteDomainName);
-		vars.add(VAR_zookeeperVersion);
-		vars.add(VAR_zookeeperPortClient);
-		vars.add(VAR_solrVersion);
-		vars.add(VAR_solrPortClient);
-		vars.add(VAR_solrConfigset);
-		vars.add(VAR_solrCollection);
 		BaseModel.varsFqBaseModel(vars);
 		return vars;
 	}
@@ -1905,8 +1190,6 @@ public abstract class SiteUserGen<DEV> extends BaseModel {
 		return SiteUser.varsRangeSiteUser(new ArrayList<String>());
 	}
 	public static List<String> varsRangeSiteUser(List<String> vars) {
-		vars.add(VAR_zookeeperPortClient);
-		vars.add(VAR_solrPortClient);
 		BaseModel.varsRangeBaseModel(vars);
 		return vars;
 	}
@@ -1920,15 +1203,6 @@ public abstract class SiteUserGen<DEV> extends BaseModel {
 	public static final String DISPLAY_NAME_userFullName = "";
 	public static final String DISPLAY_NAME_seeArchived = "see archived";
 	public static final String DISPLAY_NAME_seeDeleted = "see deleted";
-	public static final String DISPLAY_NAME_siteDomainName = "";
-	public static final String DISPLAY_NAME_zookeeperVersion = "";
-	public static final String DISPLAY_NAME_zookeeperPortClient = "";
-	public static final String DISPLAY_NAME_solrVersion = "";
-	public static final String DISPLAY_NAME_solrPortClient = "";
-	public static final String DISPLAY_NAME_solrConfigset = "";
-	public static final String DISPLAY_NAME_solrCollection = "";
-	public static final String DISPLAY_NAME_statiqueUrlBase = "";
-	public static final String DISPLAY_NAME_searchArticle = "";
 
 	public static String displayNameForClass(String var) {
 		return SiteUser.displayNameSiteUser(var);
@@ -1953,24 +1227,6 @@ public abstract class SiteUserGen<DEV> extends BaseModel {
 			return DISPLAY_NAME_seeArchived;
 		case VAR_seeDeleted:
 			return DISPLAY_NAME_seeDeleted;
-		case VAR_siteDomainName:
-			return DISPLAY_NAME_siteDomainName;
-		case VAR_zookeeperVersion:
-			return DISPLAY_NAME_zookeeperVersion;
-		case VAR_zookeeperPortClient:
-			return DISPLAY_NAME_zookeeperPortClient;
-		case VAR_solrVersion:
-			return DISPLAY_NAME_solrVersion;
-		case VAR_solrPortClient:
-			return DISPLAY_NAME_solrPortClient;
-		case VAR_solrConfigset:
-			return DISPLAY_NAME_solrConfigset;
-		case VAR_solrCollection:
-			return DISPLAY_NAME_solrCollection;
-		case VAR_statiqueUrlBase:
-			return DISPLAY_NAME_statiqueUrlBase;
-		case VAR_searchArticle:
-			return DISPLAY_NAME_searchArticle;
 		default:
 			return BaseModel.displayNameBaseModel(var);
 		}
@@ -1996,8 +1252,6 @@ public abstract class SiteUserGen<DEV> extends BaseModel {
 			return "A user field allowing a user to see archived records";
 		case VAR_seeDeleted:
 			return "A user field allowing a user to see deleted records";
-		case VAR_siteDomainName:
-			return "A domain name is your website name. A domain name is the address where Internet users can access your website. ";
 			default:
 				return BaseModel.descriptionBaseModel(var);
 		}
@@ -2023,24 +1277,6 @@ public abstract class SiteUserGen<DEV> extends BaseModel {
 			return "Boolean";
 		case VAR_seeDeleted:
 			return "Boolean";
-		case VAR_siteDomainName:
-			return "String";
-		case VAR_zookeeperVersion:
-			return "String";
-		case VAR_zookeeperPortClient:
-			return "Integer";
-		case VAR_solrVersion:
-			return "String";
-		case VAR_solrPortClient:
-			return "Integer";
-		case VAR_solrConfigset:
-			return "String";
-		case VAR_solrCollection:
-			return "String";
-		case VAR_statiqueUrlBase:
-			return "String";
-		case VAR_searchArticle:
-			return "SearchList";
 			default:
 				return BaseModel.classSimpleNameBaseModel(var);
 		}
@@ -2059,20 +1295,6 @@ public abstract class SiteUserGen<DEV> extends BaseModel {
 			return 3;
 		case VAR_seeDeleted:
 			return 3;
-		case VAR_siteDomainName:
-			return 3;
-		case VAR_zookeeperVersion:
-			return 4;
-		case VAR_zookeeperPortClient:
-			return 4;
-		case VAR_solrVersion:
-			return 5;
-		case VAR_solrPortClient:
-			return 5;
-		case VAR_solrConfigset:
-			return 6;
-		case VAR_solrCollection:
-			return 6;
 			default:
 				return BaseModel.htmlRowBaseModel(var);
 		}

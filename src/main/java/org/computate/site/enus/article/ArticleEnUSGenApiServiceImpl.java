@@ -31,6 +31,7 @@ import java.util.Collection;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Date;
+import org.computate.search.serialize.ComputateZonedDateTimeSerializer;
 import java.time.format.DateTimeFormatter;
 import java.time.ZoneId;
 import java.util.List;
@@ -90,7 +91,6 @@ import org.computate.vertx.search.list.SearchList;
 
 /**
  * Translate: false
- * CanonicalName.frFR: org.computate.site.enus.article.ArticleFrFRGenApiServiceImpl
  **/
 public class ArticleEnUSGenApiServiceImpl extends BaseApiServiceImpl implements ArticleEnUSGenApiService {
 
@@ -144,27 +144,8 @@ public class ArticleEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
 		Promise<ServiceResponse> promise = Promise.promise();
 		try {
 			SiteRequestEnUS siteRequest = listArticle.getSiteRequest_(SiteRequestEnUS.class);
-			SolrResponse responseSearch = listArticle.getResponse();
-			List<SolrResponse.Doc> solrDocuments = listArticle.getResponse().getResponse().getDocs();
-			Long searchInMillis = Long.valueOf(responseSearch.getResponseHeader().getqTime());
-			Long startNum = listArticle.getRequest().getStart();
-			Long foundNum = responseSearch.getResponse().getNumFound();
-			Integer returnedNum = responseSearch.getResponse().getDocs().size();
-			String searchTime = String.format("%d.%03d sec", TimeUnit.MILLISECONDS.toSeconds(searchInMillis), TimeUnit.MILLISECONDS.toMillis(searchInMillis) - TimeUnit.SECONDS.toMillis(TimeUnit.MILLISECONDS.toSeconds(searchInMillis)));
-			String nextCursorMark = responseSearch.getNextCursorMark();
-			String exceptionSearch = Optional.ofNullable(responseSearch.getError()).map(error -> error.getMsg()).orElse(null);
 			List<String> fls = listArticle.getRequest().getFields();
-
 			JsonObject json = new JsonObject();
-			json.put("startNum", startNum);
-			json.put("foundNum", foundNum);
-			json.put("returnedNum", returnedNum);
-			if(fls.size() == 1 && fls.stream().findFirst().orElse(null).equals("saves")) {
-				json.put("searchTime", searchTime);
-			}
-			if(nextCursorMark != null) {
-				json.put("nextCursorMark", nextCursorMark);
-			}
 			JsonArray l = new JsonArray();
 			listArticle.getList().stream().forEach(o -> {
 				JsonObject json2 = JsonObject.mapFrom(o);
@@ -191,56 +172,7 @@ public class ArticleEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
 				l.add(json2);
 			});
 			json.put("list", l);
-
-			SolrResponse.FacetFields facetFields = Optional.ofNullable(responseSearch.getFacetCounts()).map(f -> f.getFacetFields()).orElse(null);
-			if(facetFields != null) {
-				JsonObject facetFieldsJson = new JsonObject();
-				json.put("facet_fields", facetFieldsJson);
-				for(SolrResponse.FacetField facetField : facetFields.getFacets().values()) {
-					String facetFieldVar = StringUtils.substringBefore(facetField.getName(), "_docvalues_");
-					JsonObject facetFieldCounts = new JsonObject();
-					facetFieldsJson.put(facetFieldVar, facetFieldCounts);
-					facetField.getCounts().forEach((name, count) -> {
-						facetFieldCounts.put(name, count);
-					});
-				}
-			}
-
-			SolrResponse.FacetRanges facetRanges = Optional.ofNullable(responseSearch.getFacetCounts()).map(f -> f.getFacetRanges()).orElse(null);
-			if(facetRanges != null) {
-				JsonObject rangeJson = new JsonObject();
-				json.put("facet_ranges", rangeJson);
-				for(SolrResponse.FacetRange rangeFacet : facetRanges.getRanges().values()) {
-					JsonObject rangeFacetJson = new JsonObject();
-					String rangeFacetVar = StringUtils.substringBefore(rangeFacet.getName(), "_docvalues_");
-					rangeJson.put(rangeFacetVar, rangeFacetJson);
-					JsonObject rangeFacetCountsMap = new JsonObject();
-					rangeFacetJson.put("counts", rangeFacetCountsMap);
-					rangeFacet.getCounts().forEach((name, count) -> {
-						rangeFacetCountsMap.put(name, count);
-					});
-				}
-			}
-
-			SolrResponse.FacetPivot facetPivot = Optional.ofNullable(responseSearch.getFacetCounts()).map(f -> f.getFacetPivot()).orElse(null);
-			if(facetPivot != null) {
-				JsonObject facetPivotJson = new JsonObject();
-				json.put("facet_pivot", facetPivotJson);
-				for(SolrResponse.Pivot pivot : facetPivot.getPivotMap().values()) {
-					String[] varsIndexed = pivot.getName().trim().split(",");
-					String[] entityVars = new String[varsIndexed.length];
-					for(Integer i = 0; i < entityVars.length; i++) {
-						String entityIndexed = varsIndexed[i];
-						entityVars[i] = StringUtils.substringBefore(entityIndexed, "_docvalues_");
-					}
-					JsonArray pivotArray = new JsonArray();
-					facetPivotJson.put(StringUtils.join(entityVars, ","), pivotArray);
-					responsePivotSearchArticle(pivot.getPivotList(), pivotArray);
-				}
-			}
-			if(exceptionSearch != null) {
-				json.put("exceptionSearch", exceptionSearch);
-			}
+			response200Search(listArticle.getRequest(), listArticle.getResponse(), json);
 			promise.complete(ServiceResponse.completedWithJson(Buffer.buffer(Optional.ofNullable(json).orElse(new JsonObject()).encodePrettily())));
 		} catch(Exception ex) {
 			LOG.error(String.format("response200SearchArticle failed. "), ex);
@@ -512,7 +444,7 @@ public class ArticleEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
 			pgPool.withTransaction(sqlConnection -> {
 				Promise<Article> promise1 = Promise.promise();
 				siteRequest.setSqlConnection(sqlConnection);
-				persistArticle(o).onSuccess(c -> {
+				persistArticle(o, true).onSuccess(c -> {
 					indexArticle(o).onSuccess(e -> {
 						promise1.complete(o);
 					}).onFailure(ex -> {
@@ -649,7 +581,7 @@ public class ArticleEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
 
 		try {
 			createArticle(siteRequest).onSuccess(article -> {
-				persistArticle(article).onSuccess(c -> {
+				persistArticle(article, false).onSuccess(c -> {
 					indexArticle(article).onSuccess(e -> {
 						promise.complete(article);
 					}).onFailure(ex -> {
@@ -977,6 +909,13 @@ public class ArticleEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
 			page.setSiteRequest_(siteRequest);
 			page.promiseDeepArticlePage(siteRequest).onSuccess(a -> {
 				JsonObject json = JsonObject.mapFrom(page);
+				json.put(ConfigKeys.STATIC_BASE_URL, config.getString(ConfigKeys.STATIC_BASE_URL));
+				json.put(ConfigKeys.GITHUB_ORG, config.getString(ConfigKeys.GITHUB_ORG));
+				json.put(ConfigKeys.SITE_NAME, config.getString(ConfigKeys.SITE_NAME));
+				json.put(ConfigKeys.SITE_DISPLAY_NAME, config.getString(ConfigKeys.SITE_DISPLAY_NAME));
+				json.put(ConfigKeys.PROJECT_POWERED_BY_URL, config.getString(ConfigKeys.PROJECT_POWERED_BY_URL));
+				json.put(ConfigKeys.PROJECT_POWERED_BY_NAME, config.getString(ConfigKeys.PROJECT_POWERED_BY_NAME));
+				json.put(ConfigKeys.PROJECT_POWERED_BY_IMAGE_URI, config.getString(ConfigKeys.PROJECT_POWERED_BY_IMAGE_URI));
 				templateEngine.render(json, templateSearchPageArticle()).onSuccess(buffer -> {
 					promise.complete(new ServiceResponse(200, "OK", buffer, requestHeaders));
 				}).onFailure(ex -> {
@@ -1181,6 +1120,15 @@ public class ArticleEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
 									valueRows = paramObject instanceof Long ? (Long)paramObject : Long.parseLong(paramObject.toString());
 									searchArticleRows(searchList, valueRows);
 									break;
+								case "stats":
+									searchList.stats((Boolean)paramObject);
+									break;
+								case "stats.field":
+									entityVar = (String)paramObject;
+									varIndexed = Article.varIndexedArticle(entityVar);
+									if(varIndexed != null)
+										searchList.statsField(varIndexed);
+									break;
 								case "facet":
 									searchList.facet((Boolean)paramObject);
 									break;
@@ -1250,15 +1198,22 @@ public class ArticleEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
 	public void searchArticle2(SiteRequestEnUS siteRequest, Boolean populate, Boolean store, Boolean modify, SearchList<Article> searchList) {
 	}
 
-	public Future<Void> persistArticle(Article o) {
+	public Future<Void> persistArticle(Article o, Boolean patch) {
 		Promise<Void> promise = Promise.promise();
 		try {
 			SiteRequestEnUS siteRequest = o.getSiteRequest_();
 				try {
 					JsonObject jsonObject = siteRequest.getJsonObject();
 					jsonObject.forEach(definition -> {
-							String columnName = definition.getKey();
-							Object columnValue = definition.getValue();
+							String columnName;
+							Object columnValue;
+						if(patch && StringUtils.startsWith(definition.getKey(), "set")) {
+							columnName = StringUtils.uncapitalize(StringUtils.substringAfter(definition.getKey(), "set"));
+							columnValue = definition.getValue();
+						} else {
+							columnName = definition.getKey();
+							columnValue = definition.getValue();
+						}
 						if(!"".equals(columnName)) {
 							try {
 								o.persistForClass(columnName, columnValue);

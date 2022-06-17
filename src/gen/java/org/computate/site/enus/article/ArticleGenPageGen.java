@@ -39,6 +39,7 @@ import java.util.Locale;
 import java.time.ZonedDateTime;
 import java.time.ZoneOffset;
 import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.time.format.DateTimeFormatter;
@@ -46,6 +47,7 @@ import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.lang.Integer;
 import io.vertx.core.json.JsonArray;
+import org.computate.search.response.solr.SolrResponse.Stats;
 import org.computate.search.response.solr.SolrResponse.FacetCounts;
 import org.computate.search.wrap.Wrap;
 import io.vertx.core.Promise;
@@ -415,10 +417,12 @@ public abstract class ArticleGenPageGen<DEV> extends PageLayout {
 	public static ZonedDateTime staticSetDefaultRangeEnd(SiteRequestEnUS siteRequest_, String o) {
 		if(StringUtils.endsWith(o, "]"))
 			return o == null ? null : ZonedDateTime.parse(o, ComputateZonedDateTimeSerializer.ZONED_DATE_TIME_FORMATTER);
-		if(StringUtils.endsWith(o, "Z"))
+		else if(StringUtils.endsWith(o, "Z"))
 			return o == null ? null : Instant.parse(o).atZone(ZoneId.of(siteRequest_.getConfig().getString(ConfigKeys.SITE_ZONE))).truncatedTo(ChronoUnit.MILLIS);
-		else
+		else if(StringUtils.contains(o, "T"))
 			return o == null ? null : ZonedDateTime.parse(o, DateTimeFormatter.ISO_DATE_TIME).truncatedTo(ChronoUnit.MILLIS);
+		else
+			return o == null ? null : LocalDate.parse(o, DateTimeFormatter.ISO_DATE).atStartOfDay(ZoneId.of(siteRequest_.getConfig().getString(ConfigKeys.SITE_ZONE))).truncatedTo(ChronoUnit.MILLIS);
 	}
 	@JsonIgnore
 	public void setDefaultRangeEnd(Date o) {
@@ -486,10 +490,12 @@ public abstract class ArticleGenPageGen<DEV> extends PageLayout {
 	public static ZonedDateTime staticSetDefaultRangeStart(SiteRequestEnUS siteRequest_, String o) {
 		if(StringUtils.endsWith(o, "]"))
 			return o == null ? null : ZonedDateTime.parse(o, ComputateZonedDateTimeSerializer.ZONED_DATE_TIME_FORMATTER);
-		if(StringUtils.endsWith(o, "Z"))
+		else if(StringUtils.endsWith(o, "Z"))
 			return o == null ? null : Instant.parse(o).atZone(ZoneId.of(siteRequest_.getConfig().getString(ConfigKeys.SITE_ZONE))).truncatedTo(ChronoUnit.MILLIS);
-		else
+		else if(StringUtils.contains(o, "T"))
 			return o == null ? null : ZonedDateTime.parse(o, DateTimeFormatter.ISO_DATE_TIME).truncatedTo(ChronoUnit.MILLIS);
+		else
+			return o == null ? null : LocalDate.parse(o, DateTimeFormatter.ISO_DATE).atStartOfDay(ZoneId.of(siteRequest_.getConfig().getString(ConfigKeys.SITE_ZONE))).truncatedTo(ChronoUnit.MILLIS);
 	}
 	@JsonIgnore
 	public void setDefaultRangeStart(Date o) {
@@ -785,6 +791,138 @@ public abstract class ArticleGenPageGen<DEV> extends PageLayout {
 		return ArticleGenPage.staticSearchStrDefaultPivotMinCount(siteRequest_, ArticleGenPage.staticSearchDefaultPivotMinCount(siteRequest_, ArticleGenPage.staticSetDefaultPivotMinCount(siteRequest_, o)));
 	}
 
+	//////////////////////////
+	// defaultFieldListVars //
+	//////////////////////////
+
+	/**	 The entity defaultFieldListVars
+	 *	 It is constructed before being initialized with the constructor by default. 
+	 */
+	@JsonProperty
+	@JsonFormat(shape = JsonFormat.Shape.ARRAY)
+	@JsonInclude(Include.NON_NULL)
+	protected List<String> defaultFieldListVars = new ArrayList<String>();
+
+	/**	<br> The entity defaultFieldListVars
+	 *  It is constructed before being initialized with the constructor by default. 
+	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.ArticleGenPage&fq=entiteVar_enUS_indexed_string:defaultFieldListVars">Find the entity defaultFieldListVars in Solr</a>
+	 * <br>
+	 * @param l is the entity already constructed. 
+	 **/
+	protected abstract void _defaultFieldListVars(List<String> l);
+
+	public List<String> getDefaultFieldListVars() {
+		return defaultFieldListVars;
+	}
+
+	public void setDefaultFieldListVars(List<String> defaultFieldListVars) {
+		this.defaultFieldListVars = defaultFieldListVars;
+	}
+	public static String staticSetDefaultFieldListVars(SiteRequestEnUS siteRequest_, String o) {
+		return o;
+	}
+	public ArticleGenPage addDefaultFieldListVars(String...objets) {
+		for(String o : objets) {
+			addDefaultFieldListVars(o);
+		}
+		return (ArticleGenPage)this;
+	}
+	public ArticleGenPage addDefaultFieldListVars(String o) {
+		if(o != null)
+			this.defaultFieldListVars.add(o);
+		return (ArticleGenPage)this;
+	}
+	@JsonIgnore
+	public void setDefaultFieldListVars(JsonArray objets) {
+		defaultFieldListVars.clear();
+		for(int i = 0; i < objets.size(); i++) {
+			String o = objets.getString(i);
+			addDefaultFieldListVars(o);
+		}
+	}
+	protected ArticleGenPage defaultFieldListVarsInit() {
+		_defaultFieldListVars(defaultFieldListVars);
+		return (ArticleGenPage)this;
+	}
+
+	public static String staticSearchDefaultFieldListVars(SiteRequestEnUS siteRequest_, String o) {
+		return o;
+	}
+
+	public static String staticSearchStrDefaultFieldListVars(SiteRequestEnUS siteRequest_, String o) {
+		return o == null ? null : o.toString();
+	}
+
+	public static String staticSearchFqDefaultFieldListVars(SiteRequestEnUS siteRequest_, String o) {
+		return ArticleGenPage.staticSearchStrDefaultFieldListVars(siteRequest_, ArticleGenPage.staticSearchDefaultFieldListVars(siteRequest_, ArticleGenPage.staticSetDefaultFieldListVars(siteRequest_, o)));
+	}
+
+	//////////////////////
+	// defaultStatsVars //
+	//////////////////////
+
+	/**	 The entity defaultStatsVars
+	 *	 It is constructed before being initialized with the constructor by default. 
+	 */
+	@JsonProperty
+	@JsonFormat(shape = JsonFormat.Shape.ARRAY)
+	@JsonInclude(Include.NON_NULL)
+	protected List<String> defaultStatsVars = new ArrayList<String>();
+
+	/**	<br> The entity defaultStatsVars
+	 *  It is constructed before being initialized with the constructor by default. 
+	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.ArticleGenPage&fq=entiteVar_enUS_indexed_string:defaultStatsVars">Find the entity defaultStatsVars in Solr</a>
+	 * <br>
+	 * @param l is the entity already constructed. 
+	 **/
+	protected abstract void _defaultStatsVars(List<String> l);
+
+	public List<String> getDefaultStatsVars() {
+		return defaultStatsVars;
+	}
+
+	public void setDefaultStatsVars(List<String> defaultStatsVars) {
+		this.defaultStatsVars = defaultStatsVars;
+	}
+	public static String staticSetDefaultStatsVars(SiteRequestEnUS siteRequest_, String o) {
+		return o;
+	}
+	public ArticleGenPage addDefaultStatsVars(String...objets) {
+		for(String o : objets) {
+			addDefaultStatsVars(o);
+		}
+		return (ArticleGenPage)this;
+	}
+	public ArticleGenPage addDefaultStatsVars(String o) {
+		if(o != null)
+			this.defaultStatsVars.add(o);
+		return (ArticleGenPage)this;
+	}
+	@JsonIgnore
+	public void setDefaultStatsVars(JsonArray objets) {
+		defaultStatsVars.clear();
+		for(int i = 0; i < objets.size(); i++) {
+			String o = objets.getString(i);
+			addDefaultStatsVars(o);
+		}
+	}
+	protected ArticleGenPage defaultStatsVarsInit() {
+		_defaultStatsVars(defaultStatsVars);
+		return (ArticleGenPage)this;
+	}
+
+	public static String staticSearchDefaultStatsVars(SiteRequestEnUS siteRequest_, String o) {
+		return o;
+	}
+
+	public static String staticSearchStrDefaultStatsVars(SiteRequestEnUS siteRequest_, String o) {
+		return o == null ? null : o.toString();
+	}
+
+	public static String staticSearchFqDefaultStatsVars(SiteRequestEnUS siteRequest_, String o) {
+		return ArticleGenPage.staticSearchStrDefaultStatsVars(siteRequest_, ArticleGenPage.staticSearchDefaultStatsVars(siteRequest_, ArticleGenPage.staticSetDefaultStatsVars(siteRequest_, o)));
+	}
+
 	//////////////////////
 	// defaultPivotVars //
 	//////////////////////
@@ -882,6 +1020,44 @@ public abstract class ArticleGenPageGen<DEV> extends PageLayout {
 	}
 	protected ArticleGenPage listArticleInit() {
 		_listArticle(listArticle);
+		return (ArticleGenPage)this;
+	}
+
+	///////////
+	// stats //
+	///////////
+
+	/**	 The entity stats
+	 *	 is defined as null before being initialized. 
+	 */
+	@JsonProperty
+	@JsonInclude(Include.NON_NULL)
+	protected Stats stats;
+
+	/**	<br> The entity stats
+	 *  is defined as null before being initialized. 
+	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.ArticleGenPage&fq=entiteVar_enUS_indexed_string:stats">Find the entity stats in Solr</a>
+	 * <br>
+	 * @param w is for wrapping a value to assign to this entity during initialization. 
+	 **/
+	protected abstract void _stats(Wrap<Stats> w);
+
+	public Stats getStats() {
+		return stats;
+	}
+
+	public void setStats(Stats stats) {
+		this.stats = stats;
+	}
+	public static Stats staticSetStats(SiteRequestEnUS siteRequest_, String o) {
+		return null;
+	}
+	protected ArticleGenPage statsInit() {
+		Wrap<Stats> statsWrap = new Wrap<Stats>().var("stats");
+		if(stats == null) {
+			_stats(statsWrap);
+			setStats(statsWrap.o);
+		}
 		return (ArticleGenPage)this;
 	}
 
@@ -1110,8 +1286,11 @@ public abstract class ArticleGenPageGen<DEV> extends PageLayout {
 				defaultFacetLimitInit();
 				defaultFacetMinCountInit();
 				defaultPivotMinCountInit();
+				defaultFieldListVarsInit();
+				defaultStatsVarsInit();
 				defaultPivotVarsInit();
 				listArticleInit();
+				statsInit();
 				facetCountsInit();
 				articleCountInit();
 				article_Init();
@@ -1197,10 +1376,16 @@ public abstract class ArticleGenPageGen<DEV> extends PageLayout {
 				return oArticleGenPage.defaultFacetMinCount;
 			case "defaultPivotMinCount":
 				return oArticleGenPage.defaultPivotMinCount;
+			case "defaultFieldListVars":
+				return oArticleGenPage.defaultFieldListVars;
+			case "defaultStatsVars":
+				return oArticleGenPage.defaultStatsVars;
 			case "defaultPivotVars":
 				return oArticleGenPage.defaultPivotVars;
 			case "listArticle":
 				return oArticleGenPage.listArticle;
+			case "stats":
+				return oArticleGenPage.stats;
 			case "facetCounts":
 				return oArticleGenPage.facetCounts;
 			case "articleCount":
@@ -1270,6 +1455,10 @@ public abstract class ArticleGenPageGen<DEV> extends PageLayout {
 			return ArticleGenPage.staticSetDefaultFacetMinCount(siteRequest_, o);
 		case "defaultPivotMinCount":
 			return ArticleGenPage.staticSetDefaultPivotMinCount(siteRequest_, o);
+		case "defaultFieldListVars":
+			return ArticleGenPage.staticSetDefaultFieldListVars(siteRequest_, o);
+		case "defaultStatsVars":
+			return ArticleGenPage.staticSetDefaultStatsVars(siteRequest_, o);
 		case "defaultPivotVars":
 			return ArticleGenPage.staticSetDefaultPivotVars(siteRequest_, o);
 		case "articleCount":
@@ -1312,6 +1501,10 @@ public abstract class ArticleGenPageGen<DEV> extends PageLayout {
 			return ArticleGenPage.staticSearchDefaultFacetMinCount(siteRequest_, (Integer)o);
 		case "defaultPivotMinCount":
 			return ArticleGenPage.staticSearchDefaultPivotMinCount(siteRequest_, (Integer)o);
+		case "defaultFieldListVars":
+			return ArticleGenPage.staticSearchDefaultFieldListVars(siteRequest_, (String)o);
+		case "defaultStatsVars":
+			return ArticleGenPage.staticSearchDefaultStatsVars(siteRequest_, (String)o);
 		case "defaultPivotVars":
 			return ArticleGenPage.staticSearchDefaultPivotVars(siteRequest_, (String)o);
 		case "articleCount":
@@ -1354,6 +1547,10 @@ public abstract class ArticleGenPageGen<DEV> extends PageLayout {
 			return ArticleGenPage.staticSearchStrDefaultFacetMinCount(siteRequest_, (Integer)o);
 		case "defaultPivotMinCount":
 			return ArticleGenPage.staticSearchStrDefaultPivotMinCount(siteRequest_, (Integer)o);
+		case "defaultFieldListVars":
+			return ArticleGenPage.staticSearchStrDefaultFieldListVars(siteRequest_, (String)o);
+		case "defaultStatsVars":
+			return ArticleGenPage.staticSearchStrDefaultStatsVars(siteRequest_, (String)o);
 		case "defaultPivotVars":
 			return ArticleGenPage.staticSearchStrDefaultPivotVars(siteRequest_, (String)o);
 		case "articleCount":
@@ -1396,6 +1593,10 @@ public abstract class ArticleGenPageGen<DEV> extends PageLayout {
 			return ArticleGenPage.staticSearchFqDefaultFacetMinCount(siteRequest_, o);
 		case "defaultPivotMinCount":
 			return ArticleGenPage.staticSearchFqDefaultPivotMinCount(siteRequest_, o);
+		case "defaultFieldListVars":
+			return ArticleGenPage.staticSearchFqDefaultFieldListVars(siteRequest_, o);
+		case "defaultStatsVars":
+			return ArticleGenPage.staticSearchFqDefaultStatsVars(siteRequest_, o);
 		case "defaultPivotVars":
 			return ArticleGenPage.staticSearchFqDefaultPivotVars(siteRequest_, o);
 		case "articleCount":
@@ -1432,8 +1633,11 @@ public abstract class ArticleGenPageGen<DEV> extends PageLayout {
 	public static final String VAR_defaultFacetLimit = "defaultFacetLimit";
 	public static final String VAR_defaultFacetMinCount = "defaultFacetMinCount";
 	public static final String VAR_defaultPivotMinCount = "defaultPivotMinCount";
+	public static final String VAR_defaultFieldListVars = "defaultFieldListVars";
+	public static final String VAR_defaultStatsVars = "defaultStatsVars";
 	public static final String VAR_defaultPivotVars = "defaultPivotVars";
 	public static final String VAR_listArticle = "listArticle";
+	public static final String VAR_stats = "stats";
 	public static final String VAR_facetCounts = "facetCounts";
 	public static final String VAR_articleCount = "articleCount";
 	public static final String VAR_article_ = "article_";
@@ -1453,8 +1657,11 @@ public abstract class ArticleGenPageGen<DEV> extends PageLayout {
 	public static final String DISPLAY_NAME_defaultFacetLimit = "";
 	public static final String DISPLAY_NAME_defaultFacetMinCount = "";
 	public static final String DISPLAY_NAME_defaultPivotMinCount = "";
+	public static final String DISPLAY_NAME_defaultFieldListVars = "";
+	public static final String DISPLAY_NAME_defaultStatsVars = "";
 	public static final String DISPLAY_NAME_defaultPivotVars = "";
 	public static final String DISPLAY_NAME_listArticle = "";
+	public static final String DISPLAY_NAME_stats = "";
 	public static final String DISPLAY_NAME_facetCounts = "";
 	public static final String DISPLAY_NAME_articleCount = "";
 	public static final String DISPLAY_NAME_article_ = "";
@@ -1493,10 +1700,16 @@ public abstract class ArticleGenPageGen<DEV> extends PageLayout {
 			return DISPLAY_NAME_defaultFacetMinCount;
 		case VAR_defaultPivotMinCount:
 			return DISPLAY_NAME_defaultPivotMinCount;
+		case VAR_defaultFieldListVars:
+			return DISPLAY_NAME_defaultFieldListVars;
+		case VAR_defaultStatsVars:
+			return DISPLAY_NAME_defaultStatsVars;
 		case VAR_defaultPivotVars:
 			return DISPLAY_NAME_defaultPivotVars;
 		case VAR_listArticle:
 			return DISPLAY_NAME_listArticle;
+		case VAR_stats:
+			return DISPLAY_NAME_stats;
 		case VAR_facetCounts:
 			return DISPLAY_NAME_facetCounts;
 		case VAR_articleCount:

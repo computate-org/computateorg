@@ -1,6 +1,6 @@
 {{> "htmPageLayout"}}
 {{#*inline "htmHeadPageLayout"}}{{> "htmTitlePageLayout"}}{{> "htmMetaPageLayout"}}{{> "htmStylePageLayout"}}{{> "htmScriptsPageLayout"}}{{> "htmScriptPageLayout"}}{{/inline}}
-{{#*inline "htmScriptsPageLayout"}}		<!-- inline "htmScriptsPageLayout" -->
+{{#*inline "htmScriptsPageLayout"}}		<!-- #*inline "htmScriptsPageLayout" -->
 		<script src="{{staticBaseUrl}}/js/jquery-1.12.4.min.js"></script>
 {{#if FONTAWESOME_KIT }}
 		<script src="{{ FONTAWESOME_KIT }}"></script>
@@ -11,28 +11,33 @@
 		<script src="{{staticBaseUrl}}/js/vertx-eventbus.js"></script>
 		<script src="{{staticBaseUrl}}/js/plotly-2.9.0.min.js"></script>
 {{/inline}}
-{{#*inline "htmScriptPageLayout"}}		<!-- inline "htmScriptPageLayout" -->
+{{#*inline "htmScriptPageLayout"}}		<!-- #*inline "htmScriptPageLayout" -->
 {{/inline}}
-{{#*inline "htmStylePageLayout"}}		<!-- inline "htmStylePageLayout" -->
+{{#*inline "htmStylePageLayout"}}		<!-- #*inline "htmStylePageLayout" -->
 		<link rel="icon" href="{{staticBaseUrl}}/favicon.ico" />
 		<link rel="stylesheet" href="{{staticBaseUrl}}/css/w3.css" />
 		<link rel="stylesheet" href="{{staticBaseUrl}}/css/site-enUS.css" />
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Anonymous%20Pro%7CBellefair%7CJomhuria%7CPT%20Serif%3A700%7CStint%20Ultra%20Condensed&amp;display=swap"/>
 {{/inline}}
-{{#*inline "htmMetaPageLayout"}}		<!-- inline "htmMetaPageLayout" -->
+{{#*inline "htmMetaPageLayout"}}		<!-- #*inline "htmMetaPageLayout" -->
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 {{/inline}}
-{{#*inline "htmTitlePageLayout"}}		<!-- inline "htmTitlePageLayout" -->
+{{#*inline "htmTitlePageLayout"}}		<!-- #*inline "htmTitlePageLayout" -->
 		<title>computate.org</title>
 {{/inline}}
 {{#*inline "htmBodyMenuPageLayout"}}
 		<div class="w3-bar ">
 			<div class="w3-bar w3-hide-small ">
-				<a class="w3-bar-item w3-button w3-button w3-text-teal " href="{{ SITE_BASE_URL }}"><i class="fad fa-house w3-text-teal "></i> computate.org</a>
+				<div class="site-bar-item w3-bar-item ">
+					<a class="w3-bar-item " href="{{ SITE_BASE_URL }}"><br><i class="fad fa-house "></i> computate.org</a>
+				</div>
 {{> "htmMenuItems"}}
 			</div>
 			<div class="w3-bar w3-hide-medium w3-hide-large ">
-				<a class="w3-bar-item w3-button w3-button w3-text-teal " href="{{ SITE_BASE_URL }}"><i class="fad fa-house w3-text-teal "></i> computate.org</a>
+				<div class="site-bar-item w3-bar-item ">
+					<a class="w3-bar-item " href="{{ SITE_BASE_URL }}"><br><i class="fad fa-house "></i> computate.org</a>
+				</div>
 				<div class="w3-dropdown-hover ">
 					<button class="w3-button w3-text-black "><i class="fad fa-bars w3-text-black "></i> Menu</button>
 					<div class="w3-dropdown-content w3-bar-block w3-card-4 ">
@@ -43,32 +48,139 @@
 		</div>
 {{/inline}}
 {{#*inline "htmMenuItems"}}
+				<div class="site-bar-item w3-bar-item ">
+					<a href="/page" class="header-icon-a w3-hover-opacity w3-center "><br><i class="fad fa-page w3-text-2017-navy-peony "></i> articles</a>
+				</div>
+				<!--
+				<div class="site-bar-item w3-bar-item ">
+					<span class="header-icon-a w3-center "><a class="w3-hover-opacity" title="English" href="/enUS/about"><img alt="" src="https://computate.neocities.org/svg/flag-US.svg" style="height: 50px; "></a><a class="w3-hover-opacity" title="français" href="/frFR/apropos"><img alt="" src="https://computate.neocities.org/svg/flag-FR.svg" style="height: 50px; "></a><br><span class="site-menu-item">Language</span></span>
+				</div>
+				-->
+				<div class="site-bar-item w3-bar-item ">
+					<a class="header-icon-a w3-hover-opacity w3-center " href=" /"><br><span class="site-menu-item">home</span></a>
+				</div>
+				<!--
+				<div class="site-bar-item w3-bar-item ">
+					<a class="header-icon-a w3-hover-opacity w3-center " href=" /enUS/blog"><br><span class="site-menu-item">blog</span></a>
+				</div>
+				-->
+				<!--
+				<div class="site-bar-item w3-bar-item ">
+					<a class="header-icon-a w3-hover-opacity w3-center " href=" /enUS/course"><br><span class="site-menu-item">courses</span></a>
+				</div>
+				-->
+				<div class="site-bar-item w3-bar-item ">
+					<a class="header-icon-a w3-hover-opacity w3-center " href=" /enUS/about"><br><span class="site-menu-item">about</span></a>
+				</div>
+				<!--
+				<div class="site-bar-item w3-bar-item ">
+					<a class="header-icon-a w3-hover-opacity w3-center " href=" /enUS/faq"><br><span class="site-menu-item">FAQ</span></a>
+				</div>
+				-->
+				<div class="site-bar-item w3-bar-item ">
 {{#if userKey}}
-				<a href="/user/{{ userKey }}" class="w3-bar-item w3-button w3-text-teal "><i class="fad fa-house-user w3-text-teal "></i> {{userName}}</a>
-				<a href="{{ logoutUrl }}" class="w3-bar-item w3-button w3-text-teal "><i class="fad fa-house-user w3-text-teal "></i> Logout</a>
+					<a href="/user/{{ userKey }}" class="w3-bar-item w3-button w3-text-teal "><br><i class="fad fa-house-user w3-text-teal "></i> {{userName}}</a>
+					<a href="{{ logoutUrl }}" class="w3-bar-item w3-button w3-text-teal "><br><i class="fad fa-house-user w3-text-teal "></i> logout</a>
 {{else}}
-				<a href="/user" class="w3-bar-item w3-button w3-text-teal "><i class="fad fa-house-user w3-text-teal "></i> Login</a>
+					<a href="/user" class="header-icon-a w3-hover-opacity w3-center "><br><i class="fad fa-house-user w3-text-teal "></i> login</a>
 {{/if}}
-				<a href="/enUS/course/001/lessons" class="w3-bar-item w3-button w3-text- "><i class="fa fa- w3-text- "></i> </a>
-				<a href="/enUS/course/001" class="w3-bar-item w3-button w3-text-green "><i class="far fa-university w3-text-green "></i> course #1s</a>
-				<a href="/enUS/course" class="w3-bar-item w3-button w3-text-green "><i class="far fa-university w3-text-green "></i> courses</a>
-				<a href="/enUS/article" class="w3-bar-item w3-button w3-text-green "><i class="far fa-university w3-text-green "></i> articles</a>
+				</div>
+				<div class="site-bar-item w3-bar-item ">
+					<br>
+					<form action="https://www.paypal.com/donate" method="post" target="_top">
+						<input type="hidden" name="hosted_button_id" value="62M7FM26P22K6">
+						<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif" name="submit" title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button" border="0">
+						<img alt="" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1" border="0">
+					</form>
+				</div>
 {{/inline}}
-{{#*inline "htmBodyStartPageLayout"}}		<!-- inline "htmBodyStartPageLayout" -->
+{{#*inline "htmBodyStartPageLayout"}}		<!-- #*inline "htmBodyStartPageLayout" -->
+		<div class="w3-bar ">
+			<div class="w3-center ">
+{{#block "htmBodyMenu"}}{{/block}}
+			</div>
+		</div>
 {{/inline}}
-{{#*inline "htmBodyEndPageLayout"}}		<!-- inline "htmBodyEndPageLayout" -->
+{{#*inline "htmBodyMiddlePageLayout"}}		<!-- #*inline "htmBodyMiddlePageLayout" -->
+	<div class="pageContent w3-content ">
+{{#each htmBody}}{{#if htmBefore}}{{{htmBefore}}}{{/if}}{{#if text}}{{#each text}}{{.}}{{/each}}{{/if}}{{#if htmAfter}}{{{htmAfter}}}{{/if}}{{/each}}
+	</div>
 {{/inline}}
-{{#*inline "htmBodyPageLayout"}}		<!-- inline "htmBodyPageLayout" -->
-{{#block "htmBodyStart"}}{{/block}}
-{{#block "htmBodyEnd"}}{{/block}}
-		<footer class="w3-center w3-black w3-text-white w3-padding-24 ">
-			<div class="w3-bar ">
-				<a class="w3-bar-item grow-50" href="https://www.openshift.com/products/online/"><span class="w3-small ">Powered by </span><img alt="" class="w3-image " style="display: inline-block; width: 100px; margin: 0 10px;" src="{{staticBaseUrl}}/svg/openshift.svg"/></a>
+{{#*inline "htmBodyEndPageLayout"}}		<!-- #*inline "htmBodyEndPageLayout" -->
+	<div class="pageContent w3-content ">
+		<footer class="w3-padding w3-margin-top w3-center site-abondonnezPas-div ">
+			<h3>Don't give up on your dreams. You can do hard things! </h3>
+			<div>
+				<img alt="" class="w3-image " src="{{ STATIC_BASE_URL }}/svg/computate-keys.svg">
 			</div>
 		</footer>
+		<footer class="w3-content w3-center w3-margin w3-padding-top-32 ">
+			<h3>Share this story. </h3>
+			<div class="w3-cell-row ">
+				<div class="blog-publication-social-div w3-cell ">
+					<img alt="" class="blog-publication-social-img" src="https://computate.neocities.org/svg/facebook.svg">
+					<div>
+						<div class="fb-like fb_iframe_widget" data-href="https://www.computate.org/enUS/about" data-layout="box_count" data-action="like" data-size="small" data-show-faces="true" data-share="true" fb-xfbml-state="rendered" fb-iframe-plugin-query="action=like&amp;app_id=1871568493111919&amp;container_width=316&amp;href=https%3A%2F%2Fwww.computate.org%2FenUS%2Fabout&amp;layout=box_count&amp;locale=en_US&amp;sdk=joey&amp;share=true&amp;show_faces=true&amp;size=small"><span style="vertical-align: bottom; width: 62px; height: 72px;"><iframe name="f1e31ea8c6c84e8" data-testid="fb:like Facebook Social Plugin" title="fb:like Facebook Social Plugin" allowtransparency="true" allowfullscreen="true" scrolling="no" allow="encrypted-media" style="border: medium none; visibility: visible; width: 62px; height: 72px;" src="https://www.facebook.com/v2.10/plugins/like.php?action=like&amp;app_id=1871568493111919&amp;channel=https%3A%2F%2Fstaticxx.facebook.com%2Fx%2Fconnect%2Fxd_arbiter%2F%3Fversion%3D46%23cb%3Df3cb35bd165a0ca%26domain%3Dwww.computate.org%26is_canvas%3Dfalse%26origin%3Dhttps%253A%252F%252Fwww.computate.org%252Ff30b6c5d43a4a5e%26relation%3Dparent.parent&amp;container_width=316&amp;href=https%3A%2F%2Fwww.computate.org%2FenUS%2Fabout&amp;layout=box_count&amp;locale=en_US&amp;sdk=joey&amp;share=true&amp;show_faces=true&amp;size=small" class="" width="1000px" height="1000px" frameborder="0"></iframe></span></div>
+					</div>
+				</div>
+				<div class="blog-publication-social-div w3-cell ">
+					<img alt="" class="blog-publication-social-img" src="https://computate.neocities.org/svg/twitter.svg">
+					<div>
+						<iframe id="twitter-widget-0" scrolling="no" allowtransparency="true" allowfullscreen="true" class="twitter-share-button twitter-share-button-rendered twitter-tweet-button" style="position: static; visibility: visible; width: 73px; height: 20px;" title="Twitter Tweet Button" src="https://platform.twitter.com/widgets/tweet_button.d7fc2fc075c61f6fa34d79a0cbbf1e34.en.html#dnt=false&amp;id=twitter-widget-0&amp;lang=en&amp;original_referer=https%3A%2F%2Fwww.computate.org%2FenUS%2Fabout&amp;size=m&amp;text=Who%20is%20Christopher%20Tate%3F%20All%20about%20me.&amp;time=1655319901458&amp;type=share&amp;url=https%3A%2F%2Fwww.computate.org%2FenUS%2Fabout" frameborder="0"></iframe>
+						<script async="" src="//platform.twitter.com/widgets.js"></script>
+					</div>
+				</div>
+				<div class="blog-publication-social-div w3-cell ">
+					<img alt="" class="blog-publication-social-img" src="https://computate.neocities.org/svg/pinterest.svg">
+					<div class="pinterest-div ">
+						<a class="PIN_1655319900553_button_pin PIN_1655319900553_save" href="https://www.pinterest.com/pin/create/button/?guid=bZyarwLoJxt3-1&amp;url=https%3A%2F%2Fwww.computate.org%2FenUS%2Fabout&amp;media=https%3A%2F%2Fcomputate.neocities.org%2Fpng%2FenUS%2Fabout-999.png&amp;description=Who%20is%20Christopher%20Tate%3F%20All%20about%20me.%20" data-pin-log="button_pinit" data-pin-href="https://www.pinterest.com/pin/create/button/?guid=bZyarwLoJxt3-1&amp;url=https%3A%2F%2Fwww.computate.org%2FenUS%2Fabout&amp;media=https%3A%2F%2Fcomputate.neocities.org%2Fpng%2FenUS%2Fabout-999.png&amp;description=Who%20is%20Christopher%20Tate%3F%20All%20about%20me.%20">Save</a>
+					</div>
+				</div>
+			</div>
+		</footer>
+	</div>
+	<footer class="w3-center w3-black w3-padding-48 ">
+{{#if GITHUB_ORG }}
+		<div class="w3-xxlarge ">This site is open source. </div>
+		<div class="w3-large ">
+			<a href="https://github.com/{{ GITHUB_ORG }}/{{ SITE_NAME }}/" target="_blank" class="grow-20 ">View the source code here on github. </a>
+		</div>
+{{/if }}
+{{#if PROJECT_POWERED_BY_URL }}
+		<div class="grow-20 w3-margin ">
+			<a class="w3-bar-item grow-20 w3-margin w3-text-white " href="{{ PROJECT_POWERED_BY_URL }}" target="_blank"><span class="w3-large ">Powered by </span>{{#if PROJECT_POWERED_BY_IMAGE_URI }}<img alt="" class="w3-image " style="display: inline-block; width: 200px; margin: 0 10px;" src="{{ STATIC_BASE_URL }}{{ PROJECT_POWERED_BY_IMAGE_URI }}"/>{{else}}{{#if PROJECT_POWERED_BY_NAME}}{{ PROJECT_POWERED_BY_NAME }}{{/if}}{{/if}}</a>
+		</div>
+{{/if }}
+	</footer>
+	<footer class="w3-row site-section-contact w3-text-white w3-padding-48 ">
+		<div class="w3-center ">
+{{#block "htmBodyMenu"}}{{/block}}
+		</div>
+		<div class="w3-content w3-center  w3-cell-row w3-margin-bottom-32 ">
+			<div class="w3-container ">
+				<div class="w3-container w3-text-black w3-margin-top ">
+					<h6 id="h2-contactez-nous" class="w3-xlarge w3-text-white ">Let's get connected. </h6>
+					<div style="">
+						<a target="_blank" rel="noopener noreferrer" data-ajax="false" href="https://www.facebook.com/computateorg/"><img alt="" class="grow-20 " style="display: inline-block; width: 50px; height: 50px; margin: 0 10px;" src="https://computate.neocities.org/svg/facebook.svg"></a>
+						<a target="_blank" rel="noopener noreferrer" data-ajax="false" href="https://twitter.com/computateorg"><img alt="" class="grow-20 " style="display: inline-block; width: 50px; height: 50px; margin: 0 10px;" src="https://computate.neocities.org/svg/twitter.svg"></a>
+						<a target="_blank" rel="noopener noreferrer" data-ajax="false" href="https://www.instagram.com/computateorg/"><img alt="" class="grow-20 " style="display: inline-block; width: 50px; height: 50px; margin: 0 10px;" src="https://computate.neocities.org/svg/instagram.svg"></a>
+						<a target="_blank" rel="noopener noreferrer" data-ajax="false" href="https://openclipart.org/user-detail/computateorg"><img alt="" class="grow-20 " style="display: inline-block; width: 50px; height: 50px; margin: 0 10px;" src="https://computate.neocities.org/svg/openclipart.svg"></a>
+						<a target="_blank" rel="noopener noreferrer" data-ajax="false" href="https://www.youtube.com/channel/UC3ryOB2snhO7fItkx6dGx2Q"><img alt="" class="grow-20 " style="display: inline-block; width: 50px; height: 50px; margin: 0 10px;" src="https://computate.neocities.org/svg/youtube.svg"></a>
+						<a target="_blank" rel="noopener noreferrer" data-ajax="false" href=" https://www.pinterest.com/computateorg/computate-in-english/"><img alt="" class="grow-20 " style="display: inline-block; width: 50px; height: 50px; margin: 0 10px;" src="https://computate.neocities.org/svg/pinterest.svg"></a>
+					</div>
+					<h6><a href="#top" class="w3-text-white ">Up to the top. </a></h6>
+				</div>
+			</div>
+		</div>
+	</footer>
+{{/inline}}
+{{#*inline "htmBodyPageLayout"}}		<!-- #*inline "htmBodyPageLayout" -->
+{{#block "htmBodyStart"}}{{/block}}
+{{#block "htmBodyMiddle"}}{{/block}}
+{{#block "htmBodyEnd"}}{{/block}}
 {{/inline}}
 {{#*inline "htmPageLayout"}}<!DOCTYPE html>
-<!-- inline "htmPageLayout" -->
+<!-- #*inline "htmPageLayout" -->
 <html lang="en" style="height: 100%;">
 	<head>
 {{#block "htmHead"}}{{/block}}

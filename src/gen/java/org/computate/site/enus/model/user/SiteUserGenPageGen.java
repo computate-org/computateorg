@@ -39,6 +39,7 @@ import java.util.Locale;
 import java.time.ZonedDateTime;
 import java.time.ZoneOffset;
 import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.time.format.DateTimeFormatter;
@@ -46,6 +47,7 @@ import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.lang.Integer;
 import io.vertx.core.json.JsonArray;
+import org.computate.search.response.solr.SolrResponse.Stats;
 import org.computate.search.response.solr.SolrResponse.FacetCounts;
 import java.lang.Long;
 import org.computate.search.wrap.Wrap;
@@ -416,10 +418,12 @@ public abstract class SiteUserGenPageGen<DEV> extends BaseModelPage {
 	public static ZonedDateTime staticSetDefaultRangeEnd(SiteRequestEnUS siteRequest_, String o) {
 		if(StringUtils.endsWith(o, "]"))
 			return o == null ? null : ZonedDateTime.parse(o, ComputateZonedDateTimeSerializer.ZONED_DATE_TIME_FORMATTER);
-		if(StringUtils.endsWith(o, "Z"))
+		else if(StringUtils.endsWith(o, "Z"))
 			return o == null ? null : Instant.parse(o).atZone(ZoneId.of(siteRequest_.getConfig().getString(ConfigKeys.SITE_ZONE))).truncatedTo(ChronoUnit.MILLIS);
-		else
+		else if(StringUtils.contains(o, "T"))
 			return o == null ? null : ZonedDateTime.parse(o, DateTimeFormatter.ISO_DATE_TIME).truncatedTo(ChronoUnit.MILLIS);
+		else
+			return o == null ? null : LocalDate.parse(o, DateTimeFormatter.ISO_DATE).atStartOfDay(ZoneId.of(siteRequest_.getConfig().getString(ConfigKeys.SITE_ZONE))).truncatedTo(ChronoUnit.MILLIS);
 	}
 	@JsonIgnore
 	public void setDefaultRangeEnd(Date o) {
@@ -487,10 +491,12 @@ public abstract class SiteUserGenPageGen<DEV> extends BaseModelPage {
 	public static ZonedDateTime staticSetDefaultRangeStart(SiteRequestEnUS siteRequest_, String o) {
 		if(StringUtils.endsWith(o, "]"))
 			return o == null ? null : ZonedDateTime.parse(o, ComputateZonedDateTimeSerializer.ZONED_DATE_TIME_FORMATTER);
-		if(StringUtils.endsWith(o, "Z"))
+		else if(StringUtils.endsWith(o, "Z"))
 			return o == null ? null : Instant.parse(o).atZone(ZoneId.of(siteRequest_.getConfig().getString(ConfigKeys.SITE_ZONE))).truncatedTo(ChronoUnit.MILLIS);
-		else
+		else if(StringUtils.contains(o, "T"))
 			return o == null ? null : ZonedDateTime.parse(o, DateTimeFormatter.ISO_DATE_TIME).truncatedTo(ChronoUnit.MILLIS);
+		else
+			return o == null ? null : LocalDate.parse(o, DateTimeFormatter.ISO_DATE).atStartOfDay(ZoneId.of(siteRequest_.getConfig().getString(ConfigKeys.SITE_ZONE))).truncatedTo(ChronoUnit.MILLIS);
 	}
 	@JsonIgnore
 	public void setDefaultRangeStart(Date o) {
@@ -820,6 +826,44 @@ public abstract class SiteUserGenPageGen<DEV> extends BaseModelPage {
 		return (SiteUserGenPage)this;
 	}
 
+	///////////
+	// stats //
+	///////////
+
+	/**	 The entity stats
+	 *	 is defined as null before being initialized. 
+	 */
+	@JsonProperty
+	@JsonInclude(Include.NON_NULL)
+	protected Stats stats;
+
+	/**	<br> The entity stats
+	 *  is defined as null before being initialized. 
+	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.model.user.SiteUserGenPage&fq=entiteVar_enUS_indexed_string:stats">Find the entity stats in Solr</a>
+	 * <br>
+	 * @param w is for wrapping a value to assign to this entity during initialization. 
+	 **/
+	protected abstract void _stats(Wrap<Stats> w);
+
+	public Stats getStats() {
+		return stats;
+	}
+
+	public void setStats(Stats stats) {
+		this.stats = stats;
+	}
+	public static Stats staticSetStats(SiteRequestEnUS siteRequest_, String o) {
+		return null;
+	}
+	protected SiteUserGenPage statsInit() {
+		Wrap<Stats> statsWrap = new Wrap<Stats>().var("stats");
+		if(stats == null) {
+			_stats(statsWrap);
+			setStats(statsWrap.o);
+		}
+		return (SiteUserGenPage)this;
+	}
+
 	/////////////////
 	// facetCounts //
 	/////////////////
@@ -1103,6 +1147,7 @@ public abstract class SiteUserGenPageGen<DEV> extends BaseModelPage {
 				defaultFacetMinCountInit();
 				defaultPivotMinCountInit();
 				listSiteUserInit();
+				statsInit();
 				facetCountsInit();
 				siteUserCountInit();
 				siteUser_Init();
@@ -1191,6 +1236,8 @@ public abstract class SiteUserGenPageGen<DEV> extends BaseModelPage {
 				return oSiteUserGenPage.defaultPivotMinCount;
 			case "listSiteUser":
 				return oSiteUserGenPage.listSiteUser;
+			case "stats":
+				return oSiteUserGenPage.stats;
 			case "facetCounts":
 				return oSiteUserGenPage.facetCounts;
 			case "siteUserCount":
@@ -1425,6 +1472,7 @@ public abstract class SiteUserGenPageGen<DEV> extends BaseModelPage {
 	public static final String VAR_defaultFacetMinCount = "defaultFacetMinCount";
 	public static final String VAR_defaultPivotMinCount = "defaultPivotMinCount";
 	public static final String VAR_listSiteUser = "listSiteUser";
+	public static final String VAR_stats = "stats";
 	public static final String VAR_facetCounts = "facetCounts";
 	public static final String VAR_siteUserCount = "siteUserCount";
 	public static final String VAR_siteUser_ = "siteUser_";
@@ -1446,6 +1494,7 @@ public abstract class SiteUserGenPageGen<DEV> extends BaseModelPage {
 	public static final String DISPLAY_NAME_defaultFacetMinCount = "";
 	public static final String DISPLAY_NAME_defaultPivotMinCount = "";
 	public static final String DISPLAY_NAME_listSiteUser = "";
+	public static final String DISPLAY_NAME_stats = "";
 	public static final String DISPLAY_NAME_facetCounts = "";
 	public static final String DISPLAY_NAME_siteUserCount = "";
 	public static final String DISPLAY_NAME_siteUser_ = "";
@@ -1487,6 +1536,8 @@ public abstract class SiteUserGenPageGen<DEV> extends BaseModelPage {
 			return DISPLAY_NAME_defaultPivotMinCount;
 		case VAR_listSiteUser:
 			return DISPLAY_NAME_listSiteUser;
+		case VAR_stats:
+			return DISPLAY_NAME_stats;
 		case VAR_facetCounts:
 			return DISPLAY_NAME_facetCounts;
 		case VAR_siteUserCount:

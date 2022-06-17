@@ -470,15 +470,6 @@ public class Article extends ArticleGen<Object> {
 
 	/**
 	 * {@inheritDoc}
-	 * 
-	 **/
-	protected void _SiteUserNomDomaine(Wrap<String> w) {
-		if(siteUser_ != null)
-			w.o(siteUser_.getSiteDomainName());
-	}
-
-	/**
-	 * {@inheritDoc}
 	 * Ignore: true
 	 * Description: The current request object
 	 */
