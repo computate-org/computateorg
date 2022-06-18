@@ -39,6 +39,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.github.jknack.handlebars.Handlebars;
+import com.github.jknack.handlebars.Jackson2Helper;
 import com.github.jknack.handlebars.helper.ConditionalHelpers;
 import com.github.jknack.handlebars.helper.StringHelpers;
 
@@ -744,6 +745,7 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 			handlebars.registerHelpers(AuthHelpers.class);
 			handlebars.registerHelpers(SiteHelpers.class);
 			handlebars.registerHelpers(DateHelpers.class);
+			handlebars.registerHelper("json", Jackson2Helper.INSTANCE);
 
 			String templatePath = config().getString(ConfigKeys.TEMPLATE_PATH);
 			if(StringUtils.isBlank(templatePath))

@@ -6,7 +6,6 @@ import java.math.BigDecimal;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -23,12 +22,10 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.computate.search.serialize.ComputateZonedDateTimeSerializer;
 import org.computate.search.tool.TimeTool;
 import org.computate.search.tool.XmlTool;
-import org.computate.vertx.api.ApiCounter;
-import org.computate.vertx.api.ApiRequest;
 import org.computate.site.enus.config.ConfigKeys;
-import org.computate.site.enus.request.SiteRequestEnUS;
-import org.computate.site.enus.model.page.SitePage;
 import org.computate.site.enus.model.htm.SiteHtm;
+import org.computate.site.enus.model.page.SitePage;
+import org.computate.site.enus.request.SiteRequestEnUS;
 import org.computate.vertx.api.ApiCounter;
 import org.computate.vertx.api.ApiRequest;
 import org.computate.vertx.config.ComputateVertxConfigKeys;
@@ -40,6 +37,7 @@ import org.slf4j.LoggerFactory;
 
 import com.github.jknack.handlebars.Context;
 import com.github.jknack.handlebars.Handlebars;
+import com.github.jknack.handlebars.Jackson2Helper;
 import com.github.jknack.handlebars.Template;
 import com.github.jknack.handlebars.helper.ConditionalHelpers;
 import com.github.jknack.handlebars.helper.StringHelpers;
@@ -55,20 +53,15 @@ import io.vertx.core.buffer.Buffer;
 import io.vertx.core.eventbus.DeliveryOptions;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
-import io.vertx.ext.auth.authentication.TokenCredentials;
-import io.vertx.ext.jdbc.JDBCClient;
 import io.vertx.ext.mail.MailClient;
 import io.vertx.ext.mail.MailConfig;
 import io.vertx.ext.web.client.WebClient;
-import io.vertx.ext.web.client.predicate.ResponsePredicate;
 import io.vertx.ext.web.templ.handlebars.HandlebarsTemplateEngine;
 import io.vertx.pgclient.PgConnectOptions;
 import io.vertx.pgclient.PgPool;
-import io.vertx.sqlclient.Cursor;
 import io.vertx.sqlclient.PoolOptions;
 import io.vertx.sqlclient.Row;
 import io.vertx.sqlclient.RowStream;
-import io.vertx.sqlclient.SqlConnection;
 
 
 /**
@@ -148,6 +141,7 @@ public class WorkerVerticle extends WorkerVerticleGen<AbstractVerticle> {
 			handlebars.registerHelpers(AuthHelpers.class);
 			handlebars.registerHelpers(SiteHelpers.class);
 			handlebars.registerHelpers(DateHelpers.class);
+			handlebars.registerHelper("json", Jackson2Helper.INSTANCE);
 
 			LOG.info(configureHandlebarsComplete);
 			promise.complete();
@@ -534,15 +528,19 @@ public class WorkerVerticle extends WorkerVerticleGen<AbstractVerticle> {
 	private Long importSiteHtm(JsonObject json, Stack<String> stack, String pageId, String htmGroup, JsonArray pageItems, List<Future> futures, Long sequenceNum) throws Exception {
 		Double sort = 0D;
 		for(Integer i = 0; i < pageItems.size(); i++) {
+			// Process a page item, one at a time
 			JsonObject pageItem = (JsonObject)pageItems.getValue(i);
 			String uri = json.getString(SiteHtm.VAR_uri);
 			Object in = pageItem.getValue("in");
 			String e = pageItem.getString("e");
+			String each = pageItem.getString("each");
 			JsonObject a = pageItem.getJsonObject(SiteHtm.VAR_a);
 			Boolean eNoWrapParent = false;
 			Boolean eNoWrap = false;
 			String tabs = "";
+
 			if(e != null) {
+				// Stack the element and determine element name, wrap and tabs
 				String localNameParent = stack.isEmpty() ? null : stack.peek();
 				eNoWrapParent = localNameParent == null || XmlTool.HTML_ELEMENTS_NO_WRAP.contains(localNameParent);
 				eNoWrap = localNameParent == null || XmlTool.HTML_ELEMENTS_NO_WRAP.contains(e);
@@ -551,12 +549,14 @@ public class WorkerVerticle extends WorkerVerticleGen<AbstractVerticle> {
 			}
 
 			{
+				// Import the start of the element
 				sequenceNum++;
 				JsonObject importItem = new JsonObject();
 				if(e != null)
 					importItem.put(SiteHtm.VAR_eBefore, e);
 				String text = pageItem.getString(SiteHtm.VAR_text);
 				if(text != null) {
+					// Split text by lines and index each line as it's own value
 					Template template = handlebars.compileInline(text);
 					Context engineContext = Context.newBuilder(json.getMap()).resolver(templateEngine.getResolvers()).build();
 					Buffer buffer = Buffer.buffer(template.apply(engineContext));
@@ -585,21 +585,27 @@ public class WorkerVerticle extends WorkerVerticleGen<AbstractVerticle> {
 				importItem.put(SiteHtm.VAR_sequenceNum, sequenceNum);
 				importItem.put(SiteHtm.VAR_uri, uri);
 				if(a != null) {
+					// Process element attributes
 					JsonObject attrs = new JsonObject();
 					for(String field : a.fieldNames()) {
+						// Get the value of the attribute and process template values before indexing the attribute
 						String val = a.getString(field);
-						Template template = handlebars.compileInline(val);
-						Context engineContext = Context.newBuilder(json.getMap()).resolver(templateEngine.getResolvers()).build();
-						Buffer buffer = Buffer.buffer(template.apply(engineContext));
-						attrs.put(field, buffer.toString());
+						if(val != null) {
+							Template template = handlebars.compileInline(val);
+							Context engineContext = Context.newBuilder(json.getMap()).resolver(templateEngine.getResolvers()).build();
+							Buffer buffer = Buffer.buffer(template.apply(engineContext));
+							attrs.put(field, buffer.toString());
+						}
 					}
 					importItem.put(SiteHtm.VAR_a, attrs);
 				}
 				importItem.put(SiteHtm.VAR_id, String.format("%s_%s", SiteHtm.CLASS_SIMPLE_NAME, sequenceNum));
 				for(Integer j=1; j <= stack.size(); j++) {
+					// Add sort values for the element at each level of the stack
 					importItem.put("sort" + j, stack.get(j - 1));
 				}
 	
+				// Add this element import to the list of futures that will all be requested in a CompositeFuture
 				JsonObject htmParams = new JsonObject();
 				htmParams.put("body", importItem);
 				htmParams.put("path", new JsonObject());
@@ -610,15 +616,47 @@ public class WorkerVerticle extends WorkerVerticleGen<AbstractVerticle> {
 				futures.add(vertx.eventBus().request(String.format("computate.org-enUS-%s", SiteHtm.CLASS_SIMPLE_NAME), htmRequest, new DeliveryOptions().addHeader("action", String.format("putimport%sFuture", SiteHtm.CLASS_SIMPLE_NAME))));
 			}
 
-			if(in != null) {
-				if(in instanceof JsonObject) {
-					sequenceNum = importSiteHtm(json, stack, pageId, htmGroup, new JsonArray().add(in), futures, sequenceNum);
-				} else if(in instanceof JsonArray) {
-					sequenceNum = importSiteHtm(json, stack, pageId, htmGroup, (JsonArray)in, futures, sequenceNum);
+			if(each != null) {
+				// Process the "each" element by evaluating the template and processing the values
+				Template template = handlebars.compileInline(String.format("{{json %s }}", each));
+				Context engineContext = Context.newBuilder(json.getMap()).resolver(templateEngine.getResolvers()).build();
+				Buffer buffer = Buffer.buffer(template.apply(engineContext));
+				String eachVar = pageItem.getString("eachVar", "item");
+				String indexVar = pageItem.getString("indexVar", "@index");
+				JsonArray eachArray = new JsonArray(buffer);
+
+				if(in != null) {
+					for(Integer j=0; j < eachArray.size(); j++) {
+						JsonObject eachJson = eachArray.getJsonObject(j);
+						JsonObject json2 = json.copy();
+						json2.put(eachVar, eachJson);
+						json2.put(indexVar, j);
+						// Process nested elements of the "in" value
+						if(in instanceof JsonObject) {
+							// Process the nested JsonObject of the "in" value
+							sequenceNum = importSiteHtm(json2, stack, pageId, htmGroup, new JsonArray().add(in), futures, sequenceNum);
+						} else if(in instanceof JsonArray) {
+							// Process the each of the nested JsonObjects in the array of the "in" value
+							sequenceNum = importSiteHtm(json2, stack, pageId, htmGroup, (JsonArray)in, futures, sequenceNum);
+						}
+					}
+				}
+				json.remove(eachVar);
+			} else {
+				if(in != null) {
+					// Process nested elements of the "in" value
+					if(in instanceof JsonObject) {
+						// Process the nested JsonObject of the "in" value
+						sequenceNum = importSiteHtm(json, stack, pageId, htmGroup, new JsonArray().add(in), futures, sequenceNum);
+					} else if(in instanceof JsonArray) {
+						// Process the each of the nested JsonObjects in the array of the "in" value
+						sequenceNum = importSiteHtm(json, stack, pageId, htmGroup, (JsonArray)in, futures, sequenceNum);
+					}
 				}
 			}
 
 			if(e != null) {
+				// Import the end of the element
 				sequenceNum++;
 				JsonObject importItem = new JsonObject();
 				importItem.put(SiteHtm.VAR_eAfter, e);
