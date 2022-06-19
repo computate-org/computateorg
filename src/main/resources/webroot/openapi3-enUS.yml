@@ -1393,9 +1393,6 @@ paths:
     get:
       operationId: searchSitePage
       x-vertx-event-bus: computate.org-enUS-SitePage
-      security:
-        - openIdConnect:
-          - profile
       description: >+
       summary: >+
       tags:
@@ -1686,9 +1683,6 @@ paths:
     get:
       operationId: getSitePage
       x-vertx-event-bus: computate.org-enUS-SitePage
-      security:
-        - openIdConnect:
-          - profile
       description: >+
       summary: >+
       tags:
@@ -1719,9 +1713,6 @@ paths:
     get:
       operationId: searchpageSitePageId
       x-vertx-event-bus: computate.org-enUS-SitePage
-      security:
-        - openIdConnect:
-          - profile
       description: >+
       summary: >+
       tags:
@@ -1904,9 +1895,6 @@ paths:
     get:
       operationId: searchpageSitePage
       x-vertx-event-bus: computate.org-enUS-SitePage
-      security:
-        - openIdConnect:
-          - profile
       description: >+
       summary: >+
       tags:
@@ -2743,7 +2731,7 @@ components:
       scheme: basic
     openIdConnect:
       type: openIdConnect
-      openIdConnectUrl: https://sso.computate.org/auth/realms/RH-IMPACT/.well-known/openid-configuration
+      openIdConnectUrl: https://sso.computate.org/auth/realms/COMPUTATE.ORG/.well-known/openid-configuration
   requestBodies:
     SearchArticleResponse:
       content:

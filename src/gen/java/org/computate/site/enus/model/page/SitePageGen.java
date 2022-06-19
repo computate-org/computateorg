@@ -68,7 +68,7 @@ import io.vertx.core.json.JsonObject;
 public abstract class SitePageGen<DEV> extends Object {
 	protected static final Logger LOG = LoggerFactory.getLogger(SitePage.class);
 
-	public static final String SitePage_Description_enUS = "A webpage in the site. ";
+	public static final String SitePage_Description_enUS = "An article in the site. ";
 	public static final String SitePage_AName_enUS = "an article";
 	public static final String SitePage_This_enUS = "this ";
 	public static final String SitePage_ThisName_enUS = "this article";
@@ -102,7 +102,7 @@ public abstract class SitePageGen<DEV> extends Object {
 
 	public static final String SitePage_Color = "2017-navy-peony";
 	public static final String SitePage_IconGroup = "duotone";
-	public static final String SitePage_IconName = "page";
+	public static final String SitePage_IconName = "newspaper";
 
 	//////////////////
 	// siteRequest_ //

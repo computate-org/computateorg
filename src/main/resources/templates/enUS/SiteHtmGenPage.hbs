@@ -518,12 +518,12 @@
 {{#*inline "htmBodySidebarSiteHtmPage"}}
 				<div class="w3-dropdown-hover w3-bar-block min-width-300px ">
 					<div class="min-width-300px w3-2017-navy-peony ">
-						<span title="Search" class="siteSidebarToggle w3-xlarge " onclick="$('.siteSidebarToggleStats').hide(); $('.siteSidebarToggleFieldList').hide(); $('.siteSidebarToggleFilters').hide(); $('.siteSidebarToggleRange').hide(); $('.siteSidebarTogglePivot').hide(); $('.siteSidebarToggleSearch').toggle(); "><i class="fad fa-magnifying-glass hover-box-shadow "></i></span>
-						<span title="Filters" class="siteSidebarToggle w3-xlarge " onclick="$('.siteSidebarToggleStats').hide(); $('.siteSidebarToggleFieldList').hide(); $('.siteSidebarToggleSearch').hide(); $('.siteSidebarToggleRange').hide(); $('.siteSidebarTogglePivot').hide(); $('.siteSidebarToggleFilters').toggle(); "><i class="fad fa-filters hover-box-shadow "></i></span>
-						<span title="Range" class="siteSidebarToggle w3-xlarge " onclick="$('.siteSidebarToggleStats').hide(); $('.siteSidebarToggleFieldList').hide(); $('.siteSidebarToggleSearch').hide(); $('.siteSidebarToggleFilters').hide(); $('.siteSidebarTogglePivot').hide(); $('.siteSidebarToggleRange').toggle(); "><i class="fad fa-calendar-range hover-box-shadow "></i></span>
-						<span title="Pivot" class="siteSidebarToggle w3-xlarge " onclick="$('.siteSidebarToggleStats').hide(); $('.siteSidebarToggleFieldList').hide(); $('.siteSidebarToggleSearch').hide(); $('.siteSidebarToggleFilters').hide(); $('.siteSidebarToggleRange').hide(); $('.siteSidebarTogglePivot').toggle(); "><i class="fad fa-table-pivot hover-box-shadow "></i></span>
-						<span title="FieldList" class="siteSidebarToggle w3-xlarge " onclick="$('.siteSidebarToggleStats').hide(); $('.siteSidebarTogglePivot').hide(); $('.siteSidebarToggleSearch').hide(); $('.siteSidebarToggleFilters').hide(); $('.siteSidebarToggleRange').hide(); $('.siteSidebarToggleFieldList').toggle(); "><i class="fad fa-list-ul hover-box-shadow "></i></span>
-						<span title="Stats" class="siteSidebarToggle w3-xlarge " onclick="$('.siteSidebarToggleFieldList').hide(); $('.siteSidebarTogglePivot').hide(); $('.siteSidebarToggleSearch').hide(); $('.siteSidebarToggleFilters').hide(); $('.siteSidebarToggleRange').hide(); $('.siteSidebarToggleStats').toggle(); "><i class="fad fa-chart-candlestick hover-box-shadow "></i></span>
+						<span title="Search" class="siteSidebarToggle " onclick="$('.siteSidebarToggleStats').hide(); $('.siteSidebarToggleFieldList').hide(); $('.siteSidebarToggleFilters').hide(); $('.siteSidebarToggleRange').hide(); $('.siteSidebarTogglePivot').hide(); $('.siteSidebarToggleSearch').toggle(); "><i class="fad fa-magnifying-glass hover-box-shadow w3-xlarge "></i> Search</span>
+						<span title="Filters" class="siteSidebarToggle " onclick="$('.siteSidebarToggleStats').hide(); $('.siteSidebarToggleFieldList').hide(); $('.siteSidebarToggleSearch').hide(); $('.siteSidebarToggleRange').hide(); $('.siteSidebarTogglePivot').hide(); $('.siteSidebarToggleFilters').toggle(); "><i class="fad fa-filters hover-box-shadow w3-xlarge "></i> Filters</span>
+						<span title="Range" class="siteSidebarToggle " onclick="$('.siteSidebarToggleStats').hide(); $('.siteSidebarToggleFieldList').hide(); $('.siteSidebarToggleSearch').hide(); $('.siteSidebarToggleFilters').hide(); $('.siteSidebarTogglePivot').hide(); $('.siteSidebarToggleRange').toggle(); "><i class="fad fa-calendar-range hover-box-shadow w3-xlarge "></i> Range</span>
+						<span title="Pivot" class="siteSidebarToggle " onclick="$('.siteSidebarToggleStats').hide(); $('.siteSidebarToggleFieldList').hide(); $('.siteSidebarToggleSearch').hide(); $('.siteSidebarToggleFilters').hide(); $('.siteSidebarToggleRange').hide(); $('.siteSidebarTogglePivot').toggle(); "><i class="fad fa-table-pivot hover-box-shadow w3-xlarge "></i> Pivot</span>
+						<span title="FieldList" class="siteSidebarToggle " onclick="$('.siteSidebarToggleStats').hide(); $('.siteSidebarTogglePivot').hide(); $('.siteSidebarToggleSearch').hide(); $('.siteSidebarToggleFilters').hide(); $('.siteSidebarToggleRange').hide(); $('.siteSidebarToggleFieldList').toggle(); "><i class="fad fa-list-ul hover-box-shadow w3-xlarge "></i> FieldList</span>
+						<span title="Stats" class="siteSidebarToggle " onclick="$('.siteSidebarToggleFieldList').hide(); $('.siteSidebarTogglePivot').hide(); $('.siteSidebarToggleSearch').hide(); $('.siteSidebarToggleFilters').hide(); $('.siteSidebarToggleRange').hide(); $('.siteSidebarToggleStats').toggle(); "><i class="fad fa-chart-candlestick hover-box-shadow w3-xlarge "></i> Stats</span>
 					</div>
 					<div class="w3-dropdown-content min-width-300px w3-white w3-border w3-border-2017-navy-peony ">
 						<div class="siteSidebarToggle siteSidebarToggleSearch" style="display: none; ">
@@ -586,18 +586,20 @@
 {{#*inline "htmBodyStartSiteHtmPage"}}
 {{> "htmBodyStartPageLayout"}}
 {{/inline}}
+{{#*inline "htmBodyMiddleSiteHtmPage"}}
+{{> "htmBodyMiddlePageLayout"}}
+{{/inline}}
 {{#*inline "htmBodyEndSiteHtmPage"}}
 {{> "htmBodyEndPageLayout"}}
 {{/inline}}
 {{#*inline "htmBodySiteHtmPage"}}
 {{#block "htmBodyStart"}}{{/block}}
-		<div class="w3-bar ">
-			<div class="w3-bar-item ">
+{{#block "htmBodyMiddle"}}{{/block}}
+{{#block "htmBodyEnd"}}{{/block}}
+{{/inline}}
+{{#*inline "htmBodyMiddleSiteHtmPage"}}
+		<div class="w3-bar w3-content ">
 {{#block "htmBodySidebar"}}{{/block}}
-			</div>
-			<div class="w3-bar-item ">
-{{#block "htmBodyMenu"}}{{/block}}
-			</div>
 		</div>
 	<div class="pageContent w3-content ">
 {{#block "htmBodyGraph"}}{{/block}}
@@ -616,7 +618,6 @@
 	{{/eq}}
 {{#block "htmForm"}}{{/block}}
 {{#block "htmForms"}}{{/block}}
-{{#block "htmBodyEnd"}}{{/block}}
 	</div>
 {{/inline}}
 {{#*inline "table1SiteHtmPage"}}
@@ -792,6 +793,7 @@
 													<div class="w3-cell ">
 														{{> "inputInheritPk"}}
 													</div>
+	{{#ifContainsAnyRoles roles rolesRequired}}
 		{{#eq 'Page' classApiMethodMethod}}
 															<div class="w3-cell w3-left-align w3-cell-top ">
 																<button
@@ -803,6 +805,7 @@
 																</button>
 															</div>
 														{{/eq}}
+	{{/ifContainsAnyRoles}}
 												</div>
 											</div>
 										</div>
@@ -811,6 +814,7 @@
 {{/inline}}
 
 {{#*inline "inputInheritPk"}}
+		{{#ifContainsAnyRoles roles rolesRequired}}
 														<input
 															type="text"
 															title="An optional inherited primary key from a legacy system for this object in the database"
@@ -836,6 +840,11 @@
 	{{/eq}}
 														/>
 
+													{{else}}
+														{{#ifContainsKeys userKeys}}
+															<span class="varSiteHtm{{id}}InheritPk ">{{siteHtm_.inheritPk}}</span>
+			{{/ifContainsKeys}}
+		{{/ifContainsAnyRoles}}
 {{/inline}}
 
 {{#*inline "htmCreated"}}
@@ -912,6 +921,7 @@
 {{/inline}}
 
 {{#*inline "inputArchived"}}
+		{{#ifContainsAnyRoles roles rolesRequired}}
 	{{#eq 'Page' classApiMethodMethod}}
 															<input
 																type="checkbox"
@@ -949,6 +959,11 @@
 														</select>
 	{{/eq}}
 
+													{{else}}
+														{{#ifContainsKeys userKeys}}
+															<span class="varSiteHtm{{id}}Archived ">{{siteHtm_.archived}}</span>
+			{{/ifContainsKeys}}
+		{{/ifContainsAnyRoles}}
 {{/inline}}
 
 {{#*inline "htmDeleted"}}
@@ -971,6 +986,7 @@
 {{/inline}}
 
 {{#*inline "inputDeleted"}}
+		{{#ifContainsAnyRoles roles rolesRequired}}
 	{{#eq 'Page' classApiMethodMethod}}
 															<input
 																type="checkbox"
@@ -1008,6 +1024,11 @@
 														</select>
 	{{/eq}}
 
+													{{else}}
+														{{#ifContainsKeys userKeys}}
+															<span class="varSiteHtm{{id}}Deleted ">{{siteHtm_.deleted}}</span>
+			{{/ifContainsKeys}}
+		{{/ifContainsAnyRoles}}
 {{/inline}}
 
 {{#*inline "htmUri"}}
@@ -1022,6 +1043,7 @@
 													<div class="w3-cell ">
 														{{> "inputUri"}}
 													</div>
+	{{#ifContainsAnyRoles roles rolesRequired}}
 		{{#eq 'Page' classApiMethodMethod}}
 															<div class="w3-cell w3-left-align w3-cell-top ">
 																<button
@@ -1033,6 +1055,7 @@
 																</button>
 															</div>
 														{{/eq}}
+	{{/ifContainsAnyRoles}}
 												</div>
 											</div>
 										</div>
@@ -1041,6 +1064,7 @@
 {{/inline}}
 
 {{#*inline "inputUri"}}
+		{{#ifContainsAnyRoles roles rolesRequired}}
 														<input
 															type="text"
 															placeholder="Page ID"
@@ -1067,6 +1091,11 @@
 	{{/eq}}
 														/>
 
+													{{else}}
+														{{#ifContainsKeys userKeys}}
+															<span class="varSiteHtm{{id}}Uri ">{{siteHtm_.uri}}</span>
+			{{/ifContainsKeys}}
+		{{/ifContainsAnyRoles}}
 {{/inline}}
 
 {{#*inline "htmPageId"}}
@@ -1081,6 +1110,7 @@
 													<div class="w3-cell ">
 														{{> "inputPageId"}}
 													</div>
+	{{#ifContainsAnyRoles roles rolesRequired}}
 		{{#eq 'Page' classApiMethodMethod}}
 															<div class="w3-cell w3-left-align w3-cell-top ">
 																<button
@@ -1092,6 +1122,7 @@
 																</button>
 															</div>
 														{{/eq}}
+	{{/ifContainsAnyRoles}}
 												</div>
 											</div>
 										</div>
@@ -1100,6 +1131,7 @@
 {{/inline}}
 
 {{#*inline "inputPageId"}}
+		{{#ifContainsAnyRoles roles rolesRequired}}
 														<input
 															type="text"
 															placeholder="Page ID"
@@ -1126,6 +1158,11 @@
 	{{/eq}}
 														/>
 
+													{{else}}
+														{{#ifContainsKeys userKeys}}
+															<span class="varSiteHtm{{id}}PageId ">{{siteHtm_.pageId}}</span>
+			{{/ifContainsKeys}}
+		{{/ifContainsAnyRoles}}
 {{/inline}}
 
 {{#*inline "htmSequenceNum"}}
@@ -1140,6 +1177,7 @@
 													<div class="w3-cell ">
 														{{> "inputSequenceNum"}}
 													</div>
+	{{#ifContainsAnyRoles roles rolesRequired}}
 		{{#eq 'Page' classApiMethodMethod}}
 															<div class="w3-cell w3-left-align w3-cell-top ">
 																<button
@@ -1151,6 +1189,7 @@
 																</button>
 															</div>
 														{{/eq}}
+	{{/ifContainsAnyRoles}}
 												</div>
 											</div>
 										</div>
@@ -1159,6 +1198,7 @@
 {{/inline}}
 
 {{#*inline "inputSequenceNum"}}
+		{{#ifContainsAnyRoles roles rolesRequired}}
 														<input
 															type="text"
 															placeholder="Sequence Number"
@@ -1185,6 +1225,11 @@
 	{{/eq}}
 														/>
 
+													{{else}}
+														{{#ifContainsKeys userKeys}}
+															<span class="varSiteHtm{{id}}SequenceNum ">{{siteHtm_.sequenceNum}}</span>
+			{{/ifContainsKeys}}
+		{{/ifContainsAnyRoles}}
 {{/inline}}
 
 {{#*inline "htmHtmGroup"}}
@@ -1199,6 +1244,7 @@
 													<div class="w3-cell ">
 														{{> "inputHtmGroup"}}
 													</div>
+	{{#ifContainsAnyRoles roles rolesRequired}}
 		{{#eq 'Page' classApiMethodMethod}}
 															<div class="w3-cell w3-left-align w3-cell-top ">
 																<button
@@ -1210,6 +1256,7 @@
 																</button>
 															</div>
 														{{/eq}}
+	{{/ifContainsAnyRoles}}
 												</div>
 											</div>
 										</div>
@@ -1218,6 +1265,7 @@
 {{/inline}}
 
 {{#*inline "inputHtmGroup"}}
+		{{#ifContainsAnyRoles roles rolesRequired}}
 														<input
 															type="text"
 															placeholder="HTML Group"
@@ -1244,6 +1292,11 @@
 	{{/eq}}
 														/>
 
+													{{else}}
+														{{#ifContainsKeys userKeys}}
+															<span class="varSiteHtm{{id}}HtmGroup ">{{siteHtm_.htmGroup}}</span>
+			{{/ifContainsKeys}}
+		{{/ifContainsAnyRoles}}
 {{/inline}}
 
 {{#*inline "htmEBefore"}}
@@ -1258,6 +1311,7 @@
 													<div class="w3-cell ">
 														{{> "inputEBefore"}}
 													</div>
+	{{#ifContainsAnyRoles roles rolesRequired}}
 		{{#eq 'Page' classApiMethodMethod}}
 															<div class="w3-cell w3-left-align w3-cell-top ">
 																<button
@@ -1269,6 +1323,7 @@
 																</button>
 															</div>
 														{{/eq}}
+	{{/ifContainsAnyRoles}}
 												</div>
 											</div>
 										</div>
@@ -1277,6 +1332,7 @@
 {{/inline}}
 
 {{#*inline "inputEBefore"}}
+		{{#ifContainsAnyRoles roles rolesRequired}}
 														<input
 															type="text"
 															placeholder="HTML Element"
@@ -1303,6 +1359,11 @@
 	{{/eq}}
 														/>
 
+													{{else}}
+														{{#ifContainsKeys userKeys}}
+															<span class="varSiteHtm{{id}}EBefore ">{{siteHtm_.eBefore}}</span>
+			{{/ifContainsKeys}}
+		{{/ifContainsAnyRoles}}
 {{/inline}}
 
 {{#*inline "htmEAfter"}}
@@ -1317,6 +1378,7 @@
 													<div class="w3-cell ">
 														{{> "inputEAfter"}}
 													</div>
+	{{#ifContainsAnyRoles roles rolesRequired}}
 		{{#eq 'Page' classApiMethodMethod}}
 															<div class="w3-cell w3-left-align w3-cell-top ">
 																<button
@@ -1328,6 +1390,7 @@
 																</button>
 															</div>
 														{{/eq}}
+	{{/ifContainsAnyRoles}}
 												</div>
 											</div>
 										</div>
@@ -1336,6 +1399,7 @@
 {{/inline}}
 
 {{#*inline "inputEAfter"}}
+		{{#ifContainsAnyRoles roles rolesRequired}}
 														<input
 															type="text"
 															placeholder="HTML Element"
@@ -1362,6 +1426,11 @@
 	{{/eq}}
 														/>
 
+													{{else}}
+														{{#ifContainsKeys userKeys}}
+															<span class="varSiteHtm{{id}}EAfter ">{{siteHtm_.eAfter}}</span>
+			{{/ifContainsKeys}}
+		{{/ifContainsAnyRoles}}
 {{/inline}}
 
 {{#*inline "htmA"}}
@@ -1376,6 +1445,7 @@
 													<div class="w3-cell ">
 														{{> "inputA"}}
 													</div>
+	{{#ifContainsAnyRoles roles rolesRequired}}
 		{{#eq 'Page' classApiMethodMethod}}
 															<div class="w3-cell w3-left-align w3-cell-top ">
 																<button
@@ -1387,6 +1457,7 @@
 																</button>
 															</div>
 														{{/eq}}
+	{{/ifContainsAnyRoles}}
 												</div>
 											</div>
 										</div>
@@ -1395,6 +1466,7 @@
 {{/inline}}
 
 {{#*inline "inputA"}}
+		{{#ifContainsAnyRoles roles rolesRequired}}
 														<input
 															type="text"
 															placeholder="HTML Element"
@@ -1421,6 +1493,11 @@
 	{{/eq}}
 														/>
 
+													{{else}}
+														{{#ifContainsKeys userKeys}}
+															<span class="varSiteHtm{{id}}A ">{{siteHtm_.a}}</span>
+			{{/ifContainsKeys}}
+		{{/ifContainsAnyRoles}}
 {{/inline}}
 
 {{#*inline "htmText"}}
@@ -1435,6 +1512,7 @@
 													<div class="w3-cell ">
 														{{> "inputText"}}
 													</div>
+	{{#ifContainsAnyRoles roles rolesRequired}}
 		{{#eq 'Page' classApiMethodMethod}}
 															<div class="w3-cell w3-left-align w3-cell-top ">
 																<button
@@ -1446,6 +1524,7 @@
 																</button>
 															</div>
 														{{/eq}}
+	{{/ifContainsAnyRoles}}
 												</div>
 											</div>
 										</div>
@@ -1454,6 +1533,7 @@
 {{/inline}}
 
 {{#*inline "inputText"}}
+		{{#ifContainsAnyRoles roles rolesRequired}}
 														<input
 															type="text"
 															placeholder="Text"
@@ -1480,6 +1560,11 @@
 	{{/eq}}
 														/>
 
+													{{else}}
+														{{#ifContainsKeys userKeys}}
+															<span class="varSiteHtm{{id}}Text ">{{siteHtm_.text}}</span>
+			{{/ifContainsKeys}}
+		{{/ifContainsAnyRoles}}
 {{/inline}}
 
 {{#*inline "htmTabs"}}
@@ -1494,6 +1579,7 @@
 													<div class="w3-cell ">
 														{{> "inputTabs"}}
 													</div>
+	{{#ifContainsAnyRoles roles rolesRequired}}
 		{{#eq 'Page' classApiMethodMethod}}
 															<div class="w3-cell w3-left-align w3-cell-top ">
 																<button
@@ -1505,6 +1591,7 @@
 																</button>
 															</div>
 														{{/eq}}
+	{{/ifContainsAnyRoles}}
 												</div>
 											</div>
 										</div>
@@ -1513,6 +1600,7 @@
 {{/inline}}
 
 {{#*inline "inputTabs"}}
+		{{#ifContainsAnyRoles roles rolesRequired}}
 														<input
 															type="text"
 															placeholder="Tabs"
@@ -1539,6 +1627,11 @@
 	{{/eq}}
 														/>
 
+													{{else}}
+														{{#ifContainsKeys userKeys}}
+															<span class="varSiteHtm{{id}}Tabs ">{{siteHtm_.tabs}}</span>
+			{{/ifContainsKeys}}
+		{{/ifContainsAnyRoles}}
 {{/inline}}
 
 {{#*inline "htmNewLine"}}
@@ -1561,6 +1654,7 @@
 {{/inline}}
 
 {{#*inline "inputNewLine"}}
+		{{#ifContainsAnyRoles roles rolesRequired}}
 	{{#eq 'Page' classApiMethodMethod}}
 															<input
 																type="checkbox"
@@ -1598,6 +1692,11 @@
 														</select>
 	{{/eq}}
 
+													{{else}}
+														{{#ifContainsKeys userKeys}}
+															<span class="varSiteHtm{{id}}NewLine ">{{siteHtm_.newLine}}</span>
+			{{/ifContainsKeys}}
+		{{/ifContainsAnyRoles}}
 {{/inline}}
 
 {{#*inline "htmHtmBefore"}}
@@ -1612,6 +1711,7 @@
 													<div class="w3-cell ">
 														{{> "inputHtmBefore"}}
 													</div>
+	{{#ifContainsAnyRoles roles rolesRequired}}
 		{{#eq 'Page' classApiMethodMethod}}
 															<div class="w3-cell w3-left-align w3-cell-top ">
 																<button
@@ -1623,6 +1723,7 @@
 																</button>
 															</div>
 														{{/eq}}
+	{{/ifContainsAnyRoles}}
 												</div>
 											</div>
 										</div>
@@ -1631,6 +1732,7 @@
 {{/inline}}
 
 {{#*inline "inputHtmBefore"}}
+		{{#ifContainsAnyRoles roles rolesRequired}}
 														<input
 															type="text"
 															placeholder="HTML before"
@@ -1657,6 +1759,11 @@
 	{{/eq}}
 														/>
 
+													{{else}}
+														{{#ifContainsKeys userKeys}}
+															<span class="varSiteHtm{{id}}HtmBefore ">{{siteHtm_.htmBefore}}</span>
+			{{/ifContainsKeys}}
+		{{/ifContainsAnyRoles}}
 {{/inline}}
 
 {{#*inline "htmHtmAfter"}}
@@ -1671,6 +1778,7 @@
 													<div class="w3-cell ">
 														{{> "inputHtmAfter"}}
 													</div>
+	{{#ifContainsAnyRoles roles rolesRequired}}
 		{{#eq 'Page' classApiMethodMethod}}
 															<div class="w3-cell w3-left-align w3-cell-top ">
 																<button
@@ -1682,6 +1790,7 @@
 																</button>
 															</div>
 														{{/eq}}
+	{{/ifContainsAnyRoles}}
 												</div>
 											</div>
 										</div>
@@ -1690,6 +1799,7 @@
 {{/inline}}
 
 {{#*inline "inputHtmAfter"}}
+		{{#ifContainsAnyRoles roles rolesRequired}}
 														<input
 															type="text"
 															placeholder="HTML after"
@@ -1716,6 +1826,11 @@
 	{{/eq}}
 														/>
 
+													{{else}}
+														{{#ifContainsKeys userKeys}}
+															<span class="varSiteHtm{{id}}HtmAfter ">{{siteHtm_.htmAfter}}</span>
+			{{/ifContainsKeys}}
+		{{/ifContainsAnyRoles}}
 {{/inline}}
 
 {{#*inline "htmObjectTitle"}}
@@ -1756,6 +1871,7 @@
 													<div class="w3-cell ">
 														{{> "inputObjectId"}}
 													</div>
+	{{#ifContainsAnyRoles roles rolesRequired}}
 		{{#eq 'Page' classApiMethodMethod}}
 															<div class="w3-cell w3-left-align w3-cell-top ">
 																<button
@@ -1767,6 +1883,7 @@
 																</button>
 															</div>
 														{{/eq}}
+	{{/ifContainsAnyRoles}}
 												</div>
 											</div>
 										</div>
@@ -1775,6 +1892,7 @@
 {{/inline}}
 
 {{#*inline "inputObjectId"}}
+		{{#ifContainsAnyRoles roles rolesRequired}}
 														<input
 															type="text"
 															placeholder="ID"
@@ -1801,4 +1919,9 @@
 	{{/eq}}
 														/>
 
+													{{else}}
+														{{#ifContainsKeys userKeys}}
+															<span class="varSiteHtm{{id}}ObjectId ">{{siteHtm_.objectId}}</span>
+			{{/ifContainsKeys}}
+		{{/ifContainsAnyRoles}}
 {{/inline}}

@@ -276,7 +276,23 @@ public class SitePageEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 		user(serviceRequest, SiteRequestEnUS.class, SiteUser.class, "computate.org-enUS-SiteUser", "postSiteUserFuture", "patchSiteUserFuture").onSuccess(siteRequest -> {
 			try {
 				siteRequest.setJsonObject(body);
-				{
+
+				List<String> roles = Optional.ofNullable(config.getValue(ConfigKeys.AUTH_ROLES_REQUIRED + "_SitePage")).map(v -> v instanceof JsonArray ? (JsonArray)v : new JsonArray(v.toString())).orElse(new JsonArray()).getList();
+				if(
+						!CollectionUtils.containsAny(siteRequest.getUserResourceRoles(), roles)
+						&& !CollectionUtils.containsAny(siteRequest.getUserRealmRoles(), roles)
+						) {
+					eventHandler.handle(Future.succeededFuture(
+						new ServiceResponse(401, "UNAUTHORIZED", 
+							Buffer.buffer().appendString(
+								new JsonObject()
+									.put("errorCode", "401")
+									.put("errorMessage", "roles required: " + String.join(", ", roles))
+									.encodePrettily()
+								), MultiMap.caseInsensitiveMultiMap()
+						)
+					));
+				} else {
 					ApiRequest apiRequest = new ApiRequest();
 					apiRequest.setRows(1L);
 					apiRequest.setNumFound(1L);
@@ -409,7 +425,23 @@ public class SitePageEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 		user(serviceRequest, SiteRequestEnUS.class, SiteUser.class, "computate.org-enUS-SiteUser", "postSiteUserFuture", "patchSiteUserFuture").onSuccess(siteRequest -> {
 			try {
 				siteRequest.setJsonObject(body);
-				{
+
+				List<String> roles = Optional.ofNullable(config.getValue(ConfigKeys.AUTH_ROLES_REQUIRED + "_SitePage")).map(v -> v instanceof JsonArray ? (JsonArray)v : new JsonArray(v.toString())).orElse(new JsonArray()).getList();
+				if(
+						!CollectionUtils.containsAny(siteRequest.getUserResourceRoles(), roles)
+						&& !CollectionUtils.containsAny(siteRequest.getUserRealmRoles(), roles)
+						) {
+					eventHandler.handle(Future.succeededFuture(
+						new ServiceResponse(401, "UNAUTHORIZED", 
+							Buffer.buffer().appendString(
+								new JsonObject()
+									.put("errorCode", "401")
+									.put("errorMessage", "roles required: " + String.join(", ", roles))
+									.encodePrettily()
+								), MultiMap.caseInsensitiveMultiMap()
+						)
+					));
+				} else {
 					searchSitePageList(siteRequest, true, false, true).onSuccess(listSitePage -> {
 						try {
 							List<String> roles2 = Optional.ofNullable(config.getValue(ConfigKeys.AUTH_ROLES_ADMIN)).map(v -> v instanceof JsonArray ? (JsonArray)v : new JsonArray(v.toString())).orElse(new JsonArray()).getList();
@@ -621,7 +653,23 @@ public class SitePageEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 		user(serviceRequest, SiteRequestEnUS.class, SiteUser.class, "computate.org-enUS-SiteUser", "postSiteUserFuture", "patchSiteUserFuture").onSuccess(siteRequest -> {
 			try {
 				siteRequest.setJsonObject(body);
-				{
+
+				List<String> roles = Optional.ofNullable(config.getValue(ConfigKeys.AUTH_ROLES_REQUIRED + "_SitePage")).map(v -> v instanceof JsonArray ? (JsonArray)v : new JsonArray(v.toString())).orElse(new JsonArray()).getList();
+				if(
+						!CollectionUtils.containsAny(siteRequest.getUserResourceRoles(), roles)
+						&& !CollectionUtils.containsAny(siteRequest.getUserRealmRoles(), roles)
+						) {
+					eventHandler.handle(Future.succeededFuture(
+						new ServiceResponse(401, "UNAUTHORIZED", 
+							Buffer.buffer().appendString(
+								new JsonObject()
+									.put("errorCode", "401")
+									.put("errorMessage", "roles required: " + String.join(", ", roles))
+									.encodePrettily()
+								), MultiMap.caseInsensitiveMultiMap()
+						)
+					));
+				} else {
 					try {
 						ApiRequest apiRequest = new ApiRequest();
 						JsonArray jsonArray = Optional.ofNullable(siteRequest.getJsonObject()).map(o -> o.getJsonArray("list")).orElse(new JsonArray());
@@ -789,7 +837,7 @@ public class SitePageEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 							if(body2.size() > 0) {
 								siteRequest.setJsonObject(body2);
 								patchSitePageFuture(o2, true).onSuccess(b -> {
-									LOG.info("Import SitePage {} succeeded, modified SitePage. ", body.getValue("pk"));
+									LOG.info("Import SitePage {} succeeded, modified SitePage. ", body.getValue(SitePage.VAR_id));
 									eventHandler.handle(Future.succeededFuture());
 								}).onFailure(ex -> {
 									LOG.error(String.format("putimportSitePageFuture failed. "), ex);
@@ -800,7 +848,7 @@ public class SitePageEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 							}
 						} else {
 							postSitePageFuture(siteRequest, true).onSuccess(b -> {
-								LOG.info("Import SitePage {} succeeded, created new SitePage. ", body.getValue("pk"));
+								LOG.info("Import SitePage {} succeeded, created new SitePage. ", body.getValue(SitePage.VAR_id));
 								eventHandler.handle(Future.succeededFuture());
 							}).onFailure(ex -> {
 								LOG.error(String.format("putimportSitePageFuture failed. "), ex);

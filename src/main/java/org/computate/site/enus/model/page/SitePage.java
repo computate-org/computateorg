@@ -39,14 +39,15 @@ import io.vertx.core.Promise;
  * AName.enUS: an article
  * Color: 2017-navy-peony
  * IconGroup: duotone
- * IconName: page
+ * IconName: newspaper
  * NameVar: page
  * 
  * Sort.asc: courseNum
  * Sort.asc: lessonNum
  * 
- * RoleAll: true
- * Description: A webpage in the site. 
+ * PublicRead: true
+ * Role.enUS: SiteAdmin
+ * Description: An article in the site. 
  */
 public class SitePage extends SitePageGen<Object> {
 
