@@ -76,6 +76,7 @@ import io.vertx.ext.mail.MailConfig;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.Session;
+import io.vertx.ext.web.api.service.ServiceRequest;
 import io.vertx.ext.web.client.WebClient;
 import io.vertx.ext.web.handler.OAuth2AuthHandler;
 import io.vertx.ext.web.handler.SessionHandler;
@@ -800,32 +801,56 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 			});
 
 			router.get("/template/enUS/HomePage").handler(ctx -> {
-				ctx.put(ConfigKeys.STATIC_BASE_URL, config().getString(ConfigKeys.STATIC_BASE_URL));
-				HomePage t = new HomePage();
-				SiteRequestEnUS siteRequest = new SiteRequestEnUS();
-				siteRequest.setConfig(config());
-				siteRequest.setRequestHeaders(ctx.request().headers());
-				siteRequest.setWebClient(webClient);
-				siteRequest.initDeepSiteRequestEnUS();
-				t.promiseDeepForClass(siteRequest).onSuccess(a -> {
-					JsonObject json = JsonObject.mapFrom(t);
-					json.forEach(entry -> {
-						ctx.put(entry.getKey(), entry.getValue());
+				try {
+					ctx.put(ConfigKeys.STATIC_BASE_URL, config().getString(ConfigKeys.STATIC_BASE_URL));
+					HomePage t = new HomePage();
+					ServiceRequest serviceRequest = new ServiceRequest(
+							new JsonObject().put("path", JsonObject.mapFrom(ctx.pathParams())).put("query", JsonObject.mapFrom(ctx.queryParams())).put("cookie", JsonObject.mapFrom(ctx.cookieMap()))
+							, ctx.request().headers()
+							, Optional.ofNullable(ctx.user()).map(u -> u.principal()).orElse(null)
+							, new JsonObject()
+							);
+					SiteRequestEnUS siteRequest = new SiteRequestEnUS();
+					siteRequest.setConfig(config());
+					siteRequest.setServiceRequest(serviceRequest);
+					siteRequest.setRequestHeaders(ctx.request().headers());
+					siteRequest.setWebClient(webClient);
+					siteRequest.initDeepSiteRequestEnUS();
+					t.promiseDeepForClass(siteRequest).onSuccess(a -> {
+						try {
+							JsonObject json = JsonObject.mapFrom(t);
+							json.forEach(entry -> {
+								ctx.put(entry.getKey(), entry.getValue());
+							});
+							ctx.next();
+						} catch(Exception ex) {
+							LOG.error("Failed to load home page. ", ex);
+							ctx.fail(ex);
+						}
+					}).onFailure(ex -> {
+						LOG.error("Failed to load home page. ", ex);
+						ctx.fail(ex);
 					});
-					ctx.next();
-				}).onFailure(ex -> {
+				} catch(Exception ex) {
 					LOG.error("Failed to load home page. ", ex);
 					ctx.fail(ex);
-				});
+				}
 			});
 
 			router.getWithRegex("(?<uri>\\/(?<lang>(?<lang1>[a-z][a-z])-(?<lang2>[a-z][a-z]))\\/.*)").handler(ctx -> {
 				String uri = ctx.pathParam("uri");
 				String lang = String.format("%s%s", ctx.pathParam("lang1"), ctx.pathParam("lang2").toUpperCase());
+				ServiceRequest serviceRequest = new ServiceRequest(
+						new JsonObject().put("path", JsonObject.mapFrom(ctx.pathParams())).put("query", JsonObject.mapFrom(ctx.queryParams())).put("cookie", JsonObject.mapFrom(ctx.cookieMap()))
+						, ctx.request().headers()
+						, Optional.ofNullable(ctx.user()).map(u -> u.principal()).orElse(null)
+						, new JsonObject()
+						);
 
 				SiteRequestEnUS siteRequest = new SiteRequestEnUS();
 				siteRequest.setConfig(config());
 				siteRequest.setWebClient(webClient);
+				siteRequest.setServiceRequest(serviceRequest);
 				siteRequest.setRequestHeaders(ctx.request().headers());
 				siteRequest.initDeepSiteRequestEnUS();
 				SearchList<SitePage> l = new SearchList<>();
@@ -876,14 +901,19 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 			});
 
 			router.get("/template/*").handler(ctx -> {
-				ctx.put(ConfigKeys.STATIC_BASE_URL, config().getString(ConfigKeys.STATIC_BASE_URL));
-				ctx.put(ConfigKeys.GITHUB_ORG, config().getString(ConfigKeys.GITHUB_ORG));
-				ctx.put(ConfigKeys.SITE_NAME, config().getString(ConfigKeys.SITE_NAME));
-				ctx.put(ConfigKeys.SITE_DISPLAY_NAME, config().getString(ConfigKeys.SITE_DISPLAY_NAME));
-				ctx.put(ConfigKeys.PROJECT_POWERED_BY_URL, config().getString(ConfigKeys.PROJECT_POWERED_BY_URL));
-				ctx.put(ConfigKeys.PROJECT_POWERED_BY_NAME, config().getString(ConfigKeys.PROJECT_POWERED_BY_NAME));
-				ctx.put(ConfigKeys.PROJECT_POWERED_BY_IMAGE_URI, config().getString(ConfigKeys.PROJECT_POWERED_BY_IMAGE_URI));
-				ctx.next();
+				try {
+					ctx.put(ConfigKeys.STATIC_BASE_URL, config().getString(ConfigKeys.STATIC_BASE_URL));
+					ctx.put(ConfigKeys.GITHUB_ORG, config().getString(ConfigKeys.GITHUB_ORG));
+					ctx.put(ConfigKeys.SITE_NAME, config().getString(ConfigKeys.SITE_NAME));
+					ctx.put(ConfigKeys.SITE_DISPLAY_NAME, config().getString(ConfigKeys.SITE_DISPLAY_NAME));
+					ctx.put(ConfigKeys.PROJECT_POWERED_BY_URL, config().getString(ConfigKeys.PROJECT_POWERED_BY_URL));
+					ctx.put(ConfigKeys.PROJECT_POWERED_BY_NAME, config().getString(ConfigKeys.PROJECT_POWERED_BY_NAME));
+					ctx.put(ConfigKeys.PROJECT_POWERED_BY_IMAGE_URI, config().getString(ConfigKeys.PROJECT_POWERED_BY_IMAGE_URI));
+					ctx.next();
+				} catch(Exception ex) {
+					LOG.error("Failed to load page. ", ex);
+					ctx.fail(ex);
+				}
 			});
 			router.get("/template/*").handler(templateHandler);
 

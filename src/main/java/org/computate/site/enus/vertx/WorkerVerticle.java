@@ -425,7 +425,6 @@ public class WorkerVerticle extends WorkerVerticleGen<AbstractVerticle> {
 					page.setPageImageUri(json.getString(SitePage.VAR_pageImageUri));
 					page.promiseDeepForClass(siteRequest).onSuccess(a -> {
 						try {
-							JsonObject importBody = new JsonObject();
 							JsonArray importItems = new JsonArray();
 							List<Future> futures = new ArrayList<>();
 							Stack<String> stack = new Stack<>();
@@ -450,8 +449,6 @@ public class WorkerVerticle extends WorkerVerticleGen<AbstractVerticle> {
 									ExceptionUtils.rethrow(ex);
 								}
 							});
-							JsonObject pageBody2 = JsonObject.mapFrom(page);
-							json.put("page", pageBody2);
 			
 							stack.push("html");
 							stack.push("body");
@@ -459,10 +456,11 @@ public class WorkerVerticle extends WorkerVerticleGen<AbstractVerticle> {
 							for(String htmGroup : json.fieldNames()) {
 								if(StringUtils.startsWith(htmGroup, "htm")) {
 									JsonArray pageItems = json.getJsonArray(htmGroup);
-									sequenceNum = importSiteHtm(json, stack, pageId, htmGroup, pageItems, futures, sequenceNum);
+									sequenceNum = importSiteHtm(page, json, stack, pageId, htmGroup, pageItems, futures, sequenceNum);
 								}
 							}
-							importBody.put("list", importItems);
+							JsonObject pageBody2 = JsonObject.mapFrom(page);
+							json.put("page", pageBody2);
 			
 							CompositeFuture.all(futures).onSuccess(b -> {
 								JsonObject pageParams = new JsonObject();
@@ -525,7 +523,7 @@ public class WorkerVerticle extends WorkerVerticleGen<AbstractVerticle> {
 		return promise.future();
 	}
 
-	private Long importSiteHtm(JsonObject json, Stack<String> stack, String pageId, String htmGroup, JsonArray pageItems, List<Future> futures, Long sequenceNum) throws Exception {
+	private Long importSiteHtm(SitePage page, JsonObject json, Stack<String> stack, String pageId, String htmGroup, JsonArray pageItems, List<Future> futures, Long sequenceNum) throws Exception {
 		Double sort = 0D;
 		for(Integer i = 0; i < pageItems.size(); i++) {
 			// Process a page item, one at a time
@@ -560,7 +558,9 @@ public class WorkerVerticle extends WorkerVerticleGen<AbstractVerticle> {
 					Template template = handlebars.compileInline(text);
 					Context engineContext = Context.newBuilder(json.getMap()).resolver(templateEngine.getResolvers()).build();
 					Buffer buffer = Buffer.buffer(template.apply(engineContext));
-					importItem.put(SiteHtm.VAR_text, new JsonArray().addAll(new JsonArray(Arrays.asList(buffer.toString().split("\r?\n")))));
+					String[] strs = buffer.toString().split("\r?\n");
+					importItem.put(SiteHtm.VAR_text, new JsonArray().addAll(new JsonArray(Arrays.asList(strs))));
+					page.addObjectText(strs);
 				}
 				if(!eNoWrapParent && !tabs.isEmpty()) {
 					importItem.put(SiteHtm.VAR_tabs, tabs);
@@ -634,10 +634,10 @@ public class WorkerVerticle extends WorkerVerticleGen<AbstractVerticle> {
 						// Process nested elements of the "in" value
 						if(in instanceof JsonObject) {
 							// Process the nested JsonObject of the "in" value
-							sequenceNum = importSiteHtm(json2, stack, pageId, htmGroup, new JsonArray().add(in), futures, sequenceNum);
+							sequenceNum = importSiteHtm(page, json2, stack, pageId, htmGroup, new JsonArray().add(in), futures, sequenceNum);
 						} else if(in instanceof JsonArray) {
 							// Process the each of the nested JsonObjects in the array of the "in" value
-							sequenceNum = importSiteHtm(json2, stack, pageId, htmGroup, (JsonArray)in, futures, sequenceNum);
+							sequenceNum = importSiteHtm(page, json2, stack, pageId, htmGroup, (JsonArray)in, futures, sequenceNum);
 						}
 					}
 				}
@@ -647,10 +647,10 @@ public class WorkerVerticle extends WorkerVerticleGen<AbstractVerticle> {
 					// Process nested elements of the "in" value
 					if(in instanceof JsonObject) {
 						// Process the nested JsonObject of the "in" value
-						sequenceNum = importSiteHtm(json, stack, pageId, htmGroup, new JsonArray().add(in), futures, sequenceNum);
+						sequenceNum = importSiteHtm(page, json, stack, pageId, htmGroup, new JsonArray().add(in), futures, sequenceNum);
 					} else if(in instanceof JsonArray) {
 						// Process the each of the nested JsonObjects in the array of the "in" value
-						sequenceNum = importSiteHtm(json, stack, pageId, htmGroup, (JsonArray)in, futures, sequenceNum);
+						sequenceNum = importSiteHtm(page, json, stack, pageId, htmGroup, (JsonArray)in, futures, sequenceNum);
 					}
 				}
 			}

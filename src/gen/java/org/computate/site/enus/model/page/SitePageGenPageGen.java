@@ -821,8 +821,8 @@ public abstract class SitePageGenPageGen<DEV> extends PageLayout {
 	public static String staticSetDefaultFieldListVars(SiteRequestEnUS siteRequest_, String o) {
 		return o;
 	}
-	public SitePageGenPage addDefaultFieldListVars(String...objets) {
-		for(String o : objets) {
+	public SitePageGenPage addDefaultFieldListVars(String...objects) {
+		for(String o : objects) {
 			addDefaultFieldListVars(o);
 		}
 		return (SitePageGenPage)this;
@@ -833,10 +833,10 @@ public abstract class SitePageGenPageGen<DEV> extends PageLayout {
 		return (SitePageGenPage)this;
 	}
 	@JsonIgnore
-	public void setDefaultFieldListVars(JsonArray objets) {
+	public void setDefaultFieldListVars(JsonArray objects) {
 		defaultFieldListVars.clear();
-		for(int i = 0; i < objets.size(); i++) {
-			String o = objets.getString(i);
+		for(int i = 0; i < objects.size(); i++) {
+			String o = objects.getString(i);
 			addDefaultFieldListVars(o);
 		}
 	}
@@ -887,8 +887,8 @@ public abstract class SitePageGenPageGen<DEV> extends PageLayout {
 	public static String staticSetDefaultStatsVars(SiteRequestEnUS siteRequest_, String o) {
 		return o;
 	}
-	public SitePageGenPage addDefaultStatsVars(String...objets) {
-		for(String o : objets) {
+	public SitePageGenPage addDefaultStatsVars(String...objects) {
+		for(String o : objects) {
 			addDefaultStatsVars(o);
 		}
 		return (SitePageGenPage)this;
@@ -899,10 +899,10 @@ public abstract class SitePageGenPageGen<DEV> extends PageLayout {
 		return (SitePageGenPage)this;
 	}
 	@JsonIgnore
-	public void setDefaultStatsVars(JsonArray objets) {
+	public void setDefaultStatsVars(JsonArray objects) {
 		defaultStatsVars.clear();
-		for(int i = 0; i < objets.size(); i++) {
-			String o = objets.getString(i);
+		for(int i = 0; i < objects.size(); i++) {
+			String o = objects.getString(i);
 			addDefaultStatsVars(o);
 		}
 	}
@@ -953,8 +953,8 @@ public abstract class SitePageGenPageGen<DEV> extends PageLayout {
 	public static String staticSetDefaultPivotVars(SiteRequestEnUS siteRequest_, String o) {
 		return o;
 	}
-	public SitePageGenPage addDefaultPivotVars(String...objets) {
-		for(String o : objets) {
+	public SitePageGenPage addDefaultPivotVars(String...objects) {
+		for(String o : objects) {
 			addDefaultPivotVars(o);
 		}
 		return (SitePageGenPage)this;
@@ -965,10 +965,10 @@ public abstract class SitePageGenPageGen<DEV> extends PageLayout {
 		return (SitePageGenPage)this;
 	}
 	@JsonIgnore
-	public void setDefaultPivotVars(JsonArray objets) {
+	public void setDefaultPivotVars(JsonArray objects) {
 		defaultPivotVars.clear();
-		for(int i = 0; i < objets.size(); i++) {
-			String o = objets.getString(i);
+		for(int i = 0; i < objects.size(); i++) {
+			String o = objects.getString(i);
 			addDefaultPivotVars(o);
 		}
 	}
