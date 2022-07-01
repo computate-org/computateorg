@@ -212,6 +212,8 @@ spec:
               value: '{{ ENABLE_IMPORT_DATA_SitePage | to_json }}'
             - name: ENABLE_IMPORT_DATA_SiteHtm
               value: '{{ ENABLE_IMPORT_DATA_SiteHtm | to_json }}'
+            - name: ENABLE_IMPORT_DATA_Article
+              value: '{{ ENABLE_IMPORT_DATA_Article | to_json }}'
             - name: ENABLE_REFRESH_DATA
               value: "{{ ENABLE_REFRESH_DATA }}"
             - name: TIMER_DB_SOLR_SYNC_IN_SECONDS
@@ -224,6 +226,8 @@ spec:
               value: '{{ AUTH_ROLES_REQUIRED_SitePage | to_json }}'
             - name: AUTH_ROLES_REQUIRED_SiteHtm
               value: '{{ AUTH_ROLES_REQUIRED_SiteHtm | to_json }}'
+            - name: AUTH_ROLES_REQUIRED_Article
+              value: '{{ AUTH_ROLES_REQUIRED_Article | to_json }}'
 
           volumeMounts:
       volumes:

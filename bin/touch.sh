@@ -9,3 +9,4 @@ touch ~/.local/src/computate.org/src/main/java/org/computate/site/enus/model/bas
 touch ~/.local/src/computate.org/src/main/java/org/computate/site/enus/model/user/SiteUser.java
 touch ~/.local/src/computate.org/src/main/java/org/computate/site/enus/model/page/SitePage.java
 touch ~/.local/src/computate.org/src/main/java/org/computate/site/enus/model/htm/SiteHtm.java
+touch ~/.local/src/computate.org/src/main/java/org/computate/site/enus/article/Article.java

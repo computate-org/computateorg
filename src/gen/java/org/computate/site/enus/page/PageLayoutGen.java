@@ -1424,8 +1424,8 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	public static String staticSetRoles(SiteRequestEnUS siteRequest_, String o) {
 		return o;
 	}
-	public PageLayout addRoles(String...objets) {
-		for(String o : objets) {
+	public PageLayout addRoles(String...objects) {
+		for(String o : objects) {
 			addRoles(o);
 		}
 		return (PageLayout)this;
@@ -1436,10 +1436,10 @@ public abstract class PageLayoutGen<DEV> extends Object {
 		return (PageLayout)this;
 	}
 	@JsonIgnore
-	public void setRoles(JsonArray objets) {
+	public void setRoles(JsonArray objects) {
 		roles.clear();
-		for(int i = 0; i < objets.size(); i++) {
-			String o = objets.getString(i);
+		for(int i = 0; i < objects.size(); i++) {
+			String o = objects.getString(i);
 			addRoles(o);
 		}
 	}
@@ -1490,8 +1490,8 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	public static String staticSetRolesRequired(SiteRequestEnUS siteRequest_, String o) {
 		return o;
 	}
-	public PageLayout addRolesRequired(String...objets) {
-		for(String o : objets) {
+	public PageLayout addRolesRequired(String...objects) {
+		for(String o : objects) {
 			addRolesRequired(o);
 		}
 		return (PageLayout)this;
@@ -1502,10 +1502,10 @@ public abstract class PageLayoutGen<DEV> extends Object {
 		return (PageLayout)this;
 	}
 	@JsonIgnore
-	public void setRolesRequired(JsonArray objets) {
+	public void setRolesRequired(JsonArray objects) {
 		rolesRequired.clear();
-		for(int i = 0; i < objets.size(); i++) {
-			String o = objets.getString(i);
+		for(int i = 0; i < objects.size(); i++) {
+			String o = objects.getString(i);
 			addRolesRequired(o);
 		}
 	}
@@ -1556,8 +1556,8 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	public static String staticSetAuthRolesAdmin(SiteRequestEnUS siteRequest_, String o) {
 		return o;
 	}
-	public PageLayout addAuthRolesAdmin(String...objets) {
-		for(String o : objets) {
+	public PageLayout addAuthRolesAdmin(String...objects) {
+		for(String o : objects) {
 			addAuthRolesAdmin(o);
 		}
 		return (PageLayout)this;
@@ -1568,10 +1568,10 @@ public abstract class PageLayoutGen<DEV> extends Object {
 		return (PageLayout)this;
 	}
 	@JsonIgnore
-	public void setAuthRolesAdmin(JsonArray objets) {
+	public void setAuthRolesAdmin(JsonArray objects) {
 		authRolesAdmin.clear();
-		for(int i = 0; i < objets.size(); i++) {
-			String o = objets.getString(i);
+		for(int i = 0; i < objects.size(); i++) {
+			String o = objects.getString(i);
 			addAuthRolesAdmin(o);
 		}
 	}

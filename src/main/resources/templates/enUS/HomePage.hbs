@@ -9,12 +9,8 @@
 {{#partial "htmBodyStart"}}{{> htmBodyStartPageLayout}}{{/partial}}
 {{#partial "htmBodyMiddle"}}
 <div class="w3-content w3-row w3-padding ">
-	<div class="w3-content ">
-		<h1>Create your own data-driven, searchable website on your own computer and the cloud, with open source software. </h1>
-		<h2>Flexible PostgreSQL database, Solr search integration, OpenAPI 3 standards, completely asynchronous Vert.x code, deployed on Red Hat OpenShift, for the very best, 100% open source solutions. </h2>
-	</div>
 	<div>
-		<h3>Search the articles: </h2>
+		<h3>Search the articles: </h3>
 		<div class="">
 			<form id="ArticleForm" style="display: inline-block; " method="GET" action="/page" onsubmit="event.preventDefault(); search($('#searchArticlesInput')); return false; ">
 				<div class="w3-bar ">
@@ -37,8 +33,8 @@
 				</div>
 			</a>
 		</div>
-	</div>
 {{/each}}
+	</div>
 </div>
 {{> htmBodyMiddlePageLayout}}{{/partial}}
 {{#partial "htmBodyEnd"}}{{> htmBodyEndPageLayout}}{{/partial}}

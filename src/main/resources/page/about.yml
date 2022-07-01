@@ -453,6 +453,8 @@ htmBody:
                       - e: span
                         text: "{{ author.name }}"
       - e: table
+        label:
+          - tableReview
         a:
           id: tableReview
           class: review2Table 

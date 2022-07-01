@@ -10,8 +10,8 @@ import java.util.regex.Pattern;
 import org.apache.commons.lang3.StringUtils;
 import org.computate.search.wrap.Wrap;
 import org.computate.vertx.api.ApiRequest;
-import org.computate.vertx.model.user.ComputateVertxSiteUser;
-import org.computate.vertx.request.ComputateVertxSiteRequest;
+import org.computate.vertx.model.user.ComputateSiteUser;
+import org.computate.vertx.request.ComputateSiteRequest;
 import org.computate.site.enus.model.user.SiteUser;
 
 import io.vertx.core.MultiMap;
@@ -26,7 +26,7 @@ import io.vertx.sqlclient.SqlConnection;
  * Keyword: classSimpleNameSiteRequest
  * Description: Java class to store information about a given API request to use in building the responses to API and UI requests 
  */
-public class SiteRequestEnUS extends SiteRequestEnUSGen<Object> implements ComputateVertxSiteRequest, Serializable {
+public class SiteRequestEnUS extends SiteRequestEnUSGen<Object> implements ComputateSiteRequest, Serializable {
 
 	private static final Pattern PATTERN_SESSION = Pattern.compile(".*vertx-web.session=(\\w+).*");
 
@@ -272,7 +272,8 @@ public class SiteRequestEnUS extends SiteRequestEnUSGen<Object> implements Compu
 		o.setConfig(config); // for site configuration info
 		o.setWebClient(webClient); // for performing searches
 		o.setServiceRequest(serviceRequest);  // for info about the original request
-		o.setUser(user); // The user principal
+		o.setUser(user); // The user
+		o.setUserPrincipal(userPrincipal); // The user principal
 		o.setUserKey(userKey); // The user primary key
 		o.setUserId(userId); // The user identifier in the authentication system
 		o.setApiRequest_(apiRequest_); // The current API request information
@@ -291,7 +292,7 @@ public class SiteRequestEnUS extends SiteRequestEnUSGen<Object> implements Compu
 	 * Description: An implementation of the interface to set the site request
 	 */
 	@Override
-	public <T extends ComputateVertxSiteRequest> void setSiteRequest_(T siteRequest) {
+	public <T extends ComputateSiteRequest> void setSiteRequest_(T siteRequest) {
 		this.siteRequest_ = (SiteRequestEnUS)siteRequest;
 	}
 
@@ -299,7 +300,7 @@ public class SiteRequestEnUS extends SiteRequestEnUSGen<Object> implements Compu
 	 * Description: An implementation of the interface to get the site user object
 	 */
 	@Override
-	public <T extends ComputateVertxSiteUser> T getSiteUser_(Class<T> clazz) {
+	public <T extends ComputateSiteUser> T getSiteUser_(Class<T> clazz) {
 		return (T)siteUser_;
 	}
 }

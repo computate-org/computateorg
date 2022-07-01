@@ -14,10 +14,12 @@
 {{#*inline "htmScriptPageLayout"}}		<!-- #*inline "htmScriptPageLayout" -->
 {{/inline}}
 {{#*inline "htmStylePageLayout"}}		<!-- #*inline "htmStylePageLayout" -->
+
 		<link rel="icon" href="{{staticBaseUrl}}/favicon.ico" />
 		<link rel="stylesheet" href="{{staticBaseUrl}}/css/w3.css" />
 		<link rel="stylesheet" href="{{staticBaseUrl}}/css/site-enUS.css" />
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Anonymous%20Pro%7CBellefair%7CJomhuria%7CPT%20Serif%3A700%7CStint%20Ultra%20Condensed&amp;display=swap"/>
+
 {{/inline}}
 {{#*inline "htmMetaPageLayout"}}		<!-- #*inline "htmMetaPageLayout" -->
 		<meta charset="UTF-8" />
@@ -51,44 +53,20 @@
 				<div class="site-bar-item w3-bar-item ">
 					<a class="header-icon-a w3-hover-opacity w3-center " href=" /en-us/about"><span class="site-menu-item">about</span></a>
 				</div>
+
 				<div class="site-bar-item w3-bar-item ">
-					<a href="/page" class="header-icon-a w3-hover-opacity w3-center "><i class="fad fa-page w3-text-2017-navy-peony "></i> articles</a>
+					<a href="/page" class="header-icon-a w3-hover-opacity w3-center w3-text-2017-navy-peony "><i class="fad fa-newspaper w3-text-2017-navy-peony "></i> articles</a>
 				</div>
 				<div class="site-bar-item w3-bar-item ">
-					<form id="ArticleForm" style="display: inline-block; " method="GET" action="/page" onsubmit="event.preventDefault(); search($('#searchArticlesInput')); return false; ">
+					<form style="display: inline-block; " method="GET" action="/page" onsubmit="event.preventDefault(); search($('#searchPageInput')); return false; ">
 						<div class="w3-bar ">
-							<input type="text" placeholder="search articles" title="" class="recherchePageRecherche_enUS w3-border w3-bar-item " name="objectText" id="searchArticlesInput">
-							<button class="w3-round w3-border w3-border-black w3-ripple w3-bar-item w3-vivid-greenish-blue ">
+							<input type="text" placeholder="search articles" title="" class="w3-border w3-bar-item " name="objectText" id="searchPageInput">
+							<button class="w3-round w3-border w3-border-black w3-ripple w3-bar-item w3-2017-navy-peony ">
 								<i class="fas fa-search "></i>
 							</button>
 						</div>
 					</form>
 				</div>
-				<!--
-				<div class="site-bar-item w3-bar-item ">
-					<span class="header-icon-a w3-center "><a class="w3-hover-opacity" title="English" href="/en-us/about"><img alt="" src="https://computate.neocities.org/svg/flag-US.svg" style="height: 50px; "></a><a class="w3-hover-opacity" title="français" href="/frFR/apropos"><img alt="" src="https://computate.neocities.org/svg/flag-FR.svg" style="height: 50px; "></a><span class="site-menu-item">Language</span></span>
-				</div>
-				-->
-				<!--
-				<div class="site-bar-item w3-bar-item ">
-					<a class="header-icon-a w3-hover-opacity w3-center " href=" /en-us/course"><span class="site-menu-item">courses</span></a>
-				</div>
-				-->
-				<!--
-				<div class="site-bar-item w3-bar-item ">
-					<a class="header-icon-a w3-hover-opacity w3-center " href=" /en-us/faq"><span class="site-menu-item">FAQ</span></a>
-				</div>
-				-->
-				<!--
-				<div class="site-bar-item w3-bar-item ">
-{{#if userKey}}
-					<a href="/user/{{ userKey }}" class="w3-bar-item w3-button w3-text-teal "><i class="fad fa-house-user w3-text-teal "></i> {{userName}}</a>
-					<a href="{{ logoutUrl }}" class="w3-bar-item w3-button w3-text-teal "><i class="fad fa-house-user w3-text-teal "></i> logout</a>
-{{else}}
-					<a href="/user" class="header-icon-a w3-hover-opacity w3-center "><i class="fad fa-house-user w3-text-teal "></i> login</a>
-{{/if}}
-				</div>
-				-->
 				<div class="site-bar-item w3-bar-item ">
 					
 					<form action="https://www.paypal.com/donate" method="post" target="_top">
@@ -97,6 +75,7 @@
 						<img alt="" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1" border="0">
 					</form>
 				</div>
+
 {{/inline}}
 {{#*inline "htmBodyStartPageLayout"}}		<!-- #*inline "htmBodyStartPageLayout" -->
 		<div class="w3-bar ">
@@ -111,6 +90,7 @@
 	</div>
 {{/inline}}
 {{#*inline "htmBodyEndPageLayout"}}		<!-- #*inline "htmBodyEndPageLayout" -->
+
 	<div class="pageContent w3-content ">
 		<footer class="w3-padding w3-margin-top w3-center site-abondonnezPas-div ">
 			<h3>Don't give up on your dreams. You can do hard things! </h3>
@@ -144,17 +124,13 @@
 		</footer>
 	</div>
 	<footer class="w3-center w3-black w3-padding-48 ">
-{{#if GITHUB_ORG }}
 		<div class="w3-xxlarge ">This site is open source. </div>
 		<div class="w3-large ">
 			<a href="https://github.com/{{ GITHUB_ORG }}/{{ SITE_NAME }}/" target="_blank" class="grow-20 ">View the source code here on github. </a>
 		</div>
-{{/if }}
-{{#if PROJECT_POWERED_BY_URL }}
 		<div class="grow-20 w3-margin ">
 			<a class="w3-bar-item grow-20 w3-margin w3-text-white " href="{{ PROJECT_POWERED_BY_URL }}" target="_blank"><span class="w3-large ">Powered by </span>{{#if PROJECT_POWERED_BY_IMAGE_URI }}<img alt="" class="w3-image " style="display: inline-block; width: 200px; margin: 0 10px;" src="{{ STATIC_BASE_URL }}{{ PROJECT_POWERED_BY_IMAGE_URI }}"/>{{else}}{{#if PROJECT_POWERED_BY_NAME}}{{ PROJECT_POWERED_BY_NAME }}{{/if}}{{/if}}</a>
 		</div>
-{{/if }}
 	</footer>
 	<footer class="w3-row site-section-contact w3-text-white w3-padding-48 ">
 		<div class="w3-center ">
@@ -177,6 +153,8 @@
 			</div>
 		</div>
 	</footer>
+
+
 {{/inline}}
 {{#*inline "htmBodyPageLayout"}}		<!-- #*inline "htmBodyPageLayout" -->
 {{#block "htmBodyStart"}}{{/block}}

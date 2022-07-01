@@ -195,6 +195,16 @@ public class SiteHtm extends SiteHtmGen<Object> {
 	 * {@inheritDoc}
 	 * DocValues: true
 	 * Persist: true
+	 * DisplayName: Labels
+	 * Description: A list of labels
+	 */
+	protected void _labels(List<String> w) {
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * DocValues: true
+	 * Persist: true
 	 * DisplayName: HTML Element
 	 * Description: The HTML element. 
 	 */

@@ -1,13 +1,16 @@
 package org.computate.site.enus.page.dynamic;
 
+import java.net.URLDecoder;
 import java.time.ZoneId;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.computate.search.tool.SearchTool;
 import org.computate.search.wrap.Wrap;
 import org.computate.site.enus.config.ConfigKeys;
@@ -19,6 +22,7 @@ import io.vertx.core.Future;
 import io.vertx.core.Promise;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
+import io.vertx.ext.web.api.service.ServiceRequest;
 
 
 public class DynamicPage extends DynamicPageGen<PageLayout> {
@@ -47,11 +51,55 @@ public class DynamicPage extends DynamicPageGen<PageLayout> {
 	 * {@inheritDoc}
 	 * Ignore: true
 	 **/
+	protected void _vars(Wrap<Map<String, String>> w) {
+		ServiceRequest serviceRequest = siteRequest_.getServiceRequest();
+		Map<String, String> requestVars = siteRequest_.getRequestVars();
+
+		serviceRequest.getParams().getJsonObject("query").stream().filter(paramRequest -> "var".equals(paramRequest.getKey()) && paramRequest.getValue() != null).findFirst().ifPresent(paramRequest -> {
+			String entityVar = null;
+			String valueIndexed = null;
+			Object paramValuesObject = paramRequest.getValue();
+			JsonArray paramObjects = paramValuesObject instanceof JsonArray ? (JsonArray)paramValuesObject : new JsonArray().add(paramValuesObject);
+
+			try {
+				for(Object paramObject : paramObjects) {
+					entityVar = StringUtils.trim(StringUtils.substringBefore((String)paramObject, ":"));
+					valueIndexed = URLDecoder.decode(StringUtils.trim(StringUtils.substringAfter((String)paramObject, ":")), "UTF-8");
+					requestVars.put(entityVar, valueIndexed);
+				}
+			} catch(Exception ex) {
+				LOG.error(String.format("searchSiteHtm failed. "), ex);
+				ExceptionUtils.rethrow(ex);
+			}
+		});
+		w.o(requestVars);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 **/
+	protected void _filterGroup(Wrap<String> w) {
+		w.o(vars.get("filterGroup"));
+	}
+
+	/**
+	 * {@inheritDoc}
+	 **/
+	protected void _filterLabel(Wrap<String> w) {
+		w.o(vars.get("filterLabel"));
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * Ignore: true
+	 **/
 	protected void _htmList(Promise<SearchList<SiteHtm>> promise) {
 		SearchList<SiteHtm> l = new SearchList<>();
 		l.q("*:*");
 		l.setC(SiteHtm.class);
 		l.fq(String.format("uri_docvalues_string:%s", SearchTool.escapeQueryChars(uri)));
+		if(filterGroup != null && filterLabel != null)
+			l.fq(String.format("(-htmGroup_docvalues_string:%s) OR (htmGroup_docvalues_string:%s AND labels_docvalues_strings:%s)", SearchTool.escapeQueryChars(filterGroup), SearchTool.escapeQueryChars(filterGroup), SearchTool.escapeQueryChars(filterLabel)));
 		l.sortAsc("sequenceNum_docvalues_long");
 		l.setStore(true);
 		promise.complete(l);

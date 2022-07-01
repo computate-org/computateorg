@@ -2,39 +2,34 @@ package org.computate.site.enus.vertx;
 
 import java.net.URLDecoder;
 import java.text.Normalizer;
+import java.util.List;
 import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
 import org.apache.camel.CamelContext;
-import org.apache.camel.Exchange;
-import org.apache.camel.LoggingLevel;
-import org.apache.camel.builder.ExpressionBuilder;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.vertx.VertxComponent;
 import org.apache.camel.impl.DefaultCamelContext;
-import org.apache.camel.model.dataformat.JsonLibrary;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.computate.search.tool.SearchTool;
+import org.computate.site.enus.article.ArticleEnUSGenApiService;
+import org.computate.site.enus.config.ConfigKeys;
+import org.computate.site.enus.model.htm.SiteHtmEnUSGenApiService;
+import org.computate.site.enus.model.page.SitePage;
+import org.computate.site.enus.model.page.SitePageEnUSGenApiService;
+import org.computate.site.enus.model.user.SiteUserEnUSGenApiService;
+import org.computate.site.enus.page.HomePage;
+import org.computate.site.enus.page.dynamic.DynamicPage;
+import org.computate.site.enus.request.SiteRequestEnUS;
 import org.computate.vertx.handlebars.AuthHelpers;
 import org.computate.vertx.handlebars.DateHelpers;
 import org.computate.vertx.handlebars.SiteHelpers;
 import org.computate.vertx.openapi.OpenApi3Generator;
 import org.computate.vertx.search.list.SearchList;
 import org.computate.vertx.verticle.EmailVerticle;
-import org.computate.site.enus.config.ConfigKeys;
-import org.computate.site.enus.page.PageLayout;
-import org.computate.site.enus.page.HomePage;
-import org.computate.site.enus.request.SiteRequestEnUS;
-import org.computate.site.enus.model.page.SitePage;
-import org.computate.site.enus.page.dynamic.DynamicPage;
-import org.computate.site.enus.model.user.SiteUserEnUSGenApiService;
-import org.computate.site.enus.model.page.SitePageEnUSGenApiService;
-import org.computate.site.enus.model.htm.SiteHtmEnUSGenApiService;
-import org.computate.site.enus.model.page.SitePageEnUSGenApiService;
-import org.computate.site.enus.model.htm.SiteHtmEnUSGenApiService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,15 +44,16 @@ import io.vertx.config.ConfigStoreOptions;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.DeploymentOptions;
 import io.vertx.core.Future;
+import io.vertx.core.MultiMap;
 import io.vertx.core.Promise;
 import io.vertx.core.Vertx;
 import io.vertx.core.VertxOptions;
 import io.vertx.core.WorkerExecutor;
-import io.vertx.core.eventbus.DeliveryOptions;
 import io.vertx.core.eventbus.EventBusOptions;
 import io.vertx.core.http.Cookie;
 import io.vertx.core.http.HttpHeaders;
 import io.vertx.core.http.HttpServerOptions;
+import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.core.net.JksOptions;
 import io.vertx.core.net.PemKeyCertOptions;
@@ -773,6 +769,7 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 			SiteUserEnUSGenApiService.registerService(vertx.eventBus(), config(), workerExecutor, pgPool, webClient, oauth2AuthenticationProvider, authorizationProvider, templateEngine, vertx);
 			SitePageEnUSGenApiService.registerService(vertx.eventBus(), config(), workerExecutor, pgPool, webClient, oauth2AuthenticationProvider, authorizationProvider, templateEngine, vertx);
 			SiteHtmEnUSGenApiService.registerService(vertx.eventBus(), config(), workerExecutor, pgPool, webClient, oauth2AuthenticationProvider, authorizationProvider, templateEngine, vertx);
+			ArticleEnUSGenApiService.registerService(vertx.eventBus(), config(), workerExecutor, pgPool, webClient, oauth2AuthenticationProvider, authorizationProvider, templateEngine, vertx);
 
 			LOG.info(configureApiComplete);
 			promise.complete();
@@ -840,8 +837,21 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 			router.getWithRegex("(?<uri>\\/(?<lang>(?<lang1>[a-z][a-z])-(?<lang2>[a-z][a-z]))\\/.*)").handler(ctx -> {
 				String uri = ctx.pathParam("uri");
 				String lang = String.format("%s%s", ctx.pathParam("lang1"), ctx.pathParam("lang2").toUpperCase());
+				JsonObject query = new JsonObject();
+				MultiMap queryParams = ctx.queryParams();
+				for(String name : queryParams.names()) {
+					JsonArray array = query.getJsonArray(name);
+					List<String> vals = queryParams.getAll(name);
+					if(array == null) {
+						array = new JsonArray();
+						query.put(name, array);
+					}
+					for(String val : vals) {
+						array.add(val);
+					}
+				}
 				ServiceRequest serviceRequest = new ServiceRequest(
-						new JsonObject().put("path", JsonObject.mapFrom(ctx.pathParams())).put("query", JsonObject.mapFrom(ctx.queryParams())).put("cookie", JsonObject.mapFrom(ctx.cookieMap()))
+						new JsonObject().put("path", JsonObject.mapFrom(ctx.pathParams())).put("query", query).put("cookie", JsonObject.mapFrom(ctx.cookieMap()))
 						, ctx.request().headers()
 						, Optional.ofNullable(ctx.user()).map(u -> u.principal()).orElse(null)
 						, new JsonObject()

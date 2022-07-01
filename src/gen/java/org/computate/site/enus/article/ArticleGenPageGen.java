@@ -821,8 +821,8 @@ public abstract class ArticleGenPageGen<DEV> extends PageLayout {
 	public static String staticSetDefaultFieldListVars(SiteRequestEnUS siteRequest_, String o) {
 		return o;
 	}
-	public ArticleGenPage addDefaultFieldListVars(String...objets) {
-		for(String o : objets) {
+	public ArticleGenPage addDefaultFieldListVars(String...objects) {
+		for(String o : objects) {
 			addDefaultFieldListVars(o);
 		}
 		return (ArticleGenPage)this;
@@ -833,10 +833,10 @@ public abstract class ArticleGenPageGen<DEV> extends PageLayout {
 		return (ArticleGenPage)this;
 	}
 	@JsonIgnore
-	public void setDefaultFieldListVars(JsonArray objets) {
+	public void setDefaultFieldListVars(JsonArray objects) {
 		defaultFieldListVars.clear();
-		for(int i = 0; i < objets.size(); i++) {
-			String o = objets.getString(i);
+		for(int i = 0; i < objects.size(); i++) {
+			String o = objects.getString(i);
 			addDefaultFieldListVars(o);
 		}
 	}
@@ -887,8 +887,8 @@ public abstract class ArticleGenPageGen<DEV> extends PageLayout {
 	public static String staticSetDefaultStatsVars(SiteRequestEnUS siteRequest_, String o) {
 		return o;
 	}
-	public ArticleGenPage addDefaultStatsVars(String...objets) {
-		for(String o : objets) {
+	public ArticleGenPage addDefaultStatsVars(String...objects) {
+		for(String o : objects) {
 			addDefaultStatsVars(o);
 		}
 		return (ArticleGenPage)this;
@@ -899,10 +899,10 @@ public abstract class ArticleGenPageGen<DEV> extends PageLayout {
 		return (ArticleGenPage)this;
 	}
 	@JsonIgnore
-	public void setDefaultStatsVars(JsonArray objets) {
+	public void setDefaultStatsVars(JsonArray objects) {
 		defaultStatsVars.clear();
-		for(int i = 0; i < objets.size(); i++) {
-			String o = objets.getString(i);
+		for(int i = 0; i < objects.size(); i++) {
+			String o = objects.getString(i);
 			addDefaultStatsVars(o);
 		}
 	}
@@ -953,8 +953,8 @@ public abstract class ArticleGenPageGen<DEV> extends PageLayout {
 	public static String staticSetDefaultPivotVars(SiteRequestEnUS siteRequest_, String o) {
 		return o;
 	}
-	public ArticleGenPage addDefaultPivotVars(String...objets) {
-		for(String o : objets) {
+	public ArticleGenPage addDefaultPivotVars(String...objects) {
+		for(String o : objects) {
 			addDefaultPivotVars(o);
 		}
 		return (ArticleGenPage)this;
@@ -965,10 +965,10 @@ public abstract class ArticleGenPageGen<DEV> extends PageLayout {
 		return (ArticleGenPage)this;
 	}
 	@JsonIgnore
-	public void setDefaultPivotVars(JsonArray objets) {
+	public void setDefaultPivotVars(JsonArray objects) {
 		defaultPivotVars.clear();
-		for(int i = 0; i < objets.size(); i++) {
-			String o = objets.getString(i);
+		for(int i = 0; i < objects.size(); i++) {
+			String o = objects.getString(i);
 			addDefaultPivotVars(o);
 		}
 	}
@@ -1243,6 +1243,55 @@ public abstract class ArticleGenPageGen<DEV> extends PageLayout {
 		return ArticleGenPage.staticSearchStrId(siteRequest_, ArticleGenPage.staticSearchId(siteRequest_, ArticleGenPage.staticSetId(siteRequest_, o)));
 	}
 
+	////////////////////
+	// pageUriArticle //
+	////////////////////
+
+	/**	 The entity pageUriArticle
+	 *	 is defined as null before being initialized. 
+	 */
+	@JsonProperty
+	@JsonInclude(Include.NON_NULL)
+	protected String pageUriArticle;
+
+	/**	<br> The entity pageUriArticle
+	 *  is defined as null before being initialized. 
+	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.ArticleGenPage&fq=entiteVar_enUS_indexed_string:pageUriArticle">Find the entity pageUriArticle in Solr</a>
+	 * <br>
+	 * @param c is for wrapping a value to assign to this entity during initialization. 
+	 **/
+	protected abstract void _pageUriArticle(Wrap<String> c);
+
+	public String getPageUriArticle() {
+		return pageUriArticle;
+	}
+	public void setPageUriArticle(String o) {
+		this.pageUriArticle = ArticleGenPage.staticSetPageUriArticle(siteRequest_, o);
+	}
+	public static String staticSetPageUriArticle(SiteRequestEnUS siteRequest_, String o) {
+		return o;
+	}
+	protected ArticleGenPage pageUriArticleInit() {
+		Wrap<String> pageUriArticleWrap = new Wrap<String>().var("pageUriArticle");
+		if(pageUriArticle == null) {
+			_pageUriArticle(pageUriArticleWrap);
+			setPageUriArticle(pageUriArticleWrap.o);
+		}
+		return (ArticleGenPage)this;
+	}
+
+	public static String staticSearchPageUriArticle(SiteRequestEnUS siteRequest_, String o) {
+		return o;
+	}
+
+	public static String staticSearchStrPageUriArticle(SiteRequestEnUS siteRequest_, String o) {
+		return o == null ? null : o.toString();
+	}
+
+	public static String staticSearchFqPageUriArticle(SiteRequestEnUS siteRequest_, String o) {
+		return ArticleGenPage.staticSearchStrPageUriArticle(siteRequest_, ArticleGenPage.staticSearchPageUriArticle(siteRequest_, ArticleGenPage.staticSetPageUriArticle(siteRequest_, o)));
+	}
+
 	//////////////
 	// initDeep //
 	//////////////
@@ -1295,6 +1344,7 @@ public abstract class ArticleGenPageGen<DEV> extends PageLayout {
 				articleCountInit();
 				article_Init();
 				idInit();
+				pageUriArticleInit();
 				promise2.complete();
 			} catch(Exception ex) {
 				promise2.fail(ex);
@@ -1394,6 +1444,8 @@ public abstract class ArticleGenPageGen<DEV> extends PageLayout {
 				return oArticleGenPage.article_;
 			case "id":
 				return oArticleGenPage.id;
+			case "pageUriArticle":
+				return oArticleGenPage.pageUriArticle;
 			default:
 				return super.obtainPageLayout(var);
 		}
@@ -1465,6 +1517,8 @@ public abstract class ArticleGenPageGen<DEV> extends PageLayout {
 			return ArticleGenPage.staticSetArticleCount(siteRequest_, o);
 		case "id":
 			return ArticleGenPage.staticSetId(siteRequest_, o);
+		case "pageUriArticle":
+			return ArticleGenPage.staticSetPageUriArticle(siteRequest_, o);
 			default:
 				return PageLayout.staticSetPageLayout(entityVar,  siteRequest_, o);
 		}
@@ -1511,6 +1565,8 @@ public abstract class ArticleGenPageGen<DEV> extends PageLayout {
 			return ArticleGenPage.staticSearchArticleCount(siteRequest_, (Integer)o);
 		case "id":
 			return ArticleGenPage.staticSearchId(siteRequest_, (String)o);
+		case "pageUriArticle":
+			return ArticleGenPage.staticSearchPageUriArticle(siteRequest_, (String)o);
 			default:
 				return PageLayout.staticSearchPageLayout(entityVar,  siteRequest_, o);
 		}
@@ -1557,6 +1613,8 @@ public abstract class ArticleGenPageGen<DEV> extends PageLayout {
 			return ArticleGenPage.staticSearchStrArticleCount(siteRequest_, (Integer)o);
 		case "id":
 			return ArticleGenPage.staticSearchStrId(siteRequest_, (String)o);
+		case "pageUriArticle":
+			return ArticleGenPage.staticSearchStrPageUriArticle(siteRequest_, (String)o);
 			default:
 				return PageLayout.staticSearchStrPageLayout(entityVar,  siteRequest_, o);
 		}
@@ -1603,6 +1661,8 @@ public abstract class ArticleGenPageGen<DEV> extends PageLayout {
 			return ArticleGenPage.staticSearchFqArticleCount(siteRequest_, o);
 		case "id":
 			return ArticleGenPage.staticSearchFqId(siteRequest_, o);
+		case "pageUriArticle":
+			return ArticleGenPage.staticSearchFqPageUriArticle(siteRequest_, o);
 			default:
 				return PageLayout.staticSearchFqPageLayout(entityVar,  siteRequest_, o);
 		}
@@ -1642,6 +1702,7 @@ public abstract class ArticleGenPageGen<DEV> extends PageLayout {
 	public static final String VAR_articleCount = "articleCount";
 	public static final String VAR_article_ = "article_";
 	public static final String VAR_id = "id";
+	public static final String VAR_pageUriArticle = "pageUriArticle";
 
 	public static final String DISPLAY_NAME_searchListArticle_ = "";
 	public static final String DISPLAY_NAME_pageResponse = "";
@@ -1666,6 +1727,7 @@ public abstract class ArticleGenPageGen<DEV> extends PageLayout {
 	public static final String DISPLAY_NAME_articleCount = "";
 	public static final String DISPLAY_NAME_article_ = "";
 	public static final String DISPLAY_NAME_id = "";
+	public static final String DISPLAY_NAME_pageUriArticle = "";
 
 	public static String displayNameForClass(String var) {
 		return ArticleGenPage.displayNameArticleGenPage(var);
@@ -1718,6 +1780,8 @@ public abstract class ArticleGenPageGen<DEV> extends PageLayout {
 			return DISPLAY_NAME_article_;
 		case VAR_id:
 			return DISPLAY_NAME_id;
+		case VAR_pageUriArticle:
+			return DISPLAY_NAME_pageUriArticle;
 		default:
 			return PageLayout.displayNamePageLayout(var);
 		}

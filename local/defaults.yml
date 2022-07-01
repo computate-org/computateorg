@@ -1,5 +1,6 @@
 ---
 GITHUB_ORG: "computate-org"
+QUAYIO_ORG: "computate"
 PROJECT_POWERED_BY_URL: "https://access.redhat.com/products/openshift-online-red-hat"
 PROJECT_POWERED_BY_NAME: "OpenShift Online"
 PROJECT_POWERED_BY_IMAGE_URI: "/svg/openshift.svg"

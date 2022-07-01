@@ -511,7 +511,7 @@ public class SitePageEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 		List<Future> futures = new ArrayList<>();
 		SiteRequestEnUS siteRequest = listSitePage.getSiteRequest_(SiteRequestEnUS.class);
 		listSitePage.getList().forEach(o -> {
-			SiteRequestEnUS siteRequest2 = generateSiteRequest(siteRequest.getUser(), siteRequest.getServiceRequest(), siteRequest.getJsonObject(), SiteRequestEnUS.class);
+			SiteRequestEnUS siteRequest2 = generateSiteRequest(siteRequest.getUser(), siteRequest.getUserPrincipal(), siteRequest.getServiceRequest(), siteRequest.getJsonObject(), SiteRequestEnUS.class);
 			o.setSiteRequest_(siteRequest2);
 			siteRequest2.setApiRequest_(siteRequest.getApiRequest_());
 			futures.add(Future.future(promise1 -> {

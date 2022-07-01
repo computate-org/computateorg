@@ -29,6 +29,14 @@ ENABLE_ARCHIVED: true
 ENABLE_ROLE_ADMIN: true
 ENABLE_OPENID_CONNECT: true
 ENABLE_CODE_GENERATION_SERVICE: true
+ENABLE_LOGIN: false
+
+ENABLE_PAGE_SEARCH_SitePage: true
+
+ENABLE_MENU_Article: false
+ENABLE_MENU_Course: false
+ENABLE_MENU_SiteHtm: false
+
 WRITE_API: true
 WRITE_COMMENTS: true
 PROJECTS: 
@@ -38,6 +46,19 @@ PROJECTS:
     PROJECT_SRC: "{{ PROJECT_SRC }}"
     PROJECT_JAVA_PACKAGE: "{{ PROJECT_JAVA_PACKAGE }}"
     PROJECT_FILES: 
+      - path: "{{ PROJECT_SRC }}/src/main/resources/templates/enUS/choose-your-operating-system.yml"
+        template: article/choose-your-operating-system.yml
+      - path: "{{ PROJECT_SRC }}-static/png/rhel-9-sample.png"
+        copy: "{{ lookup('env', 'HOME') }}/.local/src/computate-org/roles/computate_project_file_enUS/templates/article/png/k8s-components-sample.png"
+      - path: "{{ PROJECT_SRC }}/src/main/resources/templates/enUS/kubernetes-components.yml"
+        template: article/kubernetes-components.yml
+      - path: "{{ PROJECT_SRC }}-static/png/k8s-components-sample.png"
+        copy: "{{ lookup('env', 'HOME') }}/.local/src/computate-org/roles/computate_project_file_enUS/templates/article/png/article/png/k8s-components-sample.png"
+      - path: "{{ PROJECT_SRC }}/src/main/resources/templates/enUS/openapi-specification.yml"
+        template: article/openapi-specification.yml
+      - path: "{{ PROJECT_SRC }}-static/png/openapi-spec-sample.png"
+        copy: "{{ lookup('env', 'HOME') }}/.local/src/computate-org/roles/computate_project_file_enUS/templates/article/png/article/png/k8s-components-sample.png"
+
       - path: "{{ PROJECT_SRC }}/bin/touch.sh"
         template: touch.sh
       - path: "{{ PROJECT_SRC }}/pom.xml"
@@ -154,7 +175,26 @@ WORKER_IMPORT_DATA: |2
   	 * Val.Complete.enUS:Configuring the import of %s data completed. 
   	 * Val.Fail.enUS:Configuring the import of %s data failed. 
   	 */
-  	private void importDataClass(String classSimpleName, ZonedDateTime startDateTime) {
+  	private Future<Void> importDataClass(String classSimpleName, ZonedDateTime startDateTime) {
+  		Promise<Void> promise = Promise.promise();
+  		if(SitePage.CLASS_SIMPLE_NAME.equals(classSimpleName)) {
+  			importDataSitePage().onComplete(a -> {
+  				String importPeriod = config().getString(String.format("%s_%s", ConfigKeys.IMPORT_DATA_PERIOD, classSimpleName));
+  				if(importPeriod != null && startDateTime != null) {
+  					Duration duration = TimeTool.parseNextDuration(importPeriod);
+  					ZonedDateTime nextStartTime = startDateTime.plus(duration);
+  					LOG.info(String.format(importTimerScheduling, classSimpleName, nextStartTime.format(TIME_FORMAT)));
+  					Duration nextStartDuration = Duration.between(Instant.now(), nextStartTime);
+  					vertx.setTimer(nextStartDuration.toMillis(), b -> {
+  						importDataClass(classSimpleName, nextStartTime);
+  					});
+  					promise.complete();
+  				} else {
+  					promise.complete();
+  				}
+  			});
+  		}
+  		return promise.future();
   	}
   
   	/**	
@@ -164,7 +204,9 @@ WORKER_IMPORT_DATA: |2
   	private Future<Void> importData() {
   		Promise<Void> promise = Promise.promise();
   		if(config().getBoolean(ConfigKeys.ENABLE_IMPORT_DATA)) {
-  			promise.complete();
+  			importTimer(SitePage.CLASS_SIMPLE_NAME).onSuccess(b -> {
+  				promise.complete();
+  			});
   		}
   		else {
   			LOG.info(importDataSkip);
@@ -172,3 +214,88 @@ WORKER_IMPORT_DATA: |2
   		}
   		return promise.future();
   	}
+
+AFTER_htmStylePageLayout: |2
+  		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Anonymous%20Pro%7CBellefair%7CJomhuria%7CPT%20Serif%3A700%7CStint%20Ultra%20Condensed&amp;display=swap"/>
+
+BEFORE_htmMenuItems: |2
+  				<div class="site-bar-item w3-bar-item ">
+  					<a class="header-icon-a w3-hover-opacity w3-center " href=" /en-us/about"><span class="site-menu-item">about</span></a>
+  				</div>
+  				<div class="site-bar-item w3-bar-item ">
+  					<a class="header-icon-a w3-hover-opacity w3-center " href=" /en-us/faq"><span class="site-menu-item">FAQ</span></a>
+  				</div>
+
+AFTER_htmMenuItems: |2
+  				<div class="site-bar-item w3-bar-item ">
+  					
+  					<form action="https://www.paypal.com/donate" method="post" target="_top">
+  						<input type="hidden" name="hosted_button_id" value="62M7FM26P22K6">
+  						<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif" name="submit" title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button" border="0">
+  						<img alt="" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1" border="0">
+  					</form>
+  				</div>
+
+REPLACE_htmBodyEndPageLayout: |2
+  	<div class="pageContent w3-content ">
+  		<footer class="w3-padding w3-margin-top w3-center site-abondonnezPas-div ">
+  			<h3>Don't give up on your dreams. You can do hard things! </h3>
+  			<div>
+  				<img alt="" class="w3-image " src="\{\{ STATIC_BASE_URL \}\}/svg/computate-keys.svg">
+  			</div>
+  		</footer>
+  		<footer class="w3-content w3-center w3-margin w3-padding-top-32 ">
+  			<h3>Share this story. </h3>
+  			<div class="w3-cell-row ">
+  				<div class="blog-publication-social-div w3-cell ">
+  					<img alt="" class="blog-publication-social-img" src="https://computate.neocities.org/svg/facebook.svg">
+  					<div>
+  						<div class="fb-like fb_iframe_widget" data-href="https://www.computate.org/en-us/about" data-layout="box_count" data-action="like" data-size="small" data-show-faces="true" data-share="true" fb-xfbml-state="rendered" fb-iframe-plugin-query="action=like&amp;app_id=1871568493111919&amp;container_width=316&amp;href=https%3A%2F%2Fwww.computate.org%2FenUS%2Fabout&amp;layout=box_count&amp;locale=en_US&amp;sdk=joey&amp;share=true&amp;show_faces=true&amp;size=small"><span style="vertical-align: bottom; width: 62px; height: 72px;"><iframe name="f1e31ea8c6c84e8" data-testid="fb:like Facebook Social Plugin" title="fb:like Facebook Social Plugin" allowtransparency="true" allowfullscreen="true" scrolling="no" allow="encrypted-media" style="border: medium none; visibility: visible; width: 62px; height: 72px;" src="https://www.facebook.com/v2.10/plugins/like.php?action=like&amp;app_id=1871568493111919&amp;channel=https%3A%2F%2Fstaticxx.facebook.com%2Fx%2Fconnect%2Fxd_arbiter%2F%3Fversion%3D46%23cb%3Df3cb35bd165a0ca%26domain%3Dwww.computate.org%26is_canvas%3Dfalse%26origin%3Dhttps%253A%252F%252Fwww.computate.org%252Ff30b6c5d43a4a5e%26relation%3Dparent.parent&amp;container_width=316&amp;href=https%3A%2F%2Fwww.computate.org%2FenUS%2Fabout&amp;layout=box_count&amp;locale=en_US&amp;sdk=joey&amp;share=true&amp;show_faces=true&amp;size=small" class="" width="1000px" height="1000px" frameborder="0"></iframe></span></div>
+  					</div>
+  				</div>
+  				<div class="blog-publication-social-div w3-cell ">
+  					<img alt="" class="blog-publication-social-img" src="https://computate.neocities.org/svg/twitter.svg">
+  					<div>
+  						<iframe id="twitter-widget-0" scrolling="no" allowtransparency="true" allowfullscreen="true" class="twitter-share-button twitter-share-button-rendered twitter-tweet-button" style="position: static; visibility: visible; width: 73px; height: 20px;" title="Twitter Tweet Button" src="https://platform.twitter.com/widgets/tweet_button.d7fc2fc075c61f6fa34d79a0cbbf1e34.en.html#dnt=false&amp;id=twitter-widget-0&amp;lang=en&amp;original_referer=https%3A%2F%2Fwww.computate.org%2FenUS%2Fabout&amp;size=m&amp;text=Who%20is%20Christopher%20Tate%3F%20All%20about%20me.&amp;time=1655319901458&amp;type=share&amp;url=https%3A%2F%2Fwww.computate.org%2FenUS%2Fabout" frameborder="0"></iframe>
+  						<script async="" src="//platform.twitter.com/widgets.js"></script>
+  					</div>
+  				</div>
+  				<div class="blog-publication-social-div w3-cell ">
+  					<img alt="" class="blog-publication-social-img" src="https://computate.neocities.org/svg/pinterest.svg">
+  					<div class="pinterest-div ">
+  						<a class="PIN_1655319900553_button_pin PIN_1655319900553_save" href="https://www.pinterest.com/pin/create/button/?guid=bZyarwLoJxt3-1&amp;url=https%3A%2F%2Fwww.computate.org%2FenUS%2Fabout&amp;media=https%3A%2F%2Fcomputate.neocities.org%2Fpng%2FenUS%2Fabout-999.png&amp;description=Who%20is%20Christopher%20Tate%3F%20All%20about%20me.%20" data-pin-log="button_pinit" data-pin-href="https://www.pinterest.com/pin/create/button/?guid=bZyarwLoJxt3-1&amp;url=https%3A%2F%2Fwww.computate.org%2FenUS%2Fabout&amp;media=https%3A%2F%2Fcomputate.neocities.org%2Fpng%2FenUS%2Fabout-999.png&amp;description=Who%20is%20Christopher%20Tate%3F%20All%20about%20me.%20">Save</a>
+  					</div>
+  				</div>
+  			</div>
+  		</footer>
+  	</div>
+  	<footer class="w3-center w3-black w3-padding-48 ">
+  		<div class="w3-xxlarge ">This site is open source. </div>
+  		<div class="w3-large ">
+  			<a href="https://github.com/\{\{ GITHUB_ORG \}\}/\{\{ SITE_NAME \}\}/" target="_blank" class="grow-20 ">View the source code here on github. </a>
+  		</div>
+  		<div class="grow-20 w3-margin ">
+  			<a class="w3-bar-item grow-20 w3-margin w3-text-white " href="\{\{ PROJECT_POWERED_BY_URL \}\}" target="_blank"><span class="w3-large ">Powered by </span>\{\{\#if PROJECT_POWERED_BY_IMAGE_URI \}\}<img alt="" class="w3-image " style="display: inline-block; width: 200px; margin: 0 10px;" src="\{\{ STATIC_BASE_URL \}\}\{\{ PROJECT_POWERED_BY_IMAGE_URI }}"/>\{\{else\}\}\{\{\#if PROJECT_POWERED_BY_NAME\}\}\{\{ PROJECT_POWERED_BY_NAME \}\}\{\{/if\}\}\{\{/if\}\}</a>
+  		</div>
+  	</footer>
+  	<footer class="w3-row site-section-contact w3-text-white w3-padding-48 ">
+  		<div class="w3-center ">
+  \{\{\#block "htmBodyMenu"\}\}\{\{/block\}\}
+  		</div>
+  		<div class="w3-content w3-center  w3-cell-row w3-margin-bottom-32 ">
+  			<div class="w3-container ">
+  				<div class="w3-container w3-text-black w3-margin-top ">
+  					<h6 id="h2-contactez-nous" class="w3-xlarge w3-text-white ">Let's get connected. </h6>
+  					<div style="">
+  						<a target="_blank" rel="noopener noreferrer" data-ajax="false" href="https://www.facebook.com/computateorg/"><img alt="" class="grow-20 " style="display: inline-block; width: 50px; height: 50px; margin: 0 10px;" src="https://computate.neocities.org/svg/facebook.svg"></a>
+  						<a target="_blank" rel="noopener noreferrer" data-ajax="false" href="https://twitter.com/computateorg"><img alt="" class="grow-20 " style="display: inline-block; width: 50px; height: 50px; margin: 0 10px;" src="https://computate.neocities.org/svg/twitter.svg"></a>
+  						<a target="_blank" rel="noopener noreferrer" data-ajax="false" href="https://www.instagram.com/computateorg/"><img alt="" class="grow-20 " style="display: inline-block; width: 50px; height: 50px; margin: 0 10px;" src="https://computate.neocities.org/svg/instagram.svg"></a>
+  						<a target="_blank" rel="noopener noreferrer" data-ajax="false" href="https://openclipart.org/user-detail/computateorg"><img alt="" class="grow-20 " style="display: inline-block; width: 50px; height: 50px; margin: 0 10px;" src="https://computate.neocities.org/svg/openclipart.svg"></a>
+  						<a target="_blank" rel="noopener noreferrer" data-ajax="false" href="https://www.youtube.com/channel/UC3ryOB2snhO7fItkx6dGx2Q"><img alt="" class="grow-20 " style="display: inline-block; width: 50px; height: 50px; margin: 0 10px;" src="https://computate.neocities.org/svg/youtube.svg"></a>
+  						<a target="_blank" rel="noopener noreferrer" data-ajax="false" href=" https://www.pinterest.com/computateorg/computate-in-english/"><img alt="" class="grow-20 " style="display: inline-block; width: 50px; height: 50px; margin: 0 10px;" src="https://computate.neocities.org/svg/pinterest.svg"></a>
+  					</div>
+  					<h6><a href="#top" class="w3-text-white ">Up to the top. </a></h6>
+  				</div>
+  			</div>
+  		</div>
+  	</footer>

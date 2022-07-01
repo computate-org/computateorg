@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -22,13 +23,17 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.computate.search.serialize.ComputateZonedDateTimeSerializer;
 import org.computate.search.tool.TimeTool;
 import org.computate.search.tool.XmlTool;
-import org.computate.site.enus.config.ConfigKeys;
-import org.computate.site.enus.model.htm.SiteHtm;
-import org.computate.site.enus.model.page.SitePage;
-import org.computate.site.enus.request.SiteRequestEnUS;
 import org.computate.vertx.api.ApiCounter;
 import org.computate.vertx.api.ApiRequest;
-import org.computate.vertx.config.ComputateVertxConfigKeys;
+import org.computate.vertx.api.ApiCounter;
+import org.computate.vertx.api.ApiRequest;
+import org.computate.site.enus.config.ConfigKeys;
+import org.computate.site.enus.request.SiteRequestEnUS;
+import org.computate.site.enus.model.page.SitePage;
+import org.computate.site.enus.model.htm.SiteHtm;
+import org.computate.vertx.api.ApiCounter;
+import org.computate.vertx.api.ApiRequest;
+import org.computate.vertx.config.ComputateConfigKeys;
 import org.computate.vertx.handlebars.AuthHelpers;
 import org.computate.vertx.handlebars.DateHelpers;
 import org.computate.vertx.handlebars.SiteHelpers;
@@ -47,22 +52,33 @@ import io.vertx.config.yaml.YamlProcessor;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.CompositeFuture;
 import io.vertx.core.Future;
+import io.vertx.core.MultiMap;
 import io.vertx.core.Promise;
 import io.vertx.core.WorkerExecutor;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.eventbus.DeliveryOptions;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
+import io.vertx.ext.auth.authentication.TokenCredentials;
+import io.vertx.ext.auth.authentication.UsernamePasswordCredentials;
+import io.vertx.ext.jdbc.JDBCClient;
 import io.vertx.ext.mail.MailClient;
 import io.vertx.ext.mail.MailConfig;
 import io.vertx.ext.web.client.WebClient;
+import io.vertx.ext.web.client.predicate.ResponsePredicate;
 import io.vertx.ext.web.templ.handlebars.HandlebarsTemplateEngine;
 import io.vertx.pgclient.PgConnectOptions;
 import io.vertx.pgclient.PgPool;
+import io.vertx.sqlclient.Cursor;
 import io.vertx.sqlclient.PoolOptions;
 import io.vertx.sqlclient.Row;
 import io.vertx.sqlclient.RowStream;
+import io.vertx.sqlclient.SqlConnection;
 
+import org.computate.site.enus.model.user.SiteUser;
+import org.computate.site.enus.model.page.SitePage;
+import org.computate.site.enus.model.htm.SiteHtm;
+import org.computate.site.enus.article.Article;
 
 /**
  */
@@ -409,6 +425,7 @@ public class WorkerVerticle extends WorkerVerticleGen<AbstractVerticle> {
 					String pageId = StringUtils.substringBeforeLast(StringUtils.substringAfterLast(path, "/"), ".");
 					SiteRequestEnUS siteRequest = new SiteRequestEnUS();
 					siteRequest.setConfig(config());
+					siteRequest.setWebClient(webClient);
 					siteRequest.initDeepSiteRequestEnUS(siteRequest);
 
 					SitePage page = new SitePage();
@@ -425,6 +442,7 @@ public class WorkerVerticle extends WorkerVerticleGen<AbstractVerticle> {
 					page.setPageImageUri(json.getString(SitePage.VAR_pageImageUri));
 					page.promiseDeepForClass(siteRequest).onSuccess(a -> {
 						try {
+							JsonObject importBody = new JsonObject();
 							JsonArray importItems = new JsonArray();
 							List<Future> futures = new ArrayList<>();
 							Stack<String> stack = new Stack<>();
@@ -456,7 +474,7 @@ public class WorkerVerticle extends WorkerVerticleGen<AbstractVerticle> {
 							for(String htmGroup : json.fieldNames()) {
 								if(StringUtils.startsWith(htmGroup, "htm")) {
 									JsonArray pageItems = json.getJsonArray(htmGroup);
-									sequenceNum = importSiteHtm(page, json, stack, pageId, htmGroup, pageItems, futures, sequenceNum);
+									sequenceNum = importSiteHtm(page, json, new JsonArray(), stack, pageId, htmGroup, pageItems, futures, sequenceNum);
 								}
 							}
 							JsonObject pageBody2 = JsonObject.mapFrom(page);
@@ -471,9 +489,9 @@ public class WorkerVerticle extends WorkerVerticleGen<AbstractVerticle> {
 								JsonObject pageContext = new JsonObject().put("params", pageParams);
 								JsonObject pageRequest = new JsonObject().put("context", pageContext);
 								vertx.eventBus().request(String.format("computate.org-enUS-%s", SitePage.CLASS_SIMPLE_NAME), pageRequest, new DeliveryOptions().addHeader("action", String.format("putimport%sFuture", SitePage.CLASS_SIMPLE_NAME))).onSuccess(c -> {
-									String solrHostName = config().getString(ComputateVertxConfigKeys.SOLR_HOST_NAME);
-									Integer solrPort = config().getInteger(ComputateVertxConfigKeys.SOLR_PORT);
-									String solrCollection = config().getString(ComputateVertxConfigKeys.SOLR_COLLECTION);
+									String solrHostName = config().getString(ComputateConfigKeys.SOLR_HOST_NAME);
+									Integer solrPort = config().getInteger(ComputateConfigKeys.SOLR_PORT);
+									String solrCollection = config().getString(ComputateConfigKeys.SOLR_COLLECTION);
 									String solrRequestUri = String.format("/solr/%s/update%s", solrCollection, "?commitWithin=1000&overwrite=true&wt=json");
 									String deleteQuery = String.format("classSimpleName_docvalues_string:%s AND created_docvalues_date:[* TO %s]", SiteHtm.CLASS_SIMPLE_NAME, SiteHtm.staticSearchStrCreated(null, SiteHtm.staticSearchCreated(null, now)));
 									String deleteXml = String.format("<delete><query>%s</query></delete>", deleteQuery);
@@ -523,7 +541,7 @@ public class WorkerVerticle extends WorkerVerticleGen<AbstractVerticle> {
 		return promise.future();
 	}
 
-	private Long importSiteHtm(SitePage page, JsonObject json, Stack<String> stack, String pageId, String htmGroup, JsonArray pageItems, List<Future> futures, Long sequenceNum) throws Exception {
+	private Long importSiteHtm(SitePage page, JsonObject json, JsonArray labels, Stack<String> stack, String pageId, String htmGroup, JsonArray pageItems, List<Future> futures, Long sequenceNum) throws Exception {
 		Double sort = 0D;
 		for(Integer i = 0; i < pageItems.size(); i++) {
 			// Process a page item, one at a time
@@ -531,6 +549,8 @@ public class WorkerVerticle extends WorkerVerticleGen<AbstractVerticle> {
 			String uri = json.getString(SiteHtm.VAR_uri);
 			Object in = pageItem.getValue("in");
 			String e = pageItem.getString("e");
+			JsonArray labels2 = Optional.ofNullable(pageItem.getValue("label")).map(o -> o instanceof JsonArray ? (JsonArray)o : new JsonArray().add(o)).orElse(null);
+			JsonArray labels3 = new JsonArray();
 			String each = pageItem.getString("each");
 			JsonObject a = pageItem.getJsonObject(SiteHtm.VAR_a);
 			Boolean eNoWrapParent = false;
@@ -562,6 +582,15 @@ public class WorkerVerticle extends WorkerVerticleGen<AbstractVerticle> {
 					importItem.put(SiteHtm.VAR_text, new JsonArray().addAll(new JsonArray(Arrays.asList(strs))));
 					page.addObjectText(strs);
 				}
+
+				labels3.addAll(labels);
+				if(labels2 != null) {
+					labels3.addAll(labels2);
+				}
+				if(labels3.size() > 0) {
+					importItem.put(SiteHtm.VAR_labels, labels3);
+				}
+
 				if(!eNoWrapParent && !tabs.isEmpty()) {
 					importItem.put(SiteHtm.VAR_tabs, tabs);
 				}
@@ -578,6 +607,7 @@ public class WorkerVerticle extends WorkerVerticleGen<AbstractVerticle> {
 						.add(SiteHtm.VAR_tabs)
 						.add(SiteHtm.VAR_uri)
 						.add(SiteHtm.VAR_text)
+						.add(SiteHtm.VAR_labels)
 						);
 				importItem.put(SiteHtm.VAR_created, ComputateZonedDateTimeSerializer.ZONED_DATE_TIME_FORMATTER.format(ZonedDateTime.now()));
 				importItem.put(SiteHtm.VAR_pageId, pageId);
@@ -634,10 +664,10 @@ public class WorkerVerticle extends WorkerVerticleGen<AbstractVerticle> {
 						// Process nested elements of the "in" value
 						if(in instanceof JsonObject) {
 							// Process the nested JsonObject of the "in" value
-							sequenceNum = importSiteHtm(page, json2, stack, pageId, htmGroup, new JsonArray().add(in), futures, sequenceNum);
+							sequenceNum = importSiteHtm(page, json2, labels3, stack, pageId, htmGroup, new JsonArray().add(in), futures, sequenceNum);
 						} else if(in instanceof JsonArray) {
 							// Process the each of the nested JsonObjects in the array of the "in" value
-							sequenceNum = importSiteHtm(page, json2, stack, pageId, htmGroup, (JsonArray)in, futures, sequenceNum);
+							sequenceNum = importSiteHtm(page, json2, labels3, stack, pageId, htmGroup, (JsonArray)in, futures, sequenceNum);
 						}
 					}
 				}
@@ -647,10 +677,10 @@ public class WorkerVerticle extends WorkerVerticleGen<AbstractVerticle> {
 					// Process nested elements of the "in" value
 					if(in instanceof JsonObject) {
 						// Process the nested JsonObject of the "in" value
-						sequenceNum = importSiteHtm(page, json, stack, pageId, htmGroup, new JsonArray().add(in), futures, sequenceNum);
+						sequenceNum = importSiteHtm(page, json, labels3, stack, pageId, htmGroup, new JsonArray().add(in), futures, sequenceNum);
 					} else if(in instanceof JsonArray) {
 						// Process the each of the nested JsonObjects in the array of the "in" value
-						sequenceNum = importSiteHtm(page, json, stack, pageId, htmGroup, (JsonArray)in, futures, sequenceNum);
+						sequenceNum = importSiteHtm(page, json, labels3, stack, pageId, htmGroup, (JsonArray)in, futures, sequenceNum);
 					}
 				}
 			}
@@ -666,6 +696,9 @@ public class WorkerVerticle extends WorkerVerticleGen<AbstractVerticle> {
 				if(!eNoWrapParent) {
 					importItem.put(SiteHtm.VAR_newLine, true);
 				}
+				if(labels3.size() > 0) {
+					importItem.put(SiteHtm.VAR_labels, labels3);
+				}
 				importItem.put(SiteHtm.VAR_saves, new JsonArray()
 						.add(SiteHtm.VAR_eAfter)
 						.add(SiteHtm.VAR_htmAfter)
@@ -674,6 +707,7 @@ public class WorkerVerticle extends WorkerVerticleGen<AbstractVerticle> {
 						.add(SiteHtm.VAR_pageId)
 						.add(SiteHtm.VAR_tabs)
 						.add(SiteHtm.VAR_uri)
+						.add(SiteHtm.VAR_labels)
 						);
 				importItem.put(SiteHtm.VAR_created, ComputateZonedDateTimeSerializer.ZONED_DATE_TIME_FORMATTER.format(ZonedDateTime.now()));
 				importItem.put(SiteHtm.VAR_pageId, pageId);
@@ -713,11 +747,16 @@ public class WorkerVerticle extends WorkerVerticleGen<AbstractVerticle> {
 		try {
 			if(config().getBoolean(ConfigKeys.ENABLE_REFRESH_DATA, false)) {
 				LOG.info(refreshAllDataStarted);
-				refreshData("SiteUser").onSuccess(q -> {
-					refreshData("SitePage").onSuccess(q1 -> {
-						refreshData("SiteHtm").onSuccess(q2 -> {
-							LOG.info(refreshAllDataComplete);
-							promise.complete();
+				refreshData(SiteUser.CLASS_SIMPLE_NAME).onSuccess(q -> {
+					refreshData(SitePage.CLASS_SIMPLE_NAME).onSuccess(q1 -> {
+						refreshData(SiteHtm.CLASS_SIMPLE_NAME).onSuccess(q2 -> {
+							refreshData(Article.CLASS_SIMPLE_NAME).onSuccess(q3 -> {
+								LOG.info(refreshAllDataComplete);
+								promise.complete();
+							}).onFailure(ex -> {
+								LOG.error(refreshAllDataFail, ex);
+								promise.fail(ex);
+							});
 						}).onFailure(ex -> {
 							LOG.error(refreshAllDataFail, ex);
 							promise.fail(ex);

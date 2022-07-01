@@ -346,7 +346,7 @@ public class ArticleEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
 		List<Future> futures = new ArrayList<>();
 		SiteRequestEnUS siteRequest = listArticle.getSiteRequest_(SiteRequestEnUS.class);
 		listArticle.getList().forEach(o -> {
-			SiteRequestEnUS siteRequest2 = generateSiteRequest(siteRequest.getUser(), siteRequest.getServiceRequest(), siteRequest.getJsonObject(), SiteRequestEnUS.class);
+			SiteRequestEnUS siteRequest2 = generateSiteRequest(siteRequest.getUser(), siteRequest.getUserPrincipal(), siteRequest.getServiceRequest(), siteRequest.getJsonObject(), SiteRequestEnUS.class);
 			o.setSiteRequest_(siteRequest2);
 			siteRequest2.setApiRequest_(siteRequest.getApiRequest_());
 			futures.add(Future.future(promise1 -> {
@@ -789,7 +789,7 @@ public class ArticleEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
 							if(body2.size() > 0) {
 								siteRequest.setJsonObject(body2);
 								patchArticleFuture(o2, true).onSuccess(b -> {
-									LOG.info("Import Article {} succeeded, modified Article. ", body.getValue("pk"));
+									LOG.info("Import Article {} succeeded, modified Article. ", body.getValue(Article.VAR_id));
 									eventHandler.handle(Future.succeededFuture());
 								}).onFailure(ex -> {
 									LOG.error(String.format("putimportArticleFuture failed. "), ex);
@@ -800,7 +800,7 @@ public class ArticleEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
 							}
 						} else {
 							postArticleFuture(siteRequest, true).onSuccess(b -> {
-								LOG.info("Import Article {} succeeded, created new Article. ", body.getValue("pk"));
+								LOG.info("Import Article {} succeeded, created new Article. ", body.getValue(Article.VAR_id));
 								eventHandler.handle(Future.succeededFuture());
 							}).onFailure(ex -> {
 								LOG.error(String.format("putimportArticleFuture failed. "), ex);

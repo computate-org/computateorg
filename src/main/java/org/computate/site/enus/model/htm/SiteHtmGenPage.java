@@ -110,6 +110,21 @@ public class SiteHtmGenPage extends SiteHtmGenPageGen<PageLayout> {
 		w.o(Optional.ofNullable(searchListSiteHtm_.getFacetPivotMinCount()).orElse(0));
 	}
 
+	protected void _DEFAULT_MAP_LOCATION(Wrap<JsonObject> w) {
+		String pointStr = Optional.ofNullable(siteRequest_.getRequestVars().get(VAR_DEFAULT_MAP_LOCATION)).orElse(siteRequest_.getConfig().getString(ConfigKeys.DEFAULT_MAP_LOCATION));
+		if(pointStr != null) {
+			String[] parts = pointStr.split(",");
+			JsonObject point = new JsonObject().put("lat", Double.parseDouble(parts[0])).put("lon", Double.parseDouble(parts[1]));
+			w.o(point);
+		}
+	}
+
+	protected void _DEFAULT_MAP_ZOOM(Wrap<BigDecimal> w) {
+		String s = Optional.ofNullable(siteRequest_.getRequestVars().get(VAR_DEFAULT_MAP_ZOOM)).orElse(siteRequest_.getConfig().getString(ConfigKeys.DEFAULT_MAP_ZOOM));
+		if(s != null)
+			w.o(new BigDecimal(s));
+	}
+
 	protected void _defaultFieldListVars(List<String> l) {
 		Optional.ofNullable(searchListSiteHtm_.getFields()).orElse(Arrays.asList()).forEach(varStored -> {
 			String varStored2 = varStored;
@@ -212,6 +227,11 @@ public class SiteHtmGenPage extends SiteHtmGenPageGen<PageLayout> {
 	@Override
 	protected void _pageUri(Wrap<String> c) {
 		c.o("/htm");
+	}
+
+	@Override
+	protected void _apiUri(Wrap<String> c) {
+		c.o("/api/htm");
 	}
 
 	@Override
@@ -422,5 +442,9 @@ public class SiteHtmGenPage extends SiteHtmGenPageGen<PageLayout> {
 	@Override
 	protected void _contextIconName(Wrap<String> c) {
 			c.o("code");
+	}
+
+	protected void _pageUriSiteHtm(Wrap<String> c) {
+			c.o("/htm");
 	}
 }
