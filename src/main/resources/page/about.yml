@@ -386,101 +386,105 @@ htmBody:
                           class: fa-solid fa-arrow-alt-square-right
                       - e: span
                         text: I never looked back, and never regretted that decision. 
-      - e: table
-        a:
-          id: tableReview
-          class: review1Table 
-        in:
-          - e: tbody
-            in:
-              - e: tr
-                a:
-                  class: 
-                in:
-                  - e: td
-                    a:
-                      class: w3-mobile review1TableTr1Td1 review1TableTr1Td even 
-                    in:
-                      - e: span
-                        text: '{{formatZonedDateTime created "EEEE" "en-US" "America/Denver" }}'
-                  - e: td
-                    a:
-                      class: w3-mobile review1TableTr1Td2 review1TableTr1Td odd 
-                    in:
-                      - e: i
-                        a:
-                          class: "{{ htmBody.0.in.0.in.0.in.0.a.class }}"
-                  - e: td
-                    a:
-                      class: w3-mobile review1TableTr1Td3 review1TableTr1Td even 
-                    in:
-                      - e: i
-                        a:
-                          class: "{{ htmBody.0.in.0.in.1.in.0.a.class }}"
-                  - e: td
-                    a:
-                      class: w3-mobile review1TableTr1Td4 review1TableTr1Td odd 
-                    in:
-                      - e: i
-                        a:
-                          class: "fa-solid fa-pen-nib"
-              - e: tr
-                a:
-                  class: odd 
-                in:
-                  - e: td
-                    a:
-                      class: w3-mobile review1TableTr2Td1 review1TableTr2Td even 
-                    in:
-                      - e: span
-                        text: '{{formatZonedDateTime created "MMMM d yyyy" "en-US" "America/Denver" }}'
-                  - e: td
-                    a:
-                      class: w3-mobile review1TableTr2Td2 review1TableTr2Td odd 
-                    in:
-                      - e: span
-                        text: "{{ h1 }}"
-                  - e: td
-                    a:
-                      class: w3-mobile review1TableTr2Td3 review1TableTr2Td even 
-                    in:
-                      - e: span
-                        text: "{{ h2 }}"
-                  - e: td
-                    a:
-                      class: w3-mobile review1TableTr2Td4 review1TableTr2Td odd 
-                    in:
-                      - e: span
-                        text: "{{ author.name }}"
-      - e: table
+      - e: div
         label:
-          - tableReview
+          - review
         a:
-          id: tableReview
-          class: review2Table 
+          id: divReview
         in:
-          - e: tbody
-            each: htmBody.0.in.1.in
+          - e: table
+            a:
+              id: tableReview1
+              class: review1Table 
             in:
-              - e: tr
-                a:
-                  class: "{{#even @index }}review2TableTr even {{else}}review2TableTr odd {{/even}}"
+              - e: tbody
                 in:
-                  - e: td
+                  - e: tr
                     a:
-                      class: w3-mobile 
+                      class: 
                     in:
-                      - e: i
+                      - e: td
                         a:
-                          class: "{{ item.in.0.in.0.a.class }}"
-                      - e: span
-                        text: '{{item.in.0.in.1.text }}'
-                  - e: td
+                          class: w3-mobile review1TableTr1Td1 review1TableTr1Td even 
+                        in:
+                          - e: span
+                            text: '{{formatZonedDateTime created "EEEE" "en-US" "America/Denver" }}'
+                      - e: td
+                        a:
+                          class: w3-mobile review1TableTr1Td2 review1TableTr1Td odd 
+                        in:
+                          - e: i
+                            a:
+                              class: "{{ htmBody.0.in.0.in.0.in.0.a.class }}"
+                      - e: td
+                        a:
+                          class: w3-mobile review1TableTr1Td3 review1TableTr1Td even 
+                        in:
+                          - e: i
+                            a:
+                              class: "{{ htmBody.0.in.0.in.1.in.0.a.class }}"
+                      - e: td
+                        a:
+                          class: w3-mobile review1TableTr1Td4 review1TableTr1Td odd 
+                        in:
+                          - e: i
+                            a:
+                              class: "fa-solid fa-pen-nib"
+                  - e: tr
                     a:
-                      class: w3-mobile 
+                      class: odd 
                     in:
-                      - e: i
+                      - e: td
                         a:
-                          class: "{{ item.in.1.in.0.a.class }}"
-                      - e: span
-                        text: '{{item.in.1.in.1.text }}'
+                          class: w3-mobile review1TableTr2Td1 review1TableTr2Td even 
+                        in:
+                          - e: span
+                            text: '{{formatZonedDateTime created "MMMM d yyyy" "en-US" "America/Denver" }}'
+                      - e: td
+                        a:
+                          class: w3-mobile review1TableTr2Td2 review1TableTr2Td odd 
+                        in:
+                          - e: span
+                            text: "{{ h1 }}"
+                      - e: td
+                        a:
+                          class: w3-mobile review1TableTr2Td3 review1TableTr2Td even 
+                        in:
+                          - e: span
+                            text: "{{ h2 }}"
+                      - e: td
+                        a:
+                          class: w3-mobile review1TableTr2Td4 review1TableTr2Td odd 
+                        in:
+                          - e: span
+                            text: "{{ author.name }}"
+          - e: table
+            a:
+              id: tableReview2
+              class: review2Table 
+            in:
+              - e: tbody
+                each: htmBody.0.in.1.in
+                in:
+                  - e: tr
+                    a:
+                      class: "{{#even @index }}review2TableTr even {{else}}review2TableTr odd {{/even}}"
+                    in:
+                      - e: td
+                        a:
+                          class: w3-mobile 
+                        in:
+                          - e: i
+                            a:
+                              class: "{{ item.in.0.in.0.a.class }}"
+                          - e: span
+                            text: '{{item.in.0.in.1.text }}'
+                      - e: td
+                        a:
+                          class: w3-mobile 
+                        in:
+                          - e: i
+                            a:
+                              class: "{{ item.in.1.in.0.a.class }}"
+                          - e: span
+                            text: '{{item.in.1.in.1.text }}'

@@ -157,9 +157,13 @@
 
 {{/inline}}
 {{#*inline "htmBodyPageLayout"}}		<!-- #*inline "htmBodyPageLayout" -->
+{{#if filterLabel }}{{else}}
 {{#block "htmBodyStart"}}{{/block}}
+{{/if}}
 {{#block "htmBodyMiddle"}}{{/block}}
+{{#if filterLabel }}{{else}}
 {{#block "htmBodyEnd"}}{{/block}}
+{{/if}}
 {{/inline}}
 {{#*inline "htmPageLayout"}}<!DOCTYPE html>
 <!-- #*inline "htmPageLayout" -->

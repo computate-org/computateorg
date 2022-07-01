@@ -78,13 +78,6 @@ public class DynamicPage extends DynamicPageGen<PageLayout> {
 	/**
 	 * {@inheritDoc}
 	 **/
-	protected void _filterGroup(Wrap<String> w) {
-		w.o(vars.get("filterGroup"));
-	}
-
-	/**
-	 * {@inheritDoc}
-	 **/
 	protected void _filterLabel(Wrap<String> w) {
 		w.o(vars.get("filterLabel"));
 	}
@@ -98,8 +91,8 @@ public class DynamicPage extends DynamicPageGen<PageLayout> {
 		l.q("*:*");
 		l.setC(SiteHtm.class);
 		l.fq(String.format("uri_docvalues_string:%s", SearchTool.escapeQueryChars(uri)));
-		if(filterGroup != null && filterLabel != null)
-			l.fq(String.format("(-htmGroup_docvalues_string:%s) OR (htmGroup_docvalues_string:%s AND labels_docvalues_strings:%s)", SearchTool.escapeQueryChars(filterGroup), SearchTool.escapeQueryChars(filterGroup), SearchTool.escapeQueryChars(filterLabel)));
+		if(filterLabel != null)
+			l.fq(String.format("labels_docvalues_strings:%s", SearchTool.escapeQueryChars(filterLabel)));
 		l.sortAsc("sequenceNum_docvalues_long");
 		l.setStore(true);
 		promise.complete(l);
