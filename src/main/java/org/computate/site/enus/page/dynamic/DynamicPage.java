@@ -163,6 +163,9 @@ public class DynamicPage extends DynamicPageGen<PageLayout> {
 	protected void _htmTitle(JsonArray l) {
 	}
 
+	protected void _htmMeta(JsonArray l) {
+	}
+
 	protected void _htmBody(JsonArray l) {
 	}
 

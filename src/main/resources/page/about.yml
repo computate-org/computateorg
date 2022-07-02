@@ -1,14 +1,31 @@
 ---
-uri: /en-us/about
+pageName: about
+uri: "/en-us/{{ pageName }}"
 h1: Who is Christopher Tate? 
 h2: All about me. 
 created: "2019-04-23"
 author:
   name: Christopher Tate
   title: Red Hat Principal Software Consultant
+pageImageUri: "/png/review/{{ pageName }}.png"
 htmTitle:
   - text: "{{ h1 }}{{ h2 }}"
-pageImageUri: /jpg/france.jpg
+htmMeta:
+  - {e: meta, a: {property: "og:title", content: "{{ h1 }}"}}
+  - {e: meta, a: {property: "og:description", content: "{{ h2 }}"}}
+  - {e: meta, a: {property: "og:url", content: "{{ page.siteBaseUrl }}{{ uri }}"}}
+  - {e: meta, a: {property: "og:site_name", content: "{{ page.siteName }}"}}
+  - {e: meta, a: {property: "og:image", content: "{{ page.staticBaseUrl }}{{ pageImageUri }}"}}
+  - {e: meta, a: {property: "og:image:width", content: "{{ page.pageImageWidth }}"}}
+  - {e: meta, a: {property: "og:image:height", content: "{{ page.pageImageHeight }}"}}
+  - {e: meta, a: {property: "og:image:type", content: "{{ page.pageImageType }}"}}
+  - {e: meta, a: {property: "og:image:alt", content: "{{ h1 }} {{ h2 }}"}}
+  - {e: meta, a: {property: "og:type", content: "article"}}
+  - {e: meta, a: {property: "twitter:card", content: "summary_large_image"}}
+  - {e: meta, a: {property: "twitter:title", content: "{{ h1 }}"}}
+  - {e: meta, a: {property: "twitter:description", content: "{{ h2 }}"}}
+  - {e: meta, a: {property: "twitter:image", content: "{{ page.staticBaseUrl }}{{ pageImageUri }}"}}
+  - {e: meta, a: {property: "description", content: "{{ h2 }}"}}
 htmBody:
   - e: div
     a:
@@ -37,6 +54,7 @@ htmBody:
           - e: div
             a:
               class: w3-row w3-mobile 
+            label: [ "pageImage" ]
             in:
               - e: div
                 a:
@@ -44,64 +62,64 @@ htmBody:
                 in:
                   - e: a
                     a:
-                      href: "{{ page.STATIC_BASE_URL }}/jpg/idaho-winter.jpg"
+                      href: "{{ page.staticBaseUrl }}/jpg/idaho-winter.jpg"
                     in:
                       - e: img
                         a:
                           class: w3-image w3-hover-opacity 
-                          src: "{{ page.STATIC_BASE_URL }}/jpg/idaho-winter.jpg"
+                          src: "{{ page.staticBaseUrl }}/jpg/idaho-winter.jpg"
                   - e: a
                     a:
-                      href: "{{ page.STATIC_BASE_URL }}/jpg/utah-mountains2.jpg"
+                      href: "{{ page.staticBaseUrl }}/jpg/utah-mountains2.jpg"
                     in:
                       - e: img
                         a:
                           class: w3-image w3-hover-opacity 
-                          src: "{{ page.STATIC_BASE_URL }}/jpg/utah-mountains2.jpg"
+                          src: "{{ page.staticBaseUrl }}/jpg/utah-mountains2.jpg"
               - e: div
                 a:
                   class: w3-quarter w3-mobile 
                 in:
                   - e: a
                     a:
-                      href: "{{ page.STATIC_BASE_URL }}/jpg/utah-mountains.jpg"
+                      href: "{{ page.staticBaseUrl }}/jpg/utah-mountains.jpg"
                     in:
                       - e: img
                         a:
                           class: w3-image w3-hover-opacity 
-                          src: "{{ page.STATIC_BASE_URL }}/jpg/utah-mountains.jpg"
+                          src: "{{ page.staticBaseUrl }}/jpg/utah-mountains.jpg"
               - e: div
                 a:
                   class: w3-quarter w3-mobile 
                 in:
                   - e: a
                     a:
-                      href: "{{ page.STATIC_BASE_URL }}/jpg/idaho.jpg"
+                      href: "{{ page.staticBaseUrl }}/jpg/idaho.jpg"
                     in:
                       - e: img
                         a:
                           class: w3-image w3-hover-opacity 
-                          src: "{{ page.STATIC_BASE_URL }}/jpg/idaho.jpg"
+                          src: "{{ page.staticBaseUrl }}/jpg/idaho.jpg"
                   - e: a
                     a:
-                      href: "{{ page.STATIC_BASE_URL }}/jpg/quebec.jpg"
+                      href: "{{ page.staticBaseUrl }}/jpg/quebec.jpg"
                     in:
                       - e: img
                         a:
                           class: w3-image w3-hover-opacity 
-                          src: "{{ page.STATIC_BASE_URL }}/jpg/quebec.jpg"
+                          src: "{{ page.staticBaseUrl }}/jpg/quebec.jpg"
               - e: div
                 a:
                   class: w3-quarter w3-mobile 
                 in:
                   - e: a
                     a:
-                      href: "{{ page.STATIC_BASE_URL }}/jpg/france.jpg"
+                      href: "{{ page.staticBaseUrl }}/jpg/france.jpg"
                     in:
                       - e: img
                         a:
                           class: w3-image w3-hover-opacity 
-                          src: "{{ page.STATIC_BASE_URL }}/jpg/france.jpg"
+                          src: "{{ page.staticBaseUrl }}/jpg/france.jpg"
       - e: div
         in:
           - e: div

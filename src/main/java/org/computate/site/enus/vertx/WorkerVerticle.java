@@ -15,6 +15,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.Stack;
 import java.util.concurrent.TimeUnit;
 
@@ -427,6 +428,21 @@ public class WorkerVerticle extends WorkerVerticleGen<AbstractVerticle> {
 					siteRequest.setConfig(config());
 					siteRequest.setWebClient(webClient);
 					siteRequest.initDeepSiteRequestEnUS(siteRequest);
+
+					String[] fieldNames = json.fieldNames().toArray(new String[json.fieldNames().size()]);
+					for(Integer i = 0; i < json.size(); i++) {
+						String key = fieldNames[i];
+						Object o = json.getValue(key);
+						if(o instanceof String) {
+							try {
+								Template template = handlebars.compileInline((String)o);
+								Context engineContext = Context.newBuilder(json.getMap()).resolver(templateEngine.getResolvers()).build();
+								json.put(key, Buffer.buffer(template.apply(engineContext)).toString());
+							} catch (IOException ex) {
+								ExceptionUtils.rethrow(ex);
+							}
+						}
+					}
 
 					SitePage page = new SitePage();
 					page.setSiteRequest_(siteRequest);

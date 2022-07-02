@@ -392,6 +392,40 @@ public abstract class DynamicPageGen<DEV> extends PageLayout {
 	}
 
 	/////////////
+	// htmMeta //
+	/////////////
+
+	/**	 The entity htmMeta
+	 *	 It is constructed before being initialized with the constructor by default. 
+	 */
+	@JsonProperty
+	@JsonInclude(Include.NON_NULL)
+	protected JsonArray htmMeta = new JsonArray();
+
+	/**	<br> The entity htmMeta
+	 *  It is constructed before being initialized with the constructor by default. 
+	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.page.dynamic.DynamicPage&fq=entiteVar_enUS_indexed_string:htmMeta">Find the entity htmMeta in Solr</a>
+	 * <br>
+	 * @param l is the entity already constructed. 
+	 **/
+	protected abstract void _htmMeta(JsonArray l);
+
+	public JsonArray getHtmMeta() {
+		return htmMeta;
+	}
+
+	public void setHtmMeta(JsonArray htmMeta) {
+		this.htmMeta = htmMeta;
+	}
+	public static JsonArray staticSetHtmMeta(SiteRequestEnUS siteRequest_, String o) {
+		return null;
+	}
+	protected DynamicPage htmMetaInit() {
+		_htmMeta(htmMeta);
+		return (DynamicPage)this;
+	}
+
+	/////////////
 	// htmBody //
 	/////////////
 
@@ -699,6 +733,7 @@ public abstract class DynamicPageGen<DEV> extends PageLayout {
 			Promise<Void> promise2 = Promise.promise();
 			try {
 				htmTitleInit();
+				htmMetaInit();
 				htmBodyInit();
 				pageResponseInit();
 				defaultZoneIdInit();
@@ -774,6 +809,8 @@ public abstract class DynamicPageGen<DEV> extends PageLayout {
 				return oDynamicPage.htmList;
 			case "htmTitle":
 				return oDynamicPage.htmTitle;
+			case "htmMeta":
+				return oDynamicPage.htmMeta;
 			case "htmBody":
 				return oDynamicPage.htmBody;
 			case "pageResponse":
@@ -948,6 +985,7 @@ public abstract class DynamicPageGen<DEV> extends PageLayout {
 	public static final String VAR_filterLabel = "filterLabel";
 	public static final String VAR_htmList = "htmList";
 	public static final String VAR_htmTitle = "htmTitle";
+	public static final String VAR_htmMeta = "htmMeta";
 	public static final String VAR_htmBody = "htmBody";
 	public static final String VAR_pageResponse = "pageResponse";
 	public static final String VAR_defaultZoneId = "defaultZoneId";
@@ -962,6 +1000,7 @@ public abstract class DynamicPageGen<DEV> extends PageLayout {
 	public static final String DISPLAY_NAME_filterLabel = "";
 	public static final String DISPLAY_NAME_htmList = "";
 	public static final String DISPLAY_NAME_htmTitle = "";
+	public static final String DISPLAY_NAME_htmMeta = "";
 	public static final String DISPLAY_NAME_htmBody = "";
 	public static final String DISPLAY_NAME_pageResponse = "";
 	public static final String DISPLAY_NAME_defaultZoneId = "";
@@ -988,6 +1027,8 @@ public abstract class DynamicPageGen<DEV> extends PageLayout {
 			return DISPLAY_NAME_htmList;
 		case VAR_htmTitle:
 			return DISPLAY_NAME_htmTitle;
+		case VAR_htmMeta:
+			return DISPLAY_NAME_htmMeta;
 		case VAR_htmBody:
 			return DISPLAY_NAME_htmBody;
 		case VAR_pageResponse:

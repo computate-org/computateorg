@@ -1,6 +1,6 @@
 ---
 uri: /en-us/choose-your-operating-system
-h1: What is the best operating system to develop the {{ page.SITE_DISPLAY_NAME }}? 
+h1: What is the best operating system to develop the {{ page.siteDisplayName }}? 
 h2: Red Hat Enterprise Linux is the best operating system for software development. 
 created: "2022-05-23"
 courseNum: 1
@@ -9,7 +9,7 @@ author:
   name: Christopher Tate
   title: Red Hat Principal Software Consultant
 htmTitle:
-  - text: What is the best operating system to develop the {{ page.SITE_DISPLAY_NAME }}? Red Hat Enterprise Linux is the best operating system for software development. 
+  - text: What is the best operating system to develop the {{ page.siteDisplayName }}? Red Hat Enterprise Linux is the best operating system for software development. 
 os:
   name: Red Hat Enterprise Linux
   abbreviation: RHEL8
@@ -18,7 +18,7 @@ htmBody:
   - e: h1
     a:
       class: w3-text-2017-shaded-spruce w3-monospace 
-    text: Best operating system to develop the {{ page.SITE_DISPLAY_NAME }}
+    text: Best operating system to develop the {{ page.siteDisplayName }}
   - e: div
     a:
       class: font-style-italic 
@@ -44,7 +44,7 @@ htmBody:
     a:
       class: w3-image w3-padding-16 
       style: "width: 500px; "
-      src: "{{ page.STATIC_BASE_URL }}{{ pageImageUri }}"
+      src: "{{ page.staticBaseUrl }}{{ pageImageUri }}"
   - e: p
     text: |-
       Are you wondering, how do I pick an operating system to develop my website? Between Windows, Mac and many versions of Linux, which one is the most stable, helpful and secure? 

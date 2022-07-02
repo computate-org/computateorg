@@ -878,6 +878,7 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 						page.promiseDeepForClass(siteRequest).onSuccess(b -> {
 							JsonObject json = JsonObject.mapFrom(page);
 							json.put(ConfigKeys.STATIC_BASE_URL, config().getString(ConfigKeys.STATIC_BASE_URL));
+							json.put(ConfigKeys.SITE_BASE_URL, config().getString(ConfigKeys.SITE_BASE_URL));
 							json.put(ConfigKeys.GITHUB_ORG, config().getString(ConfigKeys.GITHUB_ORG));
 							json.put(ConfigKeys.SITE_NAME, config().getString(ConfigKeys.SITE_NAME));
 							json.put(ConfigKeys.SITE_DISPLAY_NAME, config().getString(ConfigKeys.SITE_DISPLAY_NAME));
