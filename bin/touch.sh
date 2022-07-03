@@ -7,6 +7,6 @@ touch ~/.local/src/computate.org/src/main/java/org/computate/site/enus/vertx/Mai
 touch ~/.local/src/computate.org/src/main/java/org/computate/site/enus/vertx/WorkerVerticle.java
 touch ~/.local/src/computate.org/src/main/java/org/computate/site/enus/model/base/BaseModel.java
 touch ~/.local/src/computate.org/src/main/java/org/computate/site/enus/model/user/SiteUser.java
-touch ~/.local/src/computate.org/src/main/java/org/computate/site/enus/model/page/SitePage.java
-touch ~/.local/src/computate.org/src/main/java/org/computate/site/enus/model/htm/SiteHtm.java
 touch ~/.local/src/computate.org/src/main/java/org/computate/site/enus/article/Article.java
+touch ~/.local/src/computate.org/src/main/java/org/computate/site/enus/model/htm/SiteHtm.java
+touch ~/.local/src/computate.org/src/main/java/org/computate/site/enus/model/page/SitePage.java

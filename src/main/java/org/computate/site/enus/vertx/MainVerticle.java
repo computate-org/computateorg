@@ -2,34 +2,41 @@ package org.computate.site.enus.vertx;
 
 import java.net.URLDecoder;
 import java.text.Normalizer;
-import java.util.List;
 import java.util.Map.Entry;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
 import org.apache.camel.CamelContext;
+import org.apache.camel.Exchange;
+import org.apache.camel.LoggingLevel;
+import org.apache.camel.builder.ExpressionBuilder;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.vertx.VertxComponent;
 import org.apache.camel.impl.DefaultCamelContext;
+import org.apache.camel.model.dataformat.JsonLibrary;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.computate.search.tool.SearchTool;
-import org.computate.site.enus.article.ArticleEnUSGenApiService;
-import org.computate.site.enus.config.ConfigKeys;
-import org.computate.site.enus.model.htm.SiteHtmEnUSGenApiService;
-import org.computate.site.enus.model.page.SitePage;
-import org.computate.site.enus.model.page.SitePageEnUSGenApiService;
-import org.computate.site.enus.model.user.SiteUserEnUSGenApiService;
-import org.computate.site.enus.page.HomePage;
-import org.computate.site.enus.page.dynamic.DynamicPage;
-import org.computate.site.enus.request.SiteRequestEnUS;
 import org.computate.vertx.handlebars.AuthHelpers;
 import org.computate.vertx.handlebars.DateHelpers;
 import org.computate.vertx.handlebars.SiteHelpers;
 import org.computate.vertx.openapi.OpenApi3Generator;
 import org.computate.vertx.search.list.SearchList;
 import org.computate.vertx.verticle.EmailVerticle;
+import org.computate.site.enus.config.ConfigKeys;
+import org.computate.site.enus.page.PageLayout;
+import org.computate.site.enus.page.HomePage;
+import org.computate.site.enus.request.SiteRequestEnUS;
+import org.computate.site.enus.model.page.SitePage;
+import org.computate.site.enus.page.dynamic.DynamicPage;
+import org.computate.site.enus.model.user.SiteUserEnUSGenApiService;
+import org.computate.site.enus.model.page.SitePageEnUSGenApiService;
+import org.computate.site.enus.model.htm.SiteHtmEnUSGenApiService;
+import org.computate.site.enus.article.ArticleEnUSGenApiService;
+import org.computate.site.enus.model.htm.SiteHtmEnUSGenApiService;
+import org.computate.site.enus.model.page.SitePageEnUSGenApiService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,17 +51,19 @@ import io.vertx.config.ConfigStoreOptions;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.DeploymentOptions;
 import io.vertx.core.Future;
-import io.vertx.core.MultiMap;
 import io.vertx.core.Promise;
 import io.vertx.core.Vertx;
 import io.vertx.core.VertxOptions;
 import io.vertx.core.WorkerExecutor;
+import io.vertx.core.eventbus.DeliveryOptions;
 import io.vertx.core.eventbus.EventBusOptions;
 import io.vertx.core.http.Cookie;
+import io.vertx.core.http.HttpClientOptions;
 import io.vertx.core.http.HttpHeaders;
 import io.vertx.core.http.HttpServerOptions;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
+import io.vertx.core.MultiMap;
 import io.vertx.core.net.JksOptions;
 import io.vertx.core.net.PemKeyCertOptions;
 import io.vertx.core.spi.cluster.ClusterManager;
@@ -250,10 +259,13 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 			vertxOptions.setClusterManager(clusterManager);
 		}
 		Long vertxWarningExceptionSeconds = config.getLong(ConfigKeys.VERTX_WARNING_EXCEPTION_SECONDS);
+		Long vertxMaxEventLoopExecuteTime = config.getLong(ConfigKeys.VERTX_MAX_EVENT_LOOP_EXECUTE_TIME);
 		Integer siteInstances = config.getInteger(ConfigKeys.SITE_INSTANCES);
 		vertxOptions.setEventBusOptions(eventBusOptions);
 		vertxOptions.setWarningExceptionTime(vertxWarningExceptionSeconds);
 		vertxOptions.setWarningExceptionTimeUnit(TimeUnit.SECONDS);
+		vertxOptions.setMaxEventLoopExecuteTime(vertxMaxEventLoopExecuteTime);
+		vertxOptions.setMaxEventLoopExecuteTimeUnit(TimeUnit.SECONDS);
 		vertxOptions.setWorkerPoolSize(config.getInteger(ConfigKeys.WORKER_POOL_SIZE));
 		Consumer<Vertx> runner = vertx -> {
 			try {
@@ -434,6 +446,7 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 			JsonObject extraParams = new JsonObject();
 			extraParams.put("scope", "profile");
 			oauth2ClientOptions.setExtraParameters(extraParams);
+			oauth2ClientOptions.setHttpClientOptions(new HttpClientOptions().setConnectTimeout(120000));
 
 			OpenIDConnectAuth.discover(vertx, oauth2ClientOptions, a -> {
 				if(a.succeeded()) {
@@ -630,38 +643,6 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 			siteInstances = Optional.ofNullable(System.getenv(ConfigKeys.SITE_INSTANCES)).map(s -> Integer.parseInt(s)).orElse(1);
 			workerPoolSize = System.getenv(ConfigKeys.WORKER_POOL_SIZE) == null ? null : Integer.parseInt(System.getenv(ConfigKeys.WORKER_POOL_SIZE));
 
-			healthCheckHandler.register("database", 2000, a -> {
-				pgPool.preparedQuery("select current_timestamp").execute(selectCAsync -> {
-					if(selectCAsync.succeeded()) {
-						a.complete(Status.OK(new JsonObject().put("jdbcMaxPoolSize", jdbcMaxPoolSize).put("jdbcMaxWaitQueueSize", jdbcMaxWaitQueueSize)));
-					} else {
-						LOG.error(configureHealthChecksErrorDatabase, a.future().cause());
-						promise.fail(a.future().cause());
-					}
-				});
-			});
-			healthCheckHandler.register("solr", 2000, a -> {
-				try {
-					String solrHostName = config().getString(ConfigKeys.SOLR_HOST_NAME);
-					Integer solrPort = config().getInteger(ConfigKeys.SOLR_PORT);
-					String solrCollection = config().getString(ConfigKeys.SOLR_COLLECTION);
-					String solrRequestUri = String.format("/solr/%s/select%s", solrCollection, "");
-					webClient.get(solrPort, solrHostName, solrRequestUri).send().onSuccess(b -> {
-						try {
-							a.complete(Status.OK());
-						} catch(Exception ex) {
-							LOG.error("Could not read response from Solr. ", ex);
-							a.fail(ex);
-						}
-					}).onFailure(ex -> {
-						LOG.error(String.format("Solr request failed. "), new RuntimeException(ex));
-						a.fail(ex);
-					});
-				} catch (Exception e) {
-					LOG.error(configureHealthChecksErrorSolr, a.future().cause());
-					a.fail(a.future().cause());
-				}
-			});
 			healthCheckHandler.register("vertx", 2000, a -> {
 				a.complete(Status.OK(new JsonObject().put(ConfigKeys.SITE_INSTANCES, siteInstances).put("workerPoolSize", workerPoolSize)));
 			});
@@ -767,9 +748,9 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 		Promise<Void> promise = Promise.promise();
 		try {
 			SiteUserEnUSGenApiService.registerService(vertx.eventBus(), config(), workerExecutor, pgPool, webClient, oauth2AuthenticationProvider, authorizationProvider, templateEngine, vertx);
-			SitePageEnUSGenApiService.registerService(vertx.eventBus(), config(), workerExecutor, pgPool, webClient, oauth2AuthenticationProvider, authorizationProvider, templateEngine, vertx);
-			SiteHtmEnUSGenApiService.registerService(vertx.eventBus(), config(), workerExecutor, pgPool, webClient, oauth2AuthenticationProvider, authorizationProvider, templateEngine, vertx);
 			ArticleEnUSGenApiService.registerService(vertx.eventBus(), config(), workerExecutor, pgPool, webClient, oauth2AuthenticationProvider, authorizationProvider, templateEngine, vertx);
+			SiteHtmEnUSGenApiService.registerService(vertx.eventBus(), config(), workerExecutor, pgPool, webClient, oauth2AuthenticationProvider, authorizationProvider, templateEngine, vertx);
+			SitePageEnUSGenApiService.registerService(vertx.eventBus(), config(), workerExecutor, pgPool, webClient, oauth2AuthenticationProvider, authorizationProvider, templateEngine, vertx);
 
 			LOG.info(configureApiComplete);
 			promise.complete();
@@ -801,8 +782,21 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 				try {
 					ctx.put(ConfigKeys.STATIC_BASE_URL, config().getString(ConfigKeys.STATIC_BASE_URL));
 					HomePage t = new HomePage();
+					JsonObject query = new JsonObject();
+					MultiMap queryParams = ctx.queryParams();
+					for(String name : queryParams.names()) {
+						JsonArray array = query.getJsonArray(name);
+						List<String> vals = queryParams.getAll(name);
+						if(array == null) {
+							array = new JsonArray();
+							query.put(name, array);
+						}
+						for(String val : vals) {
+							array.add(val);
+						}
+					}
 					ServiceRequest serviceRequest = new ServiceRequest(
-							new JsonObject().put("path", JsonObject.mapFrom(ctx.pathParams())).put("query", JsonObject.mapFrom(ctx.queryParams())).put("cookie", JsonObject.mapFrom(ctx.cookieMap()))
+							new JsonObject().put("path", JsonObject.mapFrom(ctx.pathParams())).put("query", query).put("cookie", JsonObject.mapFrom(ctx.cookieMap()))
 							, ctx.request().headers()
 							, Optional.ofNullable(ctx.user()).map(u -> u.principal()).orElse(null)
 							, new JsonObject()

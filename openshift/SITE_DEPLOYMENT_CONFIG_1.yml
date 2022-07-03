@@ -34,26 +34,32 @@ spec:
             - containerPort: 8778
               name: jolokia
               protocol: TCP
+            - containerPort: 3333
+              name: jms
+              protocol: TCP
+            - containerPort: 8998
+              name: debug
+              protocol: TCP
           readinessProbe:
-            failureThreshold: 5
             httpGet:
               path: /health
               port: 8080
               scheme: "HTTP"
-            initialDelaySeconds: 1
-            periodSeconds: 10
-            successThreshold: 1
+            initialDelaySeconds: 30
             timeoutSeconds: 5
+            periodSeconds: 20
+            successThreshold: 1
+            failureThreshold: 20
           livenessProbe:
-            failureThreshold: 5
             httpGet:
               path: /health
               port: 8080
               scheme: "HTTP"
-            initialDelaySeconds: 5
-            periodSeconds: 10
-            successThreshold: 1
+            initialDelaySeconds: 30
             timeoutSeconds: 5
+            periodSeconds: 20
+            successThreshold: 1
+            failureThreshold: 20
           resources:
             limits:
               memory: '{{ SITE_LIMITS_MEMORY }}'
@@ -201,6 +207,15 @@ spec:
               value: "{{ WORKER_POOL_SIZE }}"
             - name: DYNAMIC_PAGE_PATH
               value: "{{ DYNAMIC_PAGE_PATH }}"
+            - name: VERTX_WARNING_EXCEPTION_SECONDS
+              value: "{{ VERTX_WARNING_EXCEPTION_SECONDS }}"
+            - name: CLUSTER_HOST_NAME
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: status.podIP
+            - name: CLUSTER_PUBLIC_HOST_NAME
+              value: "{{ SITE_NAME }}.{{ SITE_NAMESPACE }}.svc"
 
             - name: API_COUNTER_FETCH
               value: "{{ API_COUNTER_FETCH }}"
@@ -208,12 +223,12 @@ spec:
               value: "{{ API_COUNTER_RESUME }}"
             - name: ENABLE_IMPORT_DATA
               value: "{{ ENABLE_IMPORT_DATA }}"
-            - name: ENABLE_IMPORT_DATA_SitePage
-              value: '{{ ENABLE_IMPORT_DATA_SitePage | to_json }}'
-            - name: ENABLE_IMPORT_DATA_SiteHtm
-              value: '{{ ENABLE_IMPORT_DATA_SiteHtm | to_json }}'
             - name: ENABLE_IMPORT_DATA_Article
               value: '{{ ENABLE_IMPORT_DATA_Article | to_json }}'
+            - name: ENABLE_IMPORT_DATA_SiteHtm
+              value: '{{ ENABLE_IMPORT_DATA_SiteHtm | to_json }}'
+            - name: ENABLE_IMPORT_DATA_SitePage
+              value: '{{ ENABLE_IMPORT_DATA_SitePage | to_json }}'
             - name: ENABLE_REFRESH_DATA
               value: "{{ ENABLE_REFRESH_DATA }}"
             - name: TIMER_DB_SOLR_SYNC_IN_SECONDS
@@ -222,12 +237,12 @@ spec:
               value: '{{ AUTH_ROLES_ADMIN | to_json }}'
             - name: AUTH_ROLES_REQUIRED_SiteUser
               value: '{{ AUTH_ROLES_REQUIRED_SiteUser | to_json }}'
-            - name: AUTH_ROLES_REQUIRED_SitePage
-              value: '{{ AUTH_ROLES_REQUIRED_SitePage | to_json }}'
-            - name: AUTH_ROLES_REQUIRED_SiteHtm
-              value: '{{ AUTH_ROLES_REQUIRED_SiteHtm | to_json }}'
             - name: AUTH_ROLES_REQUIRED_Article
               value: '{{ AUTH_ROLES_REQUIRED_Article | to_json }}'
+            - name: AUTH_ROLES_REQUIRED_SiteHtm
+              value: '{{ AUTH_ROLES_REQUIRED_SiteHtm | to_json }}'
+            - name: AUTH_ROLES_REQUIRED_SitePage
+              value: '{{ AUTH_ROLES_REQUIRED_SitePage | to_json }}'
 
           volumeMounts:
       volumes:

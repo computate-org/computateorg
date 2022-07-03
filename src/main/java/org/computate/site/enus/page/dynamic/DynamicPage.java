@@ -97,6 +97,7 @@ public class DynamicPage extends DynamicPageGen<PageLayout> {
 		l.setStore(true);
 		promise.complete(l);
 	}
+
 	/**
 	 * Val.Complete.enUS:Site HTML search list succeeded. 
 	 * Val.Fail.enUS:Site HTML search list failed. 

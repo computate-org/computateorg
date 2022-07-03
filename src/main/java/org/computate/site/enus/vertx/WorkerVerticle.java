@@ -77,9 +77,9 @@ import io.vertx.sqlclient.RowStream;
 import io.vertx.sqlclient.SqlConnection;
 
 import org.computate.site.enus.model.user.SiteUser;
-import org.computate.site.enus.model.page.SitePage;
-import org.computate.site.enus.model.htm.SiteHtm;
 import org.computate.site.enus.article.Article;
+import org.computate.site.enus.model.htm.SiteHtm;
+import org.computate.site.enus.model.page.SitePage;
 
 /**
  */
@@ -429,6 +429,11 @@ public class WorkerVerticle extends WorkerVerticleGen<AbstractVerticle> {
 					siteRequest.setWebClient(webClient);
 					siteRequest.initDeepSiteRequestEnUS(siteRequest);
 
+					json.put("page", new JsonObject()
+							.put(SitePage.VAR_siteName, config().getString(ConfigKeys.SITE_NAME))
+							.put(SitePage.VAR_siteDisplayName, config().getString(ConfigKeys.SITE_DISPLAY_NAME))
+							);
+
 					String[] fieldNames = json.fieldNames().toArray(new String[json.fieldNames().size()]);
 					for(Integer i = 0; i < json.size(); i++) {
 						String key = fieldNames[i];
@@ -495,7 +500,7 @@ public class WorkerVerticle extends WorkerVerticleGen<AbstractVerticle> {
 							}
 							JsonObject pageBody2 = JsonObject.mapFrom(page);
 							json.put("page", pageBody2);
-			
+
 							CompositeFuture.all(futures).onSuccess(b -> {
 								JsonObject pageParams = new JsonObject();
 								pageParams.put("body", pageBody2);
@@ -778,9 +783,9 @@ public class WorkerVerticle extends WorkerVerticleGen<AbstractVerticle> {
 			if(config().getBoolean(ConfigKeys.ENABLE_REFRESH_DATA, false)) {
 				LOG.info(refreshAllDataStarted);
 				refreshData(SiteUser.CLASS_SIMPLE_NAME).onSuccess(q -> {
-					refreshData(SitePage.CLASS_SIMPLE_NAME).onSuccess(q1 -> {
+					refreshData(Article.CLASS_SIMPLE_NAME).onSuccess(q1 -> {
 						refreshData(SiteHtm.CLASS_SIMPLE_NAME).onSuccess(q2 -> {
-							refreshData(Article.CLASS_SIMPLE_NAME).onSuccess(q3 -> {
+							refreshData(SitePage.CLASS_SIMPLE_NAME).onSuccess(q3 -> {
 								LOG.info(refreshAllDataComplete);
 								promise.complete();
 							}).onFailure(ex -> {
