@@ -110,7 +110,7 @@ public class PageLayout extends PageLayoutGen<Object> {
 	/**
 	 * Description: The current page name
 	 */
-	protected void _pageName(Wrap<String> w) {
+	protected void _pageId(Wrap<String> w) {
 		if(pageUri != null)
 			w.o(StringUtils.substringAfterLast(pageUri, "/"));
 	}

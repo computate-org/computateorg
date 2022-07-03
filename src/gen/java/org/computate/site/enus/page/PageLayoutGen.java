@@ -569,53 +569,53 @@ public abstract class PageLayoutGen<DEV> extends Object {
 		return PageLayout.staticSearchStrPageUri(siteRequest_, PageLayout.staticSearchPageUri(siteRequest_, PageLayout.staticSetPageUri(siteRequest_, o)));
 	}
 
-	//////////////
-	// pageName //
-	//////////////
+	////////////
+	// pageId //
+	////////////
 
-	/**	 The entity pageName
+	/**	 The entity pageId
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
 	@JsonInclude(Include.NON_NULL)
-	protected String pageName;
+	protected String pageId;
 
-	/**	<br> The entity pageName
+	/**	<br> The entity pageId
 	 *  is defined as null before being initialized. 
-	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.page.PageLayout&fq=entiteVar_enUS_indexed_string:pageName">Find the entity pageName in Solr</a>
+	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.page.PageLayout&fq=entiteVar_enUS_indexed_string:pageId">Find the entity pageId in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
-	protected abstract void _pageName(Wrap<String> w);
+	protected abstract void _pageId(Wrap<String> w);
 
-	public String getPageName() {
-		return pageName;
+	public String getPageId() {
+		return pageId;
 	}
-	public void setPageName(String o) {
-		this.pageName = PageLayout.staticSetPageName(siteRequest_, o);
+	public void setPageId(String o) {
+		this.pageId = PageLayout.staticSetPageId(siteRequest_, o);
 	}
-	public static String staticSetPageName(SiteRequestEnUS siteRequest_, String o) {
+	public static String staticSetPageId(SiteRequestEnUS siteRequest_, String o) {
 		return o;
 	}
-	protected PageLayout pageNameInit() {
-		Wrap<String> pageNameWrap = new Wrap<String>().var("pageName");
-		if(pageName == null) {
-			_pageName(pageNameWrap);
-			setPageName(pageNameWrap.o);
+	protected PageLayout pageIdInit() {
+		Wrap<String> pageIdWrap = new Wrap<String>().var("pageId");
+		if(pageId == null) {
+			_pageId(pageIdWrap);
+			setPageId(pageIdWrap.o);
 		}
 		return (PageLayout)this;
 	}
 
-	public static String staticSearchPageName(SiteRequestEnUS siteRequest_, String o) {
+	public static String staticSearchPageId(SiteRequestEnUS siteRequest_, String o) {
 		return o;
 	}
 
-	public static String staticSearchStrPageName(SiteRequestEnUS siteRequest_, String o) {
+	public static String staticSearchStrPageId(SiteRequestEnUS siteRequest_, String o) {
 		return o == null ? null : o.toString();
 	}
 
-	public static String staticSearchFqPageName(SiteRequestEnUS siteRequest_, String o) {
-		return PageLayout.staticSearchStrPageName(siteRequest_, PageLayout.staticSearchPageName(siteRequest_, PageLayout.staticSetPageName(siteRequest_, o)));
+	public static String staticSearchFqPageId(SiteRequestEnUS siteRequest_, String o) {
+		return PageLayout.staticSearchStrPageId(siteRequest_, PageLayout.staticSearchPageId(siteRequest_, PageLayout.staticSetPageId(siteRequest_, o)));
 	}
 
 	////////////
@@ -2392,7 +2392,7 @@ public abstract class PageLayoutGen<DEV> extends Object {
 				siteAuthRealmInit();
 				fontAwesomeKitInit();
 				pageUriInit();
-				pageNameInit();
+				pageIdInit();
 				apiUriInit();
 				pageMethodInit();
 				paramsInit();
@@ -2530,8 +2530,8 @@ public abstract class PageLayoutGen<DEV> extends Object {
 				return oPageLayout.fontAwesomeKit;
 			case "pageUri":
 				return oPageLayout.pageUri;
-			case "pageName":
-				return oPageLayout.pageName;
+			case "pageId":
+				return oPageLayout.pageId;
 			case "apiUri":
 				return oPageLayout.apiUri;
 			case "pageMethod":
@@ -2653,8 +2653,8 @@ public abstract class PageLayoutGen<DEV> extends Object {
 			return PageLayout.staticSetFontAwesomeKit(siteRequest_, o);
 		case "pageUri":
 			return PageLayout.staticSetPageUri(siteRequest_, o);
-		case "pageName":
-			return PageLayout.staticSetPageName(siteRequest_, o);
+		case "pageId":
+			return PageLayout.staticSetPageId(siteRequest_, o);
 		case "apiUri":
 			return PageLayout.staticSetApiUri(siteRequest_, o);
 		case "pageMethod":
@@ -2747,8 +2747,8 @@ public abstract class PageLayoutGen<DEV> extends Object {
 			return PageLayout.staticSearchFontAwesomeKit(siteRequest_, (String)o);
 		case "pageUri":
 			return PageLayout.staticSearchPageUri(siteRequest_, (String)o);
-		case "pageName":
-			return PageLayout.staticSearchPageName(siteRequest_, (String)o);
+		case "pageId":
+			return PageLayout.staticSearchPageId(siteRequest_, (String)o);
 		case "apiUri":
 			return PageLayout.staticSearchApiUri(siteRequest_, (String)o);
 		case "pageMethod":
@@ -2841,8 +2841,8 @@ public abstract class PageLayoutGen<DEV> extends Object {
 			return PageLayout.staticSearchStrFontAwesomeKit(siteRequest_, (String)o);
 		case "pageUri":
 			return PageLayout.staticSearchStrPageUri(siteRequest_, (String)o);
-		case "pageName":
-			return PageLayout.staticSearchStrPageName(siteRequest_, (String)o);
+		case "pageId":
+			return PageLayout.staticSearchStrPageId(siteRequest_, (String)o);
 		case "apiUri":
 			return PageLayout.staticSearchStrApiUri(siteRequest_, (String)o);
 		case "pageMethod":
@@ -2935,8 +2935,8 @@ public abstract class PageLayoutGen<DEV> extends Object {
 			return PageLayout.staticSearchFqFontAwesomeKit(siteRequest_, o);
 		case "pageUri":
 			return PageLayout.staticSearchFqPageUri(siteRequest_, o);
-		case "pageName":
-			return PageLayout.staticSearchFqPageName(siteRequest_, o);
+		case "pageId":
+			return PageLayout.staticSearchFqPageId(siteRequest_, o);
 		case "apiUri":
 			return PageLayout.staticSearchFqApiUri(siteRequest_, o);
 		case "pageMethod":
@@ -3025,7 +3025,7 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	public static final String VAR_siteAuthRealm = "siteAuthRealm";
 	public static final String VAR_fontAwesomeKit = "fontAwesomeKit";
 	public static final String VAR_pageUri = "pageUri";
-	public static final String VAR_pageName = "pageName";
+	public static final String VAR_pageId = "pageId";
 	public static final String VAR_apiUri = "apiUri";
 	public static final String VAR_pageMethod = "pageMethod";
 	public static final String VAR_params = "params";
@@ -3071,7 +3071,7 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	public static final String DISPLAY_NAME_siteAuthRealm = "";
 	public static final String DISPLAY_NAME_fontAwesomeKit = "";
 	public static final String DISPLAY_NAME_pageUri = "";
-	public static final String DISPLAY_NAME_pageName = "";
+	public static final String DISPLAY_NAME_pageId = "";
 	public static final String DISPLAY_NAME_apiUri = "";
 	public static final String DISPLAY_NAME_pageMethod = "";
 	public static final String DISPLAY_NAME_params = "";
@@ -3133,8 +3133,8 @@ public abstract class PageLayoutGen<DEV> extends Object {
 			return DISPLAY_NAME_fontAwesomeKit;
 		case VAR_pageUri:
 			return DISPLAY_NAME_pageUri;
-		case VAR_pageName:
-			return DISPLAY_NAME_pageName;
+		case VAR_pageId:
+			return DISPLAY_NAME_pageId;
 		case VAR_apiUri:
 			return DISPLAY_NAME_apiUri;
 		case VAR_pageMethod:

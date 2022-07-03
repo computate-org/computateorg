@@ -289,6 +289,55 @@ public abstract class SitePageGen<DEV> extends Object {
 		return SitePage.staticSearchStrStaticBaseUrl(siteRequest_, SitePage.staticSearchStaticBaseUrl(siteRequest_, SitePage.staticSetStaticBaseUrl(siteRequest_, o)));
 	}
 
+	////////////////
+	// staticPath //
+	////////////////
+
+	/**	 The entity staticPath
+	 *	 is defined as null before being initialized. 
+	 */
+	@JsonProperty
+	@JsonInclude(Include.NON_NULL)
+	protected String staticPath;
+
+	/**	<br> The entity staticPath
+	 *  is defined as null before being initialized. 
+	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.model.page.SitePage&fq=entiteVar_enUS_indexed_string:staticPath">Find the entity staticPath in Solr</a>
+	 * <br>
+	 * @param w is for wrapping a value to assign to this entity during initialization. 
+	 **/
+	protected abstract void _staticPath(Wrap<String> w);
+
+	public String getStaticPath() {
+		return staticPath;
+	}
+	public void setStaticPath(String o) {
+		this.staticPath = SitePage.staticSetStaticPath(siteRequest_, o);
+	}
+	public static String staticSetStaticPath(SiteRequestEnUS siteRequest_, String o) {
+		return o;
+	}
+	protected SitePage staticPathInit() {
+		Wrap<String> staticPathWrap = new Wrap<String>().var("staticPath");
+		if(staticPath == null) {
+			_staticPath(staticPathWrap);
+			setStaticPath(staticPathWrap.o);
+		}
+		return (SitePage)this;
+	}
+
+	public static String staticSearchStaticPath(SiteRequestEnUS siteRequest_, String o) {
+		return o;
+	}
+
+	public static String staticSearchStrStaticPath(SiteRequestEnUS siteRequest_, String o) {
+		return o == null ? null : o.toString();
+	}
+
+	public static String staticSearchFqStaticPath(SiteRequestEnUS siteRequest_, String o) {
+		return SitePage.staticSearchStrStaticPath(siteRequest_, SitePage.staticSearchStaticPath(siteRequest_, SitePage.staticSetStaticPath(siteRequest_, o)));
+	}
+
 	/////////////////
 	// siteBaseUrl //
 	/////////////////
@@ -378,59 +427,6 @@ public abstract class SitePageGen<DEV> extends Object {
 			promise.fail(ex);
 		});
 		return promise.future();
-	}
-
-	////////////
-	// pageId //
-	////////////
-
-	/**	 The entity pageId
-	 *	 is defined as null before being initialized. 
-	 */
-	@JsonProperty
-	@JsonInclude(Include.NON_NULL)
-	protected String pageId;
-
-	/**	<br> The entity pageId
-	 *  is defined as null before being initialized. 
-	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.model.page.SitePage&fq=entiteVar_enUS_indexed_string:pageId">Find the entity pageId in Solr</a>
-	 * <br>
-	 * @param w is for wrapping a value to assign to this entity during initialization. 
-	 **/
-	protected abstract void _pageId(Wrap<String> w);
-
-	public String getPageId() {
-		return pageId;
-	}
-	public void setPageId(String o) {
-		this.pageId = SitePage.staticSetPageId(siteRequest_, o);
-	}
-	public static String staticSetPageId(SiteRequestEnUS siteRequest_, String o) {
-		return o;
-	}
-	protected SitePage pageIdInit() {
-		Wrap<String> pageIdWrap = new Wrap<String>().var("pageId");
-		if(pageId == null) {
-			_pageId(pageIdWrap);
-			setPageId(pageIdWrap.o);
-		}
-		return (SitePage)this;
-	}
-
-	public static String staticSearchPageId(SiteRequestEnUS siteRequest_, String o) {
-		return o;
-	}
-
-	public static String staticSearchStrPageId(SiteRequestEnUS siteRequest_, String o) {
-		return o == null ? null : o.toString();
-	}
-
-	public static String staticSearchFqPageId(SiteRequestEnUS siteRequest_, String o) {
-		return SitePage.staticSearchStrPageId(siteRequest_, SitePage.staticSearchPageId(siteRequest_, SitePage.staticSetPageId(siteRequest_, o)));
-	}
-
-	public String sqlPageId() {
-		return pageId;
 	}
 
 	///////////////
@@ -608,53 +604,57 @@ public abstract class SitePageGen<DEV> extends Object {
 		return uri;
 	}
 
-	//////////////
-	// pageName //
-	//////////////
+	////////////
+	// pageId //
+	////////////
 
-	/**	 The entity pageName
+	/**	 The entity pageId
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
 	@JsonInclude(Include.NON_NULL)
-	protected String pageName;
+	protected String pageId;
 
-	/**	<br> The entity pageName
+	/**	<br> The entity pageId
 	 *  is defined as null before being initialized. 
-	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.model.page.SitePage&fq=entiteVar_enUS_indexed_string:pageName">Find the entity pageName in Solr</a>
+	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.model.page.SitePage&fq=entiteVar_enUS_indexed_string:pageId">Find the entity pageId in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
-	protected abstract void _pageName(Wrap<String> w);
+	protected abstract void _pageId(Wrap<String> w);
 
-	public String getPageName() {
-		return pageName;
+	public String getPageId() {
+		return pageId;
 	}
-	public void setPageName(String o) {
-		this.pageName = SitePage.staticSetPageName(siteRequest_, o);
+	public void setPageId(String o) {
+		this.pageId = SitePage.staticSetPageId(siteRequest_, o);
 	}
-	public static String staticSetPageName(SiteRequestEnUS siteRequest_, String o) {
+	public static String staticSetPageId(SiteRequestEnUS siteRequest_, String o) {
 		return o;
 	}
-	protected SitePage pageNameInit() {
-		Wrap<String> pageNameWrap = new Wrap<String>().var("pageName");
-		if(pageName == null) {
-			_pageName(pageNameWrap);
-			setPageName(pageNameWrap.o);
+	protected SitePage pageIdInit() {
+		Wrap<String> pageIdWrap = new Wrap<String>().var("pageId");
+		if(pageId == null) {
+			_pageId(pageIdWrap);
+			setPageId(pageIdWrap.o);
 		}
 		return (SitePage)this;
 	}
 
-	public static String staticSearchPageName(SiteRequestEnUS siteRequest_, String o) {
+	public static String staticSearchPageId(SiteRequestEnUS siteRequest_, String o) {
 		return o;
 	}
 
-	public static String staticSearchStrPageName(SiteRequestEnUS siteRequest_, String o) {
+	public static String staticSearchStrPageId(SiteRequestEnUS siteRequest_, String o) {
 		return o == null ? null : o.toString();
 	}
 
-	public static String staticSearchFqPageName(SiteRequestEnUS siteRequest_, String o) {
-		return SitePage.staticSearchStrPageName(siteRequest_, SitePage.staticSearchPageName(siteRequest_, SitePage.staticSetPageName(siteRequest_, o)));
+	public static String staticSearchFqPageId(SiteRequestEnUS siteRequest_, String o) {
+		return SitePage.staticSearchStrPageId(siteRequest_, SitePage.staticSearchPageId(siteRequest_, SitePage.staticSetPageId(siteRequest_, o)));
+	}
+
+	public String sqlPageId() {
+		return pageId;
 	}
 
 	////////
@@ -2190,6 +2190,7 @@ public abstract class SitePageGen<DEV> extends Object {
 				siteNameInit();
 				siteDisplayNameInit();
 				staticBaseUrlInit();
+				staticPathInit();
 				siteBaseUrlInit();
 				promise2.complete();
 			} catch(Exception ex) {
@@ -2207,11 +2208,10 @@ public abstract class SitePageGen<DEV> extends Object {
 		}).compose(a -> {
 			Promise<Void> promise2 = Promise.promise();
 			try {
-				pageIdInit();
 				courseNumInit();
 				lessonNumInit();
 				uriInit();
-				pageNameInit();
+				pageIdInit();
 				h1Init();
 				h2Init();
 				inheritPkInit();
@@ -2299,20 +2299,20 @@ public abstract class SitePageGen<DEV> extends Object {
 				return oSitePage.siteDisplayName;
 			case "staticBaseUrl":
 				return oSitePage.staticBaseUrl;
+			case "staticPath":
+				return oSitePage.staticPath;
 			case "siteBaseUrl":
 				return oSitePage.siteBaseUrl;
 			case "promiseBefore":
 				return oSitePage.promiseBefore;
-			case "pageId":
-				return oSitePage.pageId;
 			case "courseNum":
 				return oSitePage.courseNum;
 			case "lessonNum":
 				return oSitePage.lessonNum;
 			case "uri":
 				return oSitePage.uri;
-			case "pageName":
-				return oSitePage.pageName;
+			case "pageId":
+				return oSitePage.pageId;
 			case "h1":
 				return oSitePage.h1;
 			case "h2":
@@ -2412,18 +2412,18 @@ public abstract class SitePageGen<DEV> extends Object {
 			return SitePage.staticSetSiteDisplayName(siteRequest_, o);
 		case "staticBaseUrl":
 			return SitePage.staticSetStaticBaseUrl(siteRequest_, o);
+		case "staticPath":
+			return SitePage.staticSetStaticPath(siteRequest_, o);
 		case "siteBaseUrl":
 			return SitePage.staticSetSiteBaseUrl(siteRequest_, o);
-		case "pageId":
-			return SitePage.staticSetPageId(siteRequest_, o);
 		case "courseNum":
 			return SitePage.staticSetCourseNum(siteRequest_, o);
 		case "lessonNum":
 			return SitePage.staticSetLessonNum(siteRequest_, o);
 		case "uri":
 			return SitePage.staticSetUri(siteRequest_, o);
-		case "pageName":
-			return SitePage.staticSetPageName(siteRequest_, o);
+		case "pageId":
+			return SitePage.staticSetPageId(siteRequest_, o);
 		case "h1":
 			return SitePage.staticSetH1(siteRequest_, o);
 		case "h2":
@@ -2498,18 +2498,18 @@ public abstract class SitePageGen<DEV> extends Object {
 			return SitePage.staticSearchSiteDisplayName(siteRequest_, (String)o);
 		case "staticBaseUrl":
 			return SitePage.staticSearchStaticBaseUrl(siteRequest_, (String)o);
+		case "staticPath":
+			return SitePage.staticSearchStaticPath(siteRequest_, (String)o);
 		case "siteBaseUrl":
 			return SitePage.staticSearchSiteBaseUrl(siteRequest_, (String)o);
-		case "pageId":
-			return SitePage.staticSearchPageId(siteRequest_, (String)o);
 		case "courseNum":
 			return SitePage.staticSearchCourseNum(siteRequest_, (Integer)o);
 		case "lessonNum":
 			return SitePage.staticSearchLessonNum(siteRequest_, (Integer)o);
 		case "uri":
 			return SitePage.staticSearchUri(siteRequest_, (String)o);
-		case "pageName":
-			return SitePage.staticSearchPageName(siteRequest_, (String)o);
+		case "pageId":
+			return SitePage.staticSearchPageId(siteRequest_, (String)o);
 		case "h1":
 			return SitePage.staticSearchH1(siteRequest_, (String)o);
 		case "h2":
@@ -2584,18 +2584,18 @@ public abstract class SitePageGen<DEV> extends Object {
 			return SitePage.staticSearchStrSiteDisplayName(siteRequest_, (String)o);
 		case "staticBaseUrl":
 			return SitePage.staticSearchStrStaticBaseUrl(siteRequest_, (String)o);
+		case "staticPath":
+			return SitePage.staticSearchStrStaticPath(siteRequest_, (String)o);
 		case "siteBaseUrl":
 			return SitePage.staticSearchStrSiteBaseUrl(siteRequest_, (String)o);
-		case "pageId":
-			return SitePage.staticSearchStrPageId(siteRequest_, (String)o);
 		case "courseNum":
 			return SitePage.staticSearchStrCourseNum(siteRequest_, (Integer)o);
 		case "lessonNum":
 			return SitePage.staticSearchStrLessonNum(siteRequest_, (Integer)o);
 		case "uri":
 			return SitePage.staticSearchStrUri(siteRequest_, (String)o);
-		case "pageName":
-			return SitePage.staticSearchStrPageName(siteRequest_, (String)o);
+		case "pageId":
+			return SitePage.staticSearchStrPageId(siteRequest_, (String)o);
 		case "h1":
 			return SitePage.staticSearchStrH1(siteRequest_, (String)o);
 		case "h2":
@@ -2670,18 +2670,18 @@ public abstract class SitePageGen<DEV> extends Object {
 			return SitePage.staticSearchFqSiteDisplayName(siteRequest_, o);
 		case "staticBaseUrl":
 			return SitePage.staticSearchFqStaticBaseUrl(siteRequest_, o);
+		case "staticPath":
+			return SitePage.staticSearchFqStaticPath(siteRequest_, o);
 		case "siteBaseUrl":
 			return SitePage.staticSearchFqSiteBaseUrl(siteRequest_, o);
-		case "pageId":
-			return SitePage.staticSearchFqPageId(siteRequest_, o);
 		case "courseNum":
 			return SitePage.staticSearchFqCourseNum(siteRequest_, o);
 		case "lessonNum":
 			return SitePage.staticSearchFqLessonNum(siteRequest_, o);
 		case "uri":
 			return SitePage.staticSearchFqUri(siteRequest_, o);
-		case "pageName":
-			return SitePage.staticSearchFqPageName(siteRequest_, o);
+		case "pageId":
+			return SitePage.staticSearchFqPageId(siteRequest_, o);
 		case "h1":
 			return SitePage.staticSearchFqH1(siteRequest_, o);
 		case "h2":
@@ -2762,11 +2762,6 @@ public abstract class SitePageGen<DEV> extends Object {
 	}
 	public Object persistSitePage(String var, Object val) {
 		switch(var.toLowerCase()) {
-			case "pageid":
-				if(val instanceof String)
-					setPageId((String)val);
-				saves.add("pageId");
-				return val;
 			case "coursenum":
 				if(val instanceof Integer)
 					setCourseNum((Integer)val);
@@ -2785,6 +2780,11 @@ public abstract class SitePageGen<DEV> extends Object {
 				if(val instanceof String)
 					setUri((String)val);
 				saves.add("uri");
+				return val;
+			case "pageid":
+				if(val instanceof String)
+					setPageId((String)val);
+				saves.add("pageId");
 				return val;
 			case "h1":
 				if(val instanceof String)
@@ -2879,9 +2879,6 @@ public abstract class SitePageGen<DEV> extends Object {
 	}
 
 	public void indexSitePage(JsonObject doc) {
-		if(pageId != null) {
-			doc.put("pageId_docvalues_string", pageId);
-		}
 		if(courseNum != null) {
 			doc.put("courseNum_docvalues_int", courseNum);
 		}
@@ -2890,6 +2887,9 @@ public abstract class SitePageGen<DEV> extends Object {
 		}
 		if(uri != null) {
 			doc.put("uri_docvalues_string", uri);
+		}
+		if(pageId != null) {
+			doc.put("pageId_docvalues_string", pageId);
 		}
 		if(h1 != null) {
 			doc.put("h1_docvalues_string", h1);
@@ -2976,14 +2976,14 @@ public abstract class SitePageGen<DEV> extends Object {
 
 	public static String varStoredSitePage(String entityVar) {
 		switch(entityVar) {
-			case "pageId":
-				return "pageId_docvalues_string";
 			case "courseNum":
 				return "courseNum_docvalues_int";
 			case "lessonNum":
 				return "lessonNum_docvalues_int";
 			case "uri":
 				return "uri_docvalues_string";
+			case "pageId":
+				return "pageId_docvalues_string";
 			case "h1":
 				return "h1_docvalues_string";
 			case "h2":
@@ -3031,14 +3031,14 @@ public abstract class SitePageGen<DEV> extends Object {
 
 	public static String varIndexedSitePage(String entityVar) {
 		switch(entityVar) {
-			case "pageId":
-				return "pageId_docvalues_string";
 			case "courseNum":
 				return "courseNum_docvalues_int";
 			case "lessonNum":
 				return "lessonNum_docvalues_int";
 			case "uri":
 				return "uri_docvalues_string";
+			case "pageId":
+				return "pageId_docvalues_string";
 			case "h1":
 				return "h1_docvalues_string";
 			case "h2":
@@ -3092,14 +3092,14 @@ public abstract class SitePageGen<DEV> extends Object {
 
 	public static String searchVarSitePage(String searchVar) {
 		switch(searchVar) {
-			case "pageId_docvalues_string":
-				return "pageId";
 			case "courseNum_docvalues_int":
 				return "courseNum";
 			case "lessonNum_docvalues_int":
 				return "lessonNum";
 			case "uri_docvalues_string":
 				return "uri";
+			case "pageId_docvalues_string":
+				return "pageId";
 			case "h1_docvalues_string":
 				return "h1";
 			case "h2_docvalues_string":
@@ -3181,10 +3181,10 @@ public abstract class SitePageGen<DEV> extends Object {
 	public void storeSitePage(SolrResponse.Doc doc) {
 		SitePage oSitePage = (SitePage)this;
 
-		oSitePage.setPageId(Optional.ofNullable(doc.get("pageId_docvalues_string")).map(v -> v.toString()).orElse(null));
 		oSitePage.setCourseNum(Optional.ofNullable(doc.get("courseNum_docvalues_int")).map(v -> v.toString()).orElse(null));
 		oSitePage.setLessonNum(Optional.ofNullable(doc.get("lessonNum_docvalues_int")).map(v -> v.toString()).orElse(null));
 		oSitePage.setUri(Optional.ofNullable(doc.get("uri_docvalues_string")).map(v -> v.toString()).orElse(null));
+		oSitePage.setPageId(Optional.ofNullable(doc.get("pageId_docvalues_string")).map(v -> v.toString()).orElse(null));
 		oSitePage.setH1(Optional.ofNullable(doc.get("h1_docvalues_string")).map(v -> v.toString()).orElse(null));
 		oSitePage.setH2(Optional.ofNullable(doc.get("h2_docvalues_string")).map(v -> v.toString()).orElse(null));
 		oSitePage.setInheritPk(Optional.ofNullable(doc.get("inheritPk_docvalues_string")).map(v -> v.toString()).orElse(null));
@@ -3226,14 +3226,14 @@ public abstract class SitePageGen<DEV> extends Object {
 		Object o = Optional.ofNullable(apiRequest).map(ApiRequest::getOriginal).orElse(null);
 		if(o != null && o instanceof SitePage) {
 			SitePage original = (SitePage)o;
-			if(!Objects.equals(pageId, original.getPageId()))
-				apiRequest.addVars("pageId");
 			if(!Objects.equals(courseNum, original.getCourseNum()))
 				apiRequest.addVars("courseNum");
 			if(!Objects.equals(lessonNum, original.getLessonNum()))
 				apiRequest.addVars("lessonNum");
 			if(!Objects.equals(uri, original.getUri()))
 				apiRequest.addVars("uri");
+			if(!Objects.equals(pageId, original.getPageId()))
+				apiRequest.addVars("pageId");
 			if(!Objects.equals(h1, original.getH1()))
 				apiRequest.addVars("h1");
 			if(!Objects.equals(h2, original.getH2()))
@@ -3289,10 +3289,10 @@ public abstract class SitePageGen<DEV> extends Object {
 
 	@Override public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append(Optional.ofNullable(pageId).map(v -> "pageId: \"" + v + "\"\n" ).orElse(""));
 		sb.append(Optional.ofNullable(courseNum).map(v -> "courseNum: " + v + "\n").orElse(""));
 		sb.append(Optional.ofNullable(lessonNum).map(v -> "lessonNum: " + v + "\n").orElse(""));
 		sb.append(Optional.ofNullable(uri).map(v -> "uri: \"" + v + "\"\n" ).orElse(""));
+		sb.append(Optional.ofNullable(pageId).map(v -> "pageId: \"" + v + "\"\n" ).orElse(""));
 		sb.append(Optional.ofNullable(h1).map(v -> "h1: \"" + v + "\"\n" ).orElse(""));
 		sb.append(Optional.ofNullable(h2).map(v -> "h2: \"" + v + "\"\n" ).orElse(""));
 		sb.append(Optional.ofNullable(inheritPk).map(v -> "inheritPk: \"" + v + "\"\n" ).orElse(""));
@@ -3324,13 +3324,13 @@ public abstract class SitePageGen<DEV> extends Object {
 	public static final String VAR_siteName = "siteName";
 	public static final String VAR_siteDisplayName = "siteDisplayName";
 	public static final String VAR_staticBaseUrl = "staticBaseUrl";
+	public static final String VAR_staticPath = "staticPath";
 	public static final String VAR_siteBaseUrl = "siteBaseUrl";
 	public static final String VAR_promiseBefore = "promiseBefore";
-	public static final String VAR_pageId = "pageId";
 	public static final String VAR_courseNum = "courseNum";
 	public static final String VAR_lessonNum = "lessonNum";
 	public static final String VAR_uri = "uri";
-	public static final String VAR_pageName = "pageName";
+	public static final String VAR_pageId = "pageId";
 	public static final String VAR_h1 = "h1";
 	public static final String VAR_h2 = "h2";
 	public static final String VAR_inheritPk = "inheritPk";
@@ -3372,10 +3372,10 @@ public abstract class SitePageGen<DEV> extends Object {
 		return SitePage.varsFqSitePage(new ArrayList<String>());
 	}
 	public static List<String> varsFqSitePage(List<String> vars) {
-		vars.add(VAR_pageId);
 		vars.add(VAR_courseNum);
 		vars.add(VAR_lessonNum);
 		vars.add(VAR_uri);
+		vars.add(VAR_pageId);
 		vars.add(VAR_created);
 		vars.add(VAR_author);
 		vars.add(VAR_pageImageUri);
@@ -3396,13 +3396,13 @@ public abstract class SitePageGen<DEV> extends Object {
 	public static final String DISPLAY_NAME_siteName = "";
 	public static final String DISPLAY_NAME_siteDisplayName = "";
 	public static final String DISPLAY_NAME_staticBaseUrl = "";
+	public static final String DISPLAY_NAME_staticPath = "";
 	public static final String DISPLAY_NAME_siteBaseUrl = "";
 	public static final String DISPLAY_NAME_promiseBefore = "";
-	public static final String DISPLAY_NAME_pageId = "Page ID";
 	public static final String DISPLAY_NAME_courseNum = "Course Number";
 	public static final String DISPLAY_NAME_lessonNum = "Lesson Number";
 	public static final String DISPLAY_NAME_uri = "URI";
-	public static final String DISPLAY_NAME_pageName = "";
+	public static final String DISPLAY_NAME_pageId = "Page ID";
 	public static final String DISPLAY_NAME_h1 = "header 1";
 	public static final String DISPLAY_NAME_h2 = "header 2";
 	public static final String DISPLAY_NAME_inheritPk = "";
@@ -3444,20 +3444,20 @@ public abstract class SitePageGen<DEV> extends Object {
 			return DISPLAY_NAME_siteDisplayName;
 		case VAR_staticBaseUrl:
 			return DISPLAY_NAME_staticBaseUrl;
+		case VAR_staticPath:
+			return DISPLAY_NAME_staticPath;
 		case VAR_siteBaseUrl:
 			return DISPLAY_NAME_siteBaseUrl;
 		case VAR_promiseBefore:
 			return DISPLAY_NAME_promiseBefore;
-		case VAR_pageId:
-			return DISPLAY_NAME_pageId;
 		case VAR_courseNum:
 			return DISPLAY_NAME_courseNum;
 		case VAR_lessonNum:
 			return DISPLAY_NAME_lessonNum;
 		case VAR_uri:
 			return DISPLAY_NAME_uri;
-		case VAR_pageName:
-			return DISPLAY_NAME_pageName;
+		case VAR_pageId:
+			return DISPLAY_NAME_pageId;
 		case VAR_h1:
 			return DISPLAY_NAME_h1;
 		case VAR_h2:
@@ -3523,16 +3523,14 @@ public abstract class SitePageGen<DEV> extends Object {
 			return "The current request object";
 		case VAR_promiseBefore:
 			return "An asynchronous method for searching for a computer related to this message";
-		case VAR_pageId:
-			return "The ID for this page. ";
 		case VAR_courseNum:
 			return "The course number for this page. ";
 		case VAR_lessonNum:
 			return "The lesson number for this page. ";
 		case VAR_uri:
 			return "The relative URI for this page. ";
-		case VAR_pageName:
-			return "The current page name";
+		case VAR_pageId:
+			return "The ID for this page. ";
 		case VAR_h1:
 			return "The 1st header of this page. ";
 		case VAR_h2:
@@ -3602,19 +3600,19 @@ public abstract class SitePageGen<DEV> extends Object {
 			return "String";
 		case VAR_staticBaseUrl:
 			return "String";
+		case VAR_staticPath:
+			return "String";
 		case VAR_siteBaseUrl:
 			return "String";
 		case VAR_promiseBefore:
 			return "Void";
-		case VAR_pageId:
-			return "String";
 		case VAR_courseNum:
 			return "Integer";
 		case VAR_lessonNum:
 			return "Integer";
 		case VAR_uri:
 			return "String";
-		case VAR_pageName:
+		case VAR_pageId:
 			return "String";
 		case VAR_h1:
 			return "String";
@@ -3690,9 +3688,9 @@ public abstract class SitePageGen<DEV> extends Object {
 
 	public static Integer htmlRowSitePage(String var) {
 		switch(var) {
-		case VAR_pageId:
-			return 3;
 		case VAR_uri:
+			return 3;
+		case VAR_pageId:
 			return 3;
 		case VAR_created:
 			return 1;
@@ -3715,10 +3713,10 @@ public abstract class SitePageGen<DEV> extends Object {
 
 	public static Integer htmlCellSitePage(String var) {
 		switch(var) {
-		case VAR_pageId:
-			return 1;
 		case VAR_uri:
 			return 2;
+		case VAR_pageId:
+			return 1;
 		case VAR_created:
 			return 2;
 		case VAR_modified:

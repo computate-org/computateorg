@@ -572,14 +572,17 @@ public class WorkerVerticle extends WorkerVerticleGen<AbstractVerticle> {
 			Boolean eNoWrapParent = false;
 			Boolean eNoWrap = false;
 			String tabs = "";
+			String comment = pageItem.getString(SiteHtm.VAR_comment);
 
 			if(e != null) {
 				// Stack the element and determine element name, wrap and tabs
 				String localNameParent = stack.isEmpty() ? null : stack.peek();
 				eNoWrapParent = localNameParent == null || XmlTool.HTML_ELEMENTS_NO_WRAP.contains(localNameParent);
 				eNoWrap = localNameParent == null || XmlTool.HTML_ELEMENTS_NO_WRAP.contains(e);
-				tabs = String.join("", Collections.nCopies(stack.size(), "  "));
+				tabs = String.join("", Collections.nCopies(stack.size(), "\t"));
 				stack.push(e);
+			} else if(comment != null) {
+				tabs = String.join("", Collections.nCopies(stack.size(), "\t"));
 			}
 
 			{
@@ -588,6 +591,17 @@ public class WorkerVerticle extends WorkerVerticleGen<AbstractVerticle> {
 				JsonObject importItem = new JsonObject();
 				if(e != null)
 					importItem.put(SiteHtm.VAR_eBefore, e);
+
+				if(comment != null) {
+					// Split text by lines and index each line as it's own value
+					Template template = handlebars.compileInline(comment);
+					Context engineContext = Context.newBuilder(json.getMap()).resolver(templateEngine.getResolvers()).build();
+					Buffer buffer = Buffer.buffer(template.apply(engineContext));
+					String[] strs = buffer.toString().split("\r?\n");
+					importItem.put(SiteHtm.VAR_comment, new JsonArray().addAll(new JsonArray(Arrays.asList(strs))));
+					page.addObjectText(strs);
+				}
+
 				String text = pageItem.getString(SiteHtm.VAR_text);
 				if(text != null) {
 					// Split text by lines and index each line as it's own value

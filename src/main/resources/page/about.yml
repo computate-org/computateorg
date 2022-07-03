@@ -1,13 +1,13 @@
 ---
-pageName: about
-uri: "/en-us/{{ pageName }}"
+pageId: about
+uri: "/en-us/{{ pageId }}"
 h1: Who is Christopher Tate? 
 h2: All about me. 
 created: "2019-04-23"
 author:
   name: Christopher Tate
   title: Red Hat Principal Software Consultant
-pageImageUri: "/png/review/{{ pageName }}.png"
+pageImageUri: "/png/{{ pageId }}/infographic.png"
 htmTitle:
   - text: "{{ h1 }}{{ h2 }}"
 htmMeta:
@@ -16,6 +16,10 @@ htmMeta:
   - {e: meta, a: {property: "og:url", content: "{{ page.siteBaseUrl }}{{ uri }}"}}
   - {e: meta, a: {property: "og:site_name", content: "{{ page.siteName }}"}}
   - {e: meta, a: {property: "og:image", content: "{{ page.staticBaseUrl }}{{ pageImageUri }}"}}
+  - comment: |
+      CutyCapt --min-height=1 --url='{{ page.siteBaseUrl }}{{ uri }}?var=filterLabel:infographic' --out='{{ page.staticPath }}/png/{{ pageId }}/infographic.png'
+      CutyCapt --min-height=1 --url='{{ page.siteBaseUrl }}{{ uri }}?var=filterLabel:image' --out='{{ page.staticPath }}/png/{{ pageId }}/image.png'
+      CutyCapt --min-height=1 --url='{{ page.siteBaseUrl }}{{ uri }}?var=filterLabel:review' --out='{{ page.staticPath }}/png/{{ pageId }}/review.png'
   - {e: meta, a: {property: "og:image:width", content: "{{ page.pageImageWidth }}"}}
   - {e: meta, a: {property: "og:image:height", content: "{{ page.pageImageHeight }}"}}
   - {e: meta, a: {property: "og:image:type", content: "{{ page.pageImageType }}"}}
@@ -54,7 +58,9 @@ htmBody:
           - e: div
             a:
               class: w3-row w3-mobile 
-            label: [ "pageImage" ]
+            label: 
+              - infographic
+              - image
             in:
               - e: div
                 a:
@@ -406,6 +412,7 @@ htmBody:
                         text: I never looked back, and never regretted that decision. 
       - e: div
         label:
+          - infographic
           - review
         a:
           id: divReview

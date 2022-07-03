@@ -90,6 +90,13 @@ public class SitePage extends SitePageGen<Object> {
 	/**
 	 * {@inheritDoc}
 	 */
+	protected void _staticPath(Wrap<String> w) {
+		w.o(siteRequest_.getConfig().getString(ConfigKeys.STATIC_PATH));
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
 	protected void _siteBaseUrl(Wrap<String> w) {
 		w.o(siteRequest_.getConfig().getString(ConfigKeys.SITE_BASE_URL));
 	}
@@ -101,19 +108,6 @@ public class SitePage extends SitePageGen<Object> {
 	 */
 	protected void _promiseBefore(Promise<Void> promise) {
 		promise.complete();
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * DocValues: true
-	 * Persist: true
-	 * HtmlRow: 3
-	 * HtmlCell: 1
-	 * Facet: true
-	 * DisplayName: Page ID
-	 * Description: The ID for this page. 
-	 */
-	protected void _pageId(Wrap<String> w) {
 	}
 
 	/**
@@ -153,9 +147,16 @@ public class SitePage extends SitePageGen<Object> {
 	}
 
 	/**
-	 * Description: The current page name
+	 * {@inheritDoc}
+	 * DocValues: true
+	 * Persist: true
+	 * HtmlRow: 3
+	 * HtmlCell: 1
+	 * Facet: true
+	 * DisplayName: Page ID
+	 * Description: The ID for this page. 
 	 */
-	protected void _pageName(Wrap<String> w) {
+	protected void _pageId(Wrap<String> w) {
 		if(uri != null)
 			w.o(StringUtils.substringAfterLast(uri, "/"));
 	}
