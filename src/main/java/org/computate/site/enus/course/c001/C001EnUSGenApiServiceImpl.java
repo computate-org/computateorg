@@ -104,7 +104,7 @@ public class C001EnUSGenApiServiceImpl extends BaseApiServiceImpl implements C00
 
 	@Override
 	public void searchpageC001(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		user(serviceRequest, SiteRequestEnUS.class, SiteUser.class, "computate.org-enUS-SiteUser", "postSiteUserFuture", "patchSiteUserFuture").onSuccess(siteRequest -> {
+		user(serviceRequest, SiteRequestEnUS.class, SiteUser.class, "computateorg-enUS-SiteUser", "postSiteUserFuture", "patchSiteUserFuture").onSuccess(siteRequest -> {
 			try {
 				{
 					searchC001List(siteRequest, false, true, false).onSuccess(listC001 -> {

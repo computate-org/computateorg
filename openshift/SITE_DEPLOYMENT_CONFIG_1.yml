@@ -4,7 +4,7 @@ kind: DeploymentConfig
 spec:
   replicas: 1
   selector:
-    app: "{{ SITE_NAME }}"
+    app: "computateorg"
     deploymentconfig: "{{ SITE_NAME }}"
   strategy:
     activeDeadlineSeconds: 21600
@@ -15,12 +15,12 @@ spec:
   template:
     metadata:
       labels:
-        app: "{{ SITE_NAME }}"
+        app: "computateorg"
         deploymentconfig: "{{ SITE_NAME }}"
     spec:
       containers:
         - imagePullPolicy: Always
-          name: "{{ SITE_NAME }}"
+          name: "computateorg"
           ports:
             - containerPort: 8080
               name: http
@@ -231,8 +231,6 @@ spec:
               value: '{{ ENABLE_IMPORT_DATA_SitePage | to_json }}'
             - name: ENABLE_REFRESH_DATA
               value: "{{ ENABLE_REFRESH_DATA }}"
-            - name: TIMER_DB_SOLR_SYNC_IN_SECONDS
-              value: "{{ TIMER_DB_SOLR_SYNC_IN_SECONDS }}"
             - name: AUTH_ROLES_ADMIN
               value: '{{ AUTH_ROLES_ADMIN | to_json }}'
             - name: AUTH_ROLES_REQUIRED_SiteUser

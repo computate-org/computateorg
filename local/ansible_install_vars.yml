@@ -4,8 +4,8 @@ QUAYIO_ORG: computate
 PROJECT_POWERED_BY_NAME: OpenShift Online
 PROJECT_POWERED_BY_URL: https://access.redhat.com/products/openshift-online-red-hat
 PROJECT_POWERED_BY_IMAGE_URI: /svg/openshift.svg
-PROJECT_NAME: computate.org
-PROJECT_DISPLAY_NAME: computate.org
+PROJECT_NAME: 
+PROJECT_DISPLAY_NAME: your website
 PROJECT_REPO: "git@github.com:{{ GITHUB_ORG }}/{{ PROJECT_NAME }}.git"
 PROJECT_REPO_HTTPS: "{{ PROJECT_REPO | replace('git@github.com:', 'https://github.com/') }}"
 PROJECT_LANG: enUS
@@ -22,7 +22,7 @@ PROJECT_PORT: 10180
 CLUSTER_PORT: "{{ PROJECT_PORT | regex_replace('(...)', '\\1') }}81"
 JDBC_DATABASE: "{{ PROJECT_NAME }}"
 JDBC_USERNAME: "{{ PROJECT_NAME }}"
-SOLR_COLLECTION: "{{ PROJECT_NAME }}"
+SOLR_COLLECTION: "computateorg"
 ENABLE_SESSION_ID: true
 ENABLE_DELETED: true
 ENABLE_ARCHIVED: true

@@ -104,7 +104,7 @@ public class CourseEnUSGenApiServiceImpl extends BaseApiServiceImpl implements C
 
 	@Override
 	public void searchpageCourse(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		user(serviceRequest, SiteRequestEnUS.class, SiteUser.class, "computate.org-enUS-SiteUser", "postSiteUserFuture", "patchSiteUserFuture").onSuccess(siteRequest -> {
+		user(serviceRequest, SiteRequestEnUS.class, SiteUser.class, "computateorg-enUS-SiteUser", "postSiteUserFuture", "patchSiteUserFuture").onSuccess(siteRequest -> {
 			try {
 				{
 					searchCourseList(siteRequest, false, true, false).onSuccess(listCourse -> {
@@ -287,7 +287,7 @@ public class CourseEnUSGenApiServiceImpl extends BaseApiServiceImpl implements C
 
 	@Override
 	public void searchCourse(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		user(serviceRequest, SiteRequestEnUS.class, SiteUser.class, "computate.org-enUS-SiteUser", "postSiteUserFuture", "patchSiteUserFuture").onSuccess(siteRequest -> {
+		user(serviceRequest, SiteRequestEnUS.class, SiteUser.class, "computateorg-enUS-SiteUser", "postSiteUserFuture", "patchSiteUserFuture").onSuccess(siteRequest -> {
 			try {
 				{
 					searchCourseList(siteRequest, false, true, false).onSuccess(listCourse -> {
@@ -470,7 +470,7 @@ public class CourseEnUSGenApiServiceImpl extends BaseApiServiceImpl implements C
 
 	@Override
 	public void getCourse(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		user(serviceRequest, SiteRequestEnUS.class, SiteUser.class, "computate.org-enUS-SiteUser", "postSiteUserFuture", "patchSiteUserFuture").onSuccess(siteRequest -> {
+		user(serviceRequest, SiteRequestEnUS.class, SiteUser.class, "computateorg-enUS-SiteUser", "postSiteUserFuture", "patchSiteUserFuture").onSuccess(siteRequest -> {
 			try {
 				{
 					searchCourseList(siteRequest, false, true, false).onSuccess(listCourse -> {

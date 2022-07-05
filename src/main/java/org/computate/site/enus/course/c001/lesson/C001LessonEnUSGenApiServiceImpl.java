@@ -104,7 +104,7 @@ public class C001LessonEnUSGenApiServiceImpl extends BaseApiServiceImpl implemen
 
 	@Override
 	public void searchpageC001Lesson(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		user(serviceRequest, SiteRequestEnUS.class, SiteUser.class, "computate.org-enUS-SiteUser", "postSiteUserFuture", "patchSiteUserFuture").onSuccess(siteRequest -> {
+		user(serviceRequest, SiteRequestEnUS.class, SiteUser.class, "computateorg-enUS-SiteUser", "postSiteUserFuture", "patchSiteUserFuture").onSuccess(siteRequest -> {
 			try {
 				{
 					searchC001LessonList(siteRequest, false, true, false).onSuccess(listC001Lesson -> {

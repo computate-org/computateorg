@@ -3,7 +3,7 @@ package org.computate.site.enus.model.user;
 import org.computate.site.enus.request.SiteRequestEnUS;
 import org.computate.site.enus.model.base.BaseModel;
 import org.computate.vertx.api.ApiRequest;
-import org.computate.site.enus.config.ConfigKeys;
+import org.computate.vertx.config.ComputateConfigKeys;
 import java.util.Optional;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
@@ -46,6 +46,8 @@ import java.time.format.DateTimeFormatter;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.lang.Integer;
+import io.vertx.core.json.JsonObject;
+import java.math.BigDecimal;
 import io.vertx.core.json.JsonArray;
 import org.computate.search.response.solr.SolrResponse.Stats;
 import org.computate.search.response.solr.SolrResponse.FacetCounts;
@@ -60,8 +62,8 @@ import io.vertx.core.Future;
  * <br><pre>curl 'http://localhost:8983/solr/computate/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;classeNomCanonique_enUS_indexed_string:org.computate.site.enus.model.user.SiteUserGenPage&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'</pre>
  * <br>Delete  the package org.computate.site.enus.model.user in Solr. 
  * <br><pre>curl 'http://localhost:8983/solr/computate/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;classeNomEnsemble_enUS_indexed_string:org.computate.site.enus.model.user&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'</pre>
- * <br>Delete  the project computate.org in Solr. 
- * <br><pre>curl 'http://localhost:8983/solr/computate/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;siteNom_indexed_string:computate.org&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'</pre>
+ * <br>Delete  the project computateorg in Solr. 
+ * <br><pre>curl 'http://localhost:8983/solr/computate/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;siteNom_indexed_string:computateorg&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'</pre>
  * <br>
  **/
 public abstract class SiteUserGenPageGen<DEV> extends BaseModelPage {
@@ -419,15 +421,15 @@ public abstract class SiteUserGenPageGen<DEV> extends BaseModelPage {
 		if(StringUtils.endsWith(o, "]"))
 			return o == null ? null : ZonedDateTime.parse(o, ComputateZonedDateTimeSerializer.ZONED_DATE_TIME_FORMATTER);
 		else if(StringUtils.endsWith(o, "Z"))
-			return o == null ? null : Instant.parse(o).atZone(ZoneId.of(siteRequest_.getConfig().getString(ConfigKeys.SITE_ZONE))).truncatedTo(ChronoUnit.MILLIS);
+			return o == null ? null : Instant.parse(o).atZone(ZoneId.of(siteRequest_.getConfig().getString(ComputateConfigKeys.SITE_ZONE))).truncatedTo(ChronoUnit.MILLIS);
 		else if(StringUtils.contains(o, "T"))
 			return o == null ? null : ZonedDateTime.parse(o, DateTimeFormatter.ISO_DATE_TIME).truncatedTo(ChronoUnit.MILLIS);
 		else
-			return o == null ? null : LocalDate.parse(o, DateTimeFormatter.ISO_DATE).atStartOfDay(ZoneId.of(siteRequest_.getConfig().getString(ConfigKeys.SITE_ZONE))).truncatedTo(ChronoUnit.MILLIS);
+			return o == null ? null : LocalDate.parse(o, DateTimeFormatter.ISO_DATE).atStartOfDay(ZoneId.of(siteRequest_.getConfig().getString(ComputateConfigKeys.SITE_ZONE))).truncatedTo(ChronoUnit.MILLIS);
 	}
 	@JsonIgnore
 	public void setDefaultRangeEnd(Date o) {
-		this.defaultRangeEnd = o == null ? null : ZonedDateTime.ofInstant(o.toInstant(), ZoneId.of(siteRequest_.getConfig().getString(ConfigKeys.SITE_ZONE))).truncatedTo(ChronoUnit.MILLIS);
+		this.defaultRangeEnd = o == null ? null : ZonedDateTime.ofInstant(o.toInstant(), ZoneId.of(siteRequest_.getConfig().getString(ComputateConfigKeys.SITE_ZONE))).truncatedTo(ChronoUnit.MILLIS);
 	}
 	protected SiteUserGenPage defaultRangeEndInit() {
 		Wrap<ZonedDateTime> defaultRangeEndWrap = new Wrap<ZonedDateTime>().var("defaultRangeEnd");
@@ -492,15 +494,15 @@ public abstract class SiteUserGenPageGen<DEV> extends BaseModelPage {
 		if(StringUtils.endsWith(o, "]"))
 			return o == null ? null : ZonedDateTime.parse(o, ComputateZonedDateTimeSerializer.ZONED_DATE_TIME_FORMATTER);
 		else if(StringUtils.endsWith(o, "Z"))
-			return o == null ? null : Instant.parse(o).atZone(ZoneId.of(siteRequest_.getConfig().getString(ConfigKeys.SITE_ZONE))).truncatedTo(ChronoUnit.MILLIS);
+			return o == null ? null : Instant.parse(o).atZone(ZoneId.of(siteRequest_.getConfig().getString(ComputateConfigKeys.SITE_ZONE))).truncatedTo(ChronoUnit.MILLIS);
 		else if(StringUtils.contains(o, "T"))
 			return o == null ? null : ZonedDateTime.parse(o, DateTimeFormatter.ISO_DATE_TIME).truncatedTo(ChronoUnit.MILLIS);
 		else
-			return o == null ? null : LocalDate.parse(o, DateTimeFormatter.ISO_DATE).atStartOfDay(ZoneId.of(siteRequest_.getConfig().getString(ConfigKeys.SITE_ZONE))).truncatedTo(ChronoUnit.MILLIS);
+			return o == null ? null : LocalDate.parse(o, DateTimeFormatter.ISO_DATE).atStartOfDay(ZoneId.of(siteRequest_.getConfig().getString(ComputateConfigKeys.SITE_ZONE))).truncatedTo(ChronoUnit.MILLIS);
 	}
 	@JsonIgnore
 	public void setDefaultRangeStart(Date o) {
-		this.defaultRangeStart = o == null ? null : ZonedDateTime.ofInstant(o.toInstant(), ZoneId.of(siteRequest_.getConfig().getString(ConfigKeys.SITE_ZONE))).truncatedTo(ChronoUnit.MILLIS);
+		this.defaultRangeStart = o == null ? null : ZonedDateTime.ofInstant(o.toInstant(), ZoneId.of(siteRequest_.getConfig().getString(ComputateConfigKeys.SITE_ZONE))).truncatedTo(ChronoUnit.MILLIS);
 	}
 	protected SiteUserGenPage defaultRangeStartInit() {
 		Wrap<ZonedDateTime> defaultRangeStartWrap = new Wrap<ZonedDateTime>().var("defaultRangeStart");
@@ -790,6 +792,129 @@ public abstract class SiteUserGenPageGen<DEV> extends BaseModelPage {
 
 	public static String staticSearchFqDefaultPivotMinCount(SiteRequestEnUS siteRequest_, String o) {
 		return SiteUserGenPage.staticSearchStrDefaultPivotMinCount(siteRequest_, SiteUserGenPage.staticSearchDefaultPivotMinCount(siteRequest_, SiteUserGenPage.staticSetDefaultPivotMinCount(siteRequest_, o)));
+	}
+
+	//////////////////////////
+	// DEFAULT_MAP_LOCATION //
+	//////////////////////////
+
+	/**	 The entity DEFAULT_MAP_LOCATION
+	 *	 is defined as null before being initialized. 
+	 */
+	@JsonProperty
+	@JsonInclude(Include.NON_NULL)
+	protected JsonObject DEFAULT_MAP_LOCATION;
+
+	/**	<br> The entity DEFAULT_MAP_LOCATION
+	 *  is defined as null before being initialized. 
+	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.model.user.SiteUserGenPage&fq=entiteVar_enUS_indexed_string:DEFAULT_MAP_LOCATION">Find the entity DEFAULT_MAP_LOCATION in Solr</a>
+	 * <br>
+	 * @param w is for wrapping a value to assign to this entity during initialization. 
+	 **/
+	protected abstract void _DEFAULT_MAP_LOCATION(Wrap<JsonObject> w);
+
+	public JsonObject getDEFAULT_MAP_LOCATION() {
+		return DEFAULT_MAP_LOCATION;
+	}
+
+	public void setDEFAULT_MAP_LOCATION(JsonObject DEFAULT_MAP_LOCATION) {
+		this.DEFAULT_MAP_LOCATION = DEFAULT_MAP_LOCATION;
+	}
+	@JsonIgnore
+	public void setDEFAULT_MAP_LOCATION(String o) {
+		this.DEFAULT_MAP_LOCATION = SiteUserGenPage.staticSetDEFAULT_MAP_LOCATION(siteRequest_, o);
+	}
+	public static JsonObject staticSetDEFAULT_MAP_LOCATION(SiteRequestEnUS siteRequest_, String o) {
+		if(o != null) {
+				return new JsonObject(o);
+		}
+		return null;
+	}
+	protected SiteUserGenPage DEFAULT_MAP_LOCATIONInit() {
+		Wrap<JsonObject> DEFAULT_MAP_LOCATIONWrap = new Wrap<JsonObject>().var("DEFAULT_MAP_LOCATION");
+		if(DEFAULT_MAP_LOCATION == null) {
+			_DEFAULT_MAP_LOCATION(DEFAULT_MAP_LOCATIONWrap);
+			setDEFAULT_MAP_LOCATION(DEFAULT_MAP_LOCATIONWrap.o);
+		}
+		return (SiteUserGenPage)this;
+	}
+
+	public static JsonObject staticSearchDEFAULT_MAP_LOCATION(SiteRequestEnUS siteRequest_, JsonObject o) {
+		return o;
+	}
+
+	public static String staticSearchStrDEFAULT_MAP_LOCATION(SiteRequestEnUS siteRequest_, JsonObject o) {
+		return o == null ? null : o.toString();
+	}
+
+	public static String staticSearchFqDEFAULT_MAP_LOCATION(SiteRequestEnUS siteRequest_, String o) {
+		return SiteUserGenPage.staticSearchStrDEFAULT_MAP_LOCATION(siteRequest_, SiteUserGenPage.staticSearchDEFAULT_MAP_LOCATION(siteRequest_, SiteUserGenPage.staticSetDEFAULT_MAP_LOCATION(siteRequest_, o)));
+	}
+
+	//////////////////////
+	// DEFAULT_MAP_ZOOM //
+	//////////////////////
+
+	/**	 The entity DEFAULT_MAP_ZOOM
+	 *	 is defined as null before being initialized. 
+	 */
+	@JsonProperty
+	@JsonSerialize(using = ToStringSerializer.class)
+	@JsonInclude(Include.NON_NULL)
+	protected BigDecimal DEFAULT_MAP_ZOOM;
+
+	/**	<br> The entity DEFAULT_MAP_ZOOM
+	 *  is defined as null before being initialized. 
+	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.model.user.SiteUserGenPage&fq=entiteVar_enUS_indexed_string:DEFAULT_MAP_ZOOM">Find the entity DEFAULT_MAP_ZOOM in Solr</a>
+	 * <br>
+	 * @param w is for wrapping a value to assign to this entity during initialization. 
+	 **/
+	protected abstract void _DEFAULT_MAP_ZOOM(Wrap<BigDecimal> w);
+
+	public BigDecimal getDEFAULT_MAP_ZOOM() {
+		return DEFAULT_MAP_ZOOM;
+	}
+
+	public void setDEFAULT_MAP_ZOOM(BigDecimal DEFAULT_MAP_ZOOM) {
+		this.DEFAULT_MAP_ZOOM = DEFAULT_MAP_ZOOM;
+	}
+	@JsonIgnore
+	public void setDEFAULT_MAP_ZOOM(String o) {
+		this.DEFAULT_MAP_ZOOM = SiteUserGenPage.staticSetDEFAULT_MAP_ZOOM(siteRequest_, o);
+	}
+	public static BigDecimal staticSetDEFAULT_MAP_ZOOM(SiteRequestEnUS siteRequest_, String o) {
+		o = StringUtils.removeAll(o, "[^\\d\\.]");
+		if(NumberUtils.isParsable(o))
+			return new BigDecimal(o, MathContext.DECIMAL64).setScale(2, RoundingMode.HALF_UP);
+		return null;
+	}
+	@JsonIgnore
+	public void setDEFAULT_MAP_ZOOM(Double o) {
+			this.DEFAULT_MAP_ZOOM = new BigDecimal(o, MathContext.DECIMAL64).setScale(2, RoundingMode.HALF_UP);
+	}
+	@JsonIgnore
+	public void setDEFAULT_MAP_ZOOM(Integer o) {
+			this.DEFAULT_MAP_ZOOM = new BigDecimal(o, MathContext.DECIMAL64).setScale(2, RoundingMode.HALF_UP);
+	}
+	protected SiteUserGenPage DEFAULT_MAP_ZOOMInit() {
+		Wrap<BigDecimal> DEFAULT_MAP_ZOOMWrap = new Wrap<BigDecimal>().var("DEFAULT_MAP_ZOOM");
+		if(DEFAULT_MAP_ZOOM == null) {
+			_DEFAULT_MAP_ZOOM(DEFAULT_MAP_ZOOMWrap);
+			setDEFAULT_MAP_ZOOM(DEFAULT_MAP_ZOOMWrap.o);
+		}
+		return (SiteUserGenPage)this;
+	}
+
+	public static Double staticSearchDEFAULT_MAP_ZOOM(SiteRequestEnUS siteRequest_, BigDecimal o) {
+		return o == null ? null : o.doubleValue();
+	}
+
+	public static String staticSearchStrDEFAULT_MAP_ZOOM(SiteRequestEnUS siteRequest_, Double o) {
+		return o == null ? null : o.toString();
+	}
+
+	public static String staticSearchFqDEFAULT_MAP_ZOOM(SiteRequestEnUS siteRequest_, String o) {
+		return SiteUserGenPage.staticSearchStrDEFAULT_MAP_ZOOM(siteRequest_, SiteUserGenPage.staticSearchDEFAULT_MAP_ZOOM(siteRequest_, SiteUserGenPage.staticSetDEFAULT_MAP_ZOOM(siteRequest_, o)));
 	}
 
 	//////////////////
@@ -1195,6 +1320,8 @@ public abstract class SiteUserGenPageGen<DEV> extends BaseModelPage {
 				defaultFacetLimitInit();
 				defaultFacetMinCountInit();
 				defaultPivotMinCountInit();
+				DEFAULT_MAP_LOCATIONInit();
+				DEFAULT_MAP_ZOOMInit();
 				listSiteUserInit();
 				statsInit();
 				facetCountsInit();
@@ -1284,6 +1411,10 @@ public abstract class SiteUserGenPageGen<DEV> extends BaseModelPage {
 				return oSiteUserGenPage.defaultFacetMinCount;
 			case "defaultPivotMinCount":
 				return oSiteUserGenPage.defaultPivotMinCount;
+			case "DEFAULT_MAP_LOCATION":
+				return oSiteUserGenPage.DEFAULT_MAP_LOCATION;
+			case "DEFAULT_MAP_ZOOM":
+				return oSiteUserGenPage.DEFAULT_MAP_ZOOM;
 			case "listSiteUser":
 				return oSiteUserGenPage.listSiteUser;
 			case "stats":
@@ -1361,6 +1492,10 @@ public abstract class SiteUserGenPageGen<DEV> extends BaseModelPage {
 			return SiteUserGenPage.staticSetDefaultFacetMinCount(siteRequest_, o);
 		case "defaultPivotMinCount":
 			return SiteUserGenPage.staticSetDefaultPivotMinCount(siteRequest_, o);
+		case "DEFAULT_MAP_LOCATION":
+			return SiteUserGenPage.staticSetDEFAULT_MAP_LOCATION(siteRequest_, o);
+		case "DEFAULT_MAP_ZOOM":
+			return SiteUserGenPage.staticSetDEFAULT_MAP_ZOOM(siteRequest_, o);
 		case "siteUserCount":
 			return SiteUserGenPage.staticSetSiteUserCount(siteRequest_, o);
 		case "pk":
@@ -1405,6 +1540,10 @@ public abstract class SiteUserGenPageGen<DEV> extends BaseModelPage {
 			return SiteUserGenPage.staticSearchDefaultFacetMinCount(siteRequest_, (Integer)o);
 		case "defaultPivotMinCount":
 			return SiteUserGenPage.staticSearchDefaultPivotMinCount(siteRequest_, (Integer)o);
+		case "DEFAULT_MAP_LOCATION":
+			return SiteUserGenPage.staticSearchDEFAULT_MAP_LOCATION(siteRequest_, (JsonObject)o);
+		case "DEFAULT_MAP_ZOOM":
+			return SiteUserGenPage.staticSearchDEFAULT_MAP_ZOOM(siteRequest_, (BigDecimal)o);
 		case "siteUserCount":
 			return SiteUserGenPage.staticSearchSiteUserCount(siteRequest_, (Integer)o);
 		case "pk":
@@ -1449,6 +1588,10 @@ public abstract class SiteUserGenPageGen<DEV> extends BaseModelPage {
 			return SiteUserGenPage.staticSearchStrDefaultFacetMinCount(siteRequest_, (Integer)o);
 		case "defaultPivotMinCount":
 			return SiteUserGenPage.staticSearchStrDefaultPivotMinCount(siteRequest_, (Integer)o);
+		case "DEFAULT_MAP_LOCATION":
+			return SiteUserGenPage.staticSearchStrDEFAULT_MAP_LOCATION(siteRequest_, (JsonObject)o);
+		case "DEFAULT_MAP_ZOOM":
+			return SiteUserGenPage.staticSearchStrDEFAULT_MAP_ZOOM(siteRequest_, (Double)o);
 		case "siteUserCount":
 			return SiteUserGenPage.staticSearchStrSiteUserCount(siteRequest_, (Integer)o);
 		case "pk":
@@ -1493,6 +1636,10 @@ public abstract class SiteUserGenPageGen<DEV> extends BaseModelPage {
 			return SiteUserGenPage.staticSearchFqDefaultFacetMinCount(siteRequest_, o);
 		case "defaultPivotMinCount":
 			return SiteUserGenPage.staticSearchFqDefaultPivotMinCount(siteRequest_, o);
+		case "DEFAULT_MAP_LOCATION":
+			return SiteUserGenPage.staticSearchFqDEFAULT_MAP_LOCATION(siteRequest_, o);
+		case "DEFAULT_MAP_ZOOM":
+			return SiteUserGenPage.staticSearchFqDEFAULT_MAP_ZOOM(siteRequest_, o);
 		case "siteUserCount":
 			return SiteUserGenPage.staticSearchFqSiteUserCount(siteRequest_, o);
 		case "pk":
@@ -1531,6 +1678,8 @@ public abstract class SiteUserGenPageGen<DEV> extends BaseModelPage {
 	public static final String VAR_defaultFacetLimit = "defaultFacetLimit";
 	public static final String VAR_defaultFacetMinCount = "defaultFacetMinCount";
 	public static final String VAR_defaultPivotMinCount = "defaultPivotMinCount";
+	public static final String VAR_DEFAULT_MAP_LOCATION = "DEFAULT_MAP_LOCATION";
+	public static final String VAR_DEFAULT_MAP_ZOOM = "DEFAULT_MAP_ZOOM";
 	public static final String VAR_listSiteUser = "listSiteUser";
 	public static final String VAR_stats = "stats";
 	public static final String VAR_facetCounts = "facetCounts";
@@ -1554,6 +1703,8 @@ public abstract class SiteUserGenPageGen<DEV> extends BaseModelPage {
 	public static final String DISPLAY_NAME_defaultFacetLimit = "";
 	public static final String DISPLAY_NAME_defaultFacetMinCount = "";
 	public static final String DISPLAY_NAME_defaultPivotMinCount = "";
+	public static final String DISPLAY_NAME_DEFAULT_MAP_LOCATION = "";
+	public static final String DISPLAY_NAME_DEFAULT_MAP_ZOOM = "";
 	public static final String DISPLAY_NAME_listSiteUser = "";
 	public static final String DISPLAY_NAME_stats = "";
 	public static final String DISPLAY_NAME_facetCounts = "";
@@ -1596,6 +1747,10 @@ public abstract class SiteUserGenPageGen<DEV> extends BaseModelPage {
 			return DISPLAY_NAME_defaultFacetMinCount;
 		case VAR_defaultPivotMinCount:
 			return DISPLAY_NAME_defaultPivotMinCount;
+		case VAR_DEFAULT_MAP_LOCATION:
+			return DISPLAY_NAME_DEFAULT_MAP_LOCATION;
+		case VAR_DEFAULT_MAP_ZOOM:
+			return DISPLAY_NAME_DEFAULT_MAP_ZOOM;
 		case VAR_listSiteUser:
 			return DISPLAY_NAME_listSiteUser;
 		case VAR_stats:

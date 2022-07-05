@@ -509,7 +509,7 @@ public class WorkerVerticle extends WorkerVerticleGen<AbstractVerticle> {
 								pageParams.put("query", new JsonObject().put("commitWithin", 1000).put("q", "*:*").put("var", new JsonArray().add("refresh:false")));
 								JsonObject pageContext = new JsonObject().put("params", pageParams);
 								JsonObject pageRequest = new JsonObject().put("context", pageContext);
-								vertx.eventBus().request(String.format("computate.org-enUS-%s", SitePage.CLASS_SIMPLE_NAME), pageRequest, new DeliveryOptions().addHeader("action", String.format("putimport%sFuture", SitePage.CLASS_SIMPLE_NAME))).onSuccess(c -> {
+								vertx.eventBus().request(String.format("computateorg-enUS-%s", SitePage.CLASS_SIMPLE_NAME), pageRequest, new DeliveryOptions().addHeader("action", String.format("putimport%sFuture", SitePage.CLASS_SIMPLE_NAME))).onSuccess(c -> {
 									String solrHostName = config().getString(ComputateConfigKeys.SOLR_HOST_NAME);
 									Integer solrPort = config().getInteger(ComputateConfigKeys.SOLR_PORT);
 									String solrCollection = config().getString(ComputateConfigKeys.SOLR_COLLECTION);
@@ -678,7 +678,7 @@ public class WorkerVerticle extends WorkerVerticleGen<AbstractVerticle> {
 				htmParams.put("query", new JsonObject().put("commitWithin", 1000).put("q", "*:*").put("var", new JsonArray().add("refresh:false")));
 				JsonObject htmContext = new JsonObject().put("params", htmParams);
 				JsonObject htmRequest = new JsonObject().put("context", htmContext);
-				futures.add(vertx.eventBus().request(String.format("computate.org-enUS-%s", SiteHtm.CLASS_SIMPLE_NAME), htmRequest, new DeliveryOptions().addHeader("action", String.format("putimport%sFuture", SiteHtm.CLASS_SIMPLE_NAME))));
+				futures.add(vertx.eventBus().request(String.format("computateorg-enUS-%s", SiteHtm.CLASS_SIMPLE_NAME), htmRequest, new DeliveryOptions().addHeader("action", String.format("putimport%sFuture", SiteHtm.CLASS_SIMPLE_NAME))));
 			}
 
 			if(each != null) {
@@ -761,7 +761,7 @@ public class WorkerVerticle extends WorkerVerticleGen<AbstractVerticle> {
 				htmParams.put("query", new JsonObject().put("commitWithin", 1000).put("q", "*:*").put("var", new JsonArray().add("refresh:false")));
 				JsonObject htmContext = new JsonObject().put("params", htmParams);
 				JsonObject htmRequest = new JsonObject().put("context", htmContext);
-				futures.add(vertx.eventBus().request(String.format("computate.org-enUS-%s", SiteHtm.CLASS_SIMPLE_NAME), htmRequest, new DeliveryOptions().addHeader("action", String.format("putimport%sFuture", SiteHtm.CLASS_SIMPLE_NAME))));
+				futures.add(vertx.eventBus().request(String.format("computateorg-enUS-%s", SiteHtm.CLASS_SIMPLE_NAME), htmRequest, new DeliveryOptions().addHeader("action", String.format("putimport%sFuture", SiteHtm.CLASS_SIMPLE_NAME))));
 			}
 
 			if(e != null) {
@@ -871,7 +871,7 @@ public class WorkerVerticle extends WorkerVerticleGen<AbstractVerticle> {
 												apiCounter.incrementQueueNum();
 												try {
 													vertx.eventBus().request(
-															String.format("computate.org-enUS-%s", tableName)
+															String.format("computateorg-enUS-%s", tableName)
 															, new JsonObject().put(
 																	"context"
 																	, new JsonObject().put(
