@@ -43,7 +43,7 @@ AUTH_TOKEN_URI: "{{ AUTH_TOKEN_URI }}"
 SOLR_URL: "{{ SOLR_URL }}"
 SOLR_HOST_NAME: localhost
 SOLR_PORT: 8983
-SOLR_COLLECTION: "computate.org"
+SOLR_COLLECTION: "computateorg"
 SOLR_URL_COMPUTATE: "{{ SOLR_URL_COMPUTATE }}"
 
 API_TITLE: "{{ SITE_NAME }}"
@@ -78,8 +78,8 @@ WRITE_COMMENTS: true
 # Enable data import in the site. 
 ENABLE_IMPORT_DATA: {{ ENABLE_IMPORT_DATA | lower }}
 ENABLE_IMPORT_DATA_Article: true
-ENABLE_IMPORT_DATA_SiteHtm: true
 ENABLE_IMPORT_DATA_SitePage: true
+ENABLE_IMPORT_DATA_SiteHtm: true
 
 # The Auth roles required to be an admin in the site. 
 AUTH_ROLES_ADMIN: {{ AUTH_ROLES_ADMIN }}
@@ -87,7 +87,7 @@ AUTH_ROLES_ADMIN: {{ AUTH_ROLES_ADMIN }}
 AUTH_ROLES_REQUIRED_SiteUser: ['SiteAdmin']
 # The Auth roles required to add and modify article records. 
 AUTH_ROLES_REQUIRED_Article: ['SiteAdmin']
-# The Auth roles required to add and modify HTML records. 
-AUTH_ROLES_REQUIRED_SiteHtm: ['SiteAdmin']
 # The Auth roles required to add and modify article records. 
 AUTH_ROLES_REQUIRED_SitePage: ['SiteAdmin']
+# The Auth roles required to add and modify HTML records. 
+AUTH_ROLES_REQUIRED_SiteHtm: ['SiteAdmin']

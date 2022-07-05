@@ -5,7 +5,7 @@
 	<groupId>org.computate</groupId>
 	<artifactId>site</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
-	<name>computate.org</name>
+	<name>your website</name>
 	<description></description>
 
 	<repositories>

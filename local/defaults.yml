@@ -4,11 +4,11 @@ QUAYIO_ORG: "computate"
 PROJECT_POWERED_BY_URL: "https://access.redhat.com/products/openshift-online-red-hat"
 PROJECT_POWERED_BY_NAME: "OpenShift Online"
 PROJECT_POWERED_BY_IMAGE_URI: "/svg/openshift.svg"
-SITE_NAME: "computate.org"
-SITE_DISPLAY_NAME: "computate.org"
+SITE_NAME: "computateorg"
+SITE_DISPLAY_NAME: "your website"
 SITE_SERVICES:
-  - SITE_NAME: "computate.org"
-    SITE_SRC: "/home/ctate/.local/src/computate.org"
+  - SITE_NAME: "computateorg"
+    SITE_SRC: "/home/ctate/.local/src/computateorg"
 RELATIVE_PACKAGE_MainVerticle: "vertx"
 CLASS_SIMPLE_NAME_MainVerticle: "MainVerticle"
 RUN_OPENAPI3_GENERATOR: true
@@ -16,7 +16,7 @@ RUN_SQL_GENERATOR: true
 RUN_ARTICLE_GENERATOR: false
 
 LANGUAGE_NAME: "enUS"
-SITE_PATH_enUS: "/home/ctate/.local/src/computate.org"
+SITE_PATH_enUS: "/home/ctate/.local/src/computateorg"
 DOMAIN_NAME: "example.com"
 DOMAIN_PACKAGE_NAME: "org.computate.site.enus"
 SITE_JAVA_PACKAGE: "org.computate.site.enus"
@@ -32,15 +32,15 @@ SITE_PORT: 10180
 SITE_ZONE: "America/Denver"
 SITE_LOCALE: "en-US"
 STATIC_BASE_URL: "http://localhost:10180/static"
-STATIC_PATH: "/home/ctate/.local/src/computate.org-static"
-TEMPLATE_PATH: "/home/ctate/.local/src/computate.org/src/main/resources/templates"
+STATIC_PATH: "/home/ctate/.local/src/computateorg-static"
+TEMPLATE_PATH: "/home/ctate/.local/src/computateorg/src/main/resources/templates"
 API_CONTACT_EMAIL: ""
 FONTAWESOME_KIT: ""
 
 JDBC_HOST: "localhost"
 JDBC_PORT: 5432
-JDBC_DATABASE: "computate.org"
-JDBC_USERNAME: "computate.org"
+JDBC_DATABASE: "computateorg"
+JDBC_USERNAME: "computateorg"
 
 AUTH_HOST_NAME: "sso.computate.org"
 AUTH_PORT: 443
@@ -52,8 +52,8 @@ AUTH_SECRET: "0518f65a-f86d-42e8-ad65-00f46920443d"
 AUTH_URL: "https://sso.computate.org/auth"
 AUTH_TOKEN_URI: "/auth/realms/RH-IMPACT/protocol/openid-connect/token"
 
-SOLR_COLLECTION: "computate.org"
-SOLR_URL: "http://localhost:8983/solr/computate.org"
+SOLR_COLLECTION: "computateorg"
+SOLR_URL: "http://localhost:8983/solr/computateorg"
 SOLR_HOST_NAME: localhost
 SOLR_PORT: 8983
 SOLR_URL_COMPUTATE: "http://localhost:8983/solr/computate"

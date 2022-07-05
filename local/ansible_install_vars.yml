@@ -4,7 +4,7 @@ QUAYIO_ORG: computate
 PROJECT_POWERED_BY_NAME: OpenShift Online
 PROJECT_POWERED_BY_URL: https://access.redhat.com/products/openshift-online-red-hat
 PROJECT_POWERED_BY_IMAGE_URI: /svg/openshift.svg
-PROJECT_NAME: 
+PROJECT_NAME: computateorg
 PROJECT_DISPLAY_NAME: your website
 PROJECT_REPO: "git@github.com:{{ GITHUB_ORG }}/{{ PROJECT_NAME }}.git"
 PROJECT_REPO_HTTPS: "{{ PROJECT_REPO | replace('git@github.com:', 'https://github.com/') }}"

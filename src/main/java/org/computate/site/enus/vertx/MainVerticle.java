@@ -35,8 +35,8 @@ import org.computate.site.enus.model.user.SiteUserEnUSGenApiService;
 import org.computate.site.enus.model.page.SitePageEnUSGenApiService;
 import org.computate.site.enus.model.htm.SiteHtmEnUSGenApiService;
 import org.computate.site.enus.article.ArticleEnUSGenApiService;
-import org.computate.site.enus.model.htm.SiteHtmEnUSGenApiService;
 import org.computate.site.enus.model.page.SitePageEnUSGenApiService;
+import org.computate.site.enus.model.htm.SiteHtmEnUSGenApiService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -224,7 +224,7 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 			zkConfig.put("zookeeperHosts", zookeeperHosts);
 			zkConfig.put("sessionTimeout", 500000);
 			zkConfig.put("connectTimeout", 3000);
-			zkConfig.put("rootPath", "computate.org");
+			zkConfig.put("rootPath", "computateorg");
 			zkConfig.put("retry", new JsonObject()
 					.put("initialSleepTime", 100)
 					.put("intervalTimes", 10000)
@@ -749,8 +749,8 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 		try {
 			SiteUserEnUSGenApiService.registerService(vertx.eventBus(), config(), workerExecutor, pgPool, webClient, oauth2AuthenticationProvider, authorizationProvider, templateEngine, vertx);
 			ArticleEnUSGenApiService.registerService(vertx.eventBus(), config(), workerExecutor, pgPool, webClient, oauth2AuthenticationProvider, authorizationProvider, templateEngine, vertx);
-			SiteHtmEnUSGenApiService.registerService(vertx.eventBus(), config(), workerExecutor, pgPool, webClient, oauth2AuthenticationProvider, authorizationProvider, templateEngine, vertx);
 			SitePageEnUSGenApiService.registerService(vertx.eventBus(), config(), workerExecutor, pgPool, webClient, oauth2AuthenticationProvider, authorizationProvider, templateEngine, vertx);
+			SiteHtmEnUSGenApiService.registerService(vertx.eventBus(), config(), workerExecutor, pgPool, webClient, oauth2AuthenticationProvider, authorizationProvider, templateEngine, vertx);
 
 			LOG.info(configureApiComplete);
 			promise.complete();

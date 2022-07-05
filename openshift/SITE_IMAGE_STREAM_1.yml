@@ -9,7 +9,7 @@ spec:
       annotations: null
       from:
         kind: DockerImage
-        name: 'quay.io/computate/computate.org:latest'
+        name: 'quay.io/computate/computateorg:latest'
       importPolicy:
         scheduled: true
       referencePolicy:

@@ -1,5 +1,5 @@
 
-# Setup computate.org development environment on MacOSX or Linux (Fedora, RHEL, CentOS, Ubuntu)
+# Setup computateorg development environment on MacOSX or Linux (Fedora, RHEL, CentOS, Ubuntu)
 
 ## Install Ansible dependencies on Linux
 
@@ -42,8 +42,8 @@ pip install ansible
 ## Setup the directory for the project and clone the git repository into it 
 
 ```bash
-install -d ~/.local/src/computate.org
-git clone git@github.com:computate-org/computate.org.git ~/.local/src/computate.org
+install -d ~/.local/src/computateorg
+git clone git@github.com:computate-org/computateorg.git ~/.local/src/computateorg
 ```
 
 ## Setup the Ansible Galaxy roles for installing the complete project locally. 
@@ -62,7 +62,7 @@ git clone git@github.com:computate-org/computate_project.git ~/.ansible/roles/co
 ansible-playbook ~/.ansible/roles/computate.computate_postgres/install.yml -K
 ansible-playbook ~/.ansible/roles/computate.computate_zookeeper/install.yml -K
 ansible-playbook ~/.ansible/roles/computate.computate_solr/install.yml -K
-ansible-playbook ~/.ansible/roles/computate.computate_project/install.yml -e SITE_NAME=computate.org -e ENABLE_CODE_GENERATION_SERVICE=true
+ansible-playbook ~/.ansible/roles/computate.computate_project/install.yml -e SITE_NAME=computateorg -e ENABLE_CODE_GENERATION_SERVICE=true
 ```
 
 ## Running the project install to override secret variables
@@ -73,20 +73,20 @@ Here is an example of creating a vault directory and creating a new vault, it wi
 Be sure to not commit your vault to source control, it should be ignored by default in the .gitignore file that is created in the project. 
 
 ```bash
-install -d ~/.local/src/computate.org-ansible/vault
-ansible-vault create ~/.local/src/computate.org-ansible/vault/$USER-local
+install -d ~/.local/src/computateorg-ansible/vault
+ansible-vault create ~/.local/src/computateorg-ansible/vault/$USER-local
 ```
 
 You can edit the vault, it will ask for the password. 
 
 ```bash
-ansible-vault edit ~/.local/src/computate.org-ansible/vault/$USER-local
+ansible-vault edit ~/.local/src/computateorg-ansible/vault/$USER-local
 ```
 
 You can then run the project install automation again with the secrets in the vault, it will ask for the password. 
 
 ```bash
-ansible-playbook ~/.ansible/roles/computate.computate_project/install.yml -e SITE_NAME=computate.org -e ENABLE_CODE_GENERATION_SERVICE=true -e @~/.local/src/computate.org-ansible/vault/$USER-local --vault-id @prompt
+ansible-playbook ~/.ansible/roles/computate.computate_project/install.yml -e SITE_NAME=computateorg -e ENABLE_CODE_GENERATION_SERVICE=true -e @~/.local/src/computateorg-ansible/vault/$USER-local --vault-id @prompt
 ```
 
 # Configure Red Hat CodeReady Studio
@@ -132,38 +132,38 @@ Add these update sites and install these useful plugins:
 - http://www.genuitec.com/updates/devstyle/ci/
     - Choose "DevStyle Features" for themes
 
-## Import the computate.org project into CodeReady Studio
+## Import the computateorg project into CodeReady Studio
 
 * In CodeReady Studio, go to File -> Import...
 * Select Maven -> Existing Maven Projects
 * Click [ Next > ]
-* Browse to the directory: ~/.local/src/computate.org
+* Browse to the directory: ~/.local/src/computateorg
 * Click [ Finish ]
 
-## Setup a CodeReady Studio Debug/Run configuration to generate the OpenAPI 3 spec and the SQL create and drop scripts in computate.org
+## Setup a CodeReady Studio Debug/Run configuration to generate the OpenAPI 3 spec and the SQL create and drop scripts in computateorg
 
 * In CodeReady Studio, go to File -> Debug Configurations...
 * Right click on Java Application -> New Configuration
-* Name: computate.org-OpenAPIGenerator
-* Project: computate.org
+* Name: computateorg-OpenAPIGenerator
+* Project: computateorg
 * Main class: org.computate.site.enus.vertx.MainVerticle
 
 ### In the Environment tab
 
 Setup the following variables to setup the Vert.x verticle. 
 
-* CONFIG_PATH: ~/.local/src/computate.org/config/computate.org.yml
+* CONFIG_PATH: ~/.local/src/computateorg/config/computateorg.yml
 * RUN_OPENAPI3_GENERATOR: true
 * RUN_SQL_GENERATOR: true
 
 Click [ Apply ] and [ Debug ] to debug the generation of the OpenAPI Spec src/main/resources/webroot and the SQL create and drop scripts in src/main/resources/sql. 
 
-## Setup a CodeReady Studio Debug/Run configuration to run and debug computate.org
+## Setup a CodeReady Studio Debug/Run configuration to run and debug computateorg
 
 * In CodeReady Studio, go to File -> Debug Configurations...
 * Right click on Java Application -> New Configuration
-* Name: computate.org
-* Project: computate.org
+* Name: computateorg
+* Project: computateorg
 * Main class: org.computate.site.enus.vertx.MainVerticle
 
 ### In the "Arguments" tab
@@ -178,14 +178,14 @@ Setup the following VM arguments to disable caching for easier web development:
 
 Setup the following variables to setup the Vert.x verticle. 
 
-* CONFIG_PATH: ~/.local/src/computate.org/config/computate.org.yml
+* CONFIG_PATH: ~/.local/src/computateorg/config/computateorg.yml
 * VERTXWEB_ENVIRONMENT: dev
 
 Click [ Apply ] and [ Debug ] to debug the application. 
 
-# Deploy computate.org to OpenShift with Ansible
+# Deploy computateorg to OpenShift with Ansible
 
-To deploy computate.org to OpenShift with Ansible, you will want to follow the instructions to install Ansible on your system first above "Install Ansible dependencies on Linux". 
+To deploy computateorg to OpenShift with Ansible, you will want to follow the instructions to install Ansible on your system first above "Install Ansible dependencies on Linux". 
 
 ## Setup ~/.ansible/roles directory
 
@@ -206,23 +206,23 @@ git clone git@github.com:computate-org/computate_project_openshift.git ~/.ansibl
 
 ## Create an ansible vault for your OpenShift.
 
-You can create and edit an encrypted ansible vault with a password for the host secrets for your shared OpenShift inventory to deploy computate.org.
+You can create and edit an encrypted ansible vault with a password for the host secrets for your shared OpenShift inventory to deploy computateorg.
 It will have you create a password when you save the file for the first time, like using vim to exit. 
 
 ```bash
-install -d ~/.local/src/computate.org-ansible
-install -d ~/.local/src/computate.org-ansible/vault/$USER-staging/vault
-ansible-vault create ~/.local/src/computate.org-ansible/vault/$USER-staging/vault
-ansible-vault edit ~/.local/src/computate.org-ansible/vault/$USER-staging/vault
+install -d ~/.local/src/computateorg-ansible
+install -d ~/.local/src/computateorg-ansible/vault/$USER-staging/vault
+ansible-vault create ~/.local/src/computateorg-ansible/vault/$USER-staging/vault
+ansible-vault edit ~/.local/src/computateorg-ansible/vault/$USER-staging/vault
 ```
 
-Here is an example of a vault that I have used to deploy the computate.org application. 
+Here is an example of a vault that I have used to deploy the computateorg application. 
 You will want to update these values to reflect your OpenShift environment, like the REDHAT_OPENSHIFT_TOKEN which you will need to obtain after logging into OpenShift. 
 Or the REDHAT_OPENSHIFT_STORAGE_CLASS_NAME which might be different than gp2 for you. 
 If so, try creating a persistent volume in the UI to figure out a good storage class for your environment: 
 
 ```yaml
-PROJECT_NAME: computate.org
+PROJECT_NAME: computateorg
 
 REDHAT_OPENSHIFT_HOST: https://api.rh-us-east-1.openshift.com
 REDHAT_OPENSHIFT_TOKEN: OcrtrXzKNKVj0riR2FvfqORgGfnURx98G8zRPd2MUvs
@@ -254,17 +254,17 @@ AUTH_TOKEN_URI: "/auth/realms/RH-IMPACT/protocol/openid-connect/token"
 
 ```bash
 
-ansible-playbook --vault-id @prompt -e @~/.local/src/computate.org-ansible/vault/$USER-staging/vault ~/.ansible/roles/computate.computate_postgres_openshift/install.yml -e SITE_NAME=computate.org
+ansible-playbook --vault-id @prompt -e @~/.local/src/computateorg-ansible/vault/$USER-staging/vault ~/.ansible/roles/computate.computate_postgres_openshift/install.yml -e SITE_NAME=computateorg
 
-ansible-playbook --vault-id @prompt -e @~/.local/src/computate.org-ansible/vault/$USER-staging/vault ~/.ansible/roles/computate.computate_zookeeper_openshift/install.yml -e SITE_NAME=computate.org
+ansible-playbook --vault-id @prompt -e @~/.local/src/computateorg-ansible/vault/$USER-staging/vault ~/.ansible/roles/computate.computate_zookeeper_openshift/install.yml -e SITE_NAME=computateorg
 
-ansible-playbook --vault-id @prompt -e @~/.local/src/computate.org-ansible/vault/$USER-staging/vault ~/.ansible/roles/computate.computate_solr_openshift/install.yml -e SITE_NAME=computate.org
+ansible-playbook --vault-id @prompt -e @~/.local/src/computateorg-ansible/vault/$USER-staging/vault ~/.ansible/roles/computate.computate_solr_openshift/install.yml -e SITE_NAME=computateorg
 
-ansible-playbook --vault-id @prompt -e @~/.local/src/computate.org-ansible/vault/$USER-staging/vault ~/.ansible/roles/computate.computate_project_openshift/install.yml -e SITE_NAME=computate.org
+ansible-playbook --vault-id @prompt -e @~/.local/src/computateorg-ansible/vault/$USER-staging/vault ~/.ansible/roles/computate.computate_project_openshift/install.yml -e SITE_NAME=computateorg
 ```
 
 ## How the base classes for this project were created
 
 ```bash
-ansible-playbook -e @~/.local/src/computate.org/local/ansible_install_vars.yml ~/.local/src/computate-org/vertx_project.yml
+ansible-playbook -e @~/.local/src/computateorg/local/ansible_install_vars.yml ~/.local/src/computate-org/vertx_project.yml
 ```

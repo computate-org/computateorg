@@ -85,9 +85,9 @@ GITHUB_ORG_NAME: "computate-org"
 # The Git Repository name. 
 SITE_REPO_NAME: "{{ SITE_NAME }}"
 # The Github Repo. 
-SITE_REPO: "git@github.com:computate-org/computate.org.git"
+SITE_REPO: "git@github.com:computate-org/computateorg.git"
 # The Github Repo HTTPS. 
-SITE_REPO_HTTPS: "https://github.com/computate-org/computate.org.git"
+SITE_REPO_HTTPS: "https://github.com/computate-org/computateorg.git"
 PROJECT_POWERED_BY_URL: "https://access.redhat.com/products/openshift-online-red-hat"
 PROJECT_POWERED_BY_NAME: "OpenShift Online"
 PROJECT_POWERED_BY_IMAGE_URI: "/svg/openshift.svg"
@@ -139,7 +139,7 @@ SITE_PORT_ENUS: "8080"
 # The base URL of the site.
 SITE_BASE_URL_ENUS: "https://{{ SITE_HOST_NAME_ENUS }}"
 # The Solr collection of the site.
-SOLR_COLLECTION: "computate.org"
+SOLR_COLLECTION: "computateorg"
 # The timezone of the site.
 SITE_LOCALE: "en-US"
 # The timezone of the site.
@@ -242,38 +242,16 @@ WORKER_POOL_SIZE: 5
 # Enable data import in the site. 
 ENABLE_IMPORT_DATA: "true"
 ENABLE_IMPORT_DATA_Article: true
-ENABLE_IMPORT_DATA_SiteHtm: true
 ENABLE_IMPORT_DATA_SitePage: true
+ENABLE_IMPORT_DATA_SiteHtm: true
 
 # The Auth roles required to be an admin in the site. 
-AUTH_ROLES_ADMIN: ['SiteAdmin']
+AUTH_ROLES_ADMIN: "['SiteAdmin']"
 # The Auth roles required to add and modify site user records. 
 AUTH_ROLES_REQUIRED_SiteUser: ['SiteAdmin']
 # The Auth roles required to add and modify article records. 
 AUTH_ROLES_REQUIRED_Article: ['SiteAdmin']
-# The Auth roles required to add and modify HTML records. 
-AUTH_ROLES_REQUIRED_SiteHtm: ['SiteAdmin']
 # The Auth roles required to add and modify article records. 
 AUTH_ROLES_REQUIRED_SitePage: ['SiteAdmin']
-
-REFRESH_DATA_PAUSE_IN_SECONDS: 10
-ENABLE_REFRESH_DATA: false
-ENABLE_REFRESH_DATA_Article: true
-ENABLE_REFRESH_DATA_SiteHtm: true
-ENABLE_REFRESH_DATA_SitePage: true
-
-ENABLE_IMPORT_DATA: true
-ENABLE_IMPORT_DATA_Article: true
-ENABLE_IMPORT_DATA_SiteHtm: true
-ENABLE_IMPORT_DATA_SitePage: true
-
-# The Auth roles required to be an admin in the site. 
-AUTH_ROLES_ADMIN: ['SiteAdmin']
-# The Auth roles required to add and modify site user records. 
-AUTH_ROLES_REQUIRED_SiteUser: ['SiteAdmin']
-# The Auth roles required to add and modify article records. 
-AUTH_ROLES_REQUIRED_Article: ['SiteAdmin']
 # The Auth roles required to add and modify HTML records. 
 AUTH_ROLES_REQUIRED_SiteHtm: ['SiteAdmin']
-# The Auth roles required to add and modify article records. 
-AUTH_ROLES_REQUIRED_SitePage: ['SiteAdmin']

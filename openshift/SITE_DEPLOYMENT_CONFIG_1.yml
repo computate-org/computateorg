@@ -4,7 +4,7 @@ kind: DeploymentConfig
 spec:
   replicas: 1
   selector:
-    app: "computateorg"
+    app: "{{ SITE_NAME }}"
     deploymentconfig: "{{ SITE_NAME }}"
   strategy:
     activeDeadlineSeconds: 21600
@@ -15,12 +15,12 @@ spec:
   template:
     metadata:
       labels:
-        app: "computateorg"
+        app: "{{ SITE_NAME }}"
         deploymentconfig: "{{ SITE_NAME }}"
     spec:
       containers:
         - imagePullPolicy: Always
-          name: "computateorg"
+          name: "{{ SITE_NAME }}"
           ports:
             - containerPort: 8080
               name: http
@@ -225,10 +225,10 @@ spec:
               value: "{{ ENABLE_IMPORT_DATA }}"
             - name: ENABLE_IMPORT_DATA_Article
               value: '{{ ENABLE_IMPORT_DATA_Article | to_json }}'
-            - name: ENABLE_IMPORT_DATA_SiteHtm
-              value: '{{ ENABLE_IMPORT_DATA_SiteHtm | to_json }}'
             - name: ENABLE_IMPORT_DATA_SitePage
               value: '{{ ENABLE_IMPORT_DATA_SitePage | to_json }}'
+            - name: ENABLE_IMPORT_DATA_SiteHtm
+              value: '{{ ENABLE_IMPORT_DATA_SiteHtm | to_json }}'
             - name: ENABLE_REFRESH_DATA
               value: "{{ ENABLE_REFRESH_DATA }}"
             - name: AUTH_ROLES_ADMIN
@@ -237,10 +237,10 @@ spec:
               value: '{{ AUTH_ROLES_REQUIRED_SiteUser | to_json }}'
             - name: AUTH_ROLES_REQUIRED_Article
               value: '{{ AUTH_ROLES_REQUIRED_Article | to_json }}'
-            - name: AUTH_ROLES_REQUIRED_SiteHtm
-              value: '{{ AUTH_ROLES_REQUIRED_SiteHtm | to_json }}'
             - name: AUTH_ROLES_REQUIRED_SitePage
               value: '{{ AUTH_ROLES_REQUIRED_SitePage | to_json }}'
+            - name: AUTH_ROLES_REQUIRED_SiteHtm
+              value: '{{ AUTH_ROLES_REQUIRED_SiteHtm | to_json }}'
 
           volumeMounts:
       volumes:

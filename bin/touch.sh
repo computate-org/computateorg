@@ -8,5 +8,5 @@ touch ~/.local/src/computateorg/src/main/java/org/computate/site/enus/vertx/Work
 touch ~/.local/src/computateorg/src/main/java/org/computate/site/enus/model/base/BaseModel.java
 touch ~/.local/src/computateorg/src/main/java/org/computate/site/enus/model/user/SiteUser.java
 touch ~/.local/src/computateorg/src/main/java/org/computate/site/enus/article/Article.java
-touch ~/.local/src/computateorg/src/main/java/org/computate/site/enus/model/htm/SiteHtm.java
 touch ~/.local/src/computateorg/src/main/java/org/computate/site/enus/model/page/SitePage.java
+touch ~/.local/src/computateorg/src/main/java/org/computate/site/enus/model/htm/SiteHtm.java

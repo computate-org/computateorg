@@ -78,8 +78,8 @@ import io.vertx.sqlclient.SqlConnection;
 
 import org.computate.site.enus.model.user.SiteUser;
 import org.computate.site.enus.article.Article;
-import org.computate.site.enus.model.htm.SiteHtm;
 import org.computate.site.enus.model.page.SitePage;
+import org.computate.site.enus.model.htm.SiteHtm;
 
 /**
  */
@@ -784,8 +784,8 @@ public class WorkerVerticle extends WorkerVerticleGen<AbstractVerticle> {
 				LOG.info(refreshAllDataStarted);
 				refreshData(SiteUser.CLASS_SIMPLE_NAME).onSuccess(q -> {
 					refreshData(Article.CLASS_SIMPLE_NAME).onSuccess(q1 -> {
-						refreshData(SiteHtm.CLASS_SIMPLE_NAME).onSuccess(q2 -> {
-							refreshData(SitePage.CLASS_SIMPLE_NAME).onSuccess(q3 -> {
+						refreshData(SitePage.CLASS_SIMPLE_NAME).onSuccess(q2 -> {
+							refreshData(SiteHtm.CLASS_SIMPLE_NAME).onSuccess(q3 -> {
 								LOG.info(refreshAllDataComplete);
 								promise.complete();
 							}).onFailure(ex -> {
