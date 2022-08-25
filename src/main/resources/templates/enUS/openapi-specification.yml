@@ -15,7 +15,7 @@ htmBody:
   - e: div
     a:
       class: w3-padding
-    in:
+    block:
       - e: h1
         a:
           class: w3-text-2017-shaded-spruce w3-monospace 
@@ -29,7 +29,7 @@ htmBody:
           class: font-style-italic 
         text: 'Created {{formatZonedDateTime created "EEE MMM d yyyy" "en-US" "America/Denver" }}'
       - e: p
-        in:
+        block:
           - e: div
             a:
               class: font-weight-bold 
@@ -37,7 +37,7 @@ htmBody:
           - e: div
             a:
               class: font-weight-bold font-style-italic
-            in:
+            block:
               - e: i
                 a:
                   class: fa-brands fa-redhat w3-text-red
@@ -49,7 +49,7 @@ htmBody:
         a:
           target: _new
           href: https://studio-ws.apicur.io/sharing/bcd69fc4-cc10-40c1-bb40-03ddfe5cf050
-        in:
+        block:
           - e: img
             a:
               class: w3-image w3-padding-16 

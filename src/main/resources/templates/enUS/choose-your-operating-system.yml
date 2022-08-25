@@ -19,7 +19,7 @@ htmBody:
   - e: div
     a:
       class: w3-padding
-    in:
+    block:
       - e: h1
         a:
           class: w3-text-2017-shaded-spruce w3-monospace 
@@ -29,7 +29,7 @@ htmBody:
           class: font-style-italic 
         text: 'Created {{formatZonedDateTime created "EEE MMM d yyyy" "en-US" "America/Denver" }}'
       - e: p
-        in:
+        block:
           - e: div
             a:
               class: font-weight-bold 
@@ -37,7 +37,7 @@ htmBody:
           - e: div
             a:
               class: font-weight-bold font-style-italic
-            in:
+            block:
               - e: i
                 a:
                   class: fa-brands fa-redhat w3-text-red
@@ -84,7 +84,7 @@ htmBody:
           You will for sure want to read the fine print about the developer subscription to make sure you don't use it in a way that conflicts with the agreement. 
           Here are some important terms to consider: 
       - e: ol
-        in:
+        block:
           - e: li
             text: |-
               By accepting the Program Terms, you represent that you are acting on your own personal behalf and not as a representative or on behalf of an entity and will be using the Individual Developer Subscriptions solely as set forth in this document. 
@@ -101,7 +101,7 @@ htmBody:
       - e: p
         a:
           class: w3-text-2017-shaded-spruce w3-monospace 
-        in:
+        block:
           e: a
           a:
             href: https://developers.redhat.com/articles/faqs-no-cost-red-hat-enterprise-linux
@@ -121,7 +121,7 @@ htmBody:
       - e: p
         a:
           class: w3-text-2017-shaded-spruce w3-monospace 
-        in:
+        block:
           e: a
           a:
             href: https://developers.redhat.com/
@@ -142,7 +142,7 @@ htmBody:
       - e: p
         a:
           class: w3-text-2017-shaded-spruce w3-monospace 
-        in:
+        block:
           e: a
           a:
             href: https://developers.redhat.com/products/rhel/download

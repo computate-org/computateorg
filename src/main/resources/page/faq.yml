@@ -34,13 +34,13 @@ htmBody:
   - e: div
     a:
       class: w3-card w3-padding w3-margin-top w3-show w3-white 
-    in:
+    block:
       - e: div
-        in:
+        block:
           - e: h1
             a:
               class: ""
-            in:
+            block:
               - e: i
                 a:
                   class: fa-solid fa-question
@@ -49,7 +49,7 @@ htmBody:
           - e: h2
             a:
               class: ""
-            in:
+            block:
               - e: i
                 a:
                   class: fa-solid fa-megaphone
@@ -61,28 +61,28 @@ htmBody:
             label: 
               - infographic
               - image
-            in:
+            block:
           - e: div
             a:
               class: w3-row w3-mobile 
             label: 
               - infographic
               - image
-            in:
+            block:
               - e: img
                 a:
                   class: w3-image 
                   src: "{{ page.staticBaseUrl }}/png/{{ pageId }}/image.png"
       - e: div
-        in:
+        block:
           - e: div
             a:
               class: w3-padding 
-            in:
+            block:
               - e: h3
                 a:
                   class: ""
-                in:
+                block:
                   - e: i
                     a:
                       class: fa-solid fa-male
@@ -91,7 +91,7 @@ htmBody:
               - e: h4
                 a:
                   class: ""
-                in:
+                block:
                   - e: i
                     a:
                       class: fa-solid fa-globe-americas
@@ -103,100 +103,100 @@ htmBody:
           - review
         a:
           id: divReview
-        in:
+        block:
           - e: table
             a:
               id: tableReview1
               class: review1Table 
-            in:
+            block:
               - e: tbody
-                in:
+                block:
                   - e: tr
                     a:
                       class: 
-                    in:
+                    block:
                       - e: td
                         a:
                           class: w3-mobile review1TableTr1Td1 review1TableTr1Td even 
-                        in:
+                        block:
                           - e: span
                             text: '{{formatZonedDateTime created "EEEE" "en-US" "America/Denver" }}'
                       - e: td
                         a:
                           class: w3-mobile review1TableTr1Td2 review1TableTr1Td odd 
-                        in:
+                        block:
                           - e: i
                             a:
-                              class: "{{ htmBody.0.in.0.in.0.in.0.a.class }}"
+                              class: "{{ htmBody.0.block.0.block.0.block.0.a.class }}"
                       - e: td
                         a:
                           class: w3-mobile review1TableTr1Td3 review1TableTr1Td even 
-                        in:
+                        block:
                           - e: i
                             a:
-                              class: "{{ htmBody.0.in.0.in.1.in.0.a.class }}"
+                              class: "{{ htmBody.0.block.0.block.1.block.0.a.class }}"
                       - e: td
                         a:
                           class: w3-mobile review1TableTr1Td4 review1TableTr1Td odd 
-                        in:
+                        block:
                           - e: i
                             a:
                               class: "fa-solid fa-pen-nib"
                   - e: tr
                     a:
                       class: odd 
-                    in:
+                    block:
                       - e: td
                         a:
                           class: w3-mobile review1TableTr2Td1 review1TableTr2Td even 
-                        in:
+                        block:
                           - e: span
                             text: '{{formatZonedDateTime created "MMMM d yyyy" "en-US" "America/Denver" }}'
                       - e: td
                         a:
                           class: w3-mobile review1TableTr2Td2 review1TableTr2Td odd 
-                        in:
+                        block:
                           - e: span
                             text: "{{ h1 }}"
                       - e: td
                         a:
                           class: w3-mobile review1TableTr2Td3 review1TableTr2Td even 
-                        in:
+                        block:
                           - e: span
                             text: "{{ h2 }}"
                       - e: td
                         a:
                           class: w3-mobile review1TableTr2Td4 review1TableTr2Td odd 
-                        in:
+                        block:
                           - e: span
                             text: "{{ author.name }}"
           - e: table
             a:
               id: tableReview2
               class: review2Table 
-            in:
+            block:
               - e: tbody
-                each: htmBody.0.in.1.in
-                in:
+                each: htmBody.0.block.1.block
+                block:
                   - e: tr
                     a:
                       class: "{{#even @index }}review2TableTr even {{else}}review2TableTr odd {{/even}}"
-                    in:
+                    block:
                       - e: td
                         a:
                           class: w3-mobile 
-                        in:
+                        block:
                           - e: i
                             a:
-                              class: "{{ item.in.0.in.0.a.class }}"
+                              class: "{{ item.block.0.block.0.a.class }}"
                           - e: span
-                            text: '{{item.in.0.in.1.text }}'
+                            text: '{{item.block.0.block.1.text }}'
                       - e: td
                         a:
                           class: w3-mobile 
-                        in:
+                        block:
                           - e: i
                             a:
-                              class: "{{ item.in.1.in.0.a.class }}"
+                              class: "{{ item.block.1.block.0.a.class }}"
                           - e: span
-                            text: '{{item.in.1.in.1.text }}'
+                            text: '{{item.block.1.block.1.text }}'

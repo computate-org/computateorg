@@ -72,6 +72,11 @@
 			<artifactId>computate-vertx</artifactId>
 			<version>${computate.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.computate</groupId>
+			<artifactId>computate</artifactId>
+			<version>${computate.version}</version>
+		</dependency>
 
 		<!-- ############## -->
 		<!-- Apache Commons -->
