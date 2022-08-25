@@ -12,12 +12,12 @@ import org.computate.site.frFR.page.parti.QuestionReponse;
  * Api: true
  * ApiMethode: RechercheFrFRPage
  * ApiMethode: RechercheEnUSPage
- * ApiUriRechercheFrFRPage: /frFR/cours/001/003-essayer-linux-sur-une-machine-virtuelle-avec-virtual-box
- * ApiUriRechercheEnUSPage: /enUS/course/001/003-try-linux-on-a-virtual-machine-on-virtual-box
- * PageRechercheFrFRPage: C001L003InstallerMachineVirtuelleVirtualBoxFrFRPage
- * PageRechercheEnUSPage: C001L003InstallerMachineVirtuelleVirtualBoxEnUSPage
- * PageSuperRechercheFrFRPage: C001LeconFrFRPage
- * PageSuperRechercheEnUSPage: C001LeconEnUSPage
+ * ApiUri.RechercheFrFRPage: /frFR/cours/001/003-essayer-linux-sur-une-machine-virtuelle-avec-virtual-box
+ * ApiUri.RechercheEnUSPage: /enUS/course/001/003-try-linux-on-a-virtual-machine-on-virtual-box
+ * Page.RechercheFrFRPage: C001L003InstallerMachineVirtuelleVirtualBoxFrFRPage
+ * Page.RechercheEnUSPage: C001L003InstallerMachineVirtuelleVirtualBoxEnUSPage
+ * PageSuper.RechercheFrFRPage: C001LeconFrFRPage
+ * PageSuper.RechercheEnUSPage: C001LeconEnUSPage
  * UnNom.frFR: le leçon
  * UnNom.enUS: a lesson
  * 
@@ -33,7 +33,7 @@ import org.computate.site.frFR.page.parti.QuestionReponse;
  * Description.frFR: Comment puis-je essayer CentOS 7 Linux sans remplacer mon système d'exploitation ? Essayez CentOS 7 sur une machine virtuelle VirtualBox. 
  * Description.enUS: How do I try CentOS 7 Linux without replacing my operating system? Try CentOS 7 on a VirtualBox virtual machine. 
  * 
- * PageSimple: true
+ * Page.Simple: true
  * Couleur: green
  * IconeGroupe: regular
  * IconeNom: question

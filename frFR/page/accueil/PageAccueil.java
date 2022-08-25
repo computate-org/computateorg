@@ -21,12 +21,12 @@ import io.vertx.ext.web.api.OperationRequest;
  * Api: true
  * ApiMethode: RechercheFrFRPage
  * ApiMethode: RechercheEnUSPage
- * ApiUriRechercheFrFRPage: /frFR
- * ApiUriRechercheEnUSPage: /
- * PageRechercheFrFRPage: PageAccueilFrFRPage
- * PageRechercheEnUSPage: PageAccueilEnUSPage
- * PageSuperRechercheFrFRPage: ArticleFrFRPage
- * PageSuperRechercheEnUSPage: ArticleEnUSPage
+ * ApiUri.RechercheFrFRPage: /frFR
+ * ApiUri.RechercheEnUSPage: /
+ * Page.RechercheFrFRPage: PageAccueilFrFRPage
+ * Page.RechercheEnUSPage: PageAccueilEnUSPage
+ * PageSuper.RechercheFrFRPage: ArticleFrFRPage
+ * PageSuper.RechercheEnUSPage: ArticleEnUSPage
  * 
  * H1.frFR: Construire votre site web personnel, avec données et la récherche, sur votre ordinateur et sur le cloud, avec des logiciels open source. 
  * H1.enUS: Create your own data-driven, searchable website on your own computer and the cloud, with open source software. 
@@ -40,7 +40,7 @@ import io.vertx.ext.web.api.OperationRequest;
  * Description.frFR: Construire votre site web personnel, avec données et la récherche, sur votre ordinateur et sur le cloud, avec des logiciels open source. 
  * Description.enUS: Create your own data-driven, searchable website on your own computer and the cloud, with open source software. 
  * 
- * PageSimple: true
+ * Page.Simple: true
  * NomPluriel.frFR: lessons
  * Couleur: green
  * IconeGroupe: regular

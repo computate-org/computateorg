@@ -28,10 +28,10 @@ import org.computate.site.frFR.xml.OutilXml;
  * ApiMethode: PATCH
  * ApiMethode: GET
  * ApiMethode: DELETE
- * ApiUriRechercheFrFRPage: /frFR/cluster
- * ApiUriRechercheEnUSPage: /enUS/cluster
- * PageRechercheFrFRPage: ClusterFrFRPage
- * PageRechercheEnUSPage: ClusterEnUSPage
+ * ApiUri.RechercheFrFRPage: /frFR/cluster
+ * ApiUri.RechercheEnUSPage: /enUS/cluster
+ * Page.RechercheFrFRPage: ClusterFrFRPage
+ * Page.RechercheEnUSPage: ClusterEnUSPage
  * MotCle: classeNomSimpleCluster
  * Modele: true
  */ 

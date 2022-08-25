@@ -10,12 +10,12 @@ import org.computate.site.frFR.page.parti.PageHtml;
  * Api: true
  * ApiMethode: RechercheFrFRPage
  * ApiMethode: RechercheEnUSPage
- * ApiUriRechercheFrFRPage: /frFR/cours/001/010-comment-installer-une-version-recente-du-moteur-de-recherche-solr
- * ApiUriRechercheEnUSPage: /enUS/course/001/010-how-to-install-a-recent-version-of-solr-search-engine
- * PageRechercheFrFRPage: C001L010InstallerSolrFrFRPage
- * PageRechercheEnUSPage: C001L010InstallerSolrEnUSPage
- * PageSuperRechercheFrFRPage: C001LeconFrFRPage
- * PageSuperRechercheEnUSPage: C001LeconEnUSPage
+ * ApiUri.RechercheFrFRPage: /frFR/cours/001/010-comment-installer-une-version-recente-du-moteur-de-recherche-solr
+ * ApiUri.RechercheEnUSPage: /enUS/course/001/010-how-to-install-a-recent-version-of-solr-search-engine
+ * Page.RechercheFrFRPage: C001L010InstallerSolrFrFRPage
+ * Page.RechercheEnUSPage: C001L010InstallerSolrEnUSPage
+ * PageSuper.RechercheFrFRPage: C001LeconFrFRPage
+ * PageSuper.RechercheEnUSPage: C001LeconEnUSPage
  * UnNom.frFR: le leçon
  * UnNom.enUS: a lesson
  * 
@@ -31,7 +31,7 @@ import org.computate.site.frFR.page.parti.PageHtml;
  * Description.frFR: Les bases de données et les moteurs de recherche sont des ressources précieuses pour la gestion des données de différentes manières. Les bases de données sont idéales pour les données utilisateur persistantes et normalisées. Les moteurs de recherche sont parfaits pour les versions transformées, dénormalisées et interrogeables des données. Index rapides, mise en surbrillance des requêtes, pagination, filtres et facettisation ne sont que quelques-unes des fonctionnalités essentielles que vous pouvez ajouter à votre site avec un moteur de recherche. Je vous aiderai à installer une version récente de Solr pour ajouter la recherche à votre site Web de manière open source. 
  * Description.enUS: Databases and search engines are both valuable resources for serving up data in different ways. Databases are perfect for persistent, normalized user data. Search engines are perfect for transformed, denormalized, searchable versions of the data. Lightning fast indexes, query highlighting, pagination, filters and faceting are just a few of the crucial features you can add to your site with a search engine. I will help you install the most recent version of Solr to make your website searchable the open source way. 
  * 
- * PageSimple: true
+ * Page.Simple: true
  * Couleur: green
  * IconeGroupe: regular
  * IconeNom: question

@@ -10,12 +10,12 @@ import org.computate.site.frFR.page.parti.PageHtml;
  * Api: true
  * ApiMethode: RechercheFrFRPage
  * ApiMethode: RechercheEnUSPage
- * ApiUriRechercheFrFRPage: /frFR/cours/001/007-comment-installer-la-derniere-version-de-postgresql
- * ApiUriRechercheEnUSPage: /enUS/course/001/007-how-to-install-the-latest-version-of-postgresql
- * PageRechercheFrFRPage: C001L007InstallerPostgresqlFrFRPage
- * PageRechercheEnUSPage: C001L007InstallerPostgresqlEnUSPage
- * PageSuperRechercheFrFRPage: C001LeconFrFRPage
- * PageSuperRechercheEnUSPage: C001LeconEnUSPage
+ * ApiUri.RechercheFrFRPage: /frFR/cours/001/007-comment-installer-la-derniere-version-de-postgresql
+ * ApiUri.RechercheEnUSPage: /enUS/course/001/007-how-to-install-the-latest-version-of-postgresql
+ * Page.RechercheFrFRPage: C001L007InstallerPostgresqlFrFRPage
+ * Page.RechercheEnUSPage: C001L007InstallerPostgresqlEnUSPage
+ * PageSuper.RechercheFrFRPage: C001LeconFrFRPage
+ * PageSuper.RechercheEnUSPage: C001LeconEnUSPage
  * UnNom.frFR: le leçon
  * UnNom.enUS: a lesson
  * 
@@ -31,7 +31,7 @@ import org.computate.site.frFR.page.parti.PageHtml;
  * Description.frFR: Lorsque votre site web utilise une base de données, votre site Web n'est plus uniquement de contenu statique. Vous pouvez créer des utilisateurs avec des rôles pour ajouter du contenu et personnaliser le site. La bonne nouvelle est que la meilleure base de données sur la planète est PostgreSQL, est elle est open source. Je vous aiderai à installer la version la plus récente de PostgreSQL pour développer votre site Web de manière open source. 
  * Description.enUS: When backed by a database, your website does not need to be static content only. You can create users with roles to add content and customize the site. The best part is, the very best database on the planet is PostgreSQL, and it's open source. I will help you install the most recent version of PostgreSQL to develop your website the open source way. 
  * 
- * PageSimple: true
+ * Page.Simple: true
  * Couleur: green
  * IconeGroupe: regular
  * IconeNom: question

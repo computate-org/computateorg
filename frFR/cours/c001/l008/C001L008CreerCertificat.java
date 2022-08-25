@@ -11,12 +11,12 @@ import org.computate.site.frFR.utilisateur.UtilisateurSite;
  * Api: true
  * ApiMethode: RechercheFrFRPage
  * ApiMethode: RechercheEnUSPage
- * ApiUriRechercheFrFRPage: /frFR/cours/001/008-comment-obtenir-certificats-tls-gratuitement
- * ApiUriRechercheEnUSPage: /enUS/course/001/008-how-to-obtain-free-tls-certificates
- * PageRechercheFrFRPage: C001L008CreerCertificatFrFRPage
- * PageRechercheEnUSPage: C001L008CreerCertificatEnUSPage
- * PageSuperRechercheFrFRPage: C001LeconFrFRPage
- * PageSuperRechercheEnUSPage: C001LeconEnUSPage
+ * ApiUri.RechercheFrFRPage: /frFR/cours/001/008-comment-obtenir-certificats-tls-gratuitement
+ * ApiUri.RechercheEnUSPage: /enUS/course/001/008-how-to-obtain-free-tls-certificates
+ * Page.RechercheFrFRPage: C001L008CreerCertificatFrFRPage
+ * Page.RechercheEnUSPage: C001L008CreerCertificatEnUSPage
+ * PageSuper.RechercheFrFRPage: C001LeconFrFRPage
+ * PageSuper.RechercheEnUSPage: C001LeconEnUSPage
  * UnNom.frFR: le leçon
  * UnNom.enUS: a lesson
  * 
@@ -32,7 +32,7 @@ import org.computate.site.frFR.utilisateur.UtilisateurSite;
  * Description.frFR: Tout d'abord, félicitations pour avoir obtenu votre propre nom de domaine pour lancer votre site. Avec un nom de domaine, vous voudrez également obtenir un certificat TLS. La bonne nouvelle est qu’il est totalement gratuit, grâce à la technologie open source. Avec un certificat vous pouvez sécuriser les communications vers votre site. Vous pouvez signer votre code et vous assurer qu'il est valide lorsqu'il est déployé sur le cloud. Vous pouvez également configurer une connexion sécurisée avec OAuth2/OpenID Connect Single Sign On à toutes vos applications. Je vais vous montrer comment obtenir ces certificats et générer les magasins de clés à utiliser dans vos applications de manière open source. 
  * Description.enUS: First, congratulations on obtaining your own domain name to launch your site. Along with a domain name, you will also want to obtain a TLS certificate. The good news is that it is completely free, thanks to open source technology. With a certificate you can secure communications to your site. You can sign your code and ensure that it is valid when deployed on the cloud. You can also setup secure OAuth2/OpenID Connect Single Sign On to all of your applications. I will show you how to obtain these certificates and generate the keystores to use in your applications the open source way. 
  * 
- * PageSimple: true
+ * Page.Simple: true
  * Couleur: green
  * IconeGroupe: regular
  * IconeNom: question

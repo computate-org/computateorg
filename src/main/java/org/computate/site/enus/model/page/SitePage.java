@@ -30,6 +30,8 @@ import io.vertx.core.Promise;
  * Page: true
  * SuperPage.enUS: PageLayout
  * Indexed: true
+ * Map.Integer.sqlSort: 100
+ * Map.Integer.classSort: 100
  * 
  * ApiTag.enUS: Page
  * ApiUri.enUS: /api/page
@@ -41,8 +43,8 @@ import io.vertx.core.Promise;
  * ApiMethod: PUTImport
  * 
  * ApiMethod.enUS: SearchPage
- * PageSearchPage.enUS: SitePagePage
- * ApiUriSearchPage.enUS: /page
+ * Page.SearchPage.enUS: SitePagePage
+ * ApiUri.SearchPage.enUS: /page
  * 
  * AName.enUS: an article
  * Color: 2017-navy-peony
@@ -319,6 +321,8 @@ public class SitePage extends SitePageGen<Object> {
 	 * {@inheritDoc}
 	 * DocValues: true
 	 * Description: The simple name of this Java class
+	 * DisplayName.enUS: object type
+	 * Facet: true
 	 */
 	protected void _classSimpleName(Wrap<String> w) {
 		w.o(getClass().getSimpleName());

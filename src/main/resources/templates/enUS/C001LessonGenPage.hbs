@@ -29,137 +29,234 @@
 				window.varsFq = JSON.parse('{{{toJsonObjectStringInApostrophes varsFq}}}');
 				pageGraph();
 			});
+{{#if DEFAULT_MAP_LOCATION }}
+			window.DEFAULT_MAP_LOCATION = { lat: {{ DEFAULT_MAP_LOCATION.lat }}, lon: {{ DEFAULT_MAP_LOCATION.lon }} };
+{{/if}}
+{{#if DEFAULT_MAP_ZOOM }}
+			window.DEFAULT_MAP_ZOOM = {{ DEFAULT_MAP_ZOOM }};
+{{/if}}
 		</script>
 {{/inline}}
 {{#*inline "htmUrlC001Lesson"}}{{pageUri}}?q={{query.q}}&amp;rows={{#if rows}}{{rows}}{{else}}{{pagination.rows}}{{/if}}&amp;rows={{#if start}}{{start}}{{else}}{{pagination.start}}{{/if}}{{#each query.fq}}{{#eq fq this}}{{else}}&fq={{fq}}:{{val}}{{/eq}}{{/each}}{{#each query.sort}}{{#eq sort this}}{{else}}&sort={{var}} {{order}}{{/eq}}{{/each}}{{/inline}}
 {{#*inline "htmHeadC001LessonPage"}}{{> "htmTitleC001LessonPage"}}{{> "htmMetaC001LessonPage"}}{{> "htmStyleC001LessonPage"}}{{> "htmScriptsC001LessonPage"}}{{> "htmScriptC001LessonPage"}}{{/inline}}
-{{#*inline "htmBodySearchC001LessonPage"}}		<!-- #*inline "htmBodySearchC001LessonPage" -->
-	<div>
+{{#*inline "htmBodySearchC001LessonPage"}}								<!-- #*inline "htmBodySearchC001LessonPage" -->
+								<div>
 {{#each varsQ}}
-		<div class="w3-padding ">
-			<label for="fqC001Lesson_{{ @key }}">{{ displayName }}<sup class="w3-tiny "> ({{ classSimpleName }})</sup></label>
-			<input id="fqC001Lesson_{{ @key }}" placeholder="{{ displayName }}" class="w3-input " onkeyup="qChange(this); " data-var="{{ var }}" autocomplete="off="/>
-			<div class="pageSearchVal w3-tiny "></div>
-		</div>
+									<div class="w3-cell-row ">
+										<div class="w3-cell w3-cell-top ">
+											<label for="qC001Lesson_{{ @key }}">{{ displayName }}<sup class="w3-tiny "> ({{ classSimpleName }})</sup></label>
+										</div>
+									</div>
+									<div class="w3-cell-row ">
+										<div class="w3-cell w3-cell-top ">
+											<input id="qC001Lesson_{{ @key }}" placeholder="{{ displayName }}" class="" {{#eq ../var 'objectSuggest' }}onkeyup{{else}}onchange{{/eq}}="qChange(this); " data-var="{{ var }}" autocomplete="off="/>
+											<div class="pageSearchVal w3-tiny "></div>
+										</div>
+									</div>
 {{/each}}
-	</div>
+									<div class="w3-cell-row ">
+										<div class="w3-cell w3-cell-top ">
+											<label for="qC001Lesson_Start">start<sup class="w3-tiny "> (Long)</sup></label>
+										</div>
+									</div>
+									<div class="w3-cell-row ">
+										<div class="w3-cell w3-cell-top ">
+											<input id="qC001Lesson_start" placeholder="{{ displayName }}" class="" onchange="paramChange(this); " data-var="start" autocomplete="off="/>
+											<div class="pageSearchVal w3-tiny "></div>
+										</div>
+									</div>
+									<div class="w3-cell-row ">
+										<div class="w3-cell w3-cell-top ">
+											<label for="qC001Lesson_Rows">rows<sup class="w3-tiny "> (Long)</sup></label>
+										</div>
+									</div>
+									<div class="w3-cell-row ">
+										<div class="w3-cell w3-cell-top ">
+											<input id="qC001Lesson_rows" placeholder="{{ displayName }}" class="" onchange="paramChange(this); " data-var="rows" autocomplete="off="/>
+											<div class="pageSearchVal w3-tiny "></div>
+										</div>
+									</div>
+								</div>
 {{/inline}}
-{{#*inline "htmBodyFiltersC001LessonPage"}}		<!-- #*inline "htmBodyFiltersC001LessonPage" -->
-	<div>
+{{#*inline "htmBodyFiltersC001LessonPage"}}								<!-- #*inline "htmBodyFiltersC001LessonPage" -->
+								<div>
 {{#each varsFq }}
-		<div class="w3-padding ">
-			<label for="fqC001Lesson_{{ @key }}">{{ displayName }}<sup class="w3-tiny "> ({{ classSimpleName }})</sup></label>
-			<div class="w3-cell-row ">
-				<div class="w3-cell w3-cell-top ">
-					<button id="buttonFacetC001Lesson_{{ @key }}" class="w3-button " onclick="facetFieldChange(this); " title="see values " data-var="{{ var }}" data-clear="{{#if facetField }}true{{else}}false{{/if}}"><i class="fas fa-list "></i></button>
-				</div>
-				<div class="w3-cell w3-cell-top ">
-					<input id="fqC001Lesson_{{ @key }}" placeholder="{{ displayName }}" class="w3-input " onkeyup="fqChange(this); " data-var="{{ var }}" autocomplete="off=" value="{{ val }}"/>
-				</div>
-			</div>
-		</div>
-		<div class="w3-padding w3-tiny ">
-			<div class="pageSearchVal " id="pageSearchVal-fqC001Lesson_{{ @key }}">{{#if val }}fq={{ var }}:{{encodeURIComponent val }}{{/if}}</div>
-			<div class="pageSearchVal " id="pageSearchVal-buttonFacetC001Lesson_{{ @key }}">{{#if facetField.var }}facet.field={{ facetField.var }}{{/if}}</div>
-		</div>
-		<ol class="pageFacetField " id="pageFacetFieldC001Lesson_{{ @key }}">
+									<div class="">
+										<label for="fqC001Lesson_{{ @key }}">{{ displayName }}<sup class="w3-tiny "> ({{ classSimpleName }})</sup></label>
+										<div class="w3-cell-row ">
+											<div class="w3-cell w3-cell-top ">
+												<button id="buttonFacetC001Lesson_{{ @key }}" class="" onclick="facetFieldChange(this); " title="see values " data-var="{{ var }}" data-clear="{{#if facetField }}true{{else}}false{{/if}}"><i class="fas fa-list "></i></button>
+											</div>
+											<div class="w3-cell w3-cell-top ">
+												<input id="fqC001Lesson_{{ @key }}" placeholder="{{ displayName }}" class="" onchange="fqChange(this); " data-var="{{ var }}" autocomplete="off=" value="{{ val }}"/>
+											</div>
+										</div>
+									</div>
+									<div class="w3-tiny ">
+										<div class="pageSearchVal " id="pageSearchVal-fqC001Lesson_{{ @key }}">{{#if val }}fq={{ var }}:{{encodeURIComponent val }}{{/if}}</div>
+										<div class="pageSearchVal " id="pageSearchVal-buttonFacetC001Lesson_{{ @key }}">{{#if facetField.var }}facet.field={{ facetField.var }}{{/if}}</div>
+										<ol class="pageFacetField w3-small pageFacetFieldC001Lesson_{{ @key }} " id="pageFacetFieldC001Lesson_{{ @key }}">
 {{#each facetField.counts }}
-			<li class="">{{ @key }}: {{ this }}</li>
+											<li class="cursor-pointer " data-class="C001Lesson" data-var="{{ ../var }}" data-val="{{ @key }}" onclick="fqReplace(this); ">{{ @key }}: {{ this }}</li>
 {{/each}}
-		</ol>
+										</ol>
+									</div>
 {{/each}}
-	</div>
+								</div>
 {{/inline}}
-{{#*inline "htmBodyRangeC001LessonPage"}}		<!-- #*inline "htmBodyRangeC001LessonPage" -->
-	<table class="w3-padding ">
-		<tr>			<td class="w3-padding w3-tiny " colspan="2">
-				<div class="pageSearchVal " id="pageSearchVal-pageFacetRangeGap-C001Lesson">{{#if defaultRangeGap }}facet.range.gap={{encodeURIComponent defaultRangeGap }}{{/if}}</div>
-				<div class="pageSearchVal " id="pageSearchVal-pageFacetRangeStart-C001Lesson">{{#if defaultRangeStart }}facet.range.start={{encodeURIComponent defaultRangeStart }}{{/if}}</div>
-				<div class="pageSearchVal " id="pageSearchVal-pageFacetRangeEnd-C001Lesson">{{#if defaultRangeEnd }}facet.range.end={{encodeURIComponent defaultRangeEnd }}{{/if}}</div>
-				<div class="pageSearchVal " id="pageSearchVal-pageFacetRangeVar-C001Lesson">{{#if defaultRangeVar }}facet.range={!tag=r1}{{encodeURIComponent defaultRangeVar }}{{/if}}</div>
-			</td>
-		</tr>
-	</table>
-	<table class="w3-padding ">
-		<tr class="">
-			<td class="">
-			<span>Range Gap</span>
-			</td>
-			<td class="">
-				<select
- name="facet.range.gap" id="pageFacetRangeGap-C001Lesson" onchange="facetRangeChange(this, 'C001Lesson'); ">
-					<option value="+1YEAR"{{#eq defaultRangeGap '+1YEAR'}} selected="selected"{{else}}{{/eq}}>Year</option>
-					<option value="+1MONTH"{{#eq defaultRangeGap '+1MONTH'}} selected="selected"{{else}}{{/eq}}>Month</option>
-					<option value="+1WEEK"{{#eq defaultRangeGap '+1WEEK'}} selected="selected"{{else}}{{/eq}}>Week</option>
-					<option value="+1DAY"{{#eq defaultRangeGap '+1DAY'}} selected="selected"{{else}}{{#if defaultRangeGap}}{{else}} selected="selected"{{/if}}{{/eq}}>Day</option>
-					<option value="+1HOUR"{{#eq defaultRangeGap '+1HOUR'}} selected="selected"{{else}}{{/eq}}>Hour</option>
-					<option value="+1MINUTE"{{#eq defaultRangeGap '+1MINUTE'}} selected="selected"{{else}}{{/eq}}>Minute</option>
-					<option value="+1SECOND"{{#eq defaultRangeGap '+1SECOND'}} selected="selected"{{else}}{{/eq}}>Second</option>
-				</select>
-			</td>
-		</tr>
-		<tr class="">
-			<td class="" colspan="2">
-				<span>Range Start</span>
-			</td>
-		</tr>
-		<tr class="">
-			<td class="" colspan="2">
-			<span><input type="datetime-local" name="facetRangeStart" id="pageFacetRangeStart-C001Lesson" value="{{formatZonedDateTime defaultRangeStart "yyyy-MM-dd'T'HH:mm" defaultLocaleId defaultZoneId}}" onclick="facetRangeChange(this, 'C001Lesson'); "/></span>
-			</td>
-		</tr>
-		<tr class="">
-			<td class="" colspan="2">
-				<span>Range End</span>
-			</td>
-		</tr>
-		<tr class="">
-			<td class="" colspan="2">
-			<span><input type="datetime-local" name="facetRangeEnd" id="pageFacetRangeEnd-C001Lesson" value="{{formatZonedDateTime defaultRangeEnd "yyyy-MM-dd'T'HH:mm" defaultLocaleId defaultZoneId}}" onclick="facetRangeChange(this, 'C001Lesson'); "/></span>
-			</td>
-		</tr>
-	</table>
-	<table class="w3-padding ">
+{{#*inline "htmBodyRangeC001LessonPage"}}								<!-- #*inline "htmBodyRangeC001LessonPage" -->
+								<table class="w3-padding ">
+									<tr>
+										<td class="w3-padding w3-tiny " colspan="2">
+											<div class="pageSearchVal " id="pageSearchVal-pageFacetRangeGap-C001Lesson">{{#if defaultRangeGap }}facet.range.gap={{encodeURIComponent defaultRangeGap }}{{/if}}</div>
+											<div class="pageSearchVal " id="pageSearchVal-pageFacetRangeStart-C001Lesson">{{#if defaultRangeStart }}facet.range.start={{encodeURIComponent defaultRangeStart }}{{/if}}</div>
+											<div class="pageSearchVal " id="pageSearchVal-pageFacetRangeEnd-C001Lesson">{{#if defaultRangeEnd }}facet.range.end={{encodeURIComponent defaultRangeEnd }}{{/if}}</div>
+											<div class="pageSearchVal " id="pageSearchVal-pageFacetRangeVar-C001Lesson">{{#if defaultRangeVar }}facet.range={!tag=r1}{{encodeURIComponent defaultRangeVar }}{{/if}}</div>
+										</td>
+									</tr>
+								</table>
+								<table class="w3-padding ">
+									<tr class="">
+										<td class="">
+											<span>Range Gap</span>
+										</td>
+										<td class="">
+											<select name="facet.range.gap" id="pageFacetRangeGap-C001Lesson" onchange="facetRangeChange(this, 'C001Lesson'); ">
+												<option value="+1YEAR"{{#eq defaultRangeGap '+1YEAR'}} selected="selected"{{else}}{{/eq}}>Year</option>
+												<option value="+1MONTH"{{#eq defaultRangeGap '+1MONTH'}} selected="selected"{{else}}{{/eq}}>Month</option>
+												<option value="+1WEEK"{{#eq defaultRangeGap '+1WEEK'}} selected="selected"{{else}}{{/eq}}>Week</option>
+												<option value="+1DAY"{{#eq defaultRangeGap '+1DAY'}} selected="selected"{{else}}{{#if defaultRangeGap}}{{else}} selected="selected"{{/if}}{{/eq}}>Day</option>
+												<option value="+1HOUR"{{#eq defaultRangeGap '+1HOUR'}} selected="selected"{{else}}{{/eq}}>Hour</option>
+												<option value="+1MINUTE"{{#eq defaultRangeGap '+1MINUTE'}} selected="selected"{{else}}{{/eq}}>Minute</option>
+												<option value="+1SECOND"{{#eq defaultRangeGap '+1SECOND'}} selected="selected"{{else}}{{/eq}}>Second</option>
+											</select>
+										</td>
+									</tr>
+									<tr class="">
+										<td class="" colspan="2">
+											<span>Range Start</span>
+										</td>
+									</tr>
+									<tr class="">
+										<td class="" colspan="2">
+											<span><input type="datetime-local" name="facetRangeStart" id="pageFacetRangeStart-C001Lesson" value="{{formatZonedDateTime defaultRangeStart "yyyy-MM-dd'T'HH:mm" defaultLocaleId defaultZoneId}}" onclick="facetRangeChange(this, 'C001Lesson'); "/></span>
+										</td>
+									</tr>
+									<tr class="">
+										<td class="" colspan="2">
+											<span>Range End</span>
+										</td>
+									</tr>
+									<tr class="">
+										<td class="" colspan="2">
+											<span><input type="datetime-local" name="facetRangeEnd" id="pageFacetRangeEnd-C001Lesson" value="{{formatZonedDateTime defaultRangeEnd "yyyy-MM-dd'T'HH:mm" defaultLocaleId defaultZoneId}}" onclick="facetRangeChange(this, 'C001Lesson'); "/></span>
+										</td>
+									</tr>
+								</table>
+								<table class="w3-padding ">
 {{#each varsRange }}
-		<tr class="">
-			<td class="">
-				<span><input type="radio" name="pageFacetRange" class="pageFacetRange " id="pageFacetRangeC001Lesson_{{ @key }}" value="{{ var }}"{{#eq defaultRangeVar var }} checked="checked"{{/eq}} onclick="facetRangeChange(this, 'C001Lesson'); "/></span>
-			</td>
-			<td class="">
-			<label for="pageFacetRangeC001Lesson_{{ @key }}">{{ displayName }}</label>
-			</td>
-		</tr>
+									<tr class="">
+										<td class="">
+											<span><input type="radio" name="pageFacetRange" class="pageFacetRange " id="pageFacetRangeC001Lesson_{{ @key }}" value="{{ var }}"{{#eq defaultRangeVar var }} checked="checked"{{/eq}} onclick="facetRangeChange(this, 'C001Lesson'); "/></span>
+										</td>
+										<td class="">
+											<label for="pageFacetRangeC001Lesson_{{ @key }}">{{ displayName }}</label>
+										</td>
+									</tr>
 {{/each}}
-	</table>
-{{#*inline "htmBodyPivotC001LessonPage"}}		<!-- #*inline "htmBodyPivotC001LessonPage" -->
-		<div class="w3-padding w3-tiny " id="pageSearchVal-pivotC001Lesson">
-{{#if defaultPivotVars }}
-			<div class="pageSearchVal " id="pageSearchVal-pivotC001Lesson">facet.pivot={{#each defaultPivotVars }}{{#if @index }},{{/if}}{{ this }}{{/each}}</div>
-{{/if}}
-		</div>
-		<div style="display: none; " class="w3-padding w3-tiny " id="pageSearchVal-hiddenC001Lesson">
-{{#each defaultPivotVars }}
-			<div class="pageSearchVal pageSearchVal-hiddenC001Lesson " id="pageSearchVal-hiddenC001Lesson_{{ this }}">{{ this }}</div>
-{{/each}}
-		</div>
-	<table class="w3-table ">
-{{#each varsFq }}
-		<tr class="">
-			<td class="">
-				<span><input type="checkbox" name="pageFacetPivot" class="pageFacetPivot " id="pageFacetPivotC001Lesson_{{ @key }}" value="{{ var }}"{{#if pivot }} checked="checked"{{/if}} onclick="facetPivotChange(this, 'C001Lesson'); "/></span>
-			</td>
-			<td class="w3-cell ">
-			<label for="pageFacetPivotC001Lesson_{{ @key }}">{{ displayName }}</label>
-			</td>
-		</tr>
-{{/each}}
-	</table>
+								</table>
 {{/inline}}
+{{#*inline "htmBodyPivotC001LessonPage"}}								<!-- #*inline "htmBodyPivotC001LessonPage" -->
+								<div style="display: none; " class="w3-padding w3-tiny " id="pageSearchVal-PivotC001LessonHidden">
+{{#each defaultPivotVars }}
+									<div class="pageSearchVal-PivotC001LessonHidden " id="pageSearchVal-PivotC001LessonHidden_{{ this }}">{{ this }}</div>
+{{/each}}
+								</div>
+								<div class="w3-padding w3-tiny " id="pageSearchVal-PivotC001Lesson">
+{{#if defaultPivotVars }}
+									<div class="pageSearchVal pageSearchVal-PivotC001Lesson " id="pageSearchVal-PivotC001Lesson_1">facet.pivot={!range=r1}{{#each defaultPivotVars }}{{#if @index }},{{/if}}{{ this }}{{/each}}</div>
+{{/if}}
+								</div>
+								<table class="w3-table ">
+{{#each varsFq }}
+									<tr class="">
+										<td class="">
+											<span><input type="checkbox" name="pageFacetPivot" class="pageFacetPivot " id="pageFacetPivotC001Lesson_{{ @key }}" value="{{ var }}"{{#if pivot }} checked="checked"{{/if}} onclick="facetPivotChange(this, 'C001Lesson'); "/></span>
+										</td>
+										<td class="w3-cell ">
+											<label for="pageFacetPivotC001Lesson_{{ @key }}">{{ displayName }}</label>
+										</td>
+									</tr>
+{{/each}}
+								</table>
+{{/inline}}
+{{#*inline "htmBodyFieldListC001LessonPage"}}								<!-- #*inline "htmBodyFieldListC001LessonPage" -->
+								<div style="display: none; " class="w3-padding w3-tiny " id="pageSearchVal-FieldListC001LessonHidden">
+{{#each defaultFieldListVars }}
+									<div class="pageSearchVal-FieldListC001LessonHidden " id="pageSearchVal-FieldListC001LessonHidden_{{ this }}">{{ this }}</div>
+{{/each}}
+								</div>
+								<div class="w3-padding w3-tiny " id="pageSearchVal-FieldListC001Lesson">
+{{#if defaultFieldListVars }}
+									<div class="pageSearchVal pageSearchVal-FieldListC001Lesson " id="pageSearchVal-FieldListC001Lesson_1">fl={{#each defaultFieldListVars }}{{#if @index }},{{/if}}{{ this }}{{/each}}</div>
+{{/if}}
+								</div>
+								<table class="w3-table ">
+{{#each varsFq }}
+									<tr class="">
+										<td class="">
+											<span><input type="checkbox" name="pageFieldList" class="pageFieldList " id="pageFieldListC001Lesson_{{ @key }}" value="{{ var }}"{{#if fieldList }} checked="checked"{{/if}} onclick="facetFieldListChange(this, 'C001Lesson'); "/></span>
+										</td>
+										<td class="w3-cell ">
+											<label for="pageFieldListC001Lesson_{{ @key }}">{{ displayName }}</label>
+										</td>
+									</tr>
+{{/each}}
+								</table>
+{{/inline}}
+{{#*inline "htmBodyStatsC001LessonPage"}}								<!-- #*inline "htmBodyStatsC001LessonPage" -->
+								<div style="display: none; " class="w3-padding w3-tiny " id="pageSearchVal-StatsC001LessonHidden">
+{{#each defaultStatsVars }}
+									<div class="pageSearchVal-StatsC001LessonHidden " id="pageSearchVal-StatsC001LessonHidden_{{ this }}">{{ this }}</div>
+{{/each}}
+								</div>
+								<div class="w3-padding w3-tiny " id="pageSearchVal-StatsC001Lesson">
+{{#if defaultStatsVars }}
+{{#each defaultStatsVars }}									<div class="pageSearchVal pageSearchVal-StatsC001Lesson_{{ this }} " id="pageSearchVal-StatsC001Lesson_{{ this }}">stats.field={{ this }}</div>
+{{/each}}{{/if}}
+								</div>
+								<table class="w3-table ">
+{{#each varsFq }}
+{{#if enableStats }}
+									<tr class="">
+										<td class="">
+											<span><input type="checkbox" name="pageStats" class="pageStats " id="pageStatsC001Lesson_{{ @key }}" value="{{ var }}"{{#if ./stats }} checked="checked"{{/if}} onclick="facetStatsChange(this, 'C001Lesson'); "/></span>
+										</td>
+										<td class="w3-cell ">
+											<div>
+												<label for="pageStatsC001Lesson_{{ @key }}">{{ displayName }}</label>
+											</div>
+											<div class="pageStatsField w3-small pageStatsFieldC001Lesson_{{ @key }} " id="pageStatsFieldC001Lesson_{{ @key }}">
+{{#if ./stats }}
+{{#each ./stats }}
+{{#eq @key 'name' }}{{else}}
+												<div data-class="C001Lesson" data-var="{{ ../var }}" data-val="{{ @key }}">{{ @key }}: {{ this }}</div>
+{{/eq}}
+{{/each}}
+{{#if ./stats/min }}
+									<div>									<span> step </span>									<input id="animateStatsStep" placeholder="step" value="1" style="width: 4em; "/>									<span> min </span>									<input id="animateStatsMin" placeholder="min" value="{{ ./stats/min }}" style="width: 4em; "/>									<span> max </span>									<input id="animateStatsMax" placeholder="max" value="{{ ./stats/max }}" style="width: 4em; "/>									<span> speed in seconds </span>									<input id="animateStatsSpeed" placeholder="speed" value="1" style="width: 4em; "/>									<button onclick="animateStats(); ">animate</button>									</div>{{/if}}
+{{/if}}
+											</div>
+										</td>
+									</tr>
+{{/if}}
+{{/each}}
+								</table>
 {{/inline}}
 {{#*inline "htmBodyMenuC001LessonPage"}}		<!-- #*inline "htmBodyMenuC001LessonPage" -->
 {{> "htmBodyMenuC001Page"}}{{/inline}}
 {{#*inline "htmBodyGraphC001LessonPage"}}		<!-- #*inline "htmBodyGraphC001LessonPage" -->
-<div id="htmBodyGraphC001Page" class="htmBodyGraph "></div>{{/inline}}
+<div id="htmBodyGraphC001Page" class="w3-content htmBodyGraph "></div>{{/inline}}
 {{#*inline "htmBodyCount0C001LessonPage"}}		<!-- #*inline "htmBodyCount0C001LessonPage" -->
 		<h1>
 			<a href="{{pageUri}}" class="w3-bar-item w3-btn w3-center w3-block w3- w3-hover-">
@@ -305,68 +402,95 @@
 			</div>
 		</div>
 {{/inline}}
-{{#*inline "htmBodySidebar"}}
-	<div class="w3-dropdown-hover w3-bar-block min-width-300px ">
-		<div class="min-width-300px ">
-			<span title="Search" class="w3-button w3-xlarge w3- " onclick="$('.siteSidebarToggleFilters').hide(); $('.siteSidebarToggleRange').hide(); $('.siteSidebarTogglePivot').hide(); $('.siteSidebarToggleSearch').toggle(); "><i class="fad fa-magnifying-glass "></i></span>
-			<span title="Filters" class="w3-button w3-xlarge w3- " onclick="$('.siteSidebarToggleSearch').hide(); $('.siteSidebarToggleRange').hide(); $('.siteSidebarTogglePivot').hide(); $('.siteSidebarToggleFilters').toggle(); "><i class="fad fa-filters "></i></span>
-			<span title="Range" class="w3-button w3-xlarge w3- " onclick="$('.siteSidebarToggleSearch').hide(); $('.siteSidebarToggleFilters').hide(); $('.siteSidebarTogglePivot').hide(); $('.siteSidebarToggleRange').toggle(); "><i class="fad fa-calendar-range "></i></span>
-			<span title="Pivot" class="w3-button w3-xlarge w3- " onclick="$('.siteSidebarToggleSearch').hide(); $('.siteSidebarToggleFilters').hide(); $('.siteSidebarToggleRange').hide(); $('.siteSidebarTogglePivot').toggle(); "><i class="fad fa-table-pivot "></i></span>
-		</div>
-		<div class="w3-dropdown-content min-width-300px w3-white w3-border ">
-			<div  class="siteSidebarToggle siteSidebarToggleSearch" style="display: none; ">
-				<div class="w3-bar w3- ">
-					<span class="w3-bar-item w3-padding ">Search</span>
-				</div>
-				<div class="w3-bar-block ">
+{{#*inline "htmBodySidebarC001LessonPage"}}
+				<div class="w3-dropdown-click w3-bar-block min-width-300px ">
+					<div class="min-width-300px ">
+						<span title="Search" class="siteSidebarToggle w3-padding-small w3-hover-black w3- " onclick="$('.siteSidebarToggleStats').hide(); $('.siteSidebarToggleFieldList').hide(); $('.siteSidebarToggleFilters').hide(); $('.siteSidebarToggleRange').hide(); $('.siteSidebarTogglePivot').hide(); $('.siteSidebarToggleSearch').toggle(); $('.siteSidebarToggle').removeClass('w3-black'); $('.siteSidebarToggle').addClass('w3-'); $(this).addClass('w3-black'); $(this).removeClass('w3-'); "><i class="fad fa-magnifying-glass hover-box-shadow w3-xlarge "></i> Search</span>
+						<span title="Filters" class="siteSidebarToggle w3-padding-small w3-hover-black w3- " onclick="$('.siteSidebarToggleStats').hide(); $('.siteSidebarToggleFieldList').hide(); $('.siteSidebarToggleSearch').hide(); $('.siteSidebarToggleRange').hide(); $('.siteSidebarTogglePivot').hide(); $('.siteSidebarToggleFilters').toggle(); $('.siteSidebarToggle').removeClass('w3-black'); $('.siteSidebarToggle').addClass('w3-'); $(this).addClass('w3-black'); $(this).removeClass('w3-'); "><i class="fad fa-filters hover-box-shadow w3-xlarge "></i> Filters</span>
+						<span title="Range" class="siteSidebarToggle w3-padding-small w3-hover-black w3- " onclick="$('.siteSidebarToggleStats').hide(); $('.siteSidebarToggleFieldList').hide(); $('.siteSidebarToggleSearch').hide(); $('.siteSidebarToggleFilters').hide(); $('.siteSidebarTogglePivot').hide(); $('.siteSidebarToggleRange').toggle(); $('.siteSidebarToggle').removeClass('w3-black'); $('.siteSidebarToggle').addClass('w3-'); $(this).addClass('w3-black'); $(this).removeClass('w3-'); "><i class="fad fa-calendar-range hover-box-shadow w3-xlarge "></i> Range</span>
+						<span title="Pivot" class="siteSidebarToggle w3-padding-small w3-hover-black w3- " onclick="$('.siteSidebarToggleStats').hide(); $('.siteSidebarToggleFieldList').hide(); $('.siteSidebarToggleSearch').hide(); $('.siteSidebarToggleFilters').hide(); $('.siteSidebarToggleRange').hide(); $('.siteSidebarTogglePivot').toggle(); $('.siteSidebarToggle').removeClass('w3-black'); $('.siteSidebarToggle').addClass('w3-'); $(this).addClass('w3-black'); $(this).removeClass('w3-'); "><i class="fad fa-table-pivot hover-box-shadow w3-xlarge "></i> Pivot</span>
+						<span title="FieldList" class="siteSidebarToggle w3-padding-small w3-hover-black w3- " onclick="$('.siteSidebarToggleStats').hide(); $('.siteSidebarTogglePivot').hide(); $('.siteSidebarToggleSearch').hide(); $('.siteSidebarToggleFilters').hide(); $('.siteSidebarToggleRange').hide(); $('.siteSidebarToggleFieldList').toggle(); $('.siteSidebarToggle').removeClass('w3-black'); $('.siteSidebarToggle').addClass('w3-'); $(this).addClass('w3-black'); $(this).removeClass('w3-'); "><i class="fad fa-list-ul hover-box-shadow w3-xlarge "></i> FieldList</span>
+						<span title="Stats" class="siteSidebarToggle w3-padding-small w3-hover-black w3- " onclick="$('.siteSidebarToggleFieldList').hide(); $('.siteSidebarTogglePivot').hide(); $('.siteSidebarToggleSearch').hide(); $('.siteSidebarToggleFilters').hide(); $('.siteSidebarToggleRange').hide(); $('.siteSidebarToggleStats').toggle(); $('.siteSidebarToggle').removeClass('w3-black'); $('.siteSidebarToggle').addClass('w3-'); $(this).addClass('w3-black'); $(this).removeClass('w3-'); "><i class="fad fa-chart-candlestick hover-box-shadow w3-xlarge "></i> Stats</span>
+						<a title="API" class="siteSidebarToggle w3-padding-small w3-hover-black w3- " href="{{ apiUri }}{{ queryStr }}"><i class="fad fa-brackets-curly hover-box-shadow w3-xlarge "></i> API</a>
+					</div>
+					<div class=" ">
+						<div class="siteSidebarToggle siteSidebarToggleSearch w3-dropdown-content min-width-300px w3-white w3-border w3-border- " style="display: none; ">
+							<div class="w3-bar w3- ">
+								<span class="w3-bar-item ">
+								<i class="fad fa-magnifying-glass "></i> Search</span>
+							</div>
+							<div class="w3-bar-block ">
 {{#block "htmBodySearch"}}{{/block}}
-				</div>
-			</div>
-			<div  class="siteSidebarToggle siteSidebarToggleFilters" style="display: none; ">
-				<div class="w3-bar w3- ">
-					<span class="w3-bar-item w3-padding ">Filters</span>
-				</div>
-				<div class="w3-bar-block ">
+							</div>
+						</div>
+						<div  class="siteSidebarToggle siteSidebarToggleFilters w3-dropdown-content min-width-300px w3-white w3-border w3-border- " style="display: none; ">
+							<div class="w3-bar w3- ">
+								<span class="w3-bar-item ">
+								<i class="fad fa-filters "></i> Filters</span>
+							</div>
+							<div class="w3-bar-block ">
 {{#block "htmBodyFilters"}}{{/block}}
-				</div>
-			</div>
-			<div  class="siteSidebarToggle siteSidebarToggleRange" style="display: none; ">
-				<div class="w3-bar w3- ">
-					<span class="w3-bar-item w3-padding ">Range</span>
-				</div>
-				<div class="w3-bar-block ">
+							</div>
+						</div>
+						<div  class="siteSidebarToggle siteSidebarToggleRange w3-dropdown-content min-width-300px w3-white w3-border w3-border- " style="display: none; ">
+							<div class="w3-bar w3-  ">
+								<span class="w3-bar-item ">
+								<i class="fad fa-calendar-range "></i> Range</span>
+							</div>
+							<div class="w3-bar-block ">
 {{#block "htmBodyRange"}}{{/block}}
-				</div>
-			</div>
-			<div  class="siteSidebarToggle siteSidebarTogglePivot" style="display: none; ">
-				<div class="w3-bar w3- ">
-					<span class="w3-bar-item w3-padding ">Pivot</span>
-				</div>
-				<div class="w3-bar-block ">
+							</div>
+						</div>
+						<div  class="siteSidebarToggle siteSidebarTogglePivot w3-dropdown-content min-width-300px w3-white w3-border w3-border- " style="display: none; ">
+							<div class="w3-bar w3- ">
+								<span class="w3-bar-item ">
+								<i class="fad fa-table-pivot "></i> Pivot</span>
+							</div>
+							<div class="w3-bar-block ">
 {{#block "htmBodyPivot"}}{{/block}}
+							</div>
+						</div>
+						<div  class="siteSidebarToggle siteSidebarToggleFieldList w3-dropdown-content min-width-300px w3-white w3-border w3-border- " style="display: none; ">
+							<div class="w3-bar w3- ">
+								<span class="w3-bar-item ">
+								<i class="fad fa-list-ul "></i> Field List</span>
+							</div>
+							<div class="w3-bar-block ">
+{{#block "htmBodyFieldList"}}{{/block}}
+							</div>
+						</div>
+						<div  class="siteSidebarToggle siteSidebarToggleStats w3-dropdown-content min-width-300px w3-white w3-border w3-border- " style="display: none; ">
+							<div class="w3-bar w3- ">
+								<span class="w3-bar-item ">
+								<i class="fad fa-chart-candlestick "></i> Stats</span>
+							</div>
+							<div class="w3-bar-block ">
+{{#block "htmBodyStats"}}{{/block}}
+							</div>
+						</div>
+					</div>
 				</div>
-			</div>
-		</div>
-	</div>
 {{/inline}}
 {{#*inline "htmBodyStartC001LessonPage"}}
 {{> "htmBodyStartC001Page"}}
+{{/inline}}
+{{#*inline "htmBodyMiddleC001LessonPage"}}
+{{> "htmBodyMiddleC001Page"}}
 {{/inline}}
 {{#*inline "htmBodyEndC001LessonPage"}}
 {{> "htmBodyEndC001Page"}}
 {{/inline}}
 {{#*inline "htmBodyC001LessonPage"}}
 {{#block "htmBodyStart"}}{{/block}}
-		<div class="w3-bar ">
-			<div class="w3-bar-item ">
+{{#block "htmBodyMiddle"}}{{/block}}
+{{#block "htmBodyEnd"}}{{/block}}
+{{/inline}}
+{{#*inline "htmBodyMiddleC001LessonPage"}}
+		<div class="w3-bar w3-content ">
 {{#block "htmBodySidebar"}}{{/block}}
-			</div>
-			<div class="w3-bar-item ">
-{{#block "htmBodyMenu"}}{{/block}}
-			</div>
 		</div>
-	<div class="pageContent w3-content ">
 {{#block "htmBodyGraph"}}{{/block}}
+	<div class="pageContent w3-content ">
 	{{#eq c001LessonCount int0}}
 {{#block "htmBodyCount0"}}{{/block}}
 	{{else}}
@@ -382,7 +506,6 @@
 	{{/eq}}
 {{#block "htmForm"}}{{/block}}
 {{#block "htmForms"}}{{/block}}
-{{#block "htmBodyEnd"}}{{/block}}
 	</div>
 {{/inline}}
 {{#*inline "table1C001LessonPage"}}

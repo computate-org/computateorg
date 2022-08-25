@@ -10,12 +10,12 @@ import org.computate.site.frFR.page.parti.PageHtml;
  * Api: true
  * ApiMethode: RechercheFrFRPage
  * ApiMethode: RechercheEnUSPage
- * ApiUriRechercheFrFRPage: /frFR/cours/001/009-comment-installer-la-derniere-version-de-zookeeper
- * ApiUriRechercheEnUSPage: /enUS/course/001/009-how-to-install-the-latest-version-of-zookeeper
- * PageRechercheFrFRPage: C001L009InstallerZookeeperFrFRPage
- * PageRechercheEnUSPage: C001L009InstallerZookeeperEnUSPage
- * PageSuperRechercheFrFRPage: C001LeconFrFRPage
- * PageSuperRechercheEnUSPage: C001LeconEnUSPage
+ * ApiUri.RechercheFrFRPage: /frFR/cours/001/009-comment-installer-la-derniere-version-de-zookeeper
+ * ApiUri.RechercheEnUSPage: /enUS/course/001/009-how-to-install-the-latest-version-of-zookeeper
+ * Page.RechercheFrFRPage: C001L009InstallerZookeeperFrFRPage
+ * Page.RechercheEnUSPage: C001L009InstallerZookeeperEnUSPage
+ * PageSuper.RechercheFrFRPage: C001LeconFrFRPage
+ * PageSuper.RechercheEnUSPage: C001LeconEnUSPage
  * UnNom.frFR: le leçon
  * UnNom.enUS: a lesson
  * 
@@ -31,7 +31,7 @@ import org.computate.site.frFR.page.parti.PageHtml;
  * Description.frFR:Une application Web conçue pour grandir doit être créée à l'aide d'un gestionnaire de cluster centralisé tel que Zookeper. Zookeeper a beaucoup de travail pour résoudre les bugs et les conditions de concurrence inévitables dans les applications distribuées. Vous bénéficierez d'une configuration en cluster, d'un pool de sources de données partagées, de threads de travail en arrière-plan partagés et d'un bus d'événements en cluster pour les demandes misent à l'échelle et d'équilibrage de la charge. Je vous aiderai à installer la version la plus récente de Zookeeper pour mettre à l'échelle votre site Web de manière open source. 
  * Description.enUS:A web application that is built to scale should be built using a centralized cluster manager like Zookeper. There is a lot of work that has gone into Zookeeper that fix the bugs and race conditions that are inevitable in distributed applications. You will benefit from clustered configuration, shared data source pool, shared background worker threads, and a clustered event bus for scaling and load balancing requests. I will help you install the most recent version of Zookeeper to scale your website the open source way. 
  * 
- * PageSimple: true
+ * Page.Simple: true
  * Couleur: green
  * IconeGroupe: regular
  * IconeNom: question

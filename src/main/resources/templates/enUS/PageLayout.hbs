@@ -10,6 +10,7 @@
 		<script src="{{staticBaseUrl}}/js/sockjs.js"></script>
 		<script src="{{staticBaseUrl}}/js/vertx-eventbus.js"></script>
 		<script src="{{staticBaseUrl}}/js/plotly-2.9.0.min.js"></script>
+		<script src="{{staticBaseUrl}}/js/fullcalendar/main.min.js"></script>
 {{/inline}}
 {{#*inline "htmScriptPageLayout"}}		<!-- #*inline "htmScriptPageLayout" -->
 {{/inline}}
@@ -18,6 +19,7 @@
 		<link rel="icon" href="{{staticBaseUrl}}/favicon.ico" />
 		<link rel="stylesheet" href="{{staticBaseUrl}}/css/w3.css" />
 		<link rel="stylesheet" href="{{staticBaseUrl}}/css/site-enUS.css" />
+		<link rel="stylesheet" href="{{staticBaseUrl}}/js/fullcalendar/main.min.css"/>
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Anonymous%20Pro%7CBellefair%7CJomhuria%7CPT%20Serif%3A700%7CStint%20Ultra%20Condensed&amp;display=swap"/>
 
 {{/inline}}
@@ -27,18 +29,18 @@
 {{#each htmMeta}}{{#if htmBefore}}{{{htmBefore}}}{{/if}}{{#if text}}{{#each text}}{{.}}{{/each}}{{/if}}{{#if htmAfter}}{{{htmAfter}}}{{/if}}{{/each}}
 {{/inline}}
 {{#*inline "htmTitlePageLayout"}}		<!-- #*inline "htmTitlePageLayout" -->
-		<title>computate.org</title>
+		<title>computateorg</title>
 {{/inline}}
 {{#*inline "htmBodyMenuPageLayout"}}
 		<div class="w3-bar w3-hide-small ">
 			<div class="site-bar-item w3-bar-item ">
-				<a class="w3-bar-item " href="{{ siteBaseUrl }}"><i class="fad fa-house "></i> computate.org</a>
+				<a class="w3-bar-item " href="{{ siteBaseUrl }}"><i class="fad fa-house "></i> computateorg</a>
 			</div>
 {{> "htmMenuItems"}}
 		</div>
 		<div class="w3-bar w3-hide-medium w3-hide-large ">
 			<div class="site-bar-item w3-bar-item ">
-				<a class="w3-bar-item " href="{{ siteBaseUrl }}"><i class="fad fa-house "></i> computate.org</a>
+				<a class="w3-bar-item " href="{{ siteBaseUrl }}"><i class="fad fa-house "></i> computateorg</a>
 			</div>
 			<div class="w3-dropdown-hover ">
 				<button class="w3-button w3-text-black "><i class="fad fa-bars w3-text-black "></i> Menu</button>
@@ -57,7 +59,13 @@
 				</div>
 
 				<div class="site-bar-item w3-bar-item ">
-					<a href="/page" class="header-icon-a w3-hover-opacity w3-center w3-text-2017-navy-peony "><i class="fad fa-newspaper w3-text-2017-navy-peony "></i> articles</a>
+					<a href="/enUS/course/001?facet.range.gap={{encodeURIComponent defaultRangeGap }}&facet.range.start={{encodeURIComponent defaultRangeStart }}&facet.range.end={{encodeURIComponent defaultRangeEnd }}&facet.range={!tag=r1}created&facet.pivot={!range=r1}classSimpleName" class="header-icon-a w3-hover-opacity w3-center w3-text-green "><i class="far fa-university w3-text-green "></i> course #1s</a>
+				</div>
+				<div class="site-bar-item w3-bar-item ">
+					<a href="/enUS/course/001/lessons?facet.range.gap={{encodeURIComponent defaultRangeGap }}&facet.range.start={{encodeURIComponent defaultRangeStart }}&facet.range.end={{encodeURIComponent defaultRangeEnd }}&facet.range={!tag=r1}created&facet.pivot={!range=r1}classSimpleName" class="header-icon-a w3-hover-opacity w3-center w3-text- "><i class="fa fa- w3-text- "></i> </a>
+				</div>
+				<div class="site-bar-item w3-bar-item ">
+					<a href="/page?facet.range.gap={{encodeURIComponent defaultRangeGap }}&facet.range.start={{encodeURIComponent defaultRangeStart }}&facet.range.end={{encodeURIComponent defaultRangeEnd }}&facet.range={!tag=r1}created&facet.pivot={!range=r1}classSimpleName" class="header-icon-a w3-hover-opacity w3-center w3-text-2017-navy-peony "><i class="fad fa-newspaper w3-text-2017-navy-peony "></i> articles</a>
 				</div>
 				<div class="site-bar-item w3-bar-item ">
 					<form style="display: inline-block; " method="GET" action="/page" onsubmit="event.preventDefault(); search($('#searchPageInput')); return false; ">
@@ -68,6 +76,9 @@
 							</button>
 						</div>
 					</form>
+				</div>
+				<div class="site-bar-item w3-bar-item ">
+					<a href="/pixel-art?facet.range.gap={{encodeURIComponent defaultRangeGap }}&facet.range.start={{encodeURIComponent defaultRangeStart }}&facet.range.end={{encodeURIComponent defaultRangeEnd }}&facet.range={!tag=r1}created&facet.pivot={!range=r1}classSimpleName" class="header-icon-a w3-hover-opacity w3-center w3-text-blue "><i class="fat fa-table-cells w3-text-blue "></i> pixel arts</a>
 				</div>
 				<div class="site-bar-item w3-bar-item ">
 					<a target="_blank" rel="noopener noreferrer" data-ajax="false" href="https://github.com/computate-org"><img alt="" class="grow-20 " style="display: inline; width: 20px; height: 20px; " src="{{ staticBaseUrl }}/svg/github.svg"></a>
@@ -149,7 +160,7 @@
 			<a href="https://github.com/{{ GITHUB_ORG }}/{{ SITE_NAME }}/" target="_blank" class="grow-20 ">View the source code here on github. </a>
 		</div>
 		<div class="grow-20 w3-margin ">
-			<a class="w3-bar-item grow-20 w3-margin w3-text-white " href="{{ PROJECT_POWERED_BY_URL }}" target="_blank"><span class="w3-large ">Powered by </span>{{#if PROJECT_POWERED_BY_IMAGE_URI }}<img alt="" class="w3-image " style="display: inline-block; width: 200px; margin: 0 10px;" src="{{ staticBaseUrl }}{{ PROJECT_POWERED_BY_IMAGE_URI }}"/>{{else}}{{#if PROJECT_POWERED_BY_NAME}}{{ PROJECT_POWERED_BY_NAME }}{{/if}}{{/if}}</a>
+			<a class="w3-bar-item grow-20 w3-margin w3-text-white " href="{{ SITE_POWERED_BY_URL }}" target="_blank"><span class="w3-large ">Powered by </span>{{#if SITE_POWERED_BY_IMAGE_URI }}<img alt="" class="w3-image " style="display: inline-block; width: 200px; margin: 0 10px;" src="{{ staticBaseUrl }}{{ SITE_POWERED_BY_IMAGE_URI }}"/>{{else}}{{#if SITE_POWERED_BY_NAME}}{{ SITE_POWERED_BY_NAME }}{{/if}}{{/if}}</a>
 		</div>
 	</footer>
 	<footer class="w3-row site-section-contact w3-text-white w3-padding-48 ">

@@ -16,12 +16,12 @@ import io.vertx.ext.web.api.OperationRequest;
  * Api: true
  * ApiMethode: RechercheFrFRPage
  * ApiMethode: RechercheEnUSPage
- * ApiUriRechercheFrFRPage: /frFR/cours/001/lecons
- * ApiUriRechercheEnUSPage: /enUS/course/001/lessons
- * PageRechercheFrFRPage: C001LeconFrFRPage
- * PageRechercheEnUSPage: C001LeconEnUSPage
- * PageSuperRechercheFrFRPage: C001FrFRPage
- * PageSuperRechercheEnUSPage: C001EnUSPage
+ * ApiUri.RechercheFrFRPage: /frFR/cours/001/lecons
+ * ApiUri.RechercheEnUSPage: /enUS/course/001/lessons
+ * Page.RechercheFrFRPage: C001LeconFrFRPage
+ * Page.RechercheEnUSPage: C001LeconEnUSPage
+ * PageSuper.RechercheFrFRPage: C001FrFRPage
+ * PageSuper.RechercheEnUSPage: C001EnUSPage
  * UnNom.frFR: un leçon
  * UnNom.enUS: a lesson
  * Couleur: green

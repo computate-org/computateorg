@@ -20,12 +20,12 @@ import io.vertx.ext.web.api.OperationRequest;
  * Api: true
  * ApiMethode: RechercheFrFRPage
  * ApiMethode: RechercheEnUSPage
- * ApiUriRechercheFrFRPage: /frFR/blog
- * ApiUriRechercheEnUSPage: /enUS/blog
- * PageRechercheFrFRPage: PageBlogFrFRPage
- * PageRechercheEnUSPage: PageBlogEnUSPage
- * PageSuperRechercheFrFRPage: ArticleFrFRPage
- * PageSuperRechercheEnUSPage: ArticleEnUSPage
+ * ApiUri.RechercheFrFRPage: /frFR/blog
+ * ApiUri.RechercheEnUSPage: /enUS/blog
+ * Page.RechercheFrFRPage: PageBlogFrFRPage
+ * Page.RechercheEnUSPage: PageBlogEnUSPage
+ * PageSuper.RechercheFrFRPage: ArticleFrFRPage
+ * PageSuper.RechercheEnUSPage: ArticleEnUSPage
  * 
  * H1.frFR: computate.org blog: 
  * H1.enUS: computate.org blog: 
@@ -39,7 +39,7 @@ import io.vertx.ext.web.api.OperationRequest;
  * Description.frFR: Construire votre site web personnel, avec données et la récherche, sur votre ordinateur et sur le cloud, avec des logiciels open source. 
  * Description.enUS: Create your own data-driven, searchable website on your own computer and the cloud, with open source software. 
  * 
- * PageSimple: true
+ * Page.Simple: true
  * Couleur: green
  * IconeGroupe: regular
  * IconeNom: book

@@ -2,8 +2,14 @@ FROM registry.access.redhat.com/ubi8/openjdk-11
 
 MAINTAINER Christopher Tate <computate@computate.org>
 
-COPY . .
 USER root
+COPY . computateorg
+RUN microdnf install -y git
+RUN git clone https://github.com/computate-org/computate.git /home/jboss/computate
+WORKDIR /home/jboss/computate
 RUN mvn clean install -DskipTests
-RUN cp /home/jboss/target/*.jar /home/jboss/app.jar
-CMD java -XX:+UseParallelOldGC -XX:MinHeapFreeRatio=10 -XX:MaxHeapFreeRatio=20 -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -XX:MaxMetaspaceSize=100m -XX:ParallelGCThreads=1 -Djava.util.concurrent.ForkJoinPool.common.parallelism=1 -XX:CICompilerCount=2 -XX:+ExitOnOutOfMemoryError -cp .:* org.computate.site.enus.vertx.MainVerticle
+WORKDIR /home/jboss/computateorg
+RUN mvn clean install -DskipTests
+RUN cp /home/jboss/computateorg/target/*.jar /home/jboss/app.jar
+CMD java $JAVA_OPTS -cp .:* org.computate.site.enus.vertx.MainVerticle
+

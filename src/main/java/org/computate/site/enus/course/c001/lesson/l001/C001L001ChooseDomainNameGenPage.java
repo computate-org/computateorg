@@ -77,6 +77,11 @@ public class C001L001ChooseDomainNameGenPage extends C001L001ChooseDomainNameGen
 	}
 
 	@Override
+	protected void _apiUri(Wrap<String> c) {
+		c.o("");
+	}
+
+	@Override
 	protected void _roles(List<String> l) {
 		if(siteRequest_ != null) {
 			l.addAll(Stream.concat(siteRequest_.getUserResourceRoles().stream(), siteRequest_.getUserRealmRoles().stream()).distinct().collect(Collectors.toList()));

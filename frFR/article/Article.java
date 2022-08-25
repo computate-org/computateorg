@@ -23,10 +23,10 @@ import org.computate.site.frFR.utilisateur.UtilisateurSite;
  * ApiMethode: RechercheEnUSPage
  * ApiMethode: Recherche
  * ApiMethode: GET
- * ApiUriRechercheFrFRPage: /frFR/article
- * ApiUriRechercheEnUSPage: /enUS/article
- * PageRechercheFrFRPage: ArticleFrFRPage
- * PageRechercheEnUSPage: ArticleEnUSPage
+ * ApiUri.RechercheFrFRPage: /frFR/article
+ * ApiUri.RechercheEnUSPage: /enUS/article
+ * Page.RechercheFrFRPage: ArticleFrFRPage
+ * Page.RechercheEnUSPage: ArticleEnUSPage
  * UnNom.frFR: un article
  * UnNom.enUS: an article
  * Couleur: green

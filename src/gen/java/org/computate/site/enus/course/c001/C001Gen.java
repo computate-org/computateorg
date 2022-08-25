@@ -40,41 +40,45 @@ import org.computate.search.response.solr.SolrResponse;
 import io.vertx.core.json.JsonObject;
 
 /**	
- * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstClasse_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.course.c001.C001">Find the class C001 in Solr. </a>
- * <br><br>Delete the class C001 in Solr. 
- * <br><pre>curl 'http://localhost:8983/solr/computate/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;classeNomCanonique_enUS_indexed_string:org.computate.site.enus.course.c001.C001&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'</pre>
- * <br>Delete  the package org.computate.site.enus.course.c001 in Solr. 
- * <br><pre>curl 'http://localhost:8983/solr/computate/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;classeNomEnsemble_enUS_indexed_string:org.computate.site.enus.course.c001&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'</pre>
- * <br>Delete  the project computate.org in Solr. 
- * <br><pre>curl 'http://localhost:8983/solr/computate/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;siteNom_indexed_string:computate.org&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'</pre>
- * <br>
+ * <p>
+ * This Java class extends a generated Java class built by the <a href="https://github.com/computate-org/computate">https://github.com/computate-org/computate</a> project. 
+ * Whenever this Java class is modified or touched, the watch service installed as described in the README, indexes all the information about this Java class in a local Apache Solr Search Engine. 
+ * If you are running the service, you can see the indexed data about this Java Class here: 
+ * </p>
+ * <p><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstClasse_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.course.c001.C001">Find the class C001 in Solr. </a></p>
+ * <p>
+ * The extended class ending with "Gen" did not exist at first, but was automatically created by the same watch service based on the data retrieved from the local Apache Server search engine. 
+ * The extended class contains many generated fields, getters, setters, initialization code, and helper methods to help build a website and API fast, reactive, and scalable. 
+ * </p>
+ * <p>This class contains a comment "Indexed: true", which means this class will be indexed in the search engine. 
+ * Every protected void method that begins with "_" that is marked to be searched with a comment like "Indexed: true", "Stored: true", or "DocValues: true" will be indexed in the search engine. 
+ * </p>
+ * <p>This class contains a comment "Page: true", which means this class will have webpage code generated for these objects. 
+ * Java Vert.x backend API code, Handlebars HTML template frontend code, and JavaScript code will all generated and can be extended. 
+ * This creates a new Java class org.computate.site.enus.course.c001.C001Page. 
+ * </p>
+ * <p>This class contains a comment "SuperPage.enUS: CoursePage", which identifies the Java super class of the page code by it's class simple name "CoursePage". 
+ * This means that the newly created class org.computate.site.enus.course.c001.C001Page extends org.computate.site.enus.course.CoursePage. 
+ * </p>
+ * <p>This class contains a comment "Api: true", which means this class will have Java Vert.x API backend code generated for these objects. 
+ * </p>
+ * <p>
+ * Delete the class C001 in Solr: 
+ * curl 'http://localhost:8983/solr/computate/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;classeNomCanonique_enUS_indexed_string:org.computate.site.enus.course.c001.C001&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'
+ * </p>
+ * <p>
+ * Delete  the package org.computate.site.enus.course.c001 in Solr: 
+ * curl 'http://localhost:8983/solr/computate/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;classeNomEnsemble_enUS_indexed_string:org.computate.site.enus.course.c001&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'
+ * </p>
+ * <p>
+ * Delete  the project computateorg in Solr: 
+ * curl 'http://localhost:8983/solr/computate/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;siteNom_indexed_string:computateorg&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'
+ * </p>
  **/
 public abstract class C001Gen<DEV> extends Course {
 	protected static final Logger LOG = LoggerFactory.getLogger(C001.class);
 
-	public static final String C001_AName_frFR = "un cours n ° 1";
-	public static final String C001_This_frFR = "ce ";
-	public static final String C001_ThisName_frFR = "ce cours n ° 1";
-	public static final String C001_A_frFR = "un ";
-	public static final String C001_TheName_frFR = "le cours n ° 1";
-	public static final String C001_NameSingular_frFR = "cours n ° 1";
-	public static final String C001_NamePlural_frFR = "courses";
-	public static final String C001_NameActual_frFR = "cours n ° 1 actuel";
-	public static final String C001_AllName_frFR = "tous les courses";
-	public static final String C001_SearchAllNameBy_frFR = "rechercher courses par ";
-	public static final String C001_SearchAllName_frFR = "rechercher courses";
-	public static final String C001_H1_frFR = "Construire des applications Web modernes et async avec les meilleurs logiciels open sources. ";
-	public static final String C001_H2_frFR = "Avec Vert.x, sur Linux, données PostgreSQL, recherche Solr, construit comme containers Linux sur OpenShift. ";
-	public static final String C001_Title_frFR = "courses";
-	public static final String C001_ThePluralName_frFR = "les courses";
-	public static final String C001_NoNameFound_frFR = "aucun cours n ° 1 trouvé";
-	public static final String C001_NameVar_frFR = "coursN°1";
-	public static final String C001_OfName_frFR = "de cours n ° 1";
-	public static final String C001_NameAdjectiveSingular_frFR = "cours n ° 1";
-	public static final String C001_NameAdjectivePlural_frFR = "courses";
-	public static final String SearchPage_frFR_Uri = "null/{id}";
-	public static final String SearchPage_frFR_ImageUri = "/pngnull/{id}-999.png";
-
+	public static final String C001_Description_enUS = "With Vert.x, on Linux, PostgreSQL data, Solr search, deployable as Linux containers on OpenShift. ";
 	public static final String C001_AName_enUS = "a course #1";
 	public static final String C001_This_enUS = "this ";
 	public static final String C001_ThisName_enUS = "this course #1";
@@ -328,6 +332,13 @@ public abstract class C001Gen<DEV> extends Course {
 		switch(entityVar) {
 			default:
 				return Course.varIndexedCourse(entityVar);
+		}
+	}
+
+	public static String searchVarC001(String searchVar) {
+		switch(searchVar) {
+			default:
+				return Course.searchVarCourse(searchVar);
 		}
 	}
 

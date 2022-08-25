@@ -312,7 +312,7 @@ public class MiseEnPage extends MiseEnPageGen<Object> {
 
 	/**
 	 * r.enUS: pageCree
-	 * PageCreated
+	 * Page.Created
 	 */
 	protected void _pageModifiee(Couverture<LocalDateTime> c)  {
 		Date solrVal = (Date)pageDocumentSolr.get(c.var + "_stored_date");

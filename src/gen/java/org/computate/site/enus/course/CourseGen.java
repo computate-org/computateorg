@@ -41,42 +41,47 @@ import org.computate.search.response.solr.SolrResponse;
 import io.vertx.core.json.JsonObject;
 
 /**	
- * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstClasse_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.course.Course">Find the class Course in Solr. </a>
- * <br><br>Delete the class Course in Solr. 
- * <br><pre>curl 'http://localhost:8983/solr/computate/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;classeNomCanonique_enUS_indexed_string:org.computate.site.enus.course.Course&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'</pre>
- * <br>Delete  the package org.computate.site.enus.course in Solr. 
- * <br><pre>curl 'http://localhost:8983/solr/computate/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;classeNomEnsemble_enUS_indexed_string:org.computate.site.enus.course&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'</pre>
- * <br>Delete  the project computate.org in Solr. 
- * <br><pre>curl 'http://localhost:8983/solr/computate/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;siteNom_indexed_string:computate.org&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'</pre>
- * <br>
+ * <p>
+ * This Java class extends a generated Java class built by the <a href="https://github.com/computate-org/computate">https://github.com/computate-org/computate</a> project. 
+ * Whenever this Java class is modified or touched, the watch service installed as described in the README, indexes all the information about this Java class in a local Apache Solr Search Engine. 
+ * If you are running the service, you can see the indexed data about this Java Class here: 
+ * </p>
+ * <p><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstClasse_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.course.Course">Find the class Course in Solr. </a></p>
+ * <p>
+ * The extended class ending with "Gen" did not exist at first, but was automatically created by the same watch service based on the data retrieved from the local Apache Server search engine. 
+ * The extended class contains many generated fields, getters, setters, initialization code, and helper methods to help build a website and API fast, reactive, and scalable. 
+ * </p>
+ * <p>This class contains a comment "Indexed: true", which means this class will be indexed in the search engine. 
+ * Every protected void method that begins with "_" that is marked to be searched with a comment like "Indexed: true", "Stored: true", or "DocValues: true" will be indexed in the search engine. 
+ * </p>
+ * <p>This class contains a comment "Page: true", which means this class will have webpage code generated for these objects. 
+ * Java Vert.x backend API code, Handlebars HTML template frontend code, and JavaScript code will all generated and can be extended. 
+ * This creates a new Java class org.computate.site.enus.course.CoursePage. 
+ * </p>
+ * <p>This class contains a comment "SuperPage.enUS: ArticlePage", which identifies the Java super class of the page code by it's class simple name "ArticlePage". 
+ * This means that the newly created class org.computate.site.enus.course.CoursePage extends org.computate.site.enus.article.ArticlePage. 
+ * </p>
+ * <p>This class contains a comment "Api: true", which means this class will have Java Vert.x API backend code generated for these objects. 
+ * </p>
+ * <p>This class contains a comment "ApiTag: Course", which groups all of the OpenAPIs for Course objects under the tag "Course". 
+ * </p>
+ * <p>This class contains a comment "ApiUri: /api/course", which defines the base API URI for Course objects as "/api/course" in the OpenAPI spec. 
+ * </p>
+ * <p>
+ * Delete the class Course in Solr: 
+ * curl 'http://localhost:8983/solr/computate/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;classeNomCanonique_enUS_indexed_string:org.computate.site.enus.course.Course&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'
+ * </p>
+ * <p>
+ * Delete  the package org.computate.site.enus.course in Solr: 
+ * curl 'http://localhost:8983/solr/computate/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;classeNomEnsemble_enUS_indexed_string:org.computate.site.enus.course&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'
+ * </p>
+ * <p>
+ * Delete  the project computateorg in Solr: 
+ * curl 'http://localhost:8983/solr/computate/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;siteNom_indexed_string:computateorg&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'
+ * </p>
  **/
 public abstract class CourseGen<DEV> extends Article {
 	protected static final Logger LOG = LoggerFactory.getLogger(Course.class);
-
-	public static final String Course_AName_frFR = "un cours";
-	public static final String Course_This_frFR = "ce ";
-	public static final String Course_ThisName_frFR = "ce cours";
-	public static final String Course_A_frFR = "un ";
-	public static final String Course_TheName_frFR = "le cours";
-	public static final String Course_NameSingular_frFR = "cours";
-	public static final String Course_NamePlural_frFR = "cours";
-	public static final String Course_NameActual_frFR = "cours actuel";
-	public static final String Course_AllName_frFR = "tous les cours";
-	public static final String Course_SearchAllNameBy_frFR = "rechercher cours par ";
-	public static final String Course_SearchAllName_frFR = "rechercher cours";
-	public static final String Course_Title_frFR = "cours";
-	public static final String Course_ThePluralName_frFR = "les cours";
-	public static final String Course_NoNameFound_frFR = "aucun cours trouvé";
-	public static final String Course_NameVar_frFR = "cours";
-	public static final String Course_OfName_frFR = "de cours";
-	public static final String Course_NameAdjectiveSingular_frFR = "cours";
-	public static final String Course_NameAdjectivePlural_frFR = "cours";
-	public static final String SearchPage_frFR_Uri = "/api/course/{id}";
-	public static final String SearchPage_frFR_ImageUri = "/png/api/course/{id}-999.png";
-	public static final String Search_frFR_Uri = "/api/course/{id}";
-	public static final String Search_frFR_ImageUri = "/png/api/course/{id}-999.png";
-	public static final String GET_frFR_Uri = "/api/course/{id}";
-	public static final String GET_frFR_ImageUri = "/png/api/course/{id}-999.png";
 
 	public static final String Course_AName_enUS = "a course";
 	public static final String Course_This_enUS = "this ";
@@ -453,6 +458,13 @@ public abstract class CourseGen<DEV> extends Article {
 		switch(entityVar) {
 			default:
 				return Article.varIndexedArticle(entityVar);
+		}
+	}
+
+	public static String searchVarCourse(String searchVar) {
+		switch(searchVar) {
+			default:
+				return Article.searchVarArticle(searchVar);
 		}
 	}
 

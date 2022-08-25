@@ -9,12 +9,12 @@ import org.computate.site.frFR.couverture.Couverture;
  * Api: true
  * ApiMethode: RechercheFrFRPage
  * ApiMethode: RechercheEnUSPage
- * ApiUriRechercheFrFRPage: /frFR/cours/001
- * ApiUriRechercheEnUSPage: /enUS/course/001
- * PageRechercheFrFRPage: C001FrFRPage
- * PageRechercheEnUSPage: C001EnUSPage
- * PageSuperRechercheFrFRPage: CoursFrFRPage
- * PageSuperRechercheEnUSPage: CoursEnUSPage
+ * ApiUri.RechercheFrFRPage: /frFR/cours/001
+ * ApiUri.RechercheEnUSPage: /enUS/course/001
+ * Page.RechercheFrFRPage: C001FrFRPage
+ * Page.RechercheEnUSPage: C001EnUSPage
+ * PageSuper.RechercheFrFRPage: CoursFrFRPage
+ * PageSuper.RechercheEnUSPage: CoursEnUSPage
  * UnNom.frFR: un cours n ° 1
  * UnNom.enUS: a course #1
  * NomPluriel.frFR: courses

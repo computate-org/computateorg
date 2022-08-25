@@ -31,6 +31,7 @@ import java.util.Collection;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Date;
+import org.computate.search.serialize.ComputateZonedDateTimeSerializer;
 import java.time.format.DateTimeFormatter;
 import java.time.ZoneId;
 import java.util.List;
@@ -90,7 +91,6 @@ import org.computate.vertx.search.list.SearchList;
 
 /**
  * Translate: false
- * CanonicalName.frFR: org.computate.site.enus.course.c001.C001FrFRGenApiServiceImpl
  **/
 public class C001EnUSGenApiServiceImpl extends BaseApiServiceImpl implements C001EnUSGenApiService {
 
@@ -144,27 +144,8 @@ public class C001EnUSGenApiServiceImpl extends BaseApiServiceImpl implements C00
 		Promise<ServiceResponse> promise = Promise.promise();
 		try {
 			SiteRequestEnUS siteRequest = listC001.getSiteRequest_(SiteRequestEnUS.class);
-			SolrResponse responseSearch = listC001.getResponse();
-			List<SolrResponse.Doc> solrDocuments = listC001.getResponse().getResponse().getDocs();
-			Long searchInMillis = Long.valueOf(responseSearch.getResponseHeader().getqTime());
-			Long startNum = listC001.getRequest().getStart();
-			Long foundNum = responseSearch.getResponse().getNumFound();
-			Integer returnedNum = responseSearch.getResponse().getDocs().size();
-			String searchTime = String.format("%d.%03d sec", TimeUnit.MILLISECONDS.toSeconds(searchInMillis), TimeUnit.MILLISECONDS.toMillis(searchInMillis) - TimeUnit.SECONDS.toMillis(TimeUnit.MILLISECONDS.toSeconds(searchInMillis)));
-			String nextCursorMark = responseSearch.getNextCursorMark();
-			String exceptionSearch = Optional.ofNullable(responseSearch.getError()).map(error -> error.getMsg()).orElse(null);
 			List<String> fls = listC001.getRequest().getFields();
-
 			JsonObject json = new JsonObject();
-			json.put("startNum", startNum);
-			json.put("foundNum", foundNum);
-			json.put("returnedNum", returnedNum);
-			if(fls.size() == 1 && fls.stream().findFirst().orElse(null).equals("saves")) {
-				json.put("searchTime", searchTime);
-			}
-			if(nextCursorMark != null) {
-				json.put("nextCursorMark", nextCursorMark);
-			}
 			JsonArray l = new JsonArray();
 			listC001.getList().stream().forEach(o -> {
 				JsonObject json2 = JsonObject.mapFrom(o);
@@ -191,56 +172,7 @@ public class C001EnUSGenApiServiceImpl extends BaseApiServiceImpl implements C00
 				l.add(json2);
 			});
 			json.put("list", l);
-
-			SolrResponse.FacetFields facetFields = Optional.ofNullable(responseSearch.getFacetCounts()).map(f -> f.getFacetFields()).orElse(null);
-			if(facetFields != null) {
-				JsonObject facetFieldsJson = new JsonObject();
-				json.put("facet_fields", facetFieldsJson);
-				for(SolrResponse.FacetField facetField : facetFields.getFacets().values()) {
-					String facetFieldVar = StringUtils.substringBefore(facetField.getName(), "_docvalues_");
-					JsonObject facetFieldCounts = new JsonObject();
-					facetFieldsJson.put(facetFieldVar, facetFieldCounts);
-					facetField.getCounts().forEach((name, count) -> {
-						facetFieldCounts.put(name, count);
-					});
-				}
-			}
-
-			SolrResponse.FacetRanges facetRanges = Optional.ofNullable(responseSearch.getFacetCounts()).map(f -> f.getFacetRanges()).orElse(null);
-			if(facetRanges != null) {
-				JsonObject rangeJson = new JsonObject();
-				json.put("facet_ranges", rangeJson);
-				for(SolrResponse.FacetRange rangeFacet : facetRanges.getRanges().values()) {
-					JsonObject rangeFacetJson = new JsonObject();
-					String rangeFacetVar = StringUtils.substringBefore(rangeFacet.getName(), "_docvalues_");
-					rangeJson.put(rangeFacetVar, rangeFacetJson);
-					JsonObject rangeFacetCountsMap = new JsonObject();
-					rangeFacetJson.put("counts", rangeFacetCountsMap);
-					rangeFacet.getCounts().forEach((name, count) -> {
-						rangeFacetCountsMap.put(name, count);
-					});
-				}
-			}
-
-			SolrResponse.FacetPivot facetPivot = Optional.ofNullable(responseSearch.getFacetCounts()).map(f -> f.getFacetPivot()).orElse(null);
-			if(facetPivot != null) {
-				JsonObject facetPivotJson = new JsonObject();
-				json.put("facet_pivot", facetPivotJson);
-				for(SolrResponse.Pivot pivot : facetPivot.getPivotMap().values()) {
-					String[] varsIndexed = pivot.getName().trim().split(",");
-					String[] entityVars = new String[varsIndexed.length];
-					for(Integer i = 0; i < entityVars.length; i++) {
-						String entityIndexed = varsIndexed[i];
-						entityVars[i] = StringUtils.substringBefore(entityIndexed, "_docvalues_");
-					}
-					JsonArray pivotArray = new JsonArray();
-					facetPivotJson.put(StringUtils.join(entityVars, ","), pivotArray);
-					responsePivotSearchPageC001(pivot.getPivotList(), pivotArray);
-				}
-			}
-			if(exceptionSearch != null) {
-				json.put("exceptionSearch", exceptionSearch);
-			}
+			response200Search(listC001.getRequest(), listC001.getResponse(), json);
 			promise.complete(ServiceResponse.completedWithJson(Buffer.buffer(Optional.ofNullable(json).orElse(new JsonObject()).encodePrettily())));
 		} catch(Exception ex) {
 			LOG.error(String.format("response200SearchPageC001 failed. "), ex);
@@ -459,6 +391,15 @@ public class C001EnUSGenApiServiceImpl extends BaseApiServiceImpl implements C00
 									valueRows = paramObject instanceof Long ? (Long)paramObject : Long.parseLong(paramObject.toString());
 									searchC001Rows(searchList, valueRows);
 									break;
+								case "stats":
+									searchList.stats((Boolean)paramObject);
+									break;
+								case "stats.field":
+									entityVar = (String)paramObject;
+									varIndexed = C001.varIndexedC001(entityVar);
+									if(varIndexed != null)
+										searchList.statsField(varIndexed);
+									break;
 								case "facet":
 									searchList.facet((Boolean)paramObject);
 									break;
@@ -528,15 +469,22 @@ public class C001EnUSGenApiServiceImpl extends BaseApiServiceImpl implements C00
 	public void searchC0012(SiteRequestEnUS siteRequest, Boolean populate, Boolean store, Boolean modify, SearchList<C001> searchList) {
 	}
 
-	public Future<Void> persistC001(C001 o) {
+	public Future<Void> persistC001(C001 o, Boolean patch) {
 		Promise<Void> promise = Promise.promise();
 		try {
 			SiteRequestEnUS siteRequest = o.getSiteRequest_();
 				try {
 					JsonObject jsonObject = siteRequest.getJsonObject();
 					jsonObject.forEach(definition -> {
-							String columnName = definition.getKey();
-							Object columnValue = definition.getValue();
+							String columnName;
+							Object columnValue;
+						if(patch && StringUtils.startsWith(definition.getKey(), "set")) {
+							columnName = StringUtils.uncapitalize(StringUtils.substringAfter(definition.getKey(), "set"));
+							columnValue = definition.getValue();
+						} else {
+							columnName = definition.getKey();
+							columnValue = definition.getValue();
+						}
 						if(!"".equals(columnName)) {
 							try {
 								o.persistForClass(columnName, columnValue);

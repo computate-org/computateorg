@@ -10,12 +10,12 @@ import org.computate.site.frFR.page.parti.PageHtml;
  * Api: true
  * ApiMethode: RechercheFrFRPage
  * ApiMethode: RechercheEnUSPage
- * ApiUriRechercheFrFRPage: /frFR/cours/001/011-comment-installer-une-version-recente-de-keycloak
- * ApiUriRechercheEnUSPage: /enUS/course/001/011-how-to-install-a-recent-version-of-keycloak
- * PageRechercheFrFRPage: C001L011InstallerKeycloakFrFRPage
- * PageRechercheEnUSPage: C001L011InstallerKeycloakEnUSPage
- * PageSuperRechercheFrFRPage: C001LeconFrFRPage
- * PageSuperRechercheEnUSPage: C001LeconEnUSPage
+ * ApiUri.RechercheFrFRPage: /frFR/cours/001/011-comment-installer-une-version-recente-de-keycloak
+ * ApiUri.RechercheEnUSPage: /enUS/course/001/011-how-to-install-a-recent-version-of-keycloak
+ * Page.RechercheFrFRPage: C001L011InstallerKeycloakFrFRPage
+ * Page.RechercheEnUSPage: C001L011InstallerKeycloakEnUSPage
+ * PageSuper.RechercheFrFRPage: C001LeconFrFRPage
+ * PageSuper.RechercheEnUSPage: C001LeconEnUSPage
  * UnNom.frFR: le leçon
  * UnNom.enUS: a lesson
  * 
@@ -31,7 +31,7 @@ import org.computate.site.frFR.page.parti.PageHtml;
  * Description.frFR:
  * Description.enUS:
  * 
- * PageSimple: true
+ * Page.Simple: true
  * Couleur: green
  * IconeGroupe: regular
  * IconeNom: question

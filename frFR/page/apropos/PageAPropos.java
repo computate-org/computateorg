@@ -14,12 +14,12 @@ import org.computate.site.frFR.recherche.ListeRecherche;
  * Api: true
  * ApiMethode: RechercheFrFRPage
  * ApiMethode: RechercheEnUSPage
- * ApiUriRechercheFrFRPage: /frFR/apropos
- * ApiUriRechercheEnUSPage: /enUS/about
- * PageRechercheFrFRPage: PageAProposFrFRPage
- * PageRechercheEnUSPage: PageAProposEnUSPage
- * PageSuperRechercheFrFRPage: ArticleFrFRPage
- * PageSuperRechercheEnUSPage: ArticleEnUSPage
+ * ApiUri.RechercheFrFRPage: /frFR/apropos
+ * ApiUri.RechercheEnUSPage: /enUS/about
+ * Page.RechercheFrFRPage: PageAProposFrFRPage
+ * Page.RechercheEnUSPage: PageAProposEnUSPage
+ * PageSuper.RechercheFrFRPage: ArticleFrFRPage
+ * PageSuper.RechercheEnUSPage: ArticleEnUSPage
  * 
  * H1.frFR: Qui est Christopher Tate ? 
  * H1.enUS: Who is Christopher Tate? 
@@ -33,7 +33,7 @@ import org.computate.site.frFR.recherche.ListeRecherche;
  * Description.frFR: Qui est Christopher Tate ? Tout à propos de moi. 
  * Description.enUS: Who is Christopher Tate? All about me. 
  * 
- * PageSimple: true
+ * Page.Simple: true
  * Couleur: green
  * IconeGroupe: regular
  * IconeNom: male

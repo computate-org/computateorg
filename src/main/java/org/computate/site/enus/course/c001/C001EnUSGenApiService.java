@@ -20,7 +20,6 @@ import io.vertx.ext.auth.authorization.AuthorizationProvider;
 
 /**
  * Translate: false
- * CanonicalName.frFR: org.computate.site.enus.course.c001.C001FrFRGenApiService
  * Gen: false
  **/
 @WebApiServiceGen

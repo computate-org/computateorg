@@ -25,9 +25,9 @@ import org.computate.site.enus.request.SiteRequestEnUS;
  * ApiMethod: PUTImport
  * 
  * ApiMethod.enUS: SearchPage
- * PageSearchPage.enUS: SiteUserPage
- * PageSuperSearchPage.enUS: BaseModelPage
- * ApiUriSearchPage.enUS: /user
+ * Page.SearchPage.enUS: SiteUserPage
+ * PageSuper.SearchPage.enUS: BaseModelPage
+ * ApiUri.SearchPage.enUS: /user
  * 
  * Keyword: classSimpleNameSiteUser
  * Role.enUS: SiteAdmin
@@ -157,4 +157,5 @@ public class SiteUser extends SiteUserGen<BaseModel> implements ComputateSiteUse
 	public void apiRequestSiteUser() {
 		super.apiRequestSiteUser();
 	}
+
 }

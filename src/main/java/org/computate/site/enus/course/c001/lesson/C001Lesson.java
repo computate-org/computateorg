@@ -16,7 +16,7 @@ import io.vertx.core.Promise;
  * Map.Integer.classSort: 4
  * 
  * ApiMethod: SearchPage
- * ApiUriSearchPage.enUS: /enUS/course/001/lessons
+ * ApiUri.SearchPage.enUS: /enUS/course/001/lessons
  * UnNom.frFR: un leçon
  * UnNom.enUS: a lesson
  * Couleur: green

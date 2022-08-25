@@ -10,12 +10,12 @@ import org.computate.site.frFR.page.parti.PageHtml;
  * Api: true
  * ApiMethode: RechercheFrFRPage
  * ApiMethode: RechercheEnUSPage
- * ApiUriRechercheFrFRPage: /frFR/cours/001/004-comment-installer-la-derniere-version-de-maven
- * ApiUriRechercheEnUSPage: /enUS/course/001/004-how-to-install-the-latest-version-of-maven
- * PageRechercheFrFRPage: C001L005InstallerMavenFrFRPage
- * PageRechercheEnUSPage: C001L005InstallerMavenEnUSPage
- * PageSuperRechercheFrFRPage: C001LeconFrFRPage
- * PageSuperRechercheEnUSPage: C001LeconEnUSPage
+ * ApiUri.RechercheFrFRPage: /frFR/cours/001/004-comment-installer-la-derniere-version-de-maven
+ * ApiUri.RechercheEnUSPage: /enUS/course/001/004-how-to-install-the-latest-version-of-maven
+ * Page.RechercheFrFRPage: C001L005InstallerMavenFrFRPage
+ * Page.RechercheEnUSPage: C001L005InstallerMavenEnUSPage
+ * PageSuper.RechercheFrFRPage: C001LeconFrFRPage
+ * PageSuper.RechercheEnUSPage: C001LeconEnUSPage
  * UnNom.frFR: le leçon
  * UnNom.enUS: a lesson
  * 
@@ -31,7 +31,7 @@ import org.computate.site.frFR.page.parti.PageHtml;
  * Description.frFR: La plupart des entreprises utilisent aujourd'hui Java pour créer leurs applications et microservices, y compris les gouvernements, les banques, la comptabilité et les entreprises. La création d’applications Java commence par l’installation de Maven. La version par défaut de Maven sur votre distribution Linux est peut être obsolète pour installer certains logiciels open source. Je vous aiderai à installer la version la plus récente de Maven pour développer votre site Web de manière open source. 
  * Description.enUS: Most enterprises use Java today to build their applications and microservices, including governments, banks, accounting and businesses. Building java applications begins with installing Maven. The default version of Maven on your Linux distribution may be out of date to install certain open source software. I will help you install the most recent version of Maven to develop your website the open source way. 
  * 
- * PageSimple: true
+ * Page.Simple: true
  * Couleur: green
  * IconeGroupe: regular
  * IconeNom: question

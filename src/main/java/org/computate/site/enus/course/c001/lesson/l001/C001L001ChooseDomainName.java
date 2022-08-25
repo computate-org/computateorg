@@ -53,7 +53,7 @@ public class C001L001ChooseDomainName extends C001L001ChooseDomainNameGen<C001Le
 	}
 
 	@Override protected void _articleH1_frFR(Wrap<String> c) {
-		c.o(C001L001ChooseDomainName_H1_frFR);
+//		c.o(C001L001ChooseDomainName_H1_frFR);
 	}
 
 	@Override protected void _articleH1_enUS(Wrap<String> c) {
@@ -61,7 +61,7 @@ public class C001L001ChooseDomainName extends C001L001ChooseDomainNameGen<C001Le
 	}
 
 	@Override protected void _articleH2_frFR(Wrap<String> c) {
-		c.o(C001L001ChooseDomainName_H2_frFR);
+//		c.o(C001L001ChooseDomainName_H2_frFR);
 	}
 
 	@Override protected void _articleH2_enUS(Wrap<String> c) {
@@ -73,7 +73,7 @@ public class C001L001ChooseDomainName extends C001L001ChooseDomainNameGen<C001Le
 	}
 
 	@Override protected void _pageUri_frFR(Wrap<String> c) {
-		c.o(C001L001ChooseDomainName_Uri_frFR);
+//		c.o(C001L001ChooseDomainName_Uri_frFR);
 	}
 
 	@Override protected void _pageImageUri_enUS(Wrap<String> c) {
@@ -81,7 +81,7 @@ public class C001L001ChooseDomainName extends C001L001ChooseDomainNameGen<C001Le
 	}
 
 	@Override protected void _pageImageUri_frFR(Wrap<String> c) {
-		c.o(SearchPage_frFR_ImageUri);
+//		c.o(SearchPage_frFR_ImageUri);
 	}
 
 	@Override protected void _pageSearch_enUS(List<String> l) {
@@ -91,8 +91,8 @@ public class C001L001ChooseDomainName extends C001L001ChooseDomainNameGen<C001Le
 	}
 
 	@Override protected void _pageSearch_frFR(List<String> l) {
-		addPageSearch_frFR(C001L001ChooseDomainName_H1_frFR);
-		addPageSearch_frFR(C001L001ChooseDomainName_H2_frFR);
+//		addPageSearch_frFR(C001L001ChooseDomainName_H1_frFR);
+//		addPageSearch_frFR(C001L001ChooseDomainName_H2_frFR);
 		addPageSearch_frFR(C001L001ChooseDomainNameVals);
 	}
 

@@ -11,12 +11,12 @@ import org.computate.site.frFR.page.parti.PageHtml;
  * Api: true
  * ApiMethode: RechercheFrFRPage
  * ApiMethode: RechercheEnUSPage
- * ApiUriRechercheFrFRPage: /frFR/cours/001/004-comment-installer-centos7
- * ApiUriRechercheEnUSPage: /enUS/course/001/004-how-to-install-centos7
- * PageRechercheFrFRPage: C001L004InstallerCentos7FrFRPage
- * PageRechercheEnUSPage: C001L004InstallerCentos7EnUSPage
- * PageSuperRechercheFrFRPage: C001LeconFrFRPage
- * PageSuperRechercheEnUSPage: C001LeconEnUSPage
+ * ApiUri.RechercheFrFRPage: /frFR/cours/001/004-comment-installer-centos7
+ * ApiUri.RechercheEnUSPage: /enUS/course/001/004-how-to-install-centos7
+ * Page.RechercheFrFRPage: C001L004InstallerCentos7FrFRPage
+ * Page.RechercheEnUSPage: C001L004InstallerCentos7EnUSPage
+ * PageSuper.RechercheFrFRPage: C001LeconFrFRPage
+ * PageSuper.RechercheEnUSPage: C001LeconEnUSPage
  * UnNom.frFR: le leçon
  * UnNom.enUS: a lesson
  * 
@@ -32,7 +32,7 @@ import org.computate.site.frFR.page.parti.PageHtml;
  * Description.frFR: Comment installer le système d'exploitation pour développer mon site Web ? Chaque étape pour installer le système d'exploitation CentOS 7. 
  * Description.enUS: How do I install the operating system to start developing my website? Every step to install the CentOS 7 operating system. 
  * 
- * PageSimple: true
+ * Page.Simple: true
  * Couleur: green
  * IconeGroupe: regular
  * IconeNom: question

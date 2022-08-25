@@ -14,12 +14,12 @@ import org.computate.site.frFR.recherche.ListeRecherche;
  * Api: true
  * ApiMethode: RechercheFrFRPage
  * ApiMethode: RechercheEnUSPage
- * ApiUriRechercheFrFRPage: /frFR/faq
- * ApiUriRechercheEnUSPage: /enUS/faq
- * PageRechercheFrFRPage: PageFaqFrFRPage
- * PageRechercheEnUSPage: PageFaqEnUSPage
- * PageSuperRechercheFrFRPage: ArticleFrFRPage
- * PageSuperRechercheEnUSPage: ArticleEnUSPage
+ * ApiUri.RechercheFrFRPage: /frFR/faq
+ * ApiUri.RechercheEnUSPage: /enUS/faq
+ * Page.RechercheFrFRPage: PageFaqFrFRPage
+ * Page.RechercheEnUSPage: PageFaqEnUSPage
+ * PageSuper.RechercheFrFRPage: ArticleFrFRPage
+ * PageSuper.RechercheEnUSPage: ArticleEnUSPage
  * 
  * H1.frFR: Avez-vous des questions concernant computate.org ? 
  * H1.enUS: Have some questions about computate.org? 
@@ -33,7 +33,7 @@ import org.computate.site.frFR.recherche.ListeRecherche;
  * Description.frFR: Avez-vous des questions concernant computate.org ? computate.org foire aux questions (FAQ). 
  * Description.enUS: Have some questions about computate.org? computate.org frequently asked questions (FAQ). 
  * 
- * PageSimple: true
+ * Page.Simple: true
  * Couleur: green
  * IconeGroupe: regular
  * IconeNom: question

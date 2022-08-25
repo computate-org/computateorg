@@ -10,12 +10,12 @@ import org.computate.site.frFR.page.parti.PageHtml;
  * Api: true
  * ApiMethode: RechercheFrFRPage
  * ApiMethode: RechercheEnUSPage
- * ApiUriRechercheFrFRPage: /frFR/cours/001/006-comment-installer-eclipse
- * ApiUriRechercheEnUSPage: /enUS/course/001/006-how-to-install-eclipse
- * PageRechercheFrFRPage: C001L006InstallerEclipseFrFRPage
- * PageRechercheEnUSPage: C001L006InstallerEclipseEnUSPage
- * PageSuperRechercheFrFRPage: C001LeconFrFRPage
- * PageSuperRechercheEnUSPage: C001LeconEnUSPage
+ * ApiUri.RechercheFrFRPage: /frFR/cours/001/006-comment-installer-eclipse
+ * ApiUri.RechercheEnUSPage: /enUS/course/001/006-how-to-install-eclipse
+ * Page.RechercheFrFRPage: C001L006InstallerEclipseFrFRPage
+ * Page.RechercheEnUSPage: C001L006InstallerEclipseEnUSPage
+ * PageSuper.RechercheFrFRPage: C001LeconFrFRPage
+ * PageSuper.RechercheEnUSPage: C001LeconEnUSPage
  * UnNom.frFR: le leçon
  * UnNom.enUS: a lesson
  * 
@@ -31,7 +31,7 @@ import org.computate.site.frFR.page.parti.PageHtml;
  * Description.frFR: Pour montrer à quel point Eclipse est important pour le monde du développement open source, de nombreuses grandes entreprises de technologie ont leurs propres IDE basés sur Eclipse. Notamment Red Hat, IBM, Texas Instruments, Adobe, Node, PHP et bien d'autres. Red Hat® Developer Studio est un environnement de développement intégré (IDE) certifié basé sur Eclipse, qui permet de développer, tester et déployer des applications Web élaborées, des applications Web mobiles, des applications transactionnelles d'entreprise et des microservices. Fidèle à la mission de Red Hat, « aider les entreprises à relever les défis auxquels elles sont confrontées de manière open source, » Red Hat est très impliqué dans Eclipse. Je vous aiderai à installer la version la plus récente d'Eclipse pour développer votre site Web de manière open source. 
  * Description.enUS: To show how important Eclipse is to the world of open source development, many leading technology companies have their own IDEs based off Eclipse. These include Red Hat, IBM, Texas Instruments, Adobe, Node, PHP and many more. Red Hat® Developer Studio is a certified Eclipse-based integrated development environment (IDE) for developing, testing, and deploying rich web apps, mobile web apps, transactional enterprise apps, and microservices. True to the Red Hat's mission, "to be the catalyst in communities of customers, contributors, and partners creating better technology the open source way," Red Hat is very involved in Eclipse. I will help you install the most recent version of Eclipse to develop your website the open source way. 
  * 
- * PageSimple: true
+ * Page.Simple: true
  * Couleur: green
  * IconeGroupe: regular
  * IconeNom: question

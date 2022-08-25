@@ -38,9 +38,9 @@ import io.vertx.core.Promise;
  * ApiMethod: PUTImport
  * 
  * ApiMethod.enUS: SearchPage
- * PageSearchPage.enUS: ArticlePage
- * PageSuperSearchPage.enUS: PageLayout
- * ApiUriSearchPage.enUS: /article
+ * Page.SearchPage.enUS: ArticlePage
+ * PageSuper.SearchPage.enUS: PageLayout
+ * ApiUri.SearchPage.enUS: /article
  * 
  * AName.frFR: un article
  * AName.enUS: an article

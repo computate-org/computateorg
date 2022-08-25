@@ -3,14 +3,14 @@ package org.computate.site.enus.course.c001;
 import org.computate.search.wrap.Wrap;
 import org.computate.site.enus.course.Course;
 
-/**  
+/**
  * Api: true
  * Page: true
  * SuperPage.enUS: CoursePage
  * Map.Integer.classSort: 3
  * 
  * ApiMethod: SearchPage
- * ApiUriSearchPage.enUS: /enUS/course/001
+ * ApiUri.SearchPage.enUS: /enUS/course/001
  * AName.frFR: un cours n ° 1
  * AName.enUS: a course #1
  * NamePlural.frFR: courses
@@ -34,7 +34,7 @@ import org.computate.site.enus.course.Course;
 public class C001 extends C001Gen<Course> {
 
 	@Override protected void _articleH1_frFR(Wrap<String> c) {
-		c.o(C001_H1_frFR);
+//		c.o(C001_H1_frFR);
 	}
 
 	@Override protected void _articleH1_enUS(Wrap<String> c) {
@@ -42,7 +42,7 @@ public class C001 extends C001Gen<Course> {
 	}
 
 	@Override protected void _articleH2_frFR(Wrap<String> c) {
-		c.o(C001_H2_frFR);
+//		c.o(C001_H2_frFR);
 	}
 
 	@Override protected void _articleH2_enUS(Wrap<String> c) {

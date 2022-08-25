@@ -20,10 +20,10 @@ import org.computate.site.frFR.utilisateur.UtilisateurSite;
  * ApiMethode: RechercheEnUSPage
  * ApiMethode: Recherche
  * ApiMethode: GET
- * ApiUriRechercheFrFRPage: /frFR/cours
- * ApiUriRechercheEnUSPage: /enUS/course
- * PageRechercheFrFRPage: CoursFrFRPage
- * PageRechercheEnUSPage: CoursEnUSPage
+ * ApiUri.RechercheFrFRPage: /frFR/cours
+ * ApiUri.RechercheEnUSPage: /enUS/course
+ * Page.RechercheFrFRPage: CoursFrFRPage
+ * Page.RechercheEnUSPage: CoursEnUSPage
  * UnNom.frFR: un cours
  * UnNom.enUS: a course
  * NomPluriel.frFR: cours

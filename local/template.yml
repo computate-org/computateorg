@@ -3,9 +3,9 @@ SITE_NAME: "{{ SITE_NAME }}"
 SITE_DISPLAY_NAME: "{{ SITE_DISPLAY_NAME }}"
 GITHUB_ORG: "{{ GITHUB_ORG }}"
 QUAYIO_ORG: "{{ QUAYIO_ORG }}"
-PROJECT_POWERED_BY_URL: "{{ PROJECT_POWERED_BY_URL }}"
-PROJECT_POWERED_BY_NAME: "{{ PROJECT_POWERED_BY_NAME }}"
-PROJECT_POWERED_BY_IMAGE_URI: "{{ PROJECT_POWERED_BY_NAME }}"
+SITE_POWERED_BY_URL: "{{ SITE_POWERED_BY_URL }}"
+SITE_POWERED_BY_NAME: "{{ SITE_POWERED_BY_NAME }}"
+SITE_POWERED_BY_IMAGE_URI: "{{ SITE_POWERED_BY_NAME }}"
 
 LANGUAGE_NAME: "{{ LANGUAGE_NAME }}"
 SITE_PATH_enUS: "{{ SITE_SRC }}"
@@ -78,8 +78,12 @@ WRITE_COMMENTS: true
 # Enable data import in the site. 
 ENABLE_IMPORT_DATA: {{ ENABLE_IMPORT_DATA | lower }}
 ENABLE_IMPORT_DATA_Article: true
+ENABLE_IMPORT_DATA_Course: true
+ENABLE_IMPORT_DATA_C001: true
+ENABLE_IMPORT_DATA_C001Lesson: true
 ENABLE_IMPORT_DATA_SitePage: true
 ENABLE_IMPORT_DATA_SiteHtm: true
+ENABLE_IMPORT_DATA_PixelArt: true
 
 # The Auth roles required to be an admin in the site. 
 AUTH_ROLES_ADMIN: {{ AUTH_ROLES_ADMIN }}
@@ -87,7 +91,15 @@ AUTH_ROLES_ADMIN: {{ AUTH_ROLES_ADMIN }}
 AUTH_ROLES_REQUIRED_SiteUser: ['SiteAdmin']
 # The Auth roles required to add and modify article records. 
 AUTH_ROLES_REQUIRED_Article: ['SiteAdmin']
+# The Auth roles required to add and modify course records. 
+AUTH_ROLES_REQUIRED_Course: ['SiteAdmin']
+# The Auth roles required to add and modify course #1 records. 
+AUTH_ROLES_REQUIRED_C001: ['SiteAdmin']
+# The Auth roles required to add and modify  records. 
+AUTH_ROLES_REQUIRED_C001Lesson: ['SiteAdmin']
 # The Auth roles required to add and modify article records. 
 AUTH_ROLES_REQUIRED_SitePage: ['SiteAdmin']
 # The Auth roles required to add and modify HTML records. 
 AUTH_ROLES_REQUIRED_SiteHtm: ['SiteAdmin']
+# The Auth roles required to add and modify pixel art records. 
+AUTH_ROLES_REQUIRED_PixelArt: ['SiteAdmin']

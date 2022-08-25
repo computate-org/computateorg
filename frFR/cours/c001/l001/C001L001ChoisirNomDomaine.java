@@ -13,12 +13,12 @@ import org.computate.site.frFR.page.parti.QuestionReponse;
  * Api: true
  * ApiMethode: RechercheFrFRPage
  * ApiMethode: RechercheEnUSPage
- * ApiUriRechercheFrFRPage: /frFR/cours/001/001-choisir-nom-domaine
- * ApiUriRechercheEnUSPage: /enUS/course/001/001-choose-domain-name
- * PageRechercheFrFRPage: C001L001ChoisirNomDomaineFrFRPage
- * PageRechercheEnUSPage: C001L001ChoisirNomDomaineEnUSPage
- * PageSuperRechercheFrFRPage: C001LeconFrFRPage
- * PageSuperRechercheEnUSPage: C001LeconEnUSPage
+ * ApiUri.RechercheFrFRPage: /frFR/cours/001/001-choisir-nom-domaine
+ * ApiUri.RechercheEnUSPage: /enUS/course/001/001-choose-domain-name
+ * Page.RechercheFrFRPage: C001L001ChoisirNomDomaineFrFRPage
+ * Page.RechercheEnUSPage: C001L001ChoisirNomDomaineEnUSPage
+ * PageSuper.RechercheFrFRPage: C001LeconFrFRPage
+ * PageSuper.RechercheEnUSPage: C001LeconEnUSPage
  * UnNom.frFR: le leçon
  * UnNom.enUS: a lesson
  * 
@@ -34,7 +34,7 @@ import org.computate.site.frFR.page.parti.QuestionReponse;
  * Description.frFR: Quel est l'étape première pour créer mon propre site Web ? Choisir un nom de domaine. 
  * Description.enUS: What is the first step to creating my own website? Choose a domain name. 
  * 
- * PageSimple: true
+ * Page.Simple: true
  * NomPluriel.frFR: lessons
  * Couleur: green
  * IconeGroupe: regular

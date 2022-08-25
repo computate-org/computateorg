@@ -22,12 +22,12 @@ import io.vertx.ext.web.api.OperationRequest;
  * ApiMethode: RechercheFrFRPage
  * ApiMethode: RechercheEnUSPage
  * ApiMethode: PATCH
- * ApiUriRechercheFrFRPage: /frFR/utilisateur
- * ApiUriRechercheEnUSPage: /enUS/user
- * PageRechercheFrFRPage: UtilisateurSiteFrFRPage
- * PageRechercheEnUSPage: UtilisateurSiteEnUSPage
- * PageSuperRechercheFrFRPage: ClusterFrFRPage
- * PageSuperRechercheEnUSPage: ClusterEnUSPage
+ * ApiUri.RechercheFrFRPage: /frFR/utilisateur
+ * ApiUri.RechercheEnUSPage: /enUS/user
+ * Page.RechercheFrFRPage: UtilisateurSiteFrFRPage
+ * Page.RechercheEnUSPage: UtilisateurSiteEnUSPage
+ * PageSuper.RechercheFrFRPage: ClusterFrFRPage
+ * PageSuper.RechercheEnUSPage: ClusterEnUSPage
  * ApiUri: /api/site/utilisateur
  * Role: SiteAdmin
  * Filtre: utilisateurId

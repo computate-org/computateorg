@@ -14,17 +14,16 @@ VERTX_WARNING_EXCEPTION_SECONDS: 60
 CLUSTER_HOST_NAME: localhost
 CLUSTER_PORT: 10181
 GITHUB_ORG: "computate-org"
-QUAYIO_ORG: "computate"
-PROJECT_POWERED_BY_URL: "https://access.redhat.com/products/openshift-online-red-hat"
-PROJECT_POWERED_BY_NAME: "OpenShift Online"
-PROJECT_POWERED_BY_IMAGE_URI: "/svg/openshift.svg"
+QUAYIO_ORG: "computateorg"
+SITE_POWERED_BY_URL: "https://access.redhat.com/products/openshift-online-red-hat"
+SITE_POWERED_BY_NAME: "OpenShift Online"
+SITE_POWERED_BY_IMAGE_URI: "/svg/openshift.svg"
 
 STATIC_BASE_URL: "http://localhost:10180/static"
 STATIC_PATH: "/usr/local/src/computateorg-static"
 
 API_CONTACT_EMAIL: 
-API_COUNTER_PAUSE: 10
-API_COUNTER_RESUME: 5
+API_COUNTER_RESUME: 0
 API_COUNTER_FETCH: 10
 
 JDBC_HOST: localhost
@@ -46,6 +45,11 @@ AUTH_TOKEN_URI: /auth/realms/AUTH_REALM/protocol/openid-connect/token
 
 ZOOKEEPER_HOST_NAME: localhost
 ZOOKEEPER_PORT: 2181
+ZOOKEEPER_BASE_SLEEP_TIME_MILLIS: 5000
+ZOOKEEPER_MAX_SLEEP_MILLIS: 5000
+ZOOKEEPER_MAX_RETRIES: 5
+ZOOKEEPER_CONNECTION_TIMEOUT_MILLIS: 3000
+ZOOKEEPER_SESSION_TIMEOUT_MILLIS: 10000
 
 SOLR_URL: http://localhost:8983/solr/computateorg
 SOLR_HOST_NAME: localhost
@@ -66,13 +70,21 @@ EMAIL_ADMIN:
 REFRESH_DATA_PAUSE_IN_SECONDS: 10
 ENABLE_REFRESH_DATA: false
 ENABLE_REFRESH_DATA_Article: true
+ENABLE_REFRESH_DATA_Course: true
+ENABLE_REFRESH_DATA_C001: true
+ENABLE_REFRESH_DATA_C001Lesson: true
 ENABLE_REFRESH_DATA_SitePage: true
 ENABLE_REFRESH_DATA_SiteHtm: true
+ENABLE_REFRESH_DATA_PixelArt: true
 
 ENABLE_IMPORT_DATA: true
 ENABLE_IMPORT_DATA_Article: true
+ENABLE_IMPORT_DATA_Course: true
+ENABLE_IMPORT_DATA_C001: true
+ENABLE_IMPORT_DATA_C001Lesson: true
 ENABLE_IMPORT_DATA_SitePage: true
 ENABLE_IMPORT_DATA_SiteHtm: true
+ENABLE_IMPORT_DATA_PixelArt: true
 
 # The Auth roles required to be an admin in the site. 
 AUTH_ROLES_ADMIN: ['SiteAdmin']
@@ -80,7 +92,15 @@ AUTH_ROLES_ADMIN: ['SiteAdmin']
 AUTH_ROLES_REQUIRED_SiteUser: ['SiteAdmin']
 # The Auth roles required to add and modify article records. 
 AUTH_ROLES_REQUIRED_Article: ['SiteAdmin']
+# The Auth roles required to add and modify course records. 
+AUTH_ROLES_REQUIRED_Course: ['SiteAdmin']
+# The Auth roles required to add and modify course #1 records. 
+AUTH_ROLES_REQUIRED_C001: ['SiteAdmin']
+# The Auth roles required to add and modify  records. 
+AUTH_ROLES_REQUIRED_C001Lesson: ['SiteAdmin']
 # The Auth roles required to add and modify article records. 
 AUTH_ROLES_REQUIRED_SitePage: ['SiteAdmin']
 # The Auth roles required to add and modify HTML records. 
 AUTH_ROLES_REQUIRED_SiteHtm: ['SiteAdmin']
+# The Auth roles required to add and modify pixel art records. 
+AUTH_ROLES_REQUIRED_PixelArt: ['SiteAdmin']

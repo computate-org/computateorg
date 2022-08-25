@@ -16,7 +16,7 @@ import org.computate.site.enus.article.Article;
  * ApiMethod: SearchPage
  * ApiMethod: Search
  * ApiMethod: GET
- * ApiUriSearchPage.enUS: /enUS/course
+ * ApiUri.SearchPage.enUS: /enUS/course
  * 
  * AName.frFR: un cours
  * AName.enUS: a course

@@ -1,4 +1,5 @@
 
+
 # Setup computateorg development environment on MacOSX or Linux (Fedora, RHEL, CentOS, Ubuntu)
 
 ## Install Ansible dependencies on Linux
@@ -222,7 +223,7 @@ Or the REDHAT_OPENSHIFT_STORAGE_CLASS_NAME which might be different than gp2 for
 If so, try creating a persistent volume in the UI to figure out a good storage class for your environment: 
 
 ```yaml
-PROJECT_NAME: computateorg
+SITE_NAME: computateorg
 
 REDHAT_OPENSHIFT_HOST: https://api.rh-us-east-1.openshift.com
 REDHAT_OPENSHIFT_TOKEN: OcrtrXzKNKVj0riR2FvfqORgGfnURx98G8zRPd2MUvs
@@ -261,6 +262,28 @@ ansible-playbook --vault-id @prompt -e @~/.local/src/computateorg-ansible/vault/
 ansible-playbook --vault-id @prompt -e @~/.local/src/computateorg-ansible/vault/$USER-staging/vault ~/.ansible/roles/computate.computate_solr_openshift/install.yml -e SITE_NAME=computateorg
 
 ansible-playbook --vault-id @prompt -e @~/.local/src/computateorg-ansible/vault/$USER-staging/vault ~/.ansible/roles/computate.computate_project_openshift/install.yml -e SITE_NAME=computateorg
+```
+
+## How to run the application as a Podman container
+
+### Install the prerequiste packages for buildah and podman
+
+```bash
+pkcon install -y buildah
+pkcon install -y podman
+```
+
+### Build the container with podman
+
+```bash
+cd ~/.local/src/computateorg
+podman build -t computateorg/computateorg:latest .
+```
+
+### Push the container up to quay.io
+```bash
+podman login quay.io
+podman push computateorg/computateorg:latest quay.io/computateorg/computateorg:latest
 ```
 
 ## How the base classes for this project were created
