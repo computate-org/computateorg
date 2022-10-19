@@ -57,6 +57,19 @@ import org.computate.search.response.solr.SolrResponse;
 import io.vertx.core.json.JsonObject;
 
 /**	
+ * <h1>Suggestions that can generate more code for you: </h1>
+ * <ol>
+ * <li>You can add a class comment "{@inheritDoc}" if you wish to inherit the helpful inherited class comments from class ArticleGen into the class Article. 
+ * </li>
+ * <li>You can add a class comment "Model: true" if you wish to persist these Article objects in a relational PostgreSQL database transactionally in the RESTful API. 
+ * The code to persist and query the ArticleGen data in the database will then be automatically generated. 
+ * </li>
+ * <li>You can add a class comment "Rows: 100" if you wish the Article API to return more or less than 10 records by default. 
+ * In this case, the API will return 100 records from the API instead of 10 by default. 
+ * Each API has built in pagination of the search records to ensure a user can query all the data a page at a time without running the application out of memory. 
+ * </li>
+ * </ol>
+ * <h1>About the Article class and it's generated class ArticleGen&lt;Object&gt;: </h1>
  * <p>
  * This Java class extends a generated Java class built by the <a href="https://github.com/computate-org/computate">https://github.com/computate-org/computate</a> project. 
  * Whenever this Java class is modified or touched, the watch service installed as described in the README, indexes all the information about this Java class in a local Apache Solr Search Engine. 
@@ -67,21 +80,34 @@ import io.vertx.core.json.JsonObject;
  * The extended class ending with "Gen" did not exist at first, but was automatically created by the same watch service based on the data retrieved from the local Apache Server search engine. 
  * The extended class contains many generated fields, getters, setters, initialization code, and helper methods to help build a website and API fast, reactive, and scalable. 
  * </p>
- * <p>This class contains a comment "Indexed: true", which means this class will be indexed in the search engine. 
+ * <p>This class contains a comment <b>"Indexed: true"</b>, which means this class will be indexed in the search engine. 
  * Every protected void method that begins with "_" that is marked to be searched with a comment like "Indexed: true", "Stored: true", or "DocValues: true" will be indexed in the search engine. 
  * </p>
- * <p>This class contains a comment "Page: true", which means this class will have webpage code generated for these objects. 
+ * <p>This class contains a comment <b>"Page: true"</b>, which means this class will have webpage code generated for these objects. 
  * Java Vert.x backend API code, Handlebars HTML template frontend code, and JavaScript code will all generated and can be extended. 
  * This creates a new Java class org.computate.site.enus.article.ArticlePage. 
  * </p>
- * <p>This class contains a comment "SuperPage.enUS: PageLayout", which identifies the Java super class of the page code by it's class simple name "PageLayout". 
+ * <p>This class contains a comment <b>"SuperPage.enUS: PageLayout"</b>, which identifies the Java super class of the page code by it's class simple name "PageLayout". 
  * This means that the newly created class org.computate.site.enus.article.ArticlePage extends org.computate.site.enus.page.PageLayout. 
  * </p>
- * <p>This class contains a comment "Api: true", which means this class will have Java Vert.x API backend code generated for these objects. 
+ * <p>This class contains a comment <b>"Api: true"</b>, which means this class will have Java Vert.x API backend code generated for these objects. 
  * </p>
- * <p>This class contains a comment "ApiTag: Article", which groups all of the OpenAPIs for Article objects under the tag "Article". 
+ * <p>This class contains a comment <b>"ApiTag: Article"</b>, which groups all of the OpenAPIs for Article objects under the tag "Article". 
  * </p>
- * <p>This class contains a comment "ApiUri: /api/article", which defines the base API URI for Article objects as "/api/article" in the OpenAPI spec. 
+ * <p>This class contains a comment <b>"ApiUri: /api/article"</b>, which defines the base API URI for Article objects as "/api/article" in the OpenAPI spec. 
+ * </p>
+ * <p>This class contains a comment <b>"AName.enUS: an article"</b>, which identifies the language context to describe a Article as "an article". 
+ * </p>
+ * <p>This class contains a comment <b>"Color: green"</b>, which styles the Article page "green". 
+ * This will reference a CSS class defined by the stylesheets in the project that starts with "w3-". 
+ * A css class of "w3-green" is expected to exist in the project stylesheets, and is inspired by W3 CSS colors. 
+ * See: <a href="https://www.w3schools.com/w3css/w3css_colors.asp">https://www.w3schools.com/w3css/w3css_colors.asp</a>. 
+ * </p>
+ * <p>This class contains a comment <b>"IconGroup: regular"</b>, which adds icons on the Article page with a group of "regular". 
+ * This will reference a Font Awesome icon group defined by the stylesheets in the project that starts with "fa" followed by the first letter of the icon group, which is "far". 
+ * A Font Awesome icon group of "green" is expected to exist. 
+ * The Font Awesome groups currently supported include: solid, thin, duotone. 
+ * See: <a href="https://www.w3schools.com/w3css/w3css_colors.asp">https://www.w3schools.com/w3css/w3css_colors.asp</a>. 
  * </p>
  * <p>
  * Delete the class Article in Solr: 
@@ -112,7 +138,8 @@ public abstract class ArticleGen<DEV> extends Object {
 	public static final String Article_Title_enUS = "articles";
 	public static final String Article_ThePluralName_enUS = "the articles";
 	public static final String Article_NoNameFound_enUS = "no article found";
-	public static final String Article_NameVar_enUS = "article";
+	public static final String Article_ApiUri_enUS = "/api/article";
+	public static final String Article_ApiUriSearchPage_enUS = "/article";
 	public static final String Article_OfName_enUS = "of article";
 	public static final String Article_ANameAdjective_enUS = "an article";
 	public static final String Article_NameAdjectiveSingular_enUS = "article";

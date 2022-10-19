@@ -28,7 +28,14 @@
 				websocketC001Lesson(websocketC001LessonInner);
 				window.varsFq = JSON.parse('{{{toJsonObjectStringInApostrophes varsFq}}}');
 				pageGraph();
+
+				var calendarEl = document.getElementById('site-calendar');
+				var calendar = new FullCalendar.Calendar(calendarEl, {
+					initialView: 'dayGridMonth'
+				});
+				//calendar.render();
 			});
+			$('#site-calendar-box').accordion({ collapsible: true, active: false });
 {{#if DEFAULT_MAP_LOCATION }}
 			window.DEFAULT_MAP_LOCATION = { lat: {{ DEFAULT_MAP_LOCATION.lat }}, lon: {{ DEFAULT_MAP_LOCATION.lon }} };
 {{/if}}
@@ -38,7 +45,7 @@
 		</script>
 {{/inline}}
 {{#*inline "htmUrlC001Lesson"}}{{pageUri}}?q={{query.q}}&amp;rows={{#if rows}}{{rows}}{{else}}{{pagination.rows}}{{/if}}&amp;rows={{#if start}}{{start}}{{else}}{{pagination.start}}{{/if}}{{#each query.fq}}{{#eq fq this}}{{else}}&fq={{fq}}:{{val}}{{/eq}}{{/each}}{{#each query.sort}}{{#eq sort this}}{{else}}&sort={{var}} {{order}}{{/eq}}{{/each}}{{/inline}}
-{{#*inline "htmHeadC001LessonPage"}}{{> "htmTitleC001LessonPage"}}{{> "htmMetaC001LessonPage"}}{{> "htmStyleC001LessonPage"}}{{> "htmScriptsC001LessonPage"}}{{> "htmScriptC001LessonPage"}}{{/inline}}
+{{#*inline "htmHeadC001LessonPage"}}{{#block "htmTitle"}}{{/block}}{{#block "htmMeta"}}{{/block}}{{#block "htmStyle"}}{{/block}}{{#block "htmScripts"}}{{/block}}{{#block "htmScript"}}{{/block}}{{/inline}}
 {{#*inline "htmBodySearchC001LessonPage"}}								<!-- #*inline "htmBodySearchC001LessonPage" -->
 								<div>
 {{#each varsQ}}
@@ -243,7 +250,7 @@
 												<div data-class="C001Lesson" data-var="{{ ../var }}" data-val="{{ @key }}">{{ @key }}: {{ this }}</div>
 {{/eq}}
 {{/each}}
-{{#if ./stats/min }}
+{{#if ./stats/max }}
 									<div>									<span> step </span>									<input id="animateStatsStep" placeholder="step" value="1" style="width: 4em; "/>									<span> min </span>									<input id="animateStatsMin" placeholder="min" value="{{ ./stats/min }}" style="width: 4em; "/>									<span> max </span>									<input id="animateStatsMax" placeholder="max" value="{{ ./stats/max }}" style="width: 4em; "/>									<span> speed in seconds </span>									<input id="animateStatsSpeed" placeholder="speed" value="1" style="width: 4em; "/>									<button onclick="animateStats(); ">animate</button>									</div>{{/if}}
 {{/if}}
 											</div>
@@ -260,16 +267,16 @@
 {{#*inline "htmBodyCount0C001LessonPage"}}		<!-- #*inline "htmBodyCount0C001LessonPage" -->
 		<h1>
 			<a href="{{pageUri}}" class="w3-bar-item w3-btn w3-center w3-block w3- w3-hover-">
-				{{#if contextIconCssClasses}}
-					<i class="{{ contextIconCssClasses }} site-menu-icon "></i>
+				{{#if classIconCssClasses}}
+					<i class="{{ classIconCssClasses }} site-menu-icon "></i>
 				{{/if}}
 				<span class=""></span>
 			</a>
 		</h1>
 		<h2>
 			<span class="w3-bar-item w3-padding w3-center w3-block w3-">
-				{{#if contextIconCssClasses}}
-					<i class="{{ contextIconCssClasses }}  site-menu-icon "></i>
+				{{#if classIconCssClasses}}
+					<i class="{{ classIconCssClasses }}  site-menu-icon "></i>
 				{{/if}}
 				<span class=""></span>
 			</span>
@@ -278,8 +285,8 @@
 {{#*inline "htmBodyCount1AllC001LessonPage"}}		<!-- #*inline "htmBodyCount1AllC001LessonPage" -->
 		<h1 class="w3-center ">
 			<a href="{{pageUri}}" class="w3-bar-item w3-btn w3-block w3- w3-hover-">
-			{{#if contextIconCssClasses}}
-				<i class="{{ contextIconCssClasses }} site-menu-icon "></i>
+			{{#if classIconCssClasses}}
+				<i class="{{ classIconCssClasses }} site-menu-icon "></i>
 			{{/if}}
 				<span class=""></span>
 			</a>
@@ -293,8 +300,8 @@
 {{#*inline "htmBodyCount1C001LessonPage"}}		<!-- #*inline "htmBodyCount1C001LessonPage" -->
 		<h1>
 			<a href="{{pageUri}}" class="w3-bar-item w3-btn w3-center w3-block w3- w3-hover-">
-	{{#if contextIconCssClasses}}
-				<i class="{{ contextIconCssClasses }} site-menu-icon "></i>
+	{{#if classIconCssClasses}}
+				<i class="{{ classIconCssClasses }} site-menu-icon "></i>
 	{{/if}}
 				<span class=""></span>
 			</a>
@@ -331,8 +338,8 @@
 {{#*inline "htmBodyAllC001LessonPage"}}		<!-- #*inline "htmBodyAllC001LessonPage" -->
 		<h1>
 			<a href="{{pageUri}}" class="w3-bar-item w3-btn w3-center w3-block w3- w3-hover-">
-	{{#if contextIconCssClasses}}
-				<i class="{{ contextIconCssClasses }} site-menu-icon "></i>
+	{{#if classIconCssClasses}}
+				<i class="{{ classIconCssClasses }} site-menu-icon "></i>
 	{{/if}}
 				<span class=""></span>
 			</a>
@@ -491,6 +498,10 @@
 		</div>
 {{#block "htmBodyGraph"}}{{/block}}
 	<div class="pageContent w3-content ">
+		<div id="site-calendar-box">
+			<h3 id="site-calendar-title">Calendar</h3>
+			<div id="site-calendar"><!-- // --></div>
+		</div>
 	{{#eq c001LessonCount int0}}
 {{#block "htmBodyCount0"}}{{/block}}
 	{{else}}

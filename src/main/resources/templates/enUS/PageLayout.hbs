@@ -2,6 +2,7 @@
 {{#*inline "htmHeadPageLayout"}}{{> "htmTitlePageLayout"}}{{> "htmMetaPageLayout"}}{{> "htmStylePageLayout"}}{{> "htmScriptsPageLayout"}}{{> "htmScriptPageLayout"}}{{/inline}}
 {{#*inline "htmScriptsPageLayout"}}		<!-- #*inline "htmScriptsPageLayout" -->
 		<script src="{{staticBaseUrl}}/js/jquery-1.12.4.min.js"></script>
+		<script src="{{staticBaseUrl}}/js/jquery-ui.js"></script>
 {{#if fontAwesomeKit }}
 		<script src="{{ fontAwesomeKit }}"></script>
 {{/if}}
@@ -19,7 +20,8 @@
 		<link rel="icon" href="{{staticBaseUrl}}/favicon.ico" />
 		<link rel="stylesheet" href="{{staticBaseUrl}}/css/w3.css" />
 		<link rel="stylesheet" href="{{staticBaseUrl}}/css/site-enUS.css" />
-		<link rel="stylesheet" href="{{staticBaseUrl}}/js/fullcalendar/main.min.css"/>
+		<link rel="stylesheet" href="{{staticBaseUrl}}/css/jquery-ui.css" />
+		<link rel="stylesheet" href="{{staticBaseUrl}}/css/fullcalendar/main.min.css"/>
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Anonymous%20Pro%7CBellefair%7CJomhuria%7CPT%20Serif%3A700%7CStint%20Ultra%20Condensed&amp;display=swap"/>
 
 {{/inline}}
@@ -59,13 +61,13 @@
 				</div>
 
 				<div class="site-bar-item w3-bar-item ">
-					<a href="/enUS/course/001?facet.range.gap={{encodeURIComponent defaultRangeGap }}&facet.range.start={{encodeURIComponent defaultRangeStart }}&facet.range.end={{encodeURIComponent defaultRangeEnd }}&facet.range={!tag=r1}created&facet.pivot={!range=r1}classSimpleName" class="header-icon-a w3-hover-opacity w3-center w3-text-green "><i class="far fa-university w3-text-green "></i> course #1s</a>
+					<a href="/enUS/course/001{{#if defaultRangeGap}}?facet.range.gap={{encodeURIComponent defaultRangeGap }}&facet.range.start={{encodeURIComponent defaultRangeStart }}&facet.range.end={{encodeURIComponent defaultRangeEnd }}&facet.range={!tag=r1}created&facet.pivot={!range=r1}classSimpleName{{/if}}" class="header-icon-a w3-hover-opacity w3-center w3-text-green "><i class="far fa-university w3-text-green "></i> course #1s</a>
 				</div>
 				<div class="site-bar-item w3-bar-item ">
-					<a href="/enUS/course/001/lessons?facet.range.gap={{encodeURIComponent defaultRangeGap }}&facet.range.start={{encodeURIComponent defaultRangeStart }}&facet.range.end={{encodeURIComponent defaultRangeEnd }}&facet.range={!tag=r1}created&facet.pivot={!range=r1}classSimpleName" class="header-icon-a w3-hover-opacity w3-center w3-text- "><i class="fa fa- w3-text- "></i> </a>
+					<a href="/enUS/course/001/lessons{{#if defaultRangeGap}}?facet.range.gap={{encodeURIComponent defaultRangeGap }}&facet.range.start={{encodeURIComponent defaultRangeStart }}&facet.range.end={{encodeURIComponent defaultRangeEnd }}&facet.range={!tag=r1}created&facet.pivot={!range=r1}classSimpleName{{/if}}" class="header-icon-a w3-hover-opacity w3-center w3-text- "><i class="fa fa- w3-text- "></i> </a>
 				</div>
 				<div class="site-bar-item w3-bar-item ">
-					<a href="/page?facet.range.gap={{encodeURIComponent defaultRangeGap }}&facet.range.start={{encodeURIComponent defaultRangeStart }}&facet.range.end={{encodeURIComponent defaultRangeEnd }}&facet.range={!tag=r1}created&facet.pivot={!range=r1}classSimpleName" class="header-icon-a w3-hover-opacity w3-center w3-text-2017-navy-peony "><i class="fad fa-newspaper w3-text-2017-navy-peony "></i> articles</a>
+					<a href="/page{{#if defaultRangeGap}}?facet.range.gap={{encodeURIComponent defaultRangeGap }}&facet.range.start={{encodeURIComponent defaultRangeStart }}&facet.range.end={{encodeURIComponent defaultRangeEnd }}&facet.range={!tag=r1}created&facet.pivot={!range=r1}classSimpleName{{/if}}" class="header-icon-a w3-hover-opacity w3-center w3-text-2017-navy-peony "><i class="fad fa-newspaper w3-text-2017-navy-peony "></i> articles</a>
 				</div>
 				<div class="site-bar-item w3-bar-item ">
 					<form style="display: inline-block; " method="GET" action="/page" onsubmit="event.preventDefault(); search($('#searchPageInput')); return false; ">
@@ -78,7 +80,7 @@
 					</form>
 				</div>
 				<div class="site-bar-item w3-bar-item ">
-					<a href="/pixel-art?facet.range.gap={{encodeURIComponent defaultRangeGap }}&facet.range.start={{encodeURIComponent defaultRangeStart }}&facet.range.end={{encodeURIComponent defaultRangeEnd }}&facet.range={!tag=r1}created&facet.pivot={!range=r1}classSimpleName" class="header-icon-a w3-hover-opacity w3-center w3-text-blue "><i class="fat fa-table-cells w3-text-blue "></i> pixel arts</a>
+					<a href="/pixel-art{{#if defaultRangeGap}}?facet.range.gap={{encodeURIComponent defaultRangeGap }}&facet.range.start={{encodeURIComponent defaultRangeStart }}&facet.range.end={{encodeURIComponent defaultRangeEnd }}&facet.range={!tag=r1}created&facet.pivot={!range=r1}classSimpleName{{/if}}" class="header-icon-a w3-hover-opacity w3-center w3-text-blue "><i class="fat fa-table-cells w3-text-blue "></i> pixel arts</a>
 				</div>
 				<div class="site-bar-item w3-bar-item ">
 					<a target="_blank" rel="noopener noreferrer" data-ajax="false" href="https://github.com/computate-org"><img alt="" class="grow-20 " style="display: inline; width: 20px; height: 20px; " src="{{ staticBaseUrl }}/svg/github.svg"></a>

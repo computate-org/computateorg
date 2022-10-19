@@ -14,7 +14,7 @@ import org.computate.site.enus.request.SiteRequestEnUS;
  * SuperPage.enUS: BaseModelPage
  * Indexed: true
  * Map.Integer.sqlSort: 1
- * Map.Integer.classSort: 1
+ * Map.Integer.classSort: 3
  * 
  * ApiTag.enUS: User
  * ApiUri.enUS: /api/user

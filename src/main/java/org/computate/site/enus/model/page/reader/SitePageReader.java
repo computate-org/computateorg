@@ -89,6 +89,7 @@ public class SitePageReader extends SitePageReaderGen<Object> {
 	 */
 	public Future<Void> importDataSitePage() {
 		Promise<Void> promise = Promise.promise();
+		ZonedDateTime now = ZonedDateTime.now(ZoneId.of(config.getString(ConfigKeys.SITE_ZONE)));
 		String dynamicPagePath = config.getString(ConfigKeys.DYNAMIC_PAGE_PATH);
 		File pageDir = new File(Optional.ofNullable(dynamicPagePath).orElse(getClass().getClassLoader().getResource("page").getFile()));
 		String[] fileNames = pageDir.list(new PatternFilenameFilter("^.*.yml$"));
@@ -99,8 +100,27 @@ public class SitePageReader extends SitePageReaderGen<Object> {
 			futures.add(importSitePage(yamlProcessor, Paths.get(pageDir.getAbsolutePath(), fileName).toString()));
 		}
 		CompositeFuture.all(futures).onSuccess(a -> {
-			LOG.info(String.format(importDataSitePageComplete, SitePage.CLASS_SIMPLE_NAME));
-			promise.complete();
+			String solrHostName = config.getString(ComputateConfigKeys.SOLR_HOST_NAME);
+			Integer solrPort = config.getInteger(ComputateConfigKeys.SOLR_PORT);
+			String solrCollection = config.getString(ComputateConfigKeys.SOLR_COLLECTION);
+			String solrRequestUri = String.format("/solr/%s/update%s", solrCollection, "?commitWithin=1000&overwrite=true&wt=json");
+			String deleteQuery = String.format("classSimpleName_docvalues_string:(%s %s) AND created_docvalues_date:[* TO %s]", SitePage.CLASS_SIMPLE_NAME, SiteHtm.CLASS_SIMPLE_NAME, SiteHtm.staticSearchStrCreated(null, SiteHtm.staticSearchCreated(null, now)));
+			String deleteXml = String.format("<delete><query>%s</query></delete>", deleteQuery);
+			webClient.post(solrPort, solrHostName, solrRequestUri)
+					.putHeader("Content-Type", "text/xml")
+					.sendBuffer(Buffer.buffer().appendString(deleteXml))
+					.onSuccess(d -> {
+				try {
+					LOG.info(String.format(importDataSitePageComplete, SitePage.CLASS_SIMPLE_NAME));
+					promise.complete();
+				} catch(Exception ex) {
+					LOG.error(String.format("Could not read response from Solr: http://%s:%s%s", solrHostName, solrPort, solrRequestUri), ex);
+					promise.fail(ex);
+				}
+			}).onFailure(ex -> {
+				LOG.error(String.format("Search failed. "), new RuntimeException(ex));
+				promise.fail(ex);
+			});
 		}).onFailure(ex -> {
 			LOG.error(String.format(importDataSitePageFail, SitePage.CLASS_SIMPLE_NAME), ex);
 			promise.fail(ex);
@@ -115,15 +135,14 @@ public class SitePageReader extends SitePageReaderGen<Object> {
 	 */
 	private Future<Void> importSitePage(YamlProcessor yamlProcessor, String path) {
 		Promise<Void> promise = Promise.promise();
-		ZonedDateTime now = ZonedDateTime.now(ZoneId.of(config.getString(ConfigKeys.SITE_ZONE)));
 		String i18nComputatePath = getClass().getClassLoader().getResource("org/computate/i18n/i18n_enUS.yml").getFile();
 		vertx.fileSystem().readFile(i18nComputatePath).onSuccess(i18nComputateBuffer -> {
 			yamlProcessor.process(vertx, null, i18nComputateBuffer).onSuccess(i18nComputate -> {
 				vertx.fileSystem().readFile(path).onSuccess(buffer -> {
 					yamlProcessor.process(vertx, null, buffer).onSuccess(json -> {
-						json.put("i18n", i18nComputate);
-						String pageId = StringUtils.substringBeforeLast(StringUtils.substringAfterLast(path, "/"), ".");
 						try {
+							json.put("i18n", i18nComputate);
+							String pageId = StringUtils.substringBeforeLast(StringUtils.substringAfterLast(path, "/"), ".");
 							SiteRequestEnUS siteRequest = new SiteRequestEnUS();
 							siteRequest.setConfig(config);
 							siteRequest.setWebClient(webClient);
@@ -155,7 +174,8 @@ public class SitePageReader extends SitePageReaderGen<Object> {
 							page.setObjectId(pageId);
 							page.setPageId(pageId);
 							page.setObjectTitle(json.getString("title"));
-							page.setCreated(json.getString("created"));
+							page.setCreated(ZonedDateTime.now(ZoneId.of(config.getString(ConfigKeys.SITE_ZONE))));
+							page.setModified(json.getString("created"));
 							page.setCourseNum(json.getInteger(SitePage.VAR_courseNum));
 							page.setLessonNum(json.getInteger(SitePage.VAR_lessonNum));
 							page.setAuthor(json.getString("author"));
@@ -210,45 +230,26 @@ public class SitePageReader extends SitePageReaderGen<Object> {
 										JsonObject pageContext = new JsonObject().put("params", pageParams);
 										JsonObject pageRequest = new JsonObject().put("context", pageContext);
 										vertx.eventBus().request(String.format("computateorg-enUS-%s", SitePage.CLASS_SIMPLE_NAME), pageRequest, new DeliveryOptions().addHeader("action", String.format("putimport%sFuture", SitePage.CLASS_SIMPLE_NAME))).onSuccess(c -> {
-											String solrHostName = config.getString(ComputateConfigKeys.SOLR_HOST_NAME);
-											Integer solrPort = config.getInteger(ComputateConfigKeys.SOLR_PORT);
-											String solrCollection = config.getString(ComputateConfigKeys.SOLR_COLLECTION);
-											String solrRequestUri = String.format("/solr/%s/update%s", solrCollection, "?commitWithin=1000&overwrite=true&wt=json");
-											String deleteQuery = String.format("classSimpleName_docvalues_string:%s AND created_docvalues_date:[* TO %s]", SiteHtm.CLASS_SIMPLE_NAME, SiteHtm.staticSearchStrCreated(null, SiteHtm.staticSearchCreated(null, now)));
-											String deleteXml = String.format("<delete><query>%s</query></delete>", deleteQuery);
-											webClient.post(solrPort, solrHostName, solrRequestUri)
-													.putHeader("Content-Type", "text/xml")
-													.sendBuffer(Buffer.buffer().appendString(deleteXml))
-													.onSuccess(d -> {
-												try {
-													LOG.info(String.format(importSitePageComplete, SitePage.CLASS_SIMPLE_NAME));
-													promise.complete();
-												} catch(Exception ex) {
-													LOG.error(String.format("Could not read response from Solr: http://%s:%s%s", solrHostName, solrPort, solrRequestUri), ex);
-													promise.fail(ex);
-												}
-											}).onFailure(ex -> {
-												LOG.error(String.format("Search failed. "), new RuntimeException(ex));
-												promise.fail(ex);
-											});
+											LOG.info(String.format(importSitePageComplete, SitePage.CLASS_SIMPLE_NAME));
+											promise.complete();
 										}).onFailure(ex -> {
-											LOG.error(String.format(importSitePageFail, pageId), ex);
+											LOG.error(String.format(importSitePageFail, SitePage.CLASS_SIMPLE_NAME), ex);
 											promise.fail(ex);
 										});
 									}).onFailure(ex -> {
-										LOG.error(String.format(importSitePageFail, pageId), ex);
+										LOG.error(String.format(importSitePageFail, SitePage.CLASS_SIMPLE_NAME), ex);
 										promise.fail(ex);
 									});
 								} catch(Exception ex) {
-									LOG.error(String.format(importSitePageFail, pageId), ex);
+									LOG.error(String.format(importSitePageFail, SitePage.CLASS_SIMPLE_NAME), ex);
 									promise.fail(ex);
 								}
 							}).onFailure(ex -> {
-								LOG.error(String.format(importSitePageFail, pageId), ex);
+								LOG.error(String.format(importSitePageFail, SitePage.CLASS_SIMPLE_NAME), ex);
 								promise.fail(ex);
 							});
 						} catch(Exception ex) {
-							LOG.error(String.format(importSitePageFail, pageId), ex);
+							LOG.error(String.format(importSitePageFail, SitePage.CLASS_SIMPLE_NAME), ex);
 							promise.fail(ex);
 						}
 					}).onFailure(ex -> {
@@ -276,7 +277,7 @@ public class SitePageReader extends SitePageReaderGen<Object> {
 			// Process a page item, one at a time
 			JsonObject pageItem = (JsonObject)pageItems.getValue(i);
 			String uri = json.getString(SiteHtm.VAR_uri);
-			Object block = pageItem.getValue("block");
+			Object in = pageItem.getValue("in");
 			String e = pageItem.getString("e");
 			JsonArray labels2 = Optional.ofNullable(pageItem.getValue("label")).map(o -> o instanceof JsonArray ? (JsonArray)o : new JsonArray().add(o)).orElse(null);
 			JsonArray labels3 = new JsonArray();
@@ -432,7 +433,7 @@ public class SitePageReader extends SitePageReaderGen<Object> {
 				String eachVar = pageItem.getString("eachVar", "item");
 				String indexVar = pageItem.getString("indexVar", "@index");
 
-				if(block != null) {
+				if(in != null) {
 					if(StringUtils.startsWith(str, "[")) {
 						JsonArray eachArray = new JsonArray(Buffer.buffer(str));
 						for(Integer j=0; j < eachArray.size(); j++) {
@@ -441,12 +442,12 @@ public class SitePageReader extends SitePageReaderGen<Object> {
 							json2.put(eachVar, eachJson);
 							json2.put(indexVar, j);
 							// Process nested elements of the "block" value
-							if(block instanceof JsonObject) {
+							if(in instanceof JsonObject) {
 								// Process the nested JsonObject of the "block" value
-								sequenceNum = importSiteHtm(page, json2, labels3, stack, pageId, htmGroup, new JsonArray().add(block), futures, sequenceNum);
-							} else if(block instanceof JsonArray) {
+								sequenceNum = importSiteHtm(page, json2, labels3, stack, pageId, htmGroup, new JsonArray().add(in), futures, sequenceNum);
+							} else if(in instanceof JsonArray) {
 								// Process the each of the nested JsonObjects in the array of the "block" value
-								sequenceNum = importSiteHtm(page, json2, labels3, stack, pageId, htmGroup, (JsonArray)block, futures, sequenceNum);
+								sequenceNum = importSiteHtm(page, json2, labels3, stack, pageId, htmGroup, (JsonArray)in, futures, sequenceNum);
 							}
 						}
 					} else if(StringUtils.startsWith(str, "{")) {
@@ -459,26 +460,26 @@ public class SitePageReader extends SitePageReaderGen<Object> {
 							json2.put(eachVar, new JsonObject().put("key", key).put("value", eachJson));
 							json2.put(indexVar, j);
 							// Process nested elements of the "block" value
-							if(block instanceof JsonObject) {
+							if(in instanceof JsonObject) {
 								// Process the nested JsonObject of the "block" value
-								sequenceNum = importSiteHtm(page, json2, labels3, stack, pageId, htmGroup, new JsonArray().add(block), futures, sequenceNum);
-							} else if(block instanceof JsonArray) {
+								sequenceNum = importSiteHtm(page, json2, labels3, stack, pageId, htmGroup, new JsonArray().add(in), futures, sequenceNum);
+							} else if(in instanceof JsonArray) {
 								// Process the each of the nested JsonObjects in the array of the "block" value
-								sequenceNum = importSiteHtm(page, json2, labels3, stack, pageId, htmGroup, (JsonArray)block, futures, sequenceNum);
+								sequenceNum = importSiteHtm(page, json2, labels3, stack, pageId, htmGroup, (JsonArray)in, futures, sequenceNum);
 							}
 						}
 					}
 				}
 				json.remove(eachVar);
 			} else {
-				if(block != null) {
+				if(in != null) {
 					// Process nested elements of the "block" value
-					if(block instanceof JsonObject) {
+					if(in instanceof JsonObject) {
 						// Process the nested JsonObject of the "block" value
-						sequenceNum = importSiteHtm(page, json, labels3, stack, pageId, htmGroup, new JsonArray().add(block), futures, sequenceNum);
-					} else if(block instanceof JsonArray) {
+						sequenceNum = importSiteHtm(page, json, labels3, stack, pageId, htmGroup, new JsonArray().add(in), futures, sequenceNum);
+					} else if(in instanceof JsonArray) {
 						// Process the each of the nested JsonObjects in the array of the "block" value
-						sequenceNum = importSiteHtm(page, json, labels3, stack, pageId, htmGroup, (JsonArray)block, futures, sequenceNum);
+						sequenceNum = importSiteHtm(page, json, labels3, stack, pageId, htmGroup, (JsonArray)in, futures, sequenceNum);
 					}
 				}
 			}

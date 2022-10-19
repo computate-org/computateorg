@@ -83,10 +83,10 @@ import org.computate.search.tool.SearchTool;
 import org.computate.search.response.solr.SolrResponse;
 import java.util.Base64;
 import java.time.ZonedDateTime;
-import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.BooleanUtils;
-import org.computate.site.enus.model.user.SiteUserEnUSApiServiceImpl;
 import org.computate.vertx.search.list.SearchList;
+import org.computate.site.enus.model.page.SitePagePage;
 
 
 /**
@@ -1161,10 +1161,14 @@ public class SitePageEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 									searchList.stats((Boolean)paramObject);
 									break;
 								case "stats.field":
-									entityVar = (String)paramObject;
-									varIndexed = SitePage.varIndexedSitePage(entityVar);
-									if(varIndexed != null)
-										searchList.statsField(varIndexed);
+									Matcher mStats = Pattern.compile("(?:(\\{![^\\}]+\\}))?(.*)").matcher((String)paramObject);
+									boolean foundStats = mStats.find();
+									if(foundStats) {
+										String solrLocalParams = mStats.group(1);
+										entityVar = mStats.group(2).trim();
+										varIndexed = SitePage.varIndexedSitePage(entityVar);
+										searchList.statsField((solrLocalParams == null ? "" : solrLocalParams) + varIndexed);
+									}
 									break;
 								case "facet":
 									searchList.facet((Boolean)paramObject);

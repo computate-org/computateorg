@@ -55,6 +55,14 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.computate.search.response.solr.SolrResponse;
 
 /**	
+ * <h1>Suggestions that can generate more code for you: </h1>
+ * <ol>
+ * <li>You can add a class comment "{@inheritDoc}" if you wish to inherit the helpful inherited class comments from class BaseModelGen into the class BaseModel. 
+ * </li>
+ * <li>You can add a class comment <b>"Api: true"</b> if you wish to GET, POST, PATCH or PUT these BaseModel objects in a RESTful API. 
+ * </li>
+ * </ol>
+ * <h1>About the BaseModel class and it's generated class BaseModelGen&lt;Object&gt;: </h1>
  * <p>
  * This Java class extends a generated Java class built by the <a href="https://github.com/computate-org/computate">https://github.com/computate-org/computate</a> project. 
  * Whenever this Java class is modified or touched, the watch service installed as described in the README, indexes all the information about this Java class in a local Apache Solr Search Engine. 
@@ -65,17 +73,17 @@ import org.computate.search.response.solr.SolrResponse;
  * The extended class ending with "Gen" did not exist at first, but was automatically created by the same watch service based on the data retrieved from the local Apache Server search engine. 
  * The extended class contains many generated fields, getters, setters, initialization code, and helper methods to help build a website and API fast, reactive, and scalable. 
  * </p>
- * <p>This class contains a comment "Model: true", which means this class will be stored in the database. 
+ * <p>This class contains a comment <b>"Model: true"</b>, which means this class will be stored in the database. 
  * Every protected void method that begins with "_" that contains a "Persist: true" comment will be a persisted field in the database table. 
  * </p>
- * <p>This class contains a comment "Indexed: true", which means this class will be indexed in the search engine. 
+ * <p>This class contains a comment <b>"Indexed: true"</b>, which means this class will be indexed in the search engine. 
  * Every protected void method that begins with "_" that is marked to be searched with a comment like "Indexed: true", "Stored: true", or "DocValues: true" will be indexed in the search engine. 
  * </p>
- * <p>This class contains a comment "Page: true", which means this class will have webpage code generated for these objects. 
+ * <p>This class contains a comment <b>"Page: true"</b>, which means this class will have webpage code generated for these objects. 
  * Java Vert.x backend API code, Handlebars HTML template frontend code, and JavaScript code will all generated and can be extended. 
  * This creates a new Java class org.computate.site.enus.model.base.BaseModelPage. 
  * </p>
- * <p>This class contains a comment "SuperPage.enUS: PageLayout", which identifies the Java super class of the page code by it's class simple name "PageLayout". 
+ * <p>This class contains a comment <b>"SuperPage.enUS: PageLayout"</b>, which identifies the Java super class of the page code by it's class simple name "PageLayout". 
  * This means that the newly created class org.computate.site.enus.model.base.BaseModelPage extends org.computate.site.enus.page.PageLayout. 
  * </p>
  * <p>
@@ -954,55 +962,6 @@ public abstract class BaseModelGen<DEV> extends Object {
 	}
 
 	///////////////////
-	// objectNameVar //
-	///////////////////
-
-	/**	 The entity objectNameVar
-	 *	 is defined as null before being initialized. 
-	 */
-	@JsonProperty
-	@JsonInclude(Include.NON_NULL)
-	protected String objectNameVar;
-
-	/**	<br> The entity objectNameVar
-	 *  is defined as null before being initialized. 
-	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.model.base.BaseModel&fq=entiteVar_enUS_indexed_string:objectNameVar">Find the entity objectNameVar in Solr</a>
-	 * <br>
-	 * @param w is for wrapping a value to assign to this entity during initialization. 
-	 **/
-	protected abstract void _objectNameVar(Wrap<String> w);
-
-	public String getObjectNameVar() {
-		return objectNameVar;
-	}
-	public void setObjectNameVar(String o) {
-		this.objectNameVar = BaseModel.staticSetObjectNameVar(siteRequest_, o);
-	}
-	public static String staticSetObjectNameVar(SiteRequestEnUS siteRequest_, String o) {
-		return o;
-	}
-	protected BaseModel objectNameVarInit() {
-		Wrap<String> objectNameVarWrap = new Wrap<String>().var("objectNameVar");
-		if(objectNameVar == null) {
-			_objectNameVar(objectNameVarWrap);
-			setObjectNameVar(objectNameVarWrap.o);
-		}
-		return (BaseModel)this;
-	}
-
-	public static String staticSearchObjectNameVar(SiteRequestEnUS siteRequest_, String o) {
-		return o;
-	}
-
-	public static String staticSearchStrObjectNameVar(SiteRequestEnUS siteRequest_, String o) {
-		return o == null ? null : o.toString();
-	}
-
-	public static String staticSearchFqObjectNameVar(SiteRequestEnUS siteRequest_, String o) {
-		return BaseModel.staticSearchStrObjectNameVar(siteRequest_, BaseModel.staticSearchObjectNameVar(siteRequest_, BaseModel.staticSetObjectNameVar(siteRequest_, o)));
-	}
-
-	///////////////////
 	// objectSuggest //
 	///////////////////
 
@@ -1056,35 +1015,52 @@ public abstract class BaseModelGen<DEV> extends Object {
 	////////////////
 
 	/**	 The entity objectText
-	 *	 is defined as null before being initialized. 
+	 *	 It is constructed before being initialized with the constructor by default. 
 	 */
 	@JsonProperty
+	@JsonFormat(shape = JsonFormat.Shape.ARRAY)
 	@JsonInclude(Include.NON_NULL)
-	protected String objectText;
+	protected List<String> objectText = new ArrayList<String>();
 
 	/**	<br> The entity objectText
-	 *  is defined as null before being initialized. 
+	 *  It is constructed before being initialized with the constructor by default. 
 	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.model.base.BaseModel&fq=entiteVar_enUS_indexed_string:objectText">Find the entity objectText in Solr</a>
 	 * <br>
-	 * @param w is for wrapping a value to assign to this entity during initialization. 
+	 * @param l is the entity already constructed. 
 	 **/
-	protected abstract void _objectText(Wrap<String> w);
+	protected abstract void _objectText(List<String> l);
 
-	public String getObjectText() {
+	public List<String> getObjectText() {
 		return objectText;
 	}
-	public void setObjectText(String o) {
-		this.objectText = BaseModel.staticSetObjectText(siteRequest_, o);
+
+	public void setObjectText(List<String> objectText) {
+		this.objectText = objectText;
 	}
 	public static String staticSetObjectText(SiteRequestEnUS siteRequest_, String o) {
 		return o;
 	}
-	protected BaseModel objectTextInit() {
-		Wrap<String> objectTextWrap = new Wrap<String>().var("objectText");
-		if(objectText == null) {
-			_objectText(objectTextWrap);
-			setObjectText(objectTextWrap.o);
+	public BaseModel addObjectText(String...objects) {
+		for(String o : objects) {
+			addObjectText(o);
 		}
+		return (BaseModel)this;
+	}
+	public BaseModel addObjectText(String o) {
+		if(o != null)
+			this.objectText.add(o);
+		return (BaseModel)this;
+	}
+	@JsonIgnore
+	public void setObjectText(JsonArray objects) {
+		objectText.clear();
+		for(int i = 0; i < objects.size(); i++) {
+			String o = objects.getString(i);
+			addObjectText(o);
+		}
+	}
+	protected BaseModel objectTextInit() {
+		_objectText(objectText);
 		return (BaseModel)this;
 	}
 
@@ -1336,7 +1312,6 @@ public abstract class BaseModelGen<DEV> extends Object {
 				savesInit();
 				objectTitleInit();
 				objectIdInit();
-				objectNameVarInit();
 				objectSuggestInit();
 				objectTextInit();
 				pageUrlIdInit();
@@ -1425,8 +1400,6 @@ public abstract class BaseModelGen<DEV> extends Object {
 				return oBaseModel.objectTitle;
 			case "objectId":
 				return oBaseModel.objectId;
-			case "objectNameVar":
-				return oBaseModel.objectNameVar;
 			case "objectSuggest":
 				return oBaseModel.objectSuggest;
 			case "objectText":
@@ -1506,8 +1479,6 @@ public abstract class BaseModelGen<DEV> extends Object {
 			return BaseModel.staticSetObjectTitle(siteRequest_, o);
 		case "objectId":
 			return BaseModel.staticSetObjectId(siteRequest_, o);
-		case "objectNameVar":
-			return BaseModel.staticSetObjectNameVar(siteRequest_, o);
 		case "objectSuggest":
 			return BaseModel.staticSetObjectSuggest(siteRequest_, o);
 		case "objectText":
@@ -1562,8 +1533,6 @@ public abstract class BaseModelGen<DEV> extends Object {
 			return BaseModel.staticSearchObjectTitle(siteRequest_, (String)o);
 		case "objectId":
 			return BaseModel.staticSearchObjectId(siteRequest_, (String)o);
-		case "objectNameVar":
-			return BaseModel.staticSearchObjectNameVar(siteRequest_, (String)o);
 		case "objectSuggest":
 			return BaseModel.staticSearchObjectSuggest(siteRequest_, (String)o);
 		case "objectText":
@@ -1618,8 +1587,6 @@ public abstract class BaseModelGen<DEV> extends Object {
 			return BaseModel.staticSearchStrObjectTitle(siteRequest_, (String)o);
 		case "objectId":
 			return BaseModel.staticSearchStrObjectId(siteRequest_, (String)o);
-		case "objectNameVar":
-			return BaseModel.staticSearchStrObjectNameVar(siteRequest_, (String)o);
 		case "objectSuggest":
 			return BaseModel.staticSearchStrObjectSuggest(siteRequest_, (String)o);
 		case "objectText":
@@ -1674,8 +1641,6 @@ public abstract class BaseModelGen<DEV> extends Object {
 			return BaseModel.staticSearchFqObjectTitle(siteRequest_, o);
 		case "objectId":
 			return BaseModel.staticSearchFqObjectId(siteRequest_, o);
-		case "objectNameVar":
-			return BaseModel.staticSearchFqObjectNameVar(siteRequest_, o);
 		case "objectSuggest":
 			return BaseModel.staticSearchFqObjectSuggest(siteRequest_, o);
 		case "objectText":
@@ -1836,7 +1801,11 @@ public abstract class BaseModelGen<DEV> extends Object {
 			doc.put("objectSuggest_suggested", objectSuggest);
 		}
 		if(objectText != null) {
-			doc.put("objectText_text_enUS", objectText.toString());
+			JsonArray l = new JsonArray();
+			doc.put("objectText_text_enUS", l);
+			for(String o : objectText) {
+				l.add(o);
+			}
 		}
 		if(pageUrlId != null) {
 			doc.put("pageUrlId_docvalues_string", pageUrlId);
@@ -2036,7 +2005,9 @@ public abstract class BaseModelGen<DEV> extends Object {
 		oBaseModel.setObjectTitle(Optional.ofNullable(doc.get("objectTitle_docvalues_string")).map(v -> v.toString()).orElse(null));
 		oBaseModel.setObjectId(Optional.ofNullable(doc.get("objectId_docvalues_string")).map(v -> v.toString()).orElse(null));
 		oBaseModel.setObjectSuggest(Optional.ofNullable(doc.get("objectSuggest_suggested")).map(v -> v.toString()).orElse(null));
-		oBaseModel.setObjectText(Optional.ofNullable(doc.get("objectText_indexedstored_string")).map(v -> v.toString()).orElse(null));
+		Optional.ofNullable((List<?>)doc.get("objectText_text_enUS")).orElse(Arrays.asList()).stream().filter(v -> v != null).forEach(v -> {
+			oBaseModel.addObjectText(v.toString());
+		});
 		oBaseModel.setPageUrlId(Optional.ofNullable(doc.get("pageUrlId_docvalues_string")).map(v -> v.toString()).orElse(null));
 		oBaseModel.setPageUrlPk(Optional.ofNullable(doc.get("pageUrlPk_docvalues_string")).map(v -> v.toString()).orElse(null));
 		oBaseModel.setPageUrlApi(Optional.ofNullable(doc.get("pageUrlApi_docvalues_string")).map(v -> v.toString()).orElse(null));
@@ -2117,7 +2088,7 @@ public abstract class BaseModelGen<DEV> extends Object {
 		sb.append(Optional.ofNullable(objectTitle).map(v -> "objectTitle: \"" + v + "\"\n" ).orElse(""));
 		sb.append(Optional.ofNullable(objectId).map(v -> "objectId: \"" + v + "\"\n" ).orElse(""));
 		sb.append(Optional.ofNullable(objectSuggest).map(v -> "objectSuggest: \"" + v + "\"\n" ).orElse(""));
-		sb.append(Optional.ofNullable(objectText).map(v -> "objectText: \"" + v + "\"\n" ).orElse(""));
+		sb.append(Optional.ofNullable(objectText).map(v -> "objectText: " + v + "\n").orElse(""));
 		sb.append(Optional.ofNullable(pageUrlId).map(v -> "pageUrlId: \"" + v + "\"\n" ).orElse(""));
 		sb.append(Optional.ofNullable(pageUrlPk).map(v -> "pageUrlPk: \"" + v + "\"\n" ).orElse(""));
 		sb.append(Optional.ofNullable(pageUrlApi).map(v -> "pageUrlApi: \"" + v + "\"\n" ).orElse(""));
@@ -2141,7 +2112,6 @@ public abstract class BaseModelGen<DEV> extends Object {
 	public static final String VAR_saves = "saves";
 	public static final String VAR_objectTitle = "objectTitle";
 	public static final String VAR_objectId = "objectId";
-	public static final String VAR_objectNameVar = "objectNameVar";
 	public static final String VAR_objectSuggest = "objectSuggest";
 	public static final String VAR_objectText = "objectText";
 	public static final String VAR_pageUrlId = "pageUrlId";
@@ -2194,7 +2164,6 @@ public abstract class BaseModelGen<DEV> extends Object {
 	public static final String DISPLAY_NAME_saves = "";
 	public static final String DISPLAY_NAME_objectTitle = "";
 	public static final String DISPLAY_NAME_objectId = "ID";
-	public static final String DISPLAY_NAME_objectNameVar = "";
 	public static final String DISPLAY_NAME_objectSuggest = "autosuggest";
 	public static final String DISPLAY_NAME_objectText = "text";
 	public static final String DISPLAY_NAME_pageUrlId = "";
@@ -2237,8 +2206,6 @@ public abstract class BaseModelGen<DEV> extends Object {
 			return DISPLAY_NAME_objectTitle;
 		case VAR_objectId:
 			return DISPLAY_NAME_objectId;
-		case VAR_objectNameVar:
-			return DISPLAY_NAME_objectNameVar;
 		case VAR_objectSuggest:
 			return DISPLAY_NAME_objectSuggest;
 		case VAR_objectText:
@@ -2288,8 +2255,6 @@ public abstract class BaseModelGen<DEV> extends Object {
 			return "The title of this object";
 		case VAR_objectId:
 			return "A URL friendly unique ID for this object";
-		case VAR_objectNameVar:
-			return "The var that identifies this type of object in the API";
 		case VAR_objectSuggest:
 			return "The indexed field in the search engine for this record while using autosuggest";
 		case VAR_objectText:
@@ -2339,12 +2304,10 @@ public abstract class BaseModelGen<DEV> extends Object {
 			return "String";
 		case VAR_objectId:
 			return "String";
-		case VAR_objectNameVar:
-			return "String";
 		case VAR_objectSuggest:
 			return "String";
 		case VAR_objectText:
-			return "String";
+			return "List";
 		case VAR_pageUrlId:
 			return "String";
 		case VAR_pageUrlPk:

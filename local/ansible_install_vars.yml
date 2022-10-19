@@ -93,6 +93,8 @@ PROJECTS:
         template: vertx/WorkerVerticle.java
       - path: "{{ SITE_SRC }}/src/main/java/{{ SITE_JAVA_PACKAGE | replace('.', '/') }}/{{ RELATIVE_PACKAGE_BaseModel | replace('.', '/') }}/{{ CLASS_SIMPLE_NAME_BaseModel }}.java"
         template: base/BaseModel.java
+      - path: "{{ SITE_SRC }}/src/main/java/{{ SITE_JAVA_PACKAGE | replace('.', '/') }}/{{ RELATIVE_PACKAGE_BaseResult | replace('.', '/') }}/{{ CLASS_SIMPLE_NAME_BaseResult }}.java"
+        template: base/BaseResult.java
       - path: "{{ SITE_SRC }}/src/main/java/{{ SITE_JAVA_PACKAGE | replace('.', '/') }}/{{ RELATIVE_PACKAGE_SiteUser | replace('.', '/') }}/{{ CLASS_SIMPLE_NAME_SiteUser }}.java"
         template: user/SiteUser.java
       - path: "{{ SITE_SRC }}/src/main/java/{{ SITE_JAVA_PACKAGE | replace('.', '/') }}/{{ RELATIVE_PACKAGE_SitePage | replace('.', '/') }}/{{ CLASS_SIMPLE_NAME_SitePage }}.java"
@@ -141,12 +143,16 @@ PROJECTS:
         template: js/sockjs-map.json
       - path: "{{ SITE_SRC }}-static/js/vertx-eventbus.js"
         template: js/vertx-eventbus.js
+      - path: "{{ SITE_SRC }}-static/js/fullcalendar/main.min.js"
+        template: fullcalendar/main.min.js
       - path: "{{ SITE_SRC }}-static/css/jquery-ui.css"
         template: css/jquery-ui.css
       - path: "{{ SITE_SRC }}-static/css/site-{{ SITE_LANG }}.css"
         template: css/site-enUS.css
       - path: "{{ SITE_SRC }}-static/css/w3.css"
         template: css/w3.css
+      - path: "{{ SITE_SRC }}-static/css/fullcalendar/main.min.js"
+        template: fullcalendar/main.min.css
       - path: "{{ SITE_SRC }}-static/svg/openshift.svg"
         template: svg/openshift.svg
       - path: "{{ SITE_SRC }}/.gitignore"
@@ -335,3 +341,12 @@ REPLACE_htmBodyEndPageLayout: |2
   			</div>
   		</div>
   	</footer>
+
+SITE_POM_DEPENDENCIES_END: |-2
+  
+  
+  		<dependency>
+  			<groupId>org.computate</groupId>
+  			<artifactId>computate</artifactId>
+  			<version>${computate.version}</version>
+  		</dependency>

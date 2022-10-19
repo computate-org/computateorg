@@ -119,12 +119,12 @@ public class C001L001ChooseDomainNameGenPage extends C001L001ChooseDomainNameGen
 	}
 
 	@Override
-	protected void _contextIconGroup(Wrap<String> c) {
+	protected void _classIconGroup(Wrap<String> c) {
 			c.o("regular");
 	}
 
 	@Override
-	protected void _contextIconName(Wrap<String> c) {
+	protected void _classIconName(Wrap<String> c) {
 			c.o("book");
 	}
 }

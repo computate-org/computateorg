@@ -53,24 +53,40 @@ import org.computate.search.response.solr.SolrResponse;
  * The extended class ending with "Gen" did not exist at first, but was automatically created by the same watch service based on the data retrieved from the local Apache Server search engine. 
  * The extended class contains many generated fields, getters, setters, initialization code, and helper methods to help build a website and API fast, reactive, and scalable. 
  * </p>
- * <p>This class contains a comment "Model: true", which means this class will be stored in the database. 
+ * <p>This class contains a comment <b>"Model: true"</b>, which means this class will be stored in the database. 
  * Every protected void method that begins with "_" that contains a "Persist: true" comment will be a persisted field in the database table. 
  * </p>
- * <p>This class contains a comment "Indexed: true", which means this class will be indexed in the search engine. 
+ * <p>This class contains a comment <b>"Indexed: true"</b>, which means this class will be indexed in the search engine. 
  * Every protected void method that begins with "_" that is marked to be searched with a comment like "Indexed: true", "Stored: true", or "DocValues: true" will be indexed in the search engine. 
  * </p>
- * <p>This class contains a comment "Page: true", which means this class will have webpage code generated for these objects. 
+ * <p>This class contains a comment <b>"Page: true"</b>, which means this class will have webpage code generated for these objects. 
  * Java Vert.x backend API code, Handlebars HTML template frontend code, and JavaScript code will all generated and can be extended. 
  * This creates a new Java class org.computate.site.enus.model.pixelart.PixelArtPage. 
  * </p>
- * <p>This class contains a comment "SuperPage.enUS: BaseModelPage", which identifies the Java super class of the page code by it's class simple name "BaseModelPage". 
+ * <p>This class contains a comment <b>"SuperPage.enUS: BaseModelPage"</b>, which identifies the Java super class of the page code by it's class simple name "BaseModelPage". 
  * This means that the newly created class org.computate.site.enus.model.pixelart.PixelArtPage extends org.computate.site.enus.model.base.BaseModelPage. 
  * </p>
- * <p>This class contains a comment "Api: true", which means this class will have Java Vert.x API backend code generated for these objects. 
+ * <p>This class contains a comment <b>"Api: true"</b>, which means this class will have Java Vert.x API backend code generated for these objects. 
  * </p>
- * <p>This class contains a comment "ApiTag: Pixel Art", which groups all of the OpenAPIs for PixelArt objects under the tag "Pixel Art". 
+ * <p>This class contains a comment <b>"ApiTag: Pixel Art"</b>, which groups all of the OpenAPIs for PixelArt objects under the tag "Pixel Art". 
  * </p>
- * <p>This class contains a comment "ApiUri: /api/pixel-art", which defines the base API URI for PixelArt objects as "/api/pixel-art" in the OpenAPI spec. 
+ * <p>This class contains a comment <b>"ApiUri: /api/pixel-art"</b>, which defines the base API URI for PixelArt objects as "/api/pixel-art" in the OpenAPI spec. 
+ * </p>
+ * <p>This class contains a comment <b>"Rows: 10"</b>, which means the PixelArt API will return a default of 10 records instead of 10 by default. 
+ * Each API has built in pagination of the search records to ensure a user can query all the data a page at a time without running the application out of memory. 
+ * </p>
+ * <p>This class contains a comment <b>"AName.enUS: a pixel art"</b>, which identifies the language context to describe a PixelArt as "a pixel art". 
+ * </p>
+ * <p>This class contains a comment <b>"Color: blue"</b>, which styles the PixelArt page "blue". 
+ * This will reference a CSS class defined by the stylesheets in the project that starts with "w3-". 
+ * A css class of "w3-blue" is expected to exist in the project stylesheets, and is inspired by W3 CSS colors. 
+ * See: <a href="https://www.w3schools.com/w3css/w3css_colors.asp">https://www.w3schools.com/w3css/w3css_colors.asp</a>. 
+ * </p>
+ * <p>This class contains a comment <b>"IconGroup: thin"</b>, which adds icons on the PixelArt page with a group of "thin". 
+ * This will reference a Font Awesome icon group defined by the stylesheets in the project that starts with "fa" followed by the first letter of the icon group, which is "fat". 
+ * A Font Awesome icon group of "blue" is expected to exist. 
+ * The Font Awesome groups currently supported include: solid, thin, duotone. 
+ * See: <a href="https://www.w3schools.com/w3css/w3css_colors.asp">https://www.w3schools.com/w3css/w3css_colors.asp</a>. 
  * </p>
  * <p>
  * Delete the class PixelArt in Solr: 
@@ -101,7 +117,8 @@ public abstract class PixelArtGen<DEV> extends BaseModel {
 	public static final String PixelArt_Title_enUS = "pixel arts";
 	public static final String PixelArt_ThePluralName_enUS = "the pixel arts";
 	public static final String PixelArt_NoNameFound_enUS = "no pixel art found";
-	public static final String PixelArt_NameVar_enUS = "pixelArt";
+	public static final String PixelArt_ApiUri_enUS = "/api/pixel-art";
+	public static final String PixelArt_ApiUriSearchPage_enUS = "/pixel-art";
 	public static final String PixelArt_OfName_enUS = "of pixel art";
 	public static final String PixelArt_ANameAdjective_enUS = "a pixel art";
 	public static final String PixelArt_NameAdjectiveSingular_enUS = "pixel art";

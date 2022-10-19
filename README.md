@@ -285,9 +285,3 @@ podman build -t computateorg/computateorg:latest .
 podman login quay.io
 podman push computateorg/computateorg:latest quay.io/computateorg/computateorg:latest
 ```
-
-## How the base classes for this project were created
-
-```bash
-ansible-playbook -e @~/.local/src/computateorg/local/ansible_install_vars.yml ~/.local/src/computate-org/vertx_project.yml
-```

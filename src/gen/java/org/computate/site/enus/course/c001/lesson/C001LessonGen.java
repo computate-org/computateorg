@@ -54,6 +54,29 @@ import org.computate.search.response.solr.SolrResponse;
 import io.vertx.core.json.JsonObject;
 
 /**	
+ * <h1>TODO: </h1>
+ * <ol>
+ * <li>You should add a class comment "ApiUri.enUS: /api/..." to specify the base URL for C001Lesson objects in the RESTful API. 
+ * The OpenAPI spec and code to handle API requests to this base URL will then be automatically generated. 
+ * </li>
+ * <li>You should add a class comment <b>"ApiTag.enUS: ..."</b> to specify a group name for C001Lesson objects in the OpenAPI specification. 
+ * It can be as simple as "ApiTag.enUS: C001Lesson". 
+ * The OpenAPI spec for this tag can then be automatically generated. 
+ * </li>
+ * </ol>
+ * <h1>Suggestions that can generate more code for you: </h1>
+ * <ol>
+ * <li>You can add a class comment "{@inheritDoc}" if you wish to inherit the helpful inherited class comments from class C001LessonGen into the class C001Lesson. 
+ * </li>
+ * <li>You can add a class comment "Model: true" if you wish to persist these C001Lesson objects in a relational PostgreSQL database transactionally in the RESTful API. 
+ * The code to persist and query the C001LessonGen data in the database will then be automatically generated. 
+ * </li>
+ * <li>You can add a class comment "Rows: 100" if you wish the C001Lesson API to return more or less than 10 records by default. 
+ * In this case, the API will return 100 records from the API instead of 10 by default. 
+ * Each API has built in pagination of the search records to ensure a user can query all the data a page at a time without running the application out of memory. 
+ * </li>
+ * </ol>
+ * <h1>About the C001Lesson class and it's generated class C001LessonGen&lt;C001&gt;: </h1>
  * <p>
  * This Java class extends a generated Java class built by the <a href="https://github.com/computate-org/computate">https://github.com/computate-org/computate</a> project. 
  * Whenever this Java class is modified or touched, the watch service installed as described in the README, indexes all the information about this Java class in a local Apache Solr Search Engine. 
@@ -64,17 +87,17 @@ import io.vertx.core.json.JsonObject;
  * The extended class ending with "Gen" did not exist at first, but was automatically created by the same watch service based on the data retrieved from the local Apache Server search engine. 
  * The extended class contains many generated fields, getters, setters, initialization code, and helper methods to help build a website and API fast, reactive, and scalable. 
  * </p>
- * <p>This class contains a comment "Indexed: true", which means this class will be indexed in the search engine. 
+ * <p>This class contains a comment <b>"Indexed: true"</b>, which means this class will be indexed in the search engine. 
  * Every protected void method that begins with "_" that is marked to be searched with a comment like "Indexed: true", "Stored: true", or "DocValues: true" will be indexed in the search engine. 
  * </p>
- * <p>This class contains a comment "Page: true", which means this class will have webpage code generated for these objects. 
+ * <p>This class contains a comment <b>"Page: true"</b>, which means this class will have webpage code generated for these objects. 
  * Java Vert.x backend API code, Handlebars HTML template frontend code, and JavaScript code will all generated and can be extended. 
  * This creates a new Java class org.computate.site.enus.course.c001.lesson.C001LessonPage. 
  * </p>
- * <p>This class contains a comment "SuperPage.enUS: C001Page", which identifies the Java super class of the page code by it's class simple name "C001Page". 
+ * <p>This class contains a comment <b>"SuperPage.enUS: C001Page"</b>, which identifies the Java super class of the page code by it's class simple name "C001Page". 
  * This means that the newly created class org.computate.site.enus.course.c001.lesson.C001LessonPage extends org.computate.site.enus.course.c001.C001Page. 
  * </p>
- * <p>This class contains a comment "Api: true", which means this class will have Java Vert.x API backend code generated for these objects. 
+ * <p>This class contains a comment <b>"Api: true"</b>, which means this class will have Java Vert.x API backend code generated for these objects. 
  * </p>
  * <p>
  * Delete the class C001Lesson in Solr: 
@@ -92,6 +115,7 @@ import io.vertx.core.json.JsonObject;
 public abstract class C001LessonGen<DEV> extends C001 {
 	protected static final Logger LOG = LoggerFactory.getLogger(C001Lesson.class);
 
+	public static final String C001Lesson_ApiUriSearchPage_enUS = "/enUS/course/001/lessons";
 	public static final String SearchPage_enUS_Uri = "/enUS/course/001/lessons";
 	public static final String SearchPage_enUS_ImageUri = "/png/enUS/course/001/lessons-999.png";
 

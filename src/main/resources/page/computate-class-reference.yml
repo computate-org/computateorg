@@ -33,19 +33,19 @@ htmMeta:
 htmBody:
 - e: div
   class: w3-card w3-padding w3-margin-top w3-show w3-white 
-  block:
+  in:
   - e: div
-    block:
+    in:
     - e: h1
       class: ""
-      block:
+      in:
       - e: i
         class: fa-solid fa-question
       - e: span
         text: "{{ h1 }}"
     - e: h2
       class: ""
-      block:
+      in:
       - e: i
         class: fa-solid fa-megaphone
       - e: span
@@ -55,25 +55,25 @@ htmBody:
       label: 
       - infographic
       - image
-      block:
+      in:
     - e: div
       class: w3-row w3-mobile 
       label: 
       - infographic
       - image
-      block:
+      in:
       - e: img
         class: w3-image 
         src: "{{ page.staticBaseUrl }}/png/{{ pageId }}/image.png"
   - e: div
     each: "i18n.classe.ref"
-    block:
+    in:
     - e: div
       id: "class{{ item.value.nom }}"
-      block:
+      in:
       - e: h3
         class: w3-text-2017-shaded-spruce 
-        block:
+        in:
         - e: a
           href: "#class{{ item.value.nom }}"
           text: |
@@ -86,7 +86,7 @@ htmBody:
           {{{ item.value.suggere }}}
   - e: div
     id: classPromise
-    block:
+    in:
     - e: h3
       class: w3-text-2017-shaded-spruce 
       text: |
@@ -96,7 +96,7 @@ htmBody:
         Sometimes a Java class must be initialized asynchronously when it involves calling a blocking API. 
         This Java class comment annotation replaces the initDeep methods with promiseDeep methods which must be initialized asynchronously as a Vert.x Promise. 
     - e: p
-      block:
+      in:
       - e: div
         text: |-
           Adding protected void methods beginning with an underscore with a Promise as the only parameter will automatically set `Model: true`. 
