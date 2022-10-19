@@ -6245,22 +6245,6 @@ components:
               items:
                 type: object
                 properties:
-                  inheritPk:
-                    type: string
-                  created:
-                    type: string
-                    format: date-time
-                  modified:
-                    type: string
-                    format: date-time
-                  archived:
-                    type: boolean
-                  deleted:
-                    type: boolean
-                  saves:
-                    type: array
-                    items:
-                      type: string
                   uri:
                     type: string
                   pageId:
@@ -6295,50 +6279,10 @@ components:
                     type: string
                   htmAfter:
                     type: string
-                  classCanonicalName:
-                    type: string
-                  classSimpleName:
-                    type: string
-                  classCanonicalNames:
-                    type: array
-                    items:
-                      type: string
-                  objectTitle:
-                    type: string
-                  objectId:
-                    type: string
-                  objectNameVar:
-                    type: string
-                  objectSuggest:
-                    type: string
-                  pageUrlId:
-                    type: string
-                  pageUrlPk:
-                    type: string
-                  pageUrlApi:
-                    type: string
-                  id:
-                    type: string
     POSTSiteHtmRequest:
       allOf:
         - type: object
           properties:
-            inheritPk:
-              type: string
-            created:
-              type: string
-              format: date-time
-            modified:
-              type: string
-              format: date-time
-            archived:
-              type: boolean
-            deleted:
-              type: boolean
-            saves:
-              type: array
-              items:
-                type: string
             uri:
               type: string
             pageId:
@@ -6372,51 +6316,11 @@ components:
             htmBefore:
               type: string
             htmAfter:
-              type: string
-            classCanonicalName:
-              type: string
-            classSimpleName:
-              type: string
-            classCanonicalNames:
-              type: array
-              items:
-                type: string
-            objectTitle:
-              type: string
-            objectId:
-              type: string
-            objectNameVar:
-              type: string
-            objectSuggest:
-              type: string
-            pageUrlId:
-              type: string
-            pageUrlPk:
-              type: string
-            pageUrlApi:
-              type: string
-            id:
               type: string
     POSTSiteHtmResponse:
       allOf:
         - type: object
           properties:
-            inheritPk:
-              type: string
-            created:
-              type: string
-              format: date-time
-            modified:
-              type: string
-              format: date-time
-            archived:
-              type: boolean
-            deleted:
-              type: boolean
-            saves:
-              type: array
-              items:
-                type: string
             uri:
               type: string
             pageId:
@@ -6450,93 +6354,11 @@ components:
             htmBefore:
               type: string
             htmAfter:
-              type: string
-            classCanonicalName:
-              type: string
-            classSimpleName:
-              type: string
-            classCanonicalNames:
-              type: array
-              items:
-                type: string
-            objectTitle:
-              type: string
-            objectId:
-              type: string
-            objectNameVar:
-              type: string
-            objectSuggest:
-              type: string
-            pageUrlId:
-              type: string
-            pageUrlPk:
-              type: string
-            pageUrlApi:
-              type: string
-            id:
               type: string
     PATCHSiteHtmRequest:
       allOf:
         - type: object
           properties:
-            setInheritPk:
-              type: string
-              nullable: true
-            removeInheritPk:
-              type: string
-            removeAllInheritPk:
-              type: string
-            setCreated:
-              type: string
-              nullable: true
-              format: date-time
-            removeCreated:
-              type: string
-              format: date-time
-            removeAllCreated:
-              type: string
-              format: date-time
-            setModified:
-              type: string
-              nullable: true
-              format: date-time
-            removeModified:
-              type: string
-              format: date-time
-            removeAllModified:
-              type: string
-              format: date-time
-            setArchived:
-              type: boolean
-              nullable: true
-            removeArchived:
-              type: boolean
-            removeAllArchived:
-              type: boolean
-            setDeleted:
-              type: boolean
-              nullable: true
-            removeDeleted:
-              type: boolean
-            removeAllDeleted:
-              type: boolean
-            setSaves:
-              type: array
-              nullable: true
-              items:
-                type: string
-            removeSaves:
-              type: string
-            removeAllSaves:
-              type: array
-              items:
-                type: string
-            addSaves:
-              type: string
-            addAllSaves:
-              type: array
-              items:
-                type: string
             setUri:
               type: string
               nullable: true
@@ -6664,156 +6486,11 @@ components:
             removeHtmAfter:
               type: string
             removeAllHtmAfter:
-              type: string
-            setClassCanonicalName:
-              type: string
-              nullable: true
-            removeClassCanonicalName:
-              type: string
-            removeAllClassCanonicalName:
-              type: string
-            setClassSimpleName:
-              type: string
-              nullable: true
-            removeClassSimpleName:
-              type: string
-            removeAllClassSimpleName:
-              type: string
-            setClassCanonicalNames:
-              type: array
-              nullable: true
-              items:
-                type: string
-            removeClassCanonicalNames:
-              type: string
-            removeAllClassCanonicalNames:
-              type: array
-              items:
-                type: string
-            addClassCanonicalNames:
-              type: string
-            addAllClassCanonicalNames:
-              type: array
-              items:
-                type: string
-            setObjectTitle:
-              type: string
-              nullable: true
-            removeObjectTitle:
-              type: string
-            removeAllObjectTitle:
-              type: string
-            setObjectId:
-              type: string
-              nullable: true
-            removeObjectId:
-              type: string
-            removeAllObjectId:
-              type: string
-            setObjectNameVar:
-              type: string
-              nullable: true
-            removeObjectNameVar:
-              type: string
-            removeAllObjectNameVar:
-              type: string
-            setObjectSuggest:
-              type: string
-              nullable: true
-            removeObjectSuggest:
-              type: string
-            removeAllObjectSuggest:
-              type: string
-            setPageUrlId:
-              type: string
-              nullable: true
-            removePageUrlId:
-              type: string
-            removeAllPageUrlId:
-              type: string
-            setPageUrlPk:
-              type: string
-              nullable: true
-            removePageUrlPk:
-              type: string
-            removeAllPageUrlPk:
-              type: string
-            setPageUrlApi:
-              type: string
-              nullable: true
-            removePageUrlApi:
-              type: string
-            removeAllPageUrlApi:
-              type: string
-            setId:
-              type: string
-              nullable: true
-            removeId:
-              type: string
-            removeAllId:
               type: string
     PATCHSiteHtmResponse:
       allOf:
         - type: object
           properties:
-            setInheritPk:
-              type: string
-              nullable: true
-            removeInheritPk:
-              type: string
-            removeAllInheritPk:
-              type: string
-            setCreated:
-              type: string
-              nullable: true
-              format: date-time
-            removeCreated:
-              type: string
-              format: date-time
-            removeAllCreated:
-              type: string
-              format: date-time
-            setModified:
-              type: string
-              nullable: true
-              format: date-time
-            removeModified:
-              type: string
-              format: date-time
-            removeAllModified:
-              type: string
-              format: date-time
-            setArchived:
-              type: boolean
-              nullable: true
-            removeArchived:
-              type: boolean
-            removeAllArchived:
-              type: boolean
-            setDeleted:
-              type: boolean
-              nullable: true
-            removeDeleted:
-              type: boolean
-            removeAllDeleted:
-              type: boolean
-            setSaves:
-              type: array
-              nullable: true
-              items:
-                type: string
-            removeSaves:
-              type: string
-            removeAllSaves:
-              type: array
-              items:
-                type: string
-            addSaves:
-              type: string
-            addAllSaves:
-              type: array
-              items:
-                type: string
             setUri:
               type: string
               nullable: true
@@ -6942,113 +6619,10 @@ components:
               type: string
             removeAllHtmAfter:
               type: string
-            setClassCanonicalName:
-              type: string
-              nullable: true
-            removeClassCanonicalName:
-              type: string
-            removeAllClassCanonicalName:
-              type: string
-            setClassSimpleName:
-              type: string
-              nullable: true
-            removeClassSimpleName:
-              type: string
-            removeAllClassSimpleName:
-              type: string
-            setClassCanonicalNames:
-              type: array
-              nullable: true
-              items:
-                type: string
-            removeClassCanonicalNames:
-              type: string
-            removeAllClassCanonicalNames:
-              type: array
-              items:
-                type: string
-            addClassCanonicalNames:
-              type: string
-            addAllClassCanonicalNames:
-              type: array
-              items:
-                type: string
-            setObjectTitle:
-              type: string
-              nullable: true
-            removeObjectTitle:
-              type: string
-            removeAllObjectTitle:
-              type: string
-            setObjectId:
-              type: string
-              nullable: true
-            removeObjectId:
-              type: string
-            removeAllObjectId:
-              type: string
-            setObjectNameVar:
-              type: string
-              nullable: true
-            removeObjectNameVar:
-              type: string
-            removeAllObjectNameVar:
-              type: string
-            setObjectSuggest:
-              type: string
-              nullable: true
-            removeObjectSuggest:
-              type: string
-            removeAllObjectSuggest:
-              type: string
-            setPageUrlId:
-              type: string
-              nullable: true
-            removePageUrlId:
-              type: string
-            removeAllPageUrlId:
-              type: string
-            setPageUrlPk:
-              type: string
-              nullable: true
-            removePageUrlPk:
-              type: string
-            removeAllPageUrlPk:
-              type: string
-            setPageUrlApi:
-              type: string
-              nullable: true
-            removePageUrlApi:
-              type: string
-            removeAllPageUrlApi:
-              type: string
-            setId:
-              type: string
-              nullable: true
-            removeId:
-              type: string
-            removeAllId:
-              type: string
     PUTImportSiteHtmRequest:
       allOf:
         - type: object
           properties:
-            inheritPk:
-              type: string
-            created:
-              type: string
-              format: date-time
-            modified:
-              type: string
-              format: date-time
-            archived:
-              type: boolean
-            deleted:
-              type: boolean
-            saves:
-              type: array
-              items:
-                type: string
             uri:
               type: string
             pageId:
@@ -7082,51 +6656,11 @@ components:
             htmBefore:
               type: string
             htmAfter:
-              type: string
-            classCanonicalName:
-              type: string
-            classSimpleName:
-              type: string
-            classCanonicalNames:
-              type: array
-              items:
-                type: string
-            objectTitle:
-              type: string
-            objectId:
-              type: string
-            objectNameVar:
-              type: string
-            objectSuggest:
-              type: string
-            pageUrlId:
-              type: string
-            pageUrlPk:
-              type: string
-            pageUrlApi:
-              type: string
-            id:
               type: string
     PUTImportSiteHtmResponse:
       allOf:
         - type: object
           properties:
-            inheritPk:
-              type: string
-            created:
-              type: string
-              format: date-time
-            modified:
-              type: string
-              format: date-time
-            archived:
-              type: boolean
-            deleted:
-              type: boolean
-            saves:
-              type: array
-              items:
-                type: string
             uri:
               type: string
             pageId:
@@ -7160,51 +6694,11 @@ components:
             htmBefore:
               type: string
             htmAfter:
-              type: string
-            classCanonicalName:
-              type: string
-            classSimpleName:
-              type: string
-            classCanonicalNames:
-              type: array
-              items:
-                type: string
-            objectTitle:
-              type: string
-            objectId:
-              type: string
-            objectNameVar:
-              type: string
-            objectSuggest:
-              type: string
-            pageUrlId:
-              type: string
-            pageUrlPk:
-              type: string
-            pageUrlApi:
-              type: string
-            id:
               type: string
     GETSiteHtmResponse:
       allOf:
         - type: object
           properties:
-            inheritPk:
-              type: string
-            created:
-              type: string
-              format: date-time
-            modified:
-              type: string
-              format: date-time
-            archived:
-              type: boolean
-            deleted:
-              type: boolean
-            saves:
-              type: array
-              items:
-                type: string
             uri:
               type: string
             pageId:
@@ -7238,30 +6732,6 @@ components:
             htmBefore:
               type: string
             htmAfter:
-              type: string
-            classCanonicalName:
-              type: string
-            classSimpleName:
-              type: string
-            classCanonicalNames:
-              type: array
-              items:
-                type: string
-            objectTitle:
-              type: string
-            objectId:
-              type: string
-            objectNameVar:
-              type: string
-            objectSuggest:
-              type: string
-            pageUrlId:
-              type: string
-            pageUrlPk:
-              type: string
-            pageUrlApi:
-              type: string
-            id:
               type: string
     SearchPageSiteHtmResponse:
       allOf:
@@ -7306,14 +6776,6 @@ components:
                     type: string
                   h2:
                     type: string
-                  inheritPk:
-                    type: string
-                  created:
-                    type: string
-                    format: date-time
-                  modified:
-                    type: string
-                    format: date-time
                   author:
                     type: string
                   pageImageUri:
@@ -7323,46 +6785,6 @@ components:
                   pageImageHeight:
                     type: string
                   pageImageType:
-                    type: string
-                  archived:
-                    type: boolean
-                  deleted:
-                    type: boolean
-                  classCanonicalName:
-                    type: string
-                  classSimpleName:
-                    type: string
-                  classCanonicalNames:
-                    type: array
-                    items:
-                      type: string
-                  sessionId:
-                    type: string
-                  userKey:
-                    type: string
-                  saves:
-                    type: array
-                    items:
-                      type: string
-                  objectTitle:
-                    type: string
-                  objectId:
-                    type: string
-                  objectNameVar:
-                    type: string
-                  objectSuggest:
-                    type: string
-                  objectText:
-                    type: array
-                    items:
-                      type: string
-                  pageUrlId:
-                    type: string
-                  pageUrlPk:
-                    type: string
-                  pageUrlApi:
-                    type: string
-                  id:
                     type: string
     POSTSitePageRequest:
       allOf:
@@ -7390,14 +6812,6 @@ components:
               type: string
             h2:
               type: string
-            inheritPk:
-              type: string
-            created:
-              type: string
-              format: date-time
-            modified:
-              type: string
-              format: date-time
             author:
               type: string
             pageImageUri:
@@ -7407,46 +6821,6 @@ components:
             pageImageHeight:
               type: string
             pageImageType:
-              type: string
-            archived:
-              type: boolean
-            deleted:
-              type: boolean
-            classCanonicalName:
-              type: string
-            classSimpleName:
-              type: string
-            classCanonicalNames:
-              type: array
-              items:
-                type: string
-            sessionId:
-              type: string
-            userKey:
-              type: string
-            saves:
-              type: array
-              items:
-                type: string
-            objectTitle:
-              type: string
-            objectId:
-              type: string
-            objectNameVar:
-              type: string
-            objectSuggest:
-              type: string
-            objectText:
-              type: array
-              items:
-                type: string
-            pageUrlId:
-              type: string
-            pageUrlPk:
-              type: string
-            pageUrlApi:
-              type: string
-            id:
               type: string
     POSTSitePageResponse:
       allOf:
@@ -7474,14 +6848,6 @@ components:
               type: string
             h2:
               type: string
-            inheritPk:
-              type: string
-            created:
-              type: string
-              format: date-time
-            modified:
-              type: string
-              format: date-time
             author:
               type: string
             pageImageUri:
@@ -7491,46 +6857,6 @@ components:
             pageImageHeight:
               type: string
             pageImageType:
-              type: string
-            archived:
-              type: boolean
-            deleted:
-              type: boolean
-            classCanonicalName:
-              type: string
-            classSimpleName:
-              type: string
-            classCanonicalNames:
-              type: array
-              items:
-                type: string
-            sessionId:
-              type: string
-            userKey:
-              type: string
-            saves:
-              type: array
-              items:
-                type: string
-            objectTitle:
-              type: string
-            objectId:
-              type: string
-            objectNameVar:
-              type: string
-            objectSuggest:
-              type: string
-            objectText:
-              type: array
-              items:
-                type: string
-            pageUrlId:
-              type: string
-            pageUrlPk:
-              type: string
-            pageUrlApi:
-              type: string
-            id:
               type: string
     PATCHSitePageRequest:
       allOf:
@@ -7613,33 +6939,6 @@ components:
               type: string
             removeAllH2:
               type: string
-            setInheritPk:
-              type: string
-              nullable: true
-            removeInheritPk:
-              type: string
-            removeAllInheritPk:
-              type: string
-            setCreated:
-              type: string
-              nullable: true
-              format: date-time
-            removeCreated:
-              type: string
-              format: date-time
-            removeAllCreated:
-              type: string
-              format: date-time
-            setModified:
-              type: string
-              nullable: true
-              format: date-time
-            removeModified:
-              type: string
-              format: date-time
-            removeAllModified:
-              type: string
-              format: date-time
             setAuthor:
               type: string
               nullable: true
@@ -7674,155 +6973,6 @@ components:
             removePageImageType:
               type: string
             removeAllPageImageType:
-              type: string
-            setArchived:
-              type: boolean
-              nullable: true
-            removeArchived:
-              type: boolean
-            removeAllArchived:
-              type: boolean
-            setDeleted:
-              type: boolean
-              nullable: true
-            removeDeleted:
-              type: boolean
-            removeAllDeleted:
-              type: boolean
-            setClassCanonicalName:
-              type: string
-              nullable: true
-            removeClassCanonicalName:
-              type: string
-            removeAllClassCanonicalName:
-              type: string
-            setClassSimpleName:
-              type: string
-              nullable: true
-            removeClassSimpleName:
-              type: string
-            removeAllClassSimpleName:
-              type: string
-            setClassCanonicalNames:
-              type: array
-              nullable: true
-              items:
-                type: string
-            removeClassCanonicalNames:
-              type: string
-            removeAllClassCanonicalNames:
-              type: array
-              items:
-                type: string
-            addClassCanonicalNames:
-              type: string
-            addAllClassCanonicalNames:
-              type: array
-              items:
-                type: string
-            setSessionId:
-              type: string
-              nullable: true
-            removeSessionId:
-              type: string
-            removeAllSessionId:
-              type: string
-            setUserKey:
-              type: string
-              nullable: true
-            removeUserKey:
-              type: string
-            removeAllUserKey:
-              type: string
-            setSaves:
-              type: array
-              nullable: true
-              items:
-                type: string
-            removeSaves:
-              type: string
-            removeAllSaves:
-              type: array
-              items:
-                type: string
-            addSaves:
-              type: string
-            addAllSaves:
-              type: array
-              items:
-                type: string
-            setObjectTitle:
-              type: string
-              nullable: true
-            removeObjectTitle:
-              type: string
-            removeAllObjectTitle:
-              type: string
-            setObjectId:
-              type: string
-              nullable: true
-            removeObjectId:
-              type: string
-            removeAllObjectId:
-              type: string
-            setObjectNameVar:
-              type: string
-              nullable: true
-            removeObjectNameVar:
-              type: string
-            removeAllObjectNameVar:
-              type: string
-            setObjectSuggest:
-              type: string
-              nullable: true
-            removeObjectSuggest:
-              type: string
-            removeAllObjectSuggest:
-              type: string
-            setObjectText:
-              type: array
-              nullable: true
-              items:
-                type: string
-            removeObjectText:
-              type: string
-            removeAllObjectText:
-              type: array
-              items:
-                type: string
-            addObjectText:
-              type: string
-            addAllObjectText:
-              type: array
-              items:
-                type: string
-            setPageUrlId:
-              type: string
-              nullable: true
-            removePageUrlId:
-              type: string
-            removeAllPageUrlId:
-              type: string
-            setPageUrlPk:
-              type: string
-              nullable: true
-            removePageUrlPk:
-              type: string
-            removeAllPageUrlPk:
-              type: string
-            setPageUrlApi:
-              type: string
-              nullable: true
-            removePageUrlApi:
-              type: string
-            removeAllPageUrlApi:
-              type: string
-            setId:
-              type: string
-              nullable: true
-            removeId:
-              type: string
-            removeAllId:
               type: string
     PATCHSitePageResponse:
       allOf:
@@ -7905,33 +7055,6 @@ components:
               type: string
             removeAllH2:
               type: string
-            setInheritPk:
-              type: string
-              nullable: true
-            removeInheritPk:
-              type: string
-            removeAllInheritPk:
-              type: string
-            setCreated:
-              type: string
-              nullable: true
-              format: date-time
-            removeCreated:
-              type: string
-              format: date-time
-            removeAllCreated:
-              type: string
-              format: date-time
-            setModified:
-              type: string
-              nullable: true
-              format: date-time
-            removeModified:
-              type: string
-              format: date-time
-            removeAllModified:
-              type: string
-              format: date-time
             setAuthor:
               type: string
               nullable: true
@@ -7967,155 +7090,6 @@ components:
               type: string
             removeAllPageImageType:
               type: string
-            setArchived:
-              type: boolean
-              nullable: true
-            removeArchived:
-              type: boolean
-            removeAllArchived:
-              type: boolean
-            setDeleted:
-              type: boolean
-              nullable: true
-            removeDeleted:
-              type: boolean
-            removeAllDeleted:
-              type: boolean
-            setClassCanonicalName:
-              type: string
-              nullable: true
-            removeClassCanonicalName:
-              type: string
-            removeAllClassCanonicalName:
-              type: string
-            setClassSimpleName:
-              type: string
-              nullable: true
-            removeClassSimpleName:
-              type: string
-            removeAllClassSimpleName:
-              type: string
-            setClassCanonicalNames:
-              type: array
-              nullable: true
-              items:
-                type: string
-            removeClassCanonicalNames:
-              type: string
-            removeAllClassCanonicalNames:
-              type: array
-              items:
-                type: string
-            addClassCanonicalNames:
-              type: string
-            addAllClassCanonicalNames:
-              type: array
-              items:
-                type: string
-            setSessionId:
-              type: string
-              nullable: true
-            removeSessionId:
-              type: string
-            removeAllSessionId:
-              type: string
-            setUserKey:
-              type: string
-              nullable: true
-            removeUserKey:
-              type: string
-            removeAllUserKey:
-              type: string
-            setSaves:
-              type: array
-              nullable: true
-              items:
-                type: string
-            removeSaves:
-              type: string
-            removeAllSaves:
-              type: array
-              items:
-                type: string
-            addSaves:
-              type: string
-            addAllSaves:
-              type: array
-              items:
-                type: string
-            setObjectTitle:
-              type: string
-              nullable: true
-            removeObjectTitle:
-              type: string
-            removeAllObjectTitle:
-              type: string
-            setObjectId:
-              type: string
-              nullable: true
-            removeObjectId:
-              type: string
-            removeAllObjectId:
-              type: string
-            setObjectNameVar:
-              type: string
-              nullable: true
-            removeObjectNameVar:
-              type: string
-            removeAllObjectNameVar:
-              type: string
-            setObjectSuggest:
-              type: string
-              nullable: true
-            removeObjectSuggest:
-              type: string
-            removeAllObjectSuggest:
-              type: string
-            setObjectText:
-              type: array
-              nullable: true
-              items:
-                type: string
-            removeObjectText:
-              type: string
-            removeAllObjectText:
-              type: array
-              items:
-                type: string
-            addObjectText:
-              type: string
-            addAllObjectText:
-              type: array
-              items:
-                type: string
-            setPageUrlId:
-              type: string
-              nullable: true
-            removePageUrlId:
-              type: string
-            removeAllPageUrlId:
-              type: string
-            setPageUrlPk:
-              type: string
-              nullable: true
-            removePageUrlPk:
-              type: string
-            removeAllPageUrlPk:
-              type: string
-            setPageUrlApi:
-              type: string
-              nullable: true
-            removePageUrlApi:
-              type: string
-            removeAllPageUrlApi:
-              type: string
-            setId:
-              type: string
-              nullable: true
-            removeId:
-              type: string
-            removeAllId:
-              type: string
     PUTImportSitePageRequest:
       allOf:
         - type: object
@@ -8142,14 +7116,6 @@ components:
               type: string
             h2:
               type: string
-            inheritPk:
-              type: string
-            created:
-              type: string
-              format: date-time
-            modified:
-              type: string
-              format: date-time
             author:
               type: string
             pageImageUri:
@@ -8159,46 +7125,6 @@ components:
             pageImageHeight:
               type: string
             pageImageType:
-              type: string
-            archived:
-              type: boolean
-            deleted:
-              type: boolean
-            classCanonicalName:
-              type: string
-            classSimpleName:
-              type: string
-            classCanonicalNames:
-              type: array
-              items:
-                type: string
-            sessionId:
-              type: string
-            userKey:
-              type: string
-            saves:
-              type: array
-              items:
-                type: string
-            objectTitle:
-              type: string
-            objectId:
-              type: string
-            objectNameVar:
-              type: string
-            objectSuggest:
-              type: string
-            objectText:
-              type: array
-              items:
-                type: string
-            pageUrlId:
-              type: string
-            pageUrlPk:
-              type: string
-            pageUrlApi:
-              type: string
-            id:
               type: string
     PUTImportSitePageResponse:
       allOf:
@@ -8226,14 +7152,6 @@ components:
               type: string
             h2:
               type: string
-            inheritPk:
-              type: string
-            created:
-              type: string
-              format: date-time
-            modified:
-              type: string
-              format: date-time
             author:
               type: string
             pageImageUri:
@@ -8243,46 +7161,6 @@ components:
             pageImageHeight:
               type: string
             pageImageType:
-              type: string
-            archived:
-              type: boolean
-            deleted:
-              type: boolean
-            classCanonicalName:
-              type: string
-            classSimpleName:
-              type: string
-            classCanonicalNames:
-              type: array
-              items:
-                type: string
-            sessionId:
-              type: string
-            userKey:
-              type: string
-            saves:
-              type: array
-              items:
-                type: string
-            objectTitle:
-              type: string
-            objectId:
-              type: string
-            objectNameVar:
-              type: string
-            objectSuggest:
-              type: string
-            objectText:
-              type: array
-              items:
-                type: string
-            pageUrlId:
-              type: string
-            pageUrlPk:
-              type: string
-            pageUrlApi:
-              type: string
-            id:
               type: string
     GETSitePageResponse:
       allOf:
@@ -8310,14 +7188,6 @@ components:
               type: string
             h2:
               type: string
-            inheritPk:
-              type: string
-            created:
-              type: string
-              format: date-time
-            modified:
-              type: string
-              format: date-time
             author:
               type: string
             pageImageUri:
@@ -8327,46 +7197,6 @@ components:
             pageImageHeight:
               type: string
             pageImageType:
-              type: string
-            archived:
-              type: boolean
-            deleted:
-              type: boolean
-            classCanonicalName:
-              type: string
-            classSimpleName:
-              type: string
-            classCanonicalNames:
-              type: array
-              items:
-                type: string
-            sessionId:
-              type: string
-            userKey:
-              type: string
-            saves:
-              type: array
-              items:
-                type: string
-            objectTitle:
-              type: string
-            objectId:
-              type: string
-            objectNameVar:
-              type: string
-            objectSuggest:
-              type: string
-            objectText:
-              type: array
-              items:
-                type: string
-            pageUrlId:
-              type: string
-            pageUrlPk:
-              type: string
-            pageUrlApi:
-              type: string
-            id:
               type: string
     SearchPageSitePageResponse:
       allOf:

@@ -135,7 +135,7 @@ public class SitePageReader extends SitePageReaderGen<Object> {
 	 */
 	private Future<Void> importSitePage(YamlProcessor yamlProcessor, String path) {
 		Promise<Void> promise = Promise.promise();
-		String i18nComputatePath = getClass().getClassLoader().getResource("org/computate/i18n/i18n_enUS.yml").getFile();
+		String i18nComputatePath = String.format("%s%s", config.getString(ConfigKeys.COMPUTATE_SRC), "/src/main/resources/org/computate/i18n/i18n_enUS.yml");
 		vertx.fileSystem().readFile(i18nComputatePath).onSuccess(i18nComputateBuffer -> {
 			yamlProcessor.process(vertx, null, i18nComputateBuffer).onSuccess(i18nComputate -> {
 				vertx.fileSystem().readFile(path).onSuccess(buffer -> {
