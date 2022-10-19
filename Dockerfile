@@ -7,6 +7,6 @@ USER root
 
 WORKDIR /home/jboss/computateorg
 RUN mvn clean install -DskipTests
-RUN cp /home/jboss/computateorg/target/*.jar /home/jboss/app.jar
+RUN cp /home/jboss/computateorg/target/*.jar /home/jboss/computateorg/app.jar
 CMD java $JAVA_OPTS -cp .:* org.computate.site.enus.vertx.MainVerticle
 
