@@ -6,6 +6,14 @@ SITE_POWERED_BY_URL: https://access.redhat.com/products/openshift-online-red-hat
 SITE_POWERED_BY_IMAGE_URI: /svg/openshift.svg
 SITE_NAME: computateorg
 SITE_DISPLAY_NAME: your website
+SITE_DESCRIPTION: Computate's guide to building your own data-driven custom website in the cloud
+SITE_PUBLIC_URL: https://www.computate.org
+MAILING_LIST_URL: https://computate.topicbox.com/groups/computate
+SITE_LICENSE_NAME: GNU GENERAL PUBLIC LICENSE, Version 3
+SITE_LICENSE_URL: https://www.gnu.org/licenses/gpl-3.0.en.html
+DEVELOPER_NAME: Christopher Tate
+DEVELOPER_ORG_NAME: computate.org
+DEVELOPER_ORG_URL: https://www.computate.org/
 SITE_REPO: "git@github.com:{{ GITHUB_ORG }}/{{ SITE_NAME }}.git"
 SITE_REPO_HTTPS: "{{ SITE_REPO | replace('git@github.com:', 'https://github.com/') }}"
 SITE_LANG: enUS
@@ -15,7 +23,7 @@ SITE_SRC: "{{ lookup('env', 'HOME') }}/.local/src/{{ SITE_NAME }}"
 SITE_POM_GROUP_ID: org.computate
 SITE_POM_ARTIFACT_ID_ROOT: "site"
 SITE_POM_VERSION_PREFIX: "1.0.0"
-SITE_POM_VERSION_SUFFIX: "-SNAPSHOT"
+SITE_POM_VERSION_SUFFIX: ""
 SITE_POM_VERSION: "{{ SITE_POM_VERSION_PREFIX }}{{ SITE_POM_VERSION_SUFFIX }}"
 SITE_JAVA_PACKAGE: "{{ SITE_POM_GROUP_ID }}.{{ SITE_POM_ARTIFACT_ID_ROOT }}.enus"
 SITE_PORT: 10180
@@ -38,6 +46,7 @@ ENABLE_PAGE_SEARCH_SitePage: true
 ENABLE_MENU_Article: false
 ENABLE_MENU_Course: false
 ENABLE_MENU_SiteHtm: false
+ENABLE_MENU_PixelArt: false
 
 WRITE_API: true
 WRITE_COMMENTS: true
@@ -252,7 +261,13 @@ BEFORE_htmMenuItems: |2
 
 AFTER_htmMenuItems: |2
   				<div class="site-bar-item w3-bar-item ">
+  					<a target="_blank" rel="noopener noreferrer" data-ajax="false" href="https://www.youtube.com/channel/UC3ryOB2snhO7fItkx6dGx2Q"><img alt="" class="grow-20 " style="display: inline; width: 20px; height: 20px; " src="\{\{ staticBaseUrl \}\}/svg/youtube.svg"></a>
+  				</div>
+  				<div class="site-bar-item w3-bar-item ">
   					<a target="_blank" rel="noopener noreferrer" data-ajax="false" href="https://github.com/computate-org"><img alt="" class="grow-20 " style="display: inline; width: 20px; height: 20px; " src="\{\{ staticBaseUrl \}\}/svg/github.svg"></a>
+  				</div>
+  				<div class="site-bar-item w3-bar-item ">
+  					<a target="_blank" rel="noopener noreferrer" data-ajax="false" href="https://computate.topicbox.com/groups/computate"><img alt="" class="grow-20 " style="display: inline; width: 20px; height: 20px; " src="\{\{ staticBaseUrl \}\}/svg/mail.svg"></a>
   				</div>
   				<div class="site-bar-item w3-bar-item ">
   					<a target="_blank" rel="noopener noreferrer" data-ajax="false" href="https://www.facebook.com/computateorg/"><img alt="" class="grow-20 " style="display: inline; width: 20px; height: 20px; " src="\{\{ staticBaseUrl \}\}/svg/facebook.svg"></a>
@@ -264,13 +279,10 @@ AFTER_htmMenuItems: |2
   					<a target="_blank" rel="noopener noreferrer" data-ajax="false" href="https://www.instagram.com/computateorg/"><img alt="" class="grow-20 " style="display: inline; width: 20px; height: 20px; " src="\{\{ staticBaseUrl \}\}/svg/instagram.svg"></a>
   				</div>
   				<div class="site-bar-item w3-bar-item ">
+  					<a target="_blank" rel="noopener noreferrer" data-ajax="false" href="https://www.pinterest.com/computateorg/computate-in-english/"><img alt="" class="grow-20 " style="display: inline; width: 20px; height: 20px; " src="\{\{ staticBaseUrl \}\}/svg/pinterest.svg"></a>
+  				</div>
+  				<div class="site-bar-item w3-bar-item ">
   					<a target="_blank" rel="noopener noreferrer" data-ajax="false" href="https://openclipart.org/artist/computateorg"><img alt="" class="grow-20 " style="display: inline; width: 20px; height: 20px; " src="\{\{ staticBaseUrl \}\}/svg/openclipart.svg"></a>
-  				</div>
-  				<div class="site-bar-item w3-bar-item ">
-  					<a target="_blank" rel="noopener noreferrer" data-ajax="false" href="https://www.youtube.com/channel/UC3ryOB2snhO7fItkx6dGx2Q"><img alt="" class="grow-20 " style="display: inline; width: 20px; height: 20px; " src="\{\{ staticBaseUrl \}\}/svg/youtube.svg"></a>
-  				</div>
-  				<div class="site-bar-item w3-bar-item ">
-  					<a target="_blank" rel="noopener noreferrer" data-ajax="false" href=" https://www.pinterest.com/computateorg/computate-in-english/"><img alt="" class="grow-20 " style="display: inline; width: 20px; height: 20px; " src="\{\{ staticBaseUrl \}\}/svg/pinterest.svg"></a>
   				</div>
   				<div class="site-bar-item w3-bar-item ">
   					<form action="https://www.paypal.com/donate" method="post" target="_top">
@@ -316,7 +328,7 @@ REPLACE_htmBodyEndPageLayout: |2
   	<footer class="w3-center w3-black w3-padding-48 ">
   		<div class="w3-xxlarge ">This site is open source. </div>
   		<div class="w3-large ">
-  			<a href="https://github.com/\{\{ GITHUB_ORG \}\}/\{\{ SITE_NAME \}\}/" target="_blank" class="grow-20 ">View the source code here on github. </a>
+  			<a href="https://github.com/\{\{ GITHUB_ORG \}\}/\{\{ SITE_NAME \}\}/" target="_blank" class="grow-20 ">View the source code here on GitHub. </a>
   		</div>
   		<div class="grow-20 w3-margin ">
   			<a class="w3-bar-item grow-20 w3-margin w3-text-white " href="\{\{ SITE_POWERED_BY_URL \}\}" target="_blank"><span class="w3-large ">Powered by </span>\{\{\#if SITE_POWERED_BY_IMAGE_URI \}\}<img alt="" class="w3-image " style="display: inline-block; width: 200px; margin: 0 10px;" src="\{\{ staticBaseUrl \}\}\{\{ SITE_POWERED_BY_IMAGE_URI }}"/>\{\{else\}\}\{\{\#if SITE_POWERED_BY_NAME\}\}\{\{ SITE_POWERED_BY_NAME \}\}\{\{/if\}\}\{\{/if\}\}</a>
@@ -328,13 +340,14 @@ REPLACE_htmBodyEndPageLayout: |2
   				<div class="w3-container w3-text-black w3-margin-top ">
   					<h6 id="h2-contactez-nous" class="w3-xlarge w3-text-white ">Let's get connected. </h6>
   					<div style="">
+  						<a target="_blank" rel="noopener noreferrer" data-ajax="false" href="https://www.youtube.com/channel/UC3ryOB2snhO7fItkx6dGx2Q"><img alt="" class="grow-20 " style="display: inline-block; width: 50px; height: 50px; margin: 0 10px;" src="\{\{ staticBaseUrl \}\}/svg/youtube.svg"></a>
   						<a target="_blank" rel="noopener noreferrer" data-ajax="false" href="https://github.com/computate-org"><img alt="" class="grow-20 " style="display: inline-block; width: 50px; height: 50px; margin: 0 10px;" src="\{\{ staticBaseUrl \}\}/svg/github-white.svg"></a>
+  						<a target="_blank" rel="noopener noreferrer" data-ajax="false" href="https://computate.topicbox.com/groups/computate"><img alt="" class="grow-20 " style="display: inline-block; width: 50px; height: 50px; margin: 0 10px;" src="\{\{ staticBaseUrl \}\}/svg/mail.svg"></a>
   						<a target="_blank" rel="noopener noreferrer" data-ajax="false" href="https://www.facebook.com/computateorg/"><img alt="" class="grow-20 " style="display: inline-block; width: 50px; height: 50px; margin: 0 10px;" src="\{\{ staticBaseUrl \}\}/svg/facebook.svg"></a>
   						<a target="_blank" rel="noopener noreferrer" data-ajax="false" href="https://twitter.com/computateorg"><img alt="" class="grow-20 " style="display: inline-block; width: 50px; height: 50px; margin: 0 10px;" src="\{\{ staticBaseUrl \}\}/svg/twitter.svg"></a>
   						<a target="_blank" rel="noopener noreferrer" data-ajax="false" href="https://www.instagram.com/computateorg/"><img alt="" class="grow-20 " style="display: inline-block; width: 50px; height: 50px; margin: 0 10px;" src="\{\{ staticBaseUrl \}\}/svg/instagram.svg"></a>
-  						<a target="_blank" rel="noopener noreferrer" data-ajax="false" href="https://openclipart.org/artist/computateorg"><img alt="" class="grow-20 " style="display: inline-block; width: 50px; height: 50px; margin: 0 10px;" src="\{\{ staticBaseUrl \}\}/svg/openclipart.svg"></a>
-  						<a target="_blank" rel="noopener noreferrer" data-ajax="false" href="https://www.youtube.com/channel/UC3ryOB2snhO7fItkx6dGx2Q"><img alt="" class="grow-20 " style="display: inline-block; width: 50px; height: 50px; margin: 0 10px;" src="\{\{ staticBaseUrl \}\}/svg/youtube.svg"></a>
   						<a target="_blank" rel="noopener noreferrer" data-ajax="false" href=" https://www.pinterest.com/computateorg/computate-in-english/"><img alt="" class="grow-20 " style="display: inline-block; width: 50px; height: 50px; margin: 0 10px;" src="\{\{ staticBaseUrl \}\}/svg/pinterest.svg"></a>
+  						<a target="_blank" rel="noopener noreferrer" data-ajax="false" href="https://openclipart.org/artist/computateorg"><img alt="" class="grow-20 " style="display: inline-block; width: 50px; height: 50px; margin: 0 10px;" src="\{\{ staticBaseUrl \}\}/svg/openclipart.svg"></a>
   					</div>
   					<h6><a href="#top" class="w3-text-white ">Up to the top. </a></h6>
   				</div>

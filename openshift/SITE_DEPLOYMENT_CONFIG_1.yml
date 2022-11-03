@@ -229,10 +229,6 @@ spec:
               value: '{{ ENABLE_IMPORT_DATA_Article | to_json }}'
             - name: ENABLE_IMPORT_DATA_Course
               value: '{{ ENABLE_IMPORT_DATA_Course | to_json }}'
-            - name: ENABLE_IMPORT_DATA_C001
-              value: '{{ ENABLE_IMPORT_DATA_C001 | to_json }}'
-            - name: ENABLE_IMPORT_DATA_C001Lesson
-              value: '{{ ENABLE_IMPORT_DATA_C001Lesson | to_json }}'
             - name: ENABLE_IMPORT_DATA_SitePage
               value: '{{ ENABLE_IMPORT_DATA_SitePage | to_json }}'
             - name: ENABLE_IMPORT_DATA_SiteHtm
@@ -249,10 +245,6 @@ spec:
               value: '{{ AUTH_ROLES_REQUIRED_Article | to_json }}'
             - name: AUTH_ROLES_REQUIRED_Course
               value: '{{ AUTH_ROLES_REQUIRED_Course | to_json }}'
-            - name: AUTH_ROLES_REQUIRED_C001
-              value: '{{ AUTH_ROLES_REQUIRED_C001 | to_json }}'
-            - name: AUTH_ROLES_REQUIRED_C001Lesson
-              value: '{{ AUTH_ROLES_REQUIRED_C001Lesson | to_json }}'
             - name: AUTH_ROLES_REQUIRED_SitePage
               value: '{{ AUTH_ROLES_REQUIRED_SitePage | to_json }}'
             - name: AUTH_ROLES_REQUIRED_SiteHtm

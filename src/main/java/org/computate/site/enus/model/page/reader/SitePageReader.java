@@ -1,10 +1,10 @@
 package org.computate.site.enus.model.page.reader;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.Normalizer;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -13,6 +13,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Stack;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -22,15 +23,14 @@ import org.computate.search.serialize.ComputateZonedDateTimeSerializer;
 import org.computate.search.tool.XmlTool;
 import org.computate.search.wrap.Wrap;
 import org.computate.site.enus.config.ConfigKeys;
-import org.computate.site.enus.model.htm.SiteHtm;
-import org.computate.site.enus.model.page.SitePage;
 import org.computate.site.enus.request.SiteRequestEnUS;
+import org.computate.site.enus.model.page.SitePage;
+import org.computate.site.enus.model.htm.SiteHtm;
 import org.computate.vertx.config.ComputateConfigKeys;
 
 import com.github.jknack.handlebars.Context;
 import com.github.jknack.handlebars.Handlebars;
 import com.github.jknack.handlebars.Template;
-import com.google.common.io.PatternFilenameFilter;
 
 import io.vertx.config.yaml.YamlProcessor;
 import io.vertx.core.CompositeFuture;
@@ -46,6 +46,8 @@ import io.vertx.ext.web.client.WebClient;
 import io.vertx.ext.web.templ.handlebars.HandlebarsTemplateEngine;
 
 public class SitePageReader extends SitePageReaderGen<Object> {
+
+	private Pattern PATTERN_HEADER = Pattern.compile("^h\\d+$");
 
 	public SitePageReader(Vertx vertx, WorkerExecutor workerExecutor, SiteRequestEnUS siteRequest, JsonObject config) {
 		super();
@@ -91,48 +93,105 @@ public class SitePageReader extends SitePageReaderGen<Object> {
 	 * Val.Complete.enUS:Importing %s data completed. 
 	 * Val.Fail.enUS:Importing %s data failed. 
 	 */
+	public Future<JsonObject> i18nGenerator() {
+		Promise<JsonObject> promise = Promise.promise();
+		List<String> i18nPaths = Optional.ofNullable(config.getValue(ConfigKeys.I18N_PATHS)).map(v -> v instanceof JsonArray ? (JsonArray)v : new JsonArray(v.toString())).orElse(new JsonArray()).stream().map(o -> o.toString()).collect(Collectors.toList());
+		JsonObject i18n = new JsonObject();
+		YamlProcessor yamlProcessor = new YamlProcessor();
+
+		i18nGeneratorPath(i18n, yamlProcessor, i18nPaths, 0).onSuccess(i18n2 -> {
+			promise.complete(i18n2);
+		}).onFailure(ex -> {
+			LOG.error(String.format(i18nGeneratorFail, SitePage.CLASS_SIMPLE_NAME), ex);
+			promise.fail(ex);
+		});
+		return promise.future();
+	}
+
+	/**
+	 * Description: Import page
+	 * Val.Complete.enUS:Importing page %s completed. 
+	 * Val.Fail.enUS:Importing page %s failed. 
+	 */
+	private Future<JsonObject> i18nGeneratorPath(JsonObject i18n, YamlProcessor yamlProcessor, List<String> i18nPaths, Integer i) {
+		Promise<JsonObject> promise = Promise.promise();
+		if(i < i18nPaths.size()) {
+			String i18nPath = i18nPaths.get(i);
+			vertx.fileSystem().readFile(i18nPath).onSuccess(i18nBuffer -> {
+				yamlProcessor.process(vertx, null, i18nBuffer).onSuccess(i18n2 -> {
+					JsonObject i18n3 = i18n.copy().mergeIn(i18n2, true);
+					i18nGeneratorPath(i18n3, yamlProcessor, i18nPaths, i + 1).onSuccess(i18n4 -> {
+						promise.complete(i18n4);
+					}).onFailure(ex -> {
+						LOG.error(String.format(importSitePageFail, SitePage.CLASS_SIMPLE_NAME), ex);
+						promise.fail(ex);
+					});
+				}).onFailure(ex -> {
+					LOG.error(String.format(importSitePageFail, SitePage.CLASS_SIMPLE_NAME), ex);
+					promise.fail(ex);
+				});
+			}).onFailure(ex -> {
+				LOG.error(String.format(importSitePageFail, SitePage.CLASS_SIMPLE_NAME), ex);
+				promise.fail(ex);
+			});
+		} else {
+			promise.complete(i18n);
+		}
+		return promise.future();
+	}
+
+	/**
+	 * Description: Import Site HTML data
+	 * Val.Complete.enUS:Importing %s data completed. 
+	 * Val.Fail.enUS:Importing %s data failed. 
+	 */
 	public Future<Void> importDataSitePage() {
 		Promise<Void> promise = Promise.promise();
 		ZonedDateTime now = ZonedDateTime.now(ZoneId.of(config.getString(ConfigKeys.SITE_ZONE)));
-		List<String> dynamicPagePaths = Optional.ofNullable(config.getValue(ConfigKeys.DYNAMIC_PAGE_PATHS)).map(v -> v instanceof JsonArray ? (JsonArray)v : new JsonArray(v.toString())).orElse(new JsonArray()).stream().map(o -> o.toString()).collect(Collectors.toList());
-		List<String> pagePaths = new ArrayList<>();
-		dynamicPagePaths.forEach(dynamicPagePath -> {
-			try {
-				try(Stream<Path> stream = Files.walk(Paths.get(dynamicPagePath))) {
-					stream.filter(Files::isRegularFile).filter(p -> p.getFileName().toString().endsWith(".yml")).forEach(path -> {
-						pagePaths.add(path.toAbsolutePath().toString());
-					});
-				}
-			} catch(Exception ex) {
-				ExceptionUtils.rethrow(ex);
-			}
-		});
-		List<Future> futures = new ArrayList<>();
-		YamlProcessor yamlProcessor = new YamlProcessor();
-
-		for(String pagePath : pagePaths) {
-			futures.add(importSitePage(yamlProcessor, pagePath));
-		}
-		CompositeFuture.all(futures).onSuccess(a -> {
-			String solrHostName = config.getString(ComputateConfigKeys.SOLR_HOST_NAME);
-			Integer solrPort = config.getInteger(ComputateConfigKeys.SOLR_PORT);
-			String solrCollection = config.getString(ComputateConfigKeys.SOLR_COLLECTION);
-			String solrRequestUri = String.format("/solr/%s/update%s", solrCollection, "?commitWithin=1000&overwrite=true&wt=json");
-			String deleteQuery = String.format("classSimpleName_docvalues_string:(%s %s) AND created_docvalues_date:[* TO %s]", SitePage.CLASS_SIMPLE_NAME, SiteHtm.CLASS_SIMPLE_NAME, SiteHtm.staticSearchStrCreated(null, SiteHtm.staticSearchCreated(null, now)));
-			String deleteXml = String.format("<delete><query>%s</query></delete>", deleteQuery);
-			webClient.post(solrPort, solrHostName, solrRequestUri)
-					.putHeader("Content-Type", "text/xml")
-					.sendBuffer(Buffer.buffer().appendString(deleteXml))
-					.onSuccess(d -> {
+		i18nGenerator().onSuccess(i18n -> {
+			List<String> dynamicPagePaths = Optional.ofNullable(config.getValue(ConfigKeys.DYNAMIC_PAGE_PATHS)).map(v -> v instanceof JsonArray ? (JsonArray)v : new JsonArray(v.toString())).orElse(new JsonArray()).stream().map(o -> o.toString()).collect(Collectors.toList());
+			List<String> pagePaths = new ArrayList<>();
+			dynamicPagePaths.forEach(dynamicPagePath -> {
 				try {
-					LOG.info(String.format(importDataSitePageComplete, SitePage.CLASS_SIMPLE_NAME));
-					promise.complete();
+					try(Stream<Path> stream = Files.walk(Paths.get(dynamicPagePath))) {
+						stream.filter(Files::isRegularFile).filter(p -> p.getFileName().toString().endsWith(".yml")).forEach(path -> {
+							pagePaths.add(path.toAbsolutePath().toString());
+						});
+					}
 				} catch(Exception ex) {
-					LOG.error(String.format("Could not read response from Solr: http://%s:%s%s", solrHostName, solrPort, solrRequestUri), ex);
-					promise.fail(ex);
+					ExceptionUtils.rethrow(ex);
 				}
+			});
+			List<Future> futures = new ArrayList<>();
+			YamlProcessor yamlProcessor = new YamlProcessor();
+	
+			for(String pagePath : pagePaths) {
+				futures.add(importSitePage(i18n, yamlProcessor, pagePath));
+			}
+			CompositeFuture.all(futures).onSuccess(a -> {
+				String solrHostName = config.getString(ComputateConfigKeys.SOLR_HOST_NAME);
+				Integer solrPort = config.getInteger(ComputateConfigKeys.SOLR_PORT);
+				String solrCollection = config.getString(ComputateConfigKeys.SOLR_COLLECTION);
+				String solrRequestUri = String.format("/solr/%s/update%s", solrCollection, "?commitWithin=1000&overwrite=true&wt=json");
+				String deleteQuery = String.format("classSimpleName_docvalues_string:(%s %s) AND created_docvalues_date:[* TO %s]", SitePage.CLASS_SIMPLE_NAME, SiteHtm.CLASS_SIMPLE_NAME, SiteHtm.staticSearchStrCreated(null, SiteHtm.staticSearchCreated(null, now)));
+				String deleteXml = String.format("<delete><query>%s</query></delete>", deleteQuery);
+				webClient.post(solrPort, solrHostName, solrRequestUri)
+						.putHeader("Content-Type", "text/xml")
+						.sendBuffer(Buffer.buffer().appendString(deleteXml))
+						.onSuccess(d -> {
+					try {
+						LOG.info(String.format(importDataSitePageComplete, SitePage.CLASS_SIMPLE_NAME));
+						promise.complete();
+					} catch(Exception ex) {
+						LOG.error(String.format("Could not read response from Solr: http://%s:%s%s", solrHostName, solrPort, solrRequestUri), ex);
+						promise.fail(ex);
+					}
+				}).onFailure(ex -> {
+					LOG.error(String.format("Search failed. "), new RuntimeException(ex));
+					promise.fail(ex);
+				});
 			}).onFailure(ex -> {
-				LOG.error(String.format("Search failed. "), new RuntimeException(ex));
+				LOG.error(String.format(importDataSitePageFail, SitePage.CLASS_SIMPLE_NAME), ex);
 				promise.fail(ex);
 			});
 		}).onFailure(ex -> {
@@ -147,117 +206,104 @@ public class SitePageReader extends SitePageReaderGen<Object> {
 	 * Val.Complete.enUS:Importing page %s completed. 
 	 * Val.Fail.enUS:Importing page %s failed. 
 	 */
-	private Future<Void> importSitePage(YamlProcessor yamlProcessor, String path) {
+	private Future<Void> importSitePage(JsonObject i18n, YamlProcessor yamlProcessor, String path) {
 		Promise<Void> promise = Promise.promise();
-		String i18nComputatePath = String.format("%s%s", config.getString(ConfigKeys.COMPUTATE_SRC), "/src/main/resources/org/computate/i18n/i18n_enUS.yml");
-		vertx.fileSystem().readFile(i18nComputatePath).onSuccess(i18nComputateBuffer -> {
-			yamlProcessor.process(vertx, null, i18nComputateBuffer).onSuccess(i18nComputate -> {
-				vertx.fileSystem().readFile(path).onSuccess(buffer -> {
-					yamlProcessor.process(vertx, null, buffer).onSuccess(json -> {
+		vertx.fileSystem().readFile(path).onSuccess(buffer -> {
+			yamlProcessor.process(vertx, null, buffer).onSuccess(json -> {
+				try {
+					json.put("i18n", i18n);
+					String pageId = StringUtils.substringBeforeLast(StringUtils.substringAfterLast(path, "/"), ".");
+					SiteRequestEnUS siteRequest = new SiteRequestEnUS();
+					siteRequest.setConfig(config);
+					siteRequest.setWebClient(webClient);
+					siteRequest.initDeepSiteRequestEnUS(siteRequest);
+
+					json.put("page", new JsonObject()
+							.put(SitePage.VAR_siteName, config.getString(ConfigKeys.SITE_NAME))
+							.put(SitePage.VAR_siteDisplayName, config.getString(ConfigKeys.SITE_DISPLAY_NAME))
+							);
+
+					String[] fieldNames = json.fieldNames().toArray(new String[json.fieldNames().size()]);
+					for(Integer i = 0; i < json.size(); i++) {
+						String key = fieldNames[i];
+						Object o = json.getValue(key);
+						if(o instanceof String) {
+							try {
+								Template template = handlebars.compileInline((String)o);
+								Context engineContext = Context.newBuilder(json.getMap()).resolver(templateEngine.getResolvers()).build();
+								json.put(key, Buffer.buffer(template.apply(engineContext)).toString());
+							} catch (IOException ex) {
+								ExceptionUtils.rethrow(ex);
+							}
+						}
+					}
+
+					SitePage page = new SitePage();
+					page.setSiteRequest_(siteRequest);
+					page.persistForClass(SitePage.VAR_pageId, pageId);
+					page.persistForClass(SitePage.VAR_objectTitle, json.getString("title"));
+					page.persistForClass(SitePage.VAR_created, ZonedDateTime.now(ZoneId.of(config.getString(ConfigKeys.SITE_ZONE))));
+					page.persistForClass(SitePage.VAR_modified, json.getString("created"));
+					page.persistForClass(SitePage.VAR_courseNum, json.getInteger(SitePage.VAR_courseNum));
+					page.persistForClass(SitePage.VAR_lessonNum, json.getInteger(SitePage.VAR_lessonNum));
+					page.persistForClass(SitePage.VAR_author, json.getString("author"));
+					page.persistForClass(SitePage.VAR_uri, json.getString("uri"));
+					page.persistForClass(SitePage.VAR_pageImageUri, json.getString(SitePage.VAR_pageImageUri));
+					page.promiseDeepForClass(siteRequest).onSuccess(a -> {
 						try {
-							json.put("i18n", i18nComputate);
-							String pageId = StringUtils.substringBeforeLast(StringUtils.substringAfterLast(path, "/"), ".");
-							SiteRequestEnUS siteRequest = new SiteRequestEnUS();
-							siteRequest.setConfig(config);
-							siteRequest.setWebClient(webClient);
-							siteRequest.initDeepSiteRequestEnUS(siteRequest);
-		
-							json.put("page", new JsonObject()
-									.put(SitePage.VAR_siteName, config.getString(ConfigKeys.SITE_NAME))
-									.put(SitePage.VAR_siteDisplayName, config.getString(ConfigKeys.SITE_DISPLAY_NAME))
-									);
-		
-							String[] fieldNames = json.fieldNames().toArray(new String[json.fieldNames().size()]);
-							for(Integer i = 0; i < json.size(); i++) {
-								String key = fieldNames[i];
-								Object o = json.getValue(key);
-								if(o instanceof String) {
-									try {
-										Template template = handlebars.compileInline((String)o);
-										Context engineContext = Context.newBuilder(json.getMap()).resolver(templateEngine.getResolvers()).build();
-										json.put(key, Buffer.buffer(template.apply(engineContext)).toString());
-									} catch (IOException ex) {
-										ExceptionUtils.rethrow(ex);
-									}
+							JsonObject importBody = new JsonObject();
+							JsonArray importItems = new JsonArray();
+							List<Future> futures = new ArrayList<>();
+							Stack<String> stack = new Stack<>();
+							JsonObject pageBody1 = JsonObject.mapFrom(page);
+							json.put("page", pageBody1);
+
+							Optional.ofNullable(json.getString("h1")).ifPresent(val -> {
+								try {
+									Template template = handlebars.compileInline(val);
+									Context engineContext = Context.newBuilder(json.getMap()).resolver(templateEngine.getResolvers()).build();
+									page.setH1(Buffer.buffer(template.apply(engineContext)).toString());
+								} catch (IOException ex) {
+									ExceptionUtils.rethrow(ex);
+								}
+							});
+							Optional.ofNullable(json.getString("h2")).ifPresent(val -> {
+								try {
+									Template template = handlebars.compileInline(val);
+									Context engineContext = Context.newBuilder(json.getMap()).resolver(templateEngine.getResolvers()).build();
+									page.setH2(Buffer.buffer(template.apply(engineContext)).toString());
+								} catch (IOException ex) {
+									ExceptionUtils.rethrow(ex);
+								}
+							});
+			
+							stack.push("html");
+							stack.push("body");
+							Long sequenceNum = 0L;
+							for(String htmGroup : json.fieldNames()) {
+								if(StringUtils.startsWith(htmGroup, "htm")) {
+									JsonArray pageItems = json.getJsonArray(htmGroup);
+									sequenceNum = importSiteHtm(page, json, new JsonArray(), stack, pageId, htmGroup, pageItems, futures, sequenceNum);
 								}
 							}
-		
-							SitePage page = new SitePage();
-							page.setSiteRequest_(siteRequest);
-							page.setId(pageId);
-							page.setObjectId(pageId);
-							page.setPageId(pageId);
-							page.setObjectTitle(json.getString("title"));
-							page.setCreated(ZonedDateTime.now(ZoneId.of(config.getString(ConfigKeys.SITE_ZONE))));
-							page.setModified(json.getString("created"));
-							page.setCourseNum(json.getInteger(SitePage.VAR_courseNum));
-							page.setLessonNum(json.getInteger(SitePage.VAR_lessonNum));
-							page.setAuthor(json.getString("author"));
-							page.setUri(json.getString("uri"));
-							page.setPageImageUri(json.getString(SitePage.VAR_pageImageUri));
-							page.promiseDeepForClass(siteRequest).onSuccess(a -> {
-								try {
-									JsonObject importBody = new JsonObject();
-									JsonArray importItems = new JsonArray();
-									List<Future> futures = new ArrayList<>();
-									Stack<String> stack = new Stack<>();
-									JsonObject pageBody1 = JsonObject.mapFrom(page);
-									json.put("page", pageBody1);
-		
-									Optional.ofNullable(json.getString("h1")).ifPresent(val -> {
-										try {
-											Template template = handlebars.compileInline(val);
-											Context engineContext = Context.newBuilder(json.getMap()).resolver(templateEngine.getResolvers()).build();
-											page.setH1(Buffer.buffer(template.apply(engineContext)).toString());
-										} catch (IOException ex) {
-											ExceptionUtils.rethrow(ex);
-										}
-									});
-									Optional.ofNullable(json.getString("h2")).ifPresent(val -> {
-										try {
-											Template template = handlebars.compileInline(val);
-											Context engineContext = Context.newBuilder(json.getMap()).resolver(templateEngine.getResolvers()).build();
-											page.setH2(Buffer.buffer(template.apply(engineContext)).toString());
-										} catch (IOException ex) {
-											ExceptionUtils.rethrow(ex);
-										}
-									});
-					
-									stack.push("html");
-									stack.push("body");
-									Long sequenceNum = 0L;
-									for(String htmGroup : json.fieldNames()) {
-										if(StringUtils.startsWith(htmGroup, "htm")) {
-											JsonArray pageItems = json.getJsonArray(htmGroup);
-											sequenceNum = importSiteHtm(page, json, new JsonArray(), stack, pageId, htmGroup, pageItems, futures, sequenceNum);
-										}
-									}
-									JsonObject pageBody2 = JsonObject.mapFrom(page);
-									json.put("page", pageBody2);
-		
-									CompositeFuture.all(futures).onSuccess(b -> {
-										JsonObject pageParams = new JsonObject();
-										pageParams.put("body", pageBody2);
-										pageParams.put("path", new JsonObject());
-										pageParams.put("cookie", new JsonObject());
-										pageParams.put("query", new JsonObject().put("commitWithin", 1000).put("q", "*:*").put("var", new JsonArray().add("refresh:false")));
-										JsonObject pageContext = new JsonObject().put("params", pageParams);
-										JsonObject pageRequest = new JsonObject().put("context", pageContext);
-										vertx.eventBus().request(String.format("computateorg-enUS-%s", SitePage.CLASS_SIMPLE_NAME), pageRequest, new DeliveryOptions().addHeader("action", String.format("putimport%sFuture", SitePage.CLASS_SIMPLE_NAME))).onSuccess(c -> {
-											LOG.info(String.format(importSitePageComplete, SitePage.CLASS_SIMPLE_NAME));
-											promise.complete();
-										}).onFailure(ex -> {
-											LOG.error(String.format(importSitePageFail, SitePage.CLASS_SIMPLE_NAME), ex);
-											promise.fail(ex);
-										});
-									}).onFailure(ex -> {
-										LOG.error(String.format(importSitePageFail, SitePage.CLASS_SIMPLE_NAME), ex);
-										promise.fail(ex);
-									});
-								} catch(Exception ex) {
+							JsonObject pageBody2 = JsonObject.mapFrom(page);
+							json.put("page", pageBody2);
+
+							CompositeFuture.all(futures).onSuccess(b -> {
+								JsonObject pageParams = new JsonObject();
+								pageParams.put("body", pageBody2);
+								pageParams.put("path", new JsonObject());
+								pageParams.put("cookie", new JsonObject());
+								pageParams.put("query", new JsonObject().put("commitWithin", 1000).put("q", "*:*").put("var", new JsonArray().add("refresh:false")));
+								JsonObject pageContext = new JsonObject().put("params", pageParams);
+								JsonObject pageRequest = new JsonObject().put("context", pageContext);
+								vertx.eventBus().request(String.format("computateorg-enUS-%s", SitePage.CLASS_SIMPLE_NAME), pageRequest, new DeliveryOptions().addHeader("action", String.format("putimport%sFuture", SitePage.CLASS_SIMPLE_NAME))).onSuccess(c -> {
+									LOG.info(String.format(importSitePageComplete, SitePage.CLASS_SIMPLE_NAME));
+									promise.complete();
+								}).onFailure(ex -> {
 									LOG.error(String.format(importSitePageFail, SitePage.CLASS_SIMPLE_NAME), ex);
 									promise.fail(ex);
-								}
+								});
 							}).onFailure(ex -> {
 								LOG.error(String.format(importSitePageFail, SitePage.CLASS_SIMPLE_NAME), ex);
 								promise.fail(ex);
@@ -270,10 +316,10 @@ public class SitePageReader extends SitePageReaderGen<Object> {
 						LOG.error(String.format(importSitePageFail, SitePage.CLASS_SIMPLE_NAME), ex);
 						promise.fail(ex);
 					});
-				}).onFailure(ex -> {
+				} catch(Exception ex) {
 					LOG.error(String.format(importSitePageFail, SitePage.CLASS_SIMPLE_NAME), ex);
 					promise.fail(ex);
-				});
+				}
 			}).onFailure(ex -> {
 				LOG.error(String.format(importSitePageFail, SitePage.CLASS_SIMPLE_NAME), ex);
 				promise.fail(ex);
@@ -306,6 +352,16 @@ public class SitePageReader extends SitePageReaderGen<Object> {
 			Optional.ofNullable(pageItem.getString("style")).ifPresent(val -> a.put("style", val));
 			Optional.ofNullable(pageItem.getString("src")).ifPresent(val -> a.put("src", val));
 			Optional.ofNullable(pageItem.getString("href")).ifPresent(val -> a.put("href", val));
+
+			Boolean addId = false;
+			if(e != null) {
+				if(e != null && PATTERN_HEADER.matcher(e).find() && a.getString("id") == null) {
+					addId = true;
+				} else if(stack.size() > 0 && e.equals("span") && PATTERN_HEADER.matcher(stack.peek()).find() && a.getString("id") == null) {
+					addId = true;
+					e = "a";
+				}
+			}
 
 			if(e != null) {
 				// Stack the element and determine element name, wrap and tabs
@@ -353,6 +409,14 @@ public class SitePageReader extends SitePageReaderGen<Object> {
 					page.addObjectText(strs);
 				}
 
+				if(addId && StringUtils.isNotBlank(text)) {
+					String id = toId(text);
+					a.put("id", id);
+					if("a".equals(e)) {
+						a.put("href", String.format("#%s", id));
+					}
+				}
+
 				String htm = pageItem.getString("htm");
 				if(htm != null) {
 					// Split text by lines and index each line as it's own value
@@ -394,6 +458,7 @@ public class SitePageReader extends SitePageReaderGen<Object> {
 						.add(SiteHtm.VAR_uri)
 						.add(SiteHtm.VAR_text)
 						.add(SiteHtm.VAR_labels)
+						.add(SiteHtm.VAR_inheritPk)
 						);
 				importItem.put(SiteHtm.VAR_created, ComputateZonedDateTimeSerializer.ZONED_DATE_TIME_FORMATTER.format(ZonedDateTime.now()));
 				importItem.put(SiteHtm.VAR_pageId, pageId);
@@ -422,7 +487,7 @@ public class SitePageReader extends SitePageReaderGen<Object> {
 					}
 					importItem.put(SiteHtm.VAR_a, attrs);
 				}
-				importItem.put(SiteHtm.VAR_id, String.format("%s_%s", SiteHtm.CLASS_SIMPLE_NAME, sequenceNum));
+				importItem.put(SiteHtm.VAR_id, String.format("%s_%s", SiteHtm.CLASS_SIMPLE_NAME, pageId, sequenceNum));
 				for(Integer j=1; j <= stack.size(); j++) {
 					// Add sort values for the element at each level of the stack
 					importItem.put("sort" + j, stack.get(j - 1));
@@ -455,12 +520,12 @@ public class SitePageReader extends SitePageReaderGen<Object> {
 							JsonObject json2 = json.copy();
 							json2.put(eachVar, eachJson);
 							json2.put(indexVar, j);
-							// Process nested elements of the "block" value
+							// Process nested elements of the "in" value
 							if(in instanceof JsonObject) {
-								// Process the nested JsonObject of the "block" value
+								// Process the nested JsonObject of the "in" value
 								sequenceNum = importSiteHtm(page, json2, labels3, stack, pageId, htmGroup, new JsonArray().add(in), futures, sequenceNum);
 							} else if(in instanceof JsonArray) {
-								// Process the each of the nested JsonObjects in the array of the "block" value
+								// Process the each of the nested JsonObjects in the array of the "in" value
 								sequenceNum = importSiteHtm(page, json2, labels3, stack, pageId, htmGroup, (JsonArray)in, futures, sequenceNum);
 							}
 						}
@@ -473,12 +538,12 @@ public class SitePageReader extends SitePageReaderGen<Object> {
 							JsonObject json2 = json.copy();
 							json2.put(eachVar, new JsonObject().put("key", key).put("value", eachJson));
 							json2.put(indexVar, j);
-							// Process nested elements of the "block" value
+							// Process nested elements of the "in" value
 							if(in instanceof JsonObject) {
-								// Process the nested JsonObject of the "block" value
+								// Process the nested JsonObject of the "in" value
 								sequenceNum = importSiteHtm(page, json2, labels3, stack, pageId, htmGroup, new JsonArray().add(in), futures, sequenceNum);
 							} else if(in instanceof JsonArray) {
-								// Process the each of the nested JsonObjects in the array of the "block" value
+								// Process the each of the nested JsonObjects in the array of the "in" value
 								sequenceNum = importSiteHtm(page, json2, labels3, stack, pageId, htmGroup, (JsonArray)in, futures, sequenceNum);
 							}
 						}
@@ -527,7 +592,7 @@ public class SitePageReader extends SitePageReaderGen<Object> {
 				importItem.put(SiteHtm.VAR_htmGroup, htmGroup);
 				importItem.put(SiteHtm.VAR_sequenceNum, sequenceNum);
 				importItem.put(SiteHtm.VAR_uri, uri);
-				importItem.put(SiteHtm.VAR_id, String.format("%s_%s", SiteHtm.CLASS_SIMPLE_NAME, sequenceNum));
+				importItem.put(SiteHtm.VAR_id, String.format("%s_%s_%s", SiteHtm.CLASS_SIMPLE_NAME, pageId, sequenceNum));
 				for(Integer j=1; j <= stack.size(); j++) {
 					importItem.put("sort" + j, stack.get(j - 1));
 				}
@@ -547,5 +612,21 @@ public class SitePageReader extends SitePageReaderGen<Object> {
 			}
 		}
 		return sequenceNum;
+	}
+
+	/**
+	 * Description: A helper method for generating a URL friendly unique ID for this object
+	 */
+	public String toId(String s) {
+		if(s != null) {
+			s = Normalizer.normalize(s, Normalizer.Form.NFD);
+			s = StringUtils.lowerCase(s);
+			s = StringUtils.trim(s);
+			s = StringUtils.replacePattern(s, "\\s{1,}", "-");
+			s = StringUtils.replacePattern(s, "[^\\w-]", "");
+			s = StringUtils.replacePattern(s, "-{2,}", "-");
+		}
+
+		return s;
 	}
 }

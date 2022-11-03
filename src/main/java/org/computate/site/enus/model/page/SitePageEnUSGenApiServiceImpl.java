@@ -767,7 +767,7 @@ public class SitePageEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 				apiRequest.setNumPATCH(0L);
 				apiRequest.initDeepApiRequest(siteRequest);
 				siteRequest.setApiRequest_(apiRequest);
-				body.put("inheritPk", body.getValue(""));
+				body.put("inheritPk", body.getValue("id"));
 				if(Optional.ofNullable(serviceRequest.getParams()).map(p -> p.getJsonObject("query")).map( q -> q.getJsonArray("var")).orElse(new JsonArray()).stream().filter(s -> "refresh:false".equals(s)).count() > 0L) {
 					siteRequest.getRequestVars().put( "refresh", "false" );
 				}
@@ -804,10 +804,10 @@ public class SitePageEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 												break;
 											}
 										}
-										if(!match) {
-											body2.put("set" + StringUtils.capitalize(f), bodyVal);
-										}
+										vals.clear();
+										body2.put("set" + StringUtils.capitalize(f), bodyVal);
 									} else {
+										vals.clear();
 										body2.put("set" + StringUtils.capitalize(f), bodyVal);
 									}
 								} else {
@@ -1221,8 +1221,8 @@ public class SitePageEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 				}
 			});
 			if("*:*".equals(searchList.getQuery()) && searchList.getSorts().size() == 0) {
-				searchList.sort("courseNum_docvalues_int", "asc");
-				searchList.sort("lessonNum_docvalues_int", "asc");
+				searchList.sort("courseNum_docvalues_int", "desc");
+				searchList.sort("lessonNum_docvalues_int", "desc");
 			}
 			searchSitePage2(siteRequest, populate, store, modify, searchList);
 			searchList.promiseDeepForClass(siteRequest).onSuccess(a -> {

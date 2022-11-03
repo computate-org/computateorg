@@ -85,14 +85,14 @@ import org.computate.search.response.solr.SolrResponse;
  * </p>
  * <p>This class contains a comment <b>"AName.enUS: a site user"</b>, which identifies the language context to describe a SiteUser as "a site user". 
  * </p>
- * <p>This class contains a comment <b>"Color: gray"</b>, which styles the SiteUser page "gray". 
+ * <p>This class contains a comment <b>"Color: 2017-shaded-spruce"</b>, which styles the SiteUser page "2017-shaded-spruce". 
  * This will reference a CSS class defined by the stylesheets in the project that starts with "w3-". 
- * A css class of "w3-gray" is expected to exist in the project stylesheets, and is inspired by W3 CSS colors. 
+ * A css class of "w3-2017-shaded-spruce" is expected to exist in the project stylesheets, and is inspired by W3 CSS colors. 
  * See: <a href="https://www.w3schools.com/w3css/w3css_colors.asp">https://www.w3schools.com/w3css/w3css_colors.asp</a>. 
  * </p>
  * <p>This class contains a comment <b>"IconGroup: regular"</b>, which adds icons on the SiteUser page with a group of "regular". 
  * This will reference a Font Awesome icon group defined by the stylesheets in the project that starts with "fa" followed by the first letter of the icon group, which is "far". 
- * A Font Awesome icon group of "gray" is expected to exist. 
+ * A Font Awesome icon group of "2017-shaded-spruce" is expected to exist. 
  * The Font Awesome groups currently supported include: solid, thin, duotone. 
  * See: <a href="https://www.w3schools.com/w3css/w3css_colors.asp">https://www.w3schools.com/w3css/w3css_colors.asp</a>. 
  * </p>
@@ -143,7 +143,7 @@ public abstract class SiteUserGen<DEV> extends BaseModel {
 	public static final String SearchPage_enUS_Uri = "/user";
 	public static final String SearchPage_enUS_ImageUri = "/png/user-999.png";
 
-	public static final String SiteUser_Color = "gray";
+	public static final String SiteUser_Color = "2017-shaded-spruce";
 	public static final String SiteUser_IconGroup = "regular";
 	public static final String SiteUser_IconName = "user-cog";
 
@@ -950,54 +950,62 @@ public abstract class SiteUserGen<DEV> extends BaseModel {
 		return o != null;
 	}
 	public Object persistSiteUser(String var, Object val) {
-		switch(var.toLowerCase()) {
-			case "userid":
-				if(val instanceof String)
+		String varLower = var.toLowerCase();
+			if("userid".equals(varLower)) {
+				if(val instanceof String) {
 					setUserId((String)val);
+				}
 				saves.add("userId");
 				return val;
-			case "username":
-				if(val instanceof String)
+			} else if("username".equals(varLower)) {
+				if(val instanceof String) {
 					setUserName((String)val);
+				}
 				saves.add("userName");
 				return val;
-			case "useremail":
-				if(val instanceof String)
+			} else if("useremail".equals(varLower)) {
+				if(val instanceof String) {
 					setUserEmail((String)val);
+				}
 				saves.add("userEmail");
 				return val;
-			case "userfirstname":
-				if(val instanceof String)
+			} else if("userfirstname".equals(varLower)) {
+				if(val instanceof String) {
 					setUserFirstName((String)val);
+				}
 				saves.add("userFirstName");
 				return val;
-			case "userlastname":
-				if(val instanceof String)
+			} else if("userlastname".equals(varLower)) {
+				if(val instanceof String) {
 					setUserLastName((String)val);
+				}
 				saves.add("userLastName");
 				return val;
-			case "userfullname":
-				if(val instanceof String)
+			} else if("userfullname".equals(varLower)) {
+				if(val instanceof String) {
 					setUserFullName((String)val);
+				}
 				saves.add("userFullName");
 				return val;
-			case "seearchived":
-				if(val instanceof Boolean)
+			} else if("seearchived".equals(varLower)) {
+				if(val instanceof Boolean) {
 					setSeeArchived((Boolean)val);
-				else if(val instanceof String)
-					setSeeArchived((String)val);
+				} else {
+					setSeeArchived(val == null ? null : val.toString());
+				}
 				saves.add("seeArchived");
 				return val;
-			case "seedeleted":
-				if(val instanceof Boolean)
+			} else if("seedeleted".equals(varLower)) {
+				if(val instanceof Boolean) {
 					setSeeDeleted((Boolean)val);
-				else if(val instanceof String)
-					setSeeDeleted((String)val);
+				} else {
+					setSeeDeleted(val == null ? null : val.toString());
+				}
 				saves.add("seeDeleted");
 				return val;
-			default:
+			} else {
 				return super.persistBaseModel(var, val);
-		}
+			}
 	}
 
 	/////////////

@@ -238,8 +238,6 @@ WORKER_POOL_SIZE: 5
 ENABLE_IMPORT_DATA: true
 ENABLE_IMPORT_DATA_Article: true
 ENABLE_IMPORT_DATA_Course: true
-ENABLE_IMPORT_DATA_C001: true
-ENABLE_IMPORT_DATA_C001Lesson: true
 ENABLE_IMPORT_DATA_SitePage: true
 ENABLE_IMPORT_DATA_SiteHtm: true
 ENABLE_IMPORT_DATA_PixelArt: true
@@ -248,8 +246,6 @@ ENABLE_IMPORT_DATA_PixelArt: true
 ENABLE_REFRESH_DATA: true
 ENABLE_REFRESH_DATA_Article: true
 ENABLE_REFRESH_DATA_Course: true
-ENABLE_REFRESH_DATA_C001: true
-ENABLE_REFRESH_DATA_C001Lesson: true
 ENABLE_REFRESH_DATA_SitePage: true
 ENABLE_REFRESH_DATA_SiteHtm: true
 ENABLE_REFRESH_DATA_PixelArt: true
@@ -262,10 +258,6 @@ AUTH_ROLES_REQUIRED_SiteUser: ['SiteAdmin']
 AUTH_ROLES_REQUIRED_Article: ['SiteAdmin']
 # The Auth roles required to add and modify course records. 
 AUTH_ROLES_REQUIRED_Course: ['SiteAdmin']
-# The Auth roles required to add and modify course #1 records. 
-AUTH_ROLES_REQUIRED_C001: ['SiteAdmin']
-# The Auth roles required to add and modify  records. 
-AUTH_ROLES_REQUIRED_C001Lesson: ['SiteAdmin']
 # The Auth roles required to add and modify article records. 
 AUTH_ROLES_REQUIRED_SitePage: ['SiteAdmin']
 # The Auth roles required to add and modify HTML records. 

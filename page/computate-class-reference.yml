@@ -77,38 +77,16 @@ htmBody:
         - e: a
           href: "#class{{ item.value.nom }}"
           text: |
-            "{{ item.value.commentaire }}"
-      - e: ol
-        htm: |-
-          {{{ item.value.todo }}}
-      - e: ol
-        htm: |-
-          {{{ item.value.suggere }}}
-  - e: div
-    id: classPromise
-    in:
-    - e: h3
-      class: w3-text-2017-shaded-spruce 
-      text: |
-        Promise: true
-    - e: p
-      text: |-
-        Sometimes a Java class must be initialized asynchronously when it involves calling a blocking API. 
-        This Java class comment annotation replaces the initDeep methods with promiseDeep methods which must be initialized asynchronously as a Vert.x Promise. 
-    - e: p
-      in:
+            {{ item.value.commentaire }}
       - e: div
-        text: |-
-          Adding protected void methods beginning with an underscore with a Promise as the only parameter will automatically set `Model: true`. 
-          For example: 
-      - e: pre
-        text: |2
-          	protected void _promiseBefore(Promise<Void> promise) {
-          		promise.complete();
-          	}
-    - e: p
-      text: |-
-        Java classes with the `Model: true` will automatically set `Model: true`. 
-    - e: p
-      text: |-
-        If a super class of this Java class with `Model: true`, then the child class will also inherit `Model: true`. 
+        in:
+        - htm: |-
+            {{{ item.value.description }}}
+      - e: ul
+        in:
+        - htm: |-
+            {{{ item.value.todo }}}
+      - e: ul
+        in:
+        - htm: |-
+            {{{ item.value.suggere }}}

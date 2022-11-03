@@ -4,9 +4,32 @@
 
 	<groupId>org.computate</groupId>
 	<artifactId>site</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<name>your website</name>
-	<description></description>
+	<description>Computate's guide to building your own data-driven custom website in the cloud</description>
+	<url>https://www.computate.org</url>
+	<packaging>jar</packaging>
+
+	<licenses>
+		<license>
+			<name>GNU GENERAL PUBLIC LICENSE, Version 3</name>
+			<url>https://www.gnu.org/licenses/gpl-3.0.en.html</url>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<name>Christopher Tate</name>
+			<organization>computate.org</organization>
+			<organizationUrl>https://www.computate.org/</organizationUrl>
+		</developer>
+	</developers>
+
+	<scm>
+		<connection>scm:git:git://github.com/computate-org/computateorg.git</connection>
+		<developerConnection>scm:git:ssh://github.com:computate-org/computateorg.git</developerConnection>
+		<url>http://github.com/computate-org/computateorg/tree/master</url>
+	</scm>
 
 	<repositories>
 		<repository>
@@ -23,21 +46,29 @@
 	</repositories>
 
 	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
 		<maven-surefire-plugin.version>2.19.1</maven-surefire-plugin.version>
 		<vertx-maven-plugin.version>1.0.18</vertx-maven-plugin.version>
 		<build-helper-maven-plugin.version>3.0.0</build-helper-maven-plugin.version>
 		<exec-maven-plugin.version>1.5.0</exec-maven-plugin.version>
-		<postgresql.version>42.2.2.jre7</postgresql.version>
-		<junit.version>4.13.1</junit.version>
+		<nexus-staging-maven-plugin.version>1.6.8</nexus-staging-maven-plugin.version>
+		<maven-jar-plugin.version>3.1.0</maven-jar-plugin.version>
+		<flatten-maven-plugin.version>1.0.0</flatten-maven-plugin.version>
+		<maven-source-plugin.version>2.4</maven-source-plugin.version>
+		<maven-javadoc-plugin.version>2.10.4</maven-javadoc-plugin.version>
+		<maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
+		<postgresql.version>42.5.0</postgresql.version>
+		<junit.version>4.13.2</junit.version>
+		<mockito.version>4.8.1</mockito.version>
 		<vertx.version>4.2.5.redhat-00001</vertx.version>
 		<computate.version>4.2.5.15</computate.version>
-		<camel.version>3.14.1</camel.version>
-		<kie.version>7.65.0.Final</kie.version>
-		<drools.version>7.65.0.Final</drools.version>
-		<cloudevents.version>2.3.0</cloudevents.version>
 		<jfreechart.version>1.5.3</jfreechart.version>
-		<handlebars.version>4.3.0</handlebars.version>
+		<handlebars.version>4.3.1</handlebars.version>
+		<flying-saucer.version>9.1.22</flying-saucer.version>
+		<openpdf.version>1.3.30</openpdf.version>
+		<itext.version>5.2.0</itext.version>
+		<commons-text.version>1.10.0</commons-text.version>
 	</properties>
 
 	<dependencyManagement>
@@ -47,14 +78,6 @@
 				<groupId>io.vertx</groupId>
 				<artifactId>vertx-dependencies</artifactId>
 				<version>${vertx.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-
-			<dependency>
-				<groupId>org.apache.camel</groupId>
-				<artifactId>camel-bom</artifactId>
-				<version>${camel.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -85,18 +108,6 @@
 
 		<dependency>
 			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-configuration2</artifactId>
-			<version>2.7</version>
-		</dependency>
-
-		<dependency>
-			<groupId>commons-dbutils</groupId>
-			<artifactId>commons-dbutils</artifactId>
-			<version>1.7</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-exec</artifactId>
 			<version>1.3</version>
 		</dependency>
@@ -104,7 +115,7 @@
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-text</artifactId>
-			<version>1.8</version>
+			<version>${commons-text.version}</version>
 		</dependency>
 
 		<!-- ########## -->
@@ -124,31 +135,31 @@
 		<dependency>
 			<groupId>org.xhtmlrenderer</groupId>
 			<artifactId>flying-saucer-core</artifactId>
-			<version>9.1.19</version>
+			<version>${flying-saucer.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.xhtmlrenderer</groupId>
 			<artifactId>flying-saucer-swt</artifactId>
-			<version>9.1.19</version>
+			<version>${flying-saucer.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.xhtmlrenderer</groupId>
 			<artifactId>flying-saucer-pdf-itext5</artifactId>
-			<version>9.1.19</version>
+			<version>${flying-saucer.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.github.librepdf</groupId>
 			<artifactId>openpdf</artifactId>
-			<version>1.3.11</version>
+			<version>${openpdf.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.itextpdf</groupId>
 			<artifactId>itext-asian</artifactId>
-			<version>5.2.0</version>
+			<version>${itext.version}</version>
 		</dependency>
 
 		<!-- ###### -->
@@ -259,47 +270,6 @@
 			<groupId>io.vertx</groupId>
 			<artifactId>vertx-health-check</artifactId>
 		</dependency>
-
-		<!-- ##### -->
-		<!-- Camel -->
-		<!-- ##### -->
-
-		<dependency>
-			<groupId>org.apache.camel</groupId>
-			<artifactId>camel-activemq</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.camel</groupId>
-			<artifactId>camel-core</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.camel</groupId>
-			<artifactId>camel-vertx</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.camel</groupId>
-			<artifactId>camel-vertx-kafka</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.camel</groupId>
-			<artifactId>camel-vertx-http</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.camel</groupId>
-			<artifactId>camel-core-languages</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.camel</groupId>
-			<artifactId>camel-jackson</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.camel</groupId>
-			<artifactId>camel-jbpm</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.camel</groupId>
-			<artifactId>camel-http</artifactId>
-		</dependency>
 		
 		<!-- ########## -->
 		<!-- jfreechart -->
@@ -326,7 +296,81 @@
 			<artifactId>computate</artifactId>
 			<version>${computate.version}</version>
 		</dependency>
+		
+
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<version>${mockito.version}</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
+
+	<profiles>
+		<!-- Deployment profile (required so these plugins are only used when deploying) -->
+		<profile>
+			<id>deploy</id>
+			<build>
+				<plugins>
+					<!-- Source plugin -->
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-source-plugin</artifactId>
+						<version>${maven-source-plugin.version}</version>
+						<executions>
+							<execution>
+								<id>attach-sources</id>
+								<goals>
+									<goal>jar-no-fork</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+
+					<!-- Javadoc plugin -->
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-javadoc-plugin</artifactId>
+						<version>${maven-javadoc-plugin.version}</version>
+						<configuration>
+							<additionalJOption>-Xdoclint:none</additionalJOption>
+						</configuration>
+						<executions>
+							<execution>
+								<id>attach-javadocs</id>
+								<goals>
+									<goal>jar</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+
+					<!-- GPG plugin -->
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<version>${maven-gpg-plugin.version}</version>
+						<executions>
+							<execution>
+								<id>sign-artifacts</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+								<configuration>
+									<!-- Prevent `gpg` from using pinentry programs -->
+									<gpgArguments>
+										<arg>--pinentry-mode</arg>
+										<arg>loopback</arg>
+									</gpgArguments>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 
 	<build>
 
@@ -339,6 +383,42 @@
 
 		<plugins>
 
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>flatten-maven-plugin</artifactId>
+				<version>${flatten-maven-plugin.version}</version>
+				<configuration>
+					<updatePomFile>true</updatePomFile>
+					<pomElements>
+						<name />
+						<description />
+						<url />
+						<inceptionYear />
+						<organization />
+						<scm />
+						<developers />
+						<contributors />
+						<mailingLists />
+					</pomElements>
+				</configuration>
+				<executions>
+					<execution>
+						<id>flatten</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>flatten</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>flatten.clean</id>
+						<phase>clean</phase>
+						<goals>
+							<goal>clean</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
 			<!-- Vert.X Code Generation -->
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -346,10 +426,17 @@
 				<configuration>
 					<source>1.8</source>
 					<target>1.8</target>
+					<encoding>UTF-8</encoding>
 					<annotationProcessors>
 						<annotationProcessor>io.vertx.codegen.CodeGenProcessor</annotationProcessor>
 					</annotationProcessors>
 				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>${maven-jar-plugin.version}</version>
 			</plugin>
 
 			<plugin>
@@ -392,6 +479,19 @@
 				</executions>
 				<configuration>
 					<redeploy>true</redeploy>
+				</configuration>
+			</plugin>
+
+			<!-- Nexus Staging Plugin -->
+			<plugin>
+				<groupId>org.sonatype.plugins</groupId>
+				<artifactId>nexus-staging-maven-plugin</artifactId>
+				<version>${nexus-staging-maven-plugin.version}</version>
+				<extensions>true</extensions>
+				<configuration>
+					<serverId>ossrh</serverId>
+					<nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
+					<autoReleaseAfterClose>false</autoReleaseAfterClose>
 				</configuration>
 			</plugin>
 		</plugins>

@@ -1,6 +1,8 @@
 ---
 SITE_NAME: "{{ SITE_NAME }}"
 SITE_DISPLAY_NAME: "{{ SITE_DISPLAY_NAME }}"
+SITE_POM_GROUP_ID: "{{ SITE_POM_GROUP_ID }}"
+SITE_PUBLIC_URL: "{{ SITE_PUBLIC_URL }}"
 GITHUB_ORG: "{{ GITHUB_ORG }}"
 QUAYIO_ORG: "{{ QUAYIO_ORG }}"
 SITE_POWERED_BY_URL: "{{ SITE_POWERED_BY_URL }}"
@@ -23,6 +25,9 @@ STATIC_BASE_URL: "{{ STATIC_BASE_URL }}"
 STATIC_PATH: "{{ STATIC_PATH }}"
 TEMPLATE_PATH: "{{ TEMPLATE_PATH }}"
 FONTAWESOME_KIT: "{{ FONTAWESOME_KIT }}"
+I18N_PATHS: "{{ I18N_PATHS }}"
+DYNAMIC_PAGE_PATHS:
+  - "{{ SITE_SRC }}/page"
 
 JDBC_HOST: "{{ JDBC_HOST }}"
 JDBC_PORT: {{ JDBC_PORT }}
@@ -79,8 +84,6 @@ WRITE_COMMENTS: true
 ENABLE_IMPORT_DATA: {{ ENABLE_IMPORT_DATA | lower }}
 ENABLE_IMPORT_DATA_Article: true
 ENABLE_IMPORT_DATA_Course: true
-ENABLE_IMPORT_DATA_C001: true
-ENABLE_IMPORT_DATA_C001Lesson: true
 ENABLE_IMPORT_DATA_SitePage: true
 ENABLE_IMPORT_DATA_SiteHtm: true
 ENABLE_IMPORT_DATA_PixelArt: true
@@ -93,10 +96,6 @@ AUTH_ROLES_REQUIRED_SiteUser: ['SiteAdmin']
 AUTH_ROLES_REQUIRED_Article: ['SiteAdmin']
 # The Auth roles required to add and modify course records. 
 AUTH_ROLES_REQUIRED_Course: ['SiteAdmin']
-# The Auth roles required to add and modify course #1 records. 
-AUTH_ROLES_REQUIRED_C001: ['SiteAdmin']
-# The Auth roles required to add and modify  records. 
-AUTH_ROLES_REQUIRED_C001Lesson: ['SiteAdmin']
 # The Auth roles required to add and modify article records. 
 AUTH_ROLES_REQUIRED_SitePage: ['SiteAdmin']
 # The Auth roles required to add and modify HTML records. 

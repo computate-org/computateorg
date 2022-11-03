@@ -5,7 +5,7 @@ MAINTAINER Christopher Tate <computate@computate.org>
 ENV APP_DEPENDENCIES="git java-11-openjdk-devel maven"
 
 USER root
-COPY . /home/jboss/computateorg
+COPY . computateorg
 
 RUN yum install -y ${APP_DEPENDENCIES}
 RUN git clone https://github.com/computate-org/computate.git /root/src/computate

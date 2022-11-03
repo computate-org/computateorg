@@ -66,6 +66,16 @@ ansible-playbook ~/.ansible/roles/computate.computate_solr/install.yml -K
 ansible-playbook ~/.ansible/roles/computate.computate_project/install.yml -e SITE_NAME=computateorg -e ENABLE_CODE_GENERATION_SERVICE=true
 ```
 
+## Running the project build and test suite
+
+The computateorg project uses Maven to build and test the software. 
+You can run the build and test suite with this command: 
+
+```
+cd ~/.local/src/computateorg
+mvn clean install
+```
+
 ## Running the project install to override secret variables
 
 You can also inject your own secret variables with an Ansible Vault into the project install automation if you want to override any values. 
@@ -244,7 +254,7 @@ SOLR_STORAGE_CLASS_NAME: "{{ REDHAT_OPENSHIFT_STORAGE_CLASS_NAME }}"
 
 AUTH_REALM: TEAM19
 AUTH_RESOURCE: team19
-AUTH_SECRET: 0518f65a-f86d-42e8-ad65-00f46920443d
+AUTH_SECRET: ...
 AUTH_HOST_NAME: sso.computate.org
 AUTH_PORT: 443
 AUTH_SSL: true

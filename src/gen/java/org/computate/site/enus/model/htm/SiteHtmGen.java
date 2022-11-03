@@ -84,14 +84,14 @@ import org.computate.search.response.solr.SolrResponse;
  * </p>
  * <p>This class contains a comment <b>"AName.enUS: an HTML"</b>, which identifies the language context to describe a SiteHtm as "an HTML". 
  * </p>
- * <p>This class contains a comment <b>"Color: 2017-navy-peony"</b>, which styles the SiteHtm page "2017-navy-peony". 
+ * <p>This class contains a comment <b>"Color: 2017-shaded-spruce"</b>, which styles the SiteHtm page "2017-shaded-spruce". 
  * This will reference a CSS class defined by the stylesheets in the project that starts with "w3-". 
- * A css class of "w3-2017-navy-peony" is expected to exist in the project stylesheets, and is inspired by W3 CSS colors. 
+ * A css class of "w3-2017-shaded-spruce" is expected to exist in the project stylesheets, and is inspired by W3 CSS colors. 
  * See: <a href="https://www.w3schools.com/w3css/w3css_colors.asp">https://www.w3schools.com/w3css/w3css_colors.asp</a>. 
  * </p>
  * <p>This class contains a comment <b>"IconGroup: duotone"</b>, which adds icons on the SiteHtm page with a group of "duotone". 
  * This will reference a Font Awesome icon group defined by the stylesheets in the project that starts with "fa" followed by the first letter of the icon group, which is "fad". 
- * A Font Awesome icon group of "2017-navy-peony" is expected to exist. 
+ * A Font Awesome icon group of "2017-shaded-spruce" is expected to exist. 
  * The Font Awesome groups currently supported include: solid, thin, duotone. 
  * See: <a href="https://www.w3schools.com/w3css/w3css_colors.asp">https://www.w3schools.com/w3css/w3css_colors.asp</a>. 
  * </p>
@@ -144,7 +144,7 @@ public abstract class SiteHtmGen<DEV> extends BaseResult {
 	public static final String SearchPage_enUS_Uri = "/htm";
 	public static final String SearchPage_enUS_ImageUri = "/png/htm-999.png";
 
-	public static final String SiteHtm_Color = "2017-navy-peony";
+	public static final String SiteHtm_Color = "2017-shaded-spruce";
 	public static final String SiteHtm_IconGroup = "duotone";
 	public static final String SiteHtm_IconName = "code";
 
@@ -1304,95 +1304,112 @@ public abstract class SiteHtmGen<DEV> extends BaseResult {
 		return o != null;
 	}
 	public Object persistSiteHtm(String var, Object val) {
-		switch(var.toLowerCase()) {
-			case "uri":
-				if(val instanceof String)
+		String varLower = var.toLowerCase();
+			if("uri".equals(varLower)) {
+				if(val instanceof String) {
 					setUri((String)val);
+				}
 				saves.add("uri");
 				return val;
-			case "pageid":
-				if(val instanceof String)
+			} else if("pageid".equals(varLower)) {
+				if(val instanceof String) {
 					setPageId((String)val);
+				}
 				saves.add("pageId");
 				return val;
-			case "sequencenum":
-				if(val instanceof Long)
+			} else if("sequencenum".equals(varLower)) {
+				if(val instanceof Long) {
 					setSequenceNum((Long)val);
-				else if(val instanceof String)
-					setSequenceNum((String)val);
+				} else {
+					setSequenceNum(val == null ? null : val.toString());
+				}
 				saves.add("sequenceNum");
 				return val;
-			case "htmgroup":
-				if(val instanceof String)
+			} else if("htmgroup".equals(varLower)) {
+				if(val instanceof String) {
 					setHtmGroup((String)val);
+				}
 				saves.add("htmGroup");
 				return val;
-			case "labels":
-				if(val instanceof List<?>)
+			} else if("labels".equals(varLower)) {
+				if(val instanceof List<?>) {
 					((List<String>)val).stream().forEach(v -> addLabels(v));
-				else if(val instanceof JsonArray)
+				} else if(val instanceof JsonArray) {
 					((JsonArray)val).stream().forEach(v -> addLabels(v.toString()));
-				if(!saves.contains("labels"))
+				}
+				if(!saves.contains("labels")) {
 					saves.add("labels");
+				}
 				return val;
-			case "ebefore":
-				if(val instanceof String)
+			} else if("ebefore".equals(varLower)) {
+				if(val instanceof String) {
 					setEBefore((String)val);
+				}
 				saves.add("eBefore");
 				return val;
-			case "eafter":
-				if(val instanceof String)
+			} else if("eafter".equals(varLower)) {
+				if(val instanceof String) {
 					setEAfter((String)val);
+				}
 				saves.add("eAfter");
 				return val;
-			case "a":
-				if(val instanceof String)
+			} else if("a".equals(varLower)) {
+				if(val instanceof String) {
 					setA((String)val);
-				else if(val instanceof JsonObject)
+				} else if(val instanceof JsonObject) {
 					setA((JsonObject)val);
+				}
 				saves.add("a");
 				return val;
-			case "text":
-				if(val instanceof List<?>)
+			} else if("text".equals(varLower)) {
+				if(val instanceof List<?>) {
 					((List<String>)val).stream().forEach(v -> addText(v));
-				else if(val instanceof JsonArray)
+				} else if(val instanceof JsonArray) {
 					((JsonArray)val).stream().forEach(v -> addText(v.toString()));
-				if(!saves.contains("text"))
+				}
+				if(!saves.contains("text")) {
 					saves.add("text");
+				}
 				return val;
-			case "comment":
-				if(val instanceof List<?>)
+			} else if("comment".equals(varLower)) {
+				if(val instanceof List<?>) {
 					((List<String>)val).stream().forEach(v -> addComment(v));
-				else if(val instanceof JsonArray)
+				} else if(val instanceof JsonArray) {
 					((JsonArray)val).stream().forEach(v -> addComment(v.toString()));
-				if(!saves.contains("comment"))
+				}
+				if(!saves.contains("comment")) {
 					saves.add("comment");
+				}
 				return val;
-			case "tabs":
-				if(val instanceof String)
+			} else if("tabs".equals(varLower)) {
+				if(val instanceof String) {
 					setTabs((String)val);
+				}
 				saves.add("tabs");
 				return val;
-			case "newline":
-				if(val instanceof Boolean)
+			} else if("newline".equals(varLower)) {
+				if(val instanceof Boolean) {
 					setNewLine((Boolean)val);
-				else if(val instanceof String)
-					setNewLine((String)val);
+				} else {
+					setNewLine(val == null ? null : val.toString());
+				}
 				saves.add("newLine");
 				return val;
-			case "htmbefore":
-				if(val instanceof String)
+			} else if("htmbefore".equals(varLower)) {
+				if(val instanceof String) {
 					setHtmBefore((String)val);
+				}
 				saves.add("htmBefore");
 				return val;
-			case "htmafter":
-				if(val instanceof String)
+			} else if("htmafter".equals(varLower)) {
+				if(val instanceof String) {
 					setHtmAfter((String)val);
+				}
 				saves.add("htmAfter");
 				return val;
-			default:
+			} else {
 				return super.persistBaseResult(var, val);
-		}
+			}
 	}
 
 	/////////////

@@ -80,8 +80,6 @@ import io.vertx.sqlclient.SqlConnection;
 import org.computate.site.enus.model.user.SiteUser;
 import org.computate.site.enus.article.Article;
 import org.computate.site.enus.course.Course;
-import org.computate.site.enus.course.c001.C001;
-import org.computate.site.enus.course.c001.lesson.C001Lesson;
 import org.computate.site.enus.model.page.SitePage;
 import org.computate.site.enus.model.htm.SiteHtm;
 import org.computate.site.enus.model.pixelart.PixelArt;
@@ -334,10 +332,15 @@ public class WorkerVerticle extends WorkerVerticleGen<AbstractVerticle> {
 					promise.fail(ex);
 				});
 			} else {
-				vertx.setTimer(nextStartDuration.toMillis(), a -> {
-					importDataClass(classSimpleName, nextStartTime2);
-				});
-				promise.complete();
+				try {
+					vertx.setTimer(nextStartDuration.toMillis(), a -> {
+						importDataClass(classSimpleName, nextStartTime2);
+					});
+					promise.complete();
+				} catch(Exception ex) {
+					LOG.error(String.format(importTimerFail, classSimpleName), ex);
+					promise.fail(ex);
+				}
 			}
 		} else {
 			LOG.info(String.format(importTimerSkip, classSimpleName));
@@ -415,21 +418,11 @@ public class WorkerVerticle extends WorkerVerticleGen<AbstractVerticle> {
 				refreshData(SiteUser.CLASS_SIMPLE_NAME).onSuccess(q -> {
 					refreshData(Article.CLASS_SIMPLE_NAME).onSuccess(q1 -> {
 						refreshData(Course.CLASS_SIMPLE_NAME).onSuccess(q2 -> {
-							refreshData(C001.CLASS_SIMPLE_NAME).onSuccess(q3 -> {
-								refreshData(C001Lesson.CLASS_SIMPLE_NAME).onSuccess(q4 -> {
-									refreshData(SitePage.CLASS_SIMPLE_NAME).onSuccess(q5 -> {
-										refreshData(SiteHtm.CLASS_SIMPLE_NAME).onSuccess(q6 -> {
-											refreshData(PixelArt.CLASS_SIMPLE_NAME).onSuccess(q7 -> {
-												LOG.info(refreshAllDataComplete);
-												promise.complete();
-											}).onFailure(ex -> {
-												LOG.error(refreshAllDataFail, ex);
-												promise.fail(ex);
-											});
-										}).onFailure(ex -> {
-											LOG.error(refreshAllDataFail, ex);
-											promise.fail(ex);
-										});
+							refreshData(SitePage.CLASS_SIMPLE_NAME).onSuccess(q3 -> {
+								refreshData(SiteHtm.CLASS_SIMPLE_NAME).onSuccess(q4 -> {
+									refreshData(PixelArt.CLASS_SIMPLE_NAME).onSuccess(q5 -> {
+										LOG.info(refreshAllDataComplete);
+										promise.complete();
 									}).onFailure(ex -> {
 										LOG.error(refreshAllDataFail, ex);
 										promise.fail(ex);

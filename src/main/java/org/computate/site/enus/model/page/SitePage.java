@@ -48,19 +48,26 @@ import io.vertx.core.Promise;
  * ApiUri.SearchPage.enUS: /page
  * 
  * AName.enUS: an article
- * Color: 2017-navy-peony
+ * Color: 2017-shaded-spruce
  * IconGroup: duotone
  * IconName: newspaper
  * NameVar: page
  * 
- * Sort.asc: courseNum
- * Sort.asc: lessonNum
+ * Sort.desc: courseNum
+ * Sort.desc: lessonNum
  * 
  * PublicRead: true
  * Role.enUS: SiteAdmin
  * Description: An article in the site. 
  */
 public class SitePage extends SitePageGen<BaseResult> {
+
+	/**
+	 * {@inheritDoc}
+	 */
+	protected void _githubOrg(Wrap<String> w) {
+		w.o(siteRequest_.getConfig().getString(ConfigKeys.GITHUB_ORG));
+	}
 
 	/**
 	 * {@inheritDoc}
@@ -74,6 +81,34 @@ public class SitePage extends SitePageGen<BaseResult> {
 	 */
 	protected void _siteDisplayName(Wrap<String> w) {
 		w.o(siteRequest_.getConfig().getString(ConfigKeys.SITE_DISPLAY_NAME));
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	protected void _sitePublicUrl(Wrap<String> w) {
+		w.o(siteRequest_.getConfig().getString(ConfigKeys.SITE_PUBLIC_URL));
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	protected void _mailingListUrl(Wrap<String> w) {
+		w.o(siteRequest_.getConfig().getString(ConfigKeys.MAILING_LIST_URL));
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	protected void _quayioOrg(Wrap<String> w) {
+		w.o(siteRequest_.getConfig().getString(ConfigKeys.QUAYIO_ORG));
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	protected void _sitePomGroupId(Wrap<String> w) {
+		w.o(siteRequest_.getConfig().getString(ConfigKeys.SITE_POM_GROUP_ID));
 	}
 
 	/**
@@ -234,5 +269,15 @@ public class SitePage extends SitePageGen<BaseResult> {
 		if(h2 != null)
 			b.append(" ").append(h2);
 		w.o(b.toString());
+	}
+
+	@Override
+	protected void _objectId(Wrap<String> w) {
+		w.o(String.format("%s_%s", SitePage.CLASS_SIMPLE_NAME, pageId));
+	}
+
+	@Override
+	protected void _id(Wrap<String> w) {
+		w.o(String.format("%s_%s", SitePage.CLASS_SIMPLE_NAME, pageId));
 	}
 }

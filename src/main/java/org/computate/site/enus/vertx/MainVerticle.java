@@ -8,14 +8,6 @@ import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
-import org.apache.camel.CamelContext;
-import org.apache.camel.Exchange;
-import org.apache.camel.LoggingLevel;
-import org.apache.camel.builder.ExpressionBuilder;
-import org.apache.camel.builder.RouteBuilder;
-import org.apache.camel.component.vertx.VertxComponent;
-import org.apache.camel.impl.DefaultCamelContext;
-import org.apache.camel.model.dataformat.JsonLibrary;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.computate.search.tool.SearchTool;
@@ -36,8 +28,6 @@ import org.computate.site.enus.model.page.SitePageEnUSGenApiService;
 import org.computate.site.enus.model.htm.SiteHtmEnUSGenApiService;
 import org.computate.site.enus.article.ArticleEnUSGenApiService;
 import org.computate.site.enus.course.CourseEnUSGenApiService;
-import org.computate.site.enus.course.c001.C001EnUSGenApiService;
-import org.computate.site.enus.course.c001.lesson.C001LessonEnUSGenApiService;
 import org.computate.site.enus.model.page.SitePageEnUSGenApiService;
 import org.computate.site.enus.model.htm.SiteHtmEnUSGenApiService;
 import org.computate.site.enus.model.pixelart.PixelArtEnUSGenApiService;
@@ -116,36 +106,27 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 	private Integer workerPoolSize;
 	private Integer jdbcMaxPoolSize; 
 	private Integer jdbcMaxWaitQueueSize;
-	private CamelContext camelContext;
 
 	/**
 	 * A io.vertx.ext.jdbc.JDBCClient for connecting to the relational database PostgreSQL. 
 	 **/
 	private PgPool pgPool;
 
-	public PgPool getPgPool() {
-		return pgPool;
-	}
-
-	public void setPgPool(PgPool pgPool) {
-		this.pgPool = pgPool;
-	}
-
 	private WebClient webClient;
 
 	private Router router;
 
-	WorkerExecutor workerExecutor;
+	private WorkerExecutor workerExecutor;
 
-	OAuth2Auth oauth2AuthenticationProvider;
+	private OAuth2Auth oauth2AuthenticationProvider;
 
-	AuthorizationProvider authorizationProvider;
+	private AuthorizationProvider authorizationProvider;
 
-	HandlebarsTemplateEngine templateEngine;
+	private HandlebarsTemplateEngine templateEngine;
 
-	Handlebars handlebars;
+	private Handlebars handlebars;
 
-	TemplateHandler templateHandler;
+	private TemplateHandler templateHandler;
 
 	/**	
 	 *	The main method for the Vert.x application that runs the Vert.x Runner class
@@ -213,119 +194,124 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 
 	public static Future<Void> run(JsonObject config) {
 		Promise<Void> promise = Promise.promise();
-		Boolean enableZookeeperCluster = Optional.ofNullable(config.getBoolean(ConfigKeys.ENABLE_ZOOKEEPER_CLUSTER)).orElse(false);
-		VertxOptions vertxOptions = new VertxOptions();
-		EventBusOptions eventBusOptions = new EventBusOptions();
-
-		if(enableZookeeperCluster) {
-			JsonObject zkConfig = new JsonObject();
-			String hostname = config.getString(ConfigKeys.HOSTNAME);
-			String openshiftService = config.getString(ConfigKeys.OPENSHIFT_SERVICE);
-			String zookeeperHostName = config.getString(ConfigKeys.ZOOKEEPER_HOST_NAME);
-			Integer zookeeperPort = config.getInteger(ConfigKeys.ZOOKEEPER_PORT);
-			String zookeeperHosts = Optional.ofNullable(config.getString(ConfigKeys.ZOOKEEPER_HOSTS)).orElse(zookeeperHostName + ":" + zookeeperPort);
-			String clusterHostName = config.getString(ConfigKeys.CLUSTER_HOST_NAME);
-			Integer clusterPort = config.getInteger(ConfigKeys.CLUSTER_PORT);
-			String clusterPublicHostName = config.getString(ConfigKeys.CLUSTER_PUBLIC_HOST_NAME);
-			Integer clusterPublicPort = config.getInteger(ConfigKeys.CLUSTER_PUBLIC_PORT);
-			Integer zookeeperBaseSleepTimeMillis = config.getInteger(ConfigKeys.ZOOKEEPER_BASE_SLEEP_TIME_MILLIS);
-			Integer zookeeperMaxSleepMillis = config.getInteger(ConfigKeys.ZOOKEEPER_MAX_SLEEP_MILLIS);
-			Integer zookeeperMaxRetries = config.getInteger(ConfigKeys.ZOOKEEPER_MAX_RETRIES);
-			Integer zookeeperConnectionTimeoutMillis = config.getInteger(ConfigKeys.ZOOKEEPER_CONNECTION_TIMEOUT_MILLIS);
-			Integer zookeeperSessionTimeoutMillis = config.getInteger(ConfigKeys.ZOOKEEPER_SESSION_TIMEOUT_MILLIS);
-			zkConfig.put("zookeeperHosts", zookeeperHosts);
-			zkConfig.put("sessionTimeout", zookeeperSessionTimeoutMillis);
-			zkConfig.put("connectTimeout", zookeeperConnectionTimeoutMillis);
-			zkConfig.put("rootPath", "smart-village-view");
-			zkConfig.put("retry", new JsonObject()
-					.put("initialSleepTime", zookeeperBaseSleepTimeMillis)
-					.put("intervalTimes", zookeeperMaxSleepMillis)
-					.put("maxTimes", zookeeperMaxRetries)
-			);
-			ClusterManager clusterManager = new ZookeeperClusterManager(zkConfig);
-
-			if(clusterHostName == null) {
-				clusterHostName = hostname;
-			}
-			if(clusterPublicHostName == null) {
-				if(hostname != null && openshiftService != null) {
-					clusterPublicHostName = hostname + "." + openshiftService;
+		try {
+			Boolean enableZookeeperCluster = Optional.ofNullable(config.getBoolean(ConfigKeys.ENABLE_ZOOKEEPER_CLUSTER)).orElse(false);
+			VertxOptions vertxOptions = new VertxOptions();
+			EventBusOptions eventBusOptions = new EventBusOptions();
+	
+			if(enableZookeeperCluster) {
+				JsonObject zkConfig = new JsonObject();
+				String hostname = config.getString(ConfigKeys.HOSTNAME);
+				String openshiftService = config.getString(ConfigKeys.OPENSHIFT_SERVICE);
+				String zookeeperHostName = config.getString(ConfigKeys.ZOOKEEPER_HOST_NAME);
+				Integer zookeeperPort = config.getInteger(ConfigKeys.ZOOKEEPER_PORT);
+				String zookeeperHosts = Optional.ofNullable(config.getString(ConfigKeys.ZOOKEEPER_HOSTS)).orElse(zookeeperHostName + ":" + zookeeperPort);
+				String clusterHostName = config.getString(ConfigKeys.CLUSTER_HOST_NAME);
+				Integer clusterPort = config.getInteger(ConfigKeys.CLUSTER_PORT);
+				String clusterPublicHostName = config.getString(ConfigKeys.CLUSTER_PUBLIC_HOST_NAME);
+				Integer clusterPublicPort = config.getInteger(ConfigKeys.CLUSTER_PUBLIC_PORT);
+				Integer zookeeperBaseSleepTimeMillis = config.getInteger(ConfigKeys.ZOOKEEPER_BASE_SLEEP_TIME_MILLIS);
+				Integer zookeeperMaxSleepMillis = config.getInteger(ConfigKeys.ZOOKEEPER_MAX_SLEEP_MILLIS);
+				Integer zookeeperMaxRetries = config.getInteger(ConfigKeys.ZOOKEEPER_MAX_RETRIES);
+				Integer zookeeperConnectionTimeoutMillis = config.getInteger(ConfigKeys.ZOOKEEPER_CONNECTION_TIMEOUT_MILLIS);
+				Integer zookeeperSessionTimeoutMillis = config.getInteger(ConfigKeys.ZOOKEEPER_SESSION_TIMEOUT_MILLIS);
+				zkConfig.put("zookeeperHosts", zookeeperHosts);
+				zkConfig.put("sessionTimeout", zookeeperSessionTimeoutMillis);
+				zkConfig.put("connectTimeout", zookeeperConnectionTimeoutMillis);
+				zkConfig.put("rootPath", "smart-village-view");
+				zkConfig.put("retry", new JsonObject()
+						.put("initialSleepTime", zookeeperBaseSleepTimeMillis)
+						.put("intervalTimes", zookeeperMaxSleepMillis)
+						.put("maxTimes", zookeeperMaxRetries)
+				);
+				ClusterManager clusterManager = new ZookeeperClusterManager(zkConfig);
+	
+				if(clusterHostName == null) {
+					clusterHostName = hostname;
 				}
+				if(clusterPublicHostName == null) {
+					if(hostname != null && openshiftService != null) {
+						clusterPublicHostName = hostname + "." + openshiftService;
+					}
+				}
+				if(clusterHostName != null) {
+					LOG.info(String.format("%s: %s", ConfigKeys.CLUSTER_HOST_NAME, clusterHostName));
+					eventBusOptions.setHost(clusterHostName);
+				}
+				if(clusterPort != null) {
+					LOG.info(String.format("%s: %s", ConfigKeys.CLUSTER_PORT, clusterPort));
+					eventBusOptions.setPort(clusterPort);
+				}
+				if(clusterPublicHostName != null) {
+					LOG.info(String.format("%s: %s", ConfigKeys.CLUSTER_PUBLIC_HOST_NAME, clusterPublicHostName));
+					eventBusOptions.setClusterPublicHost(clusterPublicHostName);
+				}
+				if(clusterPublicPort != null) {
+					LOG.info(String.format("%s: %s", ConfigKeys.CLUSTER_PUBLIC_PORT, clusterPublicPort));
+					eventBusOptions.setClusterPublicPort(clusterPublicPort);
+				}
+				vertxOptions.setClusterManager(clusterManager);
 			}
-			if(clusterHostName != null) {
-				LOG.info(String.format("%s: %s", ConfigKeys.CLUSTER_HOST_NAME, clusterHostName));
-				eventBusOptions.setHost(clusterHostName);
-			}
-			if(clusterPort != null) {
-				LOG.info(String.format("%s: %s", ConfigKeys.CLUSTER_PORT, clusterPort));
-				eventBusOptions.setPort(clusterPort);
-			}
-			if(clusterPublicHostName != null) {
-				LOG.info(String.format("%s: %s", ConfigKeys.CLUSTER_PUBLIC_HOST_NAME, clusterPublicHostName));
-				eventBusOptions.setClusterPublicHost(clusterPublicHostName);
-			}
-			if(clusterPublicPort != null) {
-				LOG.info(String.format("%s: %s", ConfigKeys.CLUSTER_PUBLIC_PORT, clusterPublicPort));
-				eventBusOptions.setClusterPublicPort(clusterPublicPort);
-			}
-			vertxOptions.setClusterManager(clusterManager);
-		}
-		Long vertxWarningExceptionSeconds = config.getLong(ConfigKeys.VERTX_WARNING_EXCEPTION_SECONDS);
-		Long vertxMaxEventLoopExecuteTime = config.getLong(ConfigKeys.VERTX_MAX_EVENT_LOOP_EXECUTE_TIME);
-		Integer siteInstances = config.getInteger(ConfigKeys.SITE_INSTANCES);
-		vertxOptions.setEventBusOptions(eventBusOptions);
-		vertxOptions.setWarningExceptionTime(vertxWarningExceptionSeconds);
-		vertxOptions.setWarningExceptionTimeUnit(TimeUnit.SECONDS);
-		vertxOptions.setMaxEventLoopExecuteTime(vertxMaxEventLoopExecuteTime);
-		vertxOptions.setMaxEventLoopExecuteTimeUnit(TimeUnit.SECONDS);
-		vertxOptions.setWorkerPoolSize(config.getInteger(ConfigKeys.WORKER_POOL_SIZE));
-		Consumer<Vertx> runner = vertx -> {
-			try {
-				DeploymentOptions deploymentOptions = new DeploymentOptions();
-				deploymentOptions.setInstances(siteInstances);
-				deploymentOptions.setConfig(config);
-	
-				DeploymentOptions emailVerticleDeploymentOptions = new DeploymentOptions();
-				emailVerticleDeploymentOptions.setConfig(config);
-				emailVerticleDeploymentOptions.setWorker(true);
-	
-				DeploymentOptions WorkerVerticleDeploymentOptions = new DeploymentOptions();
-				WorkerVerticleDeploymentOptions.setConfig(config);
-				WorkerVerticleDeploymentOptions.setInstances(1);
-	
-				vertx.deployVerticle(MainVerticle.class, deploymentOptions).onSuccess(a -> {
-					LOG.info("Started main verticle. ");
-					vertx.deployVerticle(WorkerVerticle.class, WorkerVerticleDeploymentOptions).onSuccess(b -> {
-						LOG.info("Started worker verticle. ");
-						vertx.deployVerticle(EmailVerticle.class, emailVerticleDeploymentOptions).onSuccess(c -> {
-							LOG.info("Started email verticle. ");
+			Long vertxWarningExceptionSeconds = config.getLong(ConfigKeys.VERTX_WARNING_EXCEPTION_SECONDS);
+			Long vertxMaxEventLoopExecuteTime = config.getLong(ConfigKeys.VERTX_MAX_EVENT_LOOP_EXECUTE_TIME);
+			Integer siteInstances = config.getInteger(ConfigKeys.SITE_INSTANCES);
+			vertxOptions.setEventBusOptions(eventBusOptions);
+			vertxOptions.setWarningExceptionTime(vertxWarningExceptionSeconds);
+			vertxOptions.setWarningExceptionTimeUnit(TimeUnit.SECONDS);
+			vertxOptions.setMaxEventLoopExecuteTime(vertxMaxEventLoopExecuteTime);
+			vertxOptions.setMaxEventLoopExecuteTimeUnit(TimeUnit.SECONDS);
+			vertxOptions.setWorkerPoolSize(config.getInteger(ConfigKeys.WORKER_POOL_SIZE));
+			Consumer<Vertx> runner = vertx -> {
+				try {
+					DeploymentOptions deploymentOptions = new DeploymentOptions();
+					deploymentOptions.setInstances(siteInstances);
+					deploymentOptions.setConfig(config);
+		
+					DeploymentOptions emailVerticleDeploymentOptions = new DeploymentOptions();
+					emailVerticleDeploymentOptions.setConfig(config);
+					emailVerticleDeploymentOptions.setWorker(true);
+		
+					DeploymentOptions WorkerVerticleDeploymentOptions = new DeploymentOptions();
+					WorkerVerticleDeploymentOptions.setConfig(config);
+					WorkerVerticleDeploymentOptions.setInstances(1);
+		
+					vertx.deployVerticle(MainVerticle.class, deploymentOptions).onSuccess(a -> {
+						LOG.info("Started main verticle. ");
+						vertx.deployVerticle(WorkerVerticle.class, WorkerVerticleDeploymentOptions).onSuccess(b -> {
+							LOG.info("Started worker verticle. ");
+							vertx.deployVerticle(EmailVerticle.class, emailVerticleDeploymentOptions).onSuccess(c -> {
+								LOG.info("Started email verticle. ");
+							}).onFailure(ex -> {
+								LOG.error("Failed to start worker verticle. ", ex);
+							});
 						}).onFailure(ex -> {
 							LOG.error("Failed to start worker verticle. ", ex);
 						});
 					}).onFailure(ex -> {
-						LOG.error("Failed to start worker verticle. ", ex);
+						LOG.error("Failed to start main verticle. ", ex);
 					});
+				} catch (Throwable ex) {
+					LOG.error("Creating clustered Vertx failed. ", ex);
+					ExceptionUtils.rethrow(ex);
+				}
+			};
+	
+			if(enableZookeeperCluster) {
+				Vertx.clusteredVertx(vertxOptions).onSuccess(vertx -> {
+					runner.accept(vertx);
+					promise.complete();
 				}).onFailure(ex -> {
-					LOG.error("Failed to start main verticle. ", ex);
+					LOG.error("Creating clustered Vertx failed. ", ex);
+					promise.fail(ex);
 				});
-			} catch (Throwable ex) {
-				LOG.error("Creating clustered Vertx failed. ", ex);
-				ExceptionUtils.rethrow(ex);
-			}
-		};
-
-		if(enableZookeeperCluster) {
-			Vertx.clusteredVertx(vertxOptions).onSuccess(vertx -> {
+			} else {
+				Vertx vertx = Vertx.vertx(vertxOptions);
 				runner.accept(vertx);
 				promise.complete();
-			}).onFailure(ex -> {
-				LOG.error("Creating clustered Vertx failed. ", ex);
-				promise.fail(ex);
-			});
-		} else {
-			Vertx vertx = Vertx.vertx(vertxOptions);
-			runner.accept(vertx);
-			promise.complete();
+			}
+		} catch (Throwable ex) {
+			LOG.error("Creating clustered Vertx failed. ", ex);
+			promise.fail(ex);
 		}
 		return promise.future();
 	}
@@ -368,7 +354,7 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 
 	/**	
 	 **/
-	private Future<Void> configureWebClient() {
+	public Future<Void> configureWebClient() {
 		Promise<Void> promise = Promise.promise();
 
 		try {
@@ -394,7 +380,7 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 	 *	Return a promise that configures a shared database client connection. 
 	 *	Load the database configuration into a shared io.vertx.ext.jdbc.JDBCClient for a scalable, clustered datasource connection pool. 
 	 **/
-	private Future<Void> configureData() {
+	public Future<Void> configureData() {
 		Promise<Void> promise = Promise.promise();
 		try {
 			PgConnectOptions pgOptions = new PgConnectOptions();
@@ -435,7 +421,7 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 	 *	Setup a logout route for logging out completely of the application. 
 	 *	Return a promise that configures the authentication server and OpenAPI. 
 	 **/
-	private Future<Void> configureOpenApi() {
+	public Future<Void> configureOpenApi() {
 		Promise<Void> promise = Promise.promise();
 		try {
 			String siteBaseUrl = config().getString(ConfigKeys.SITE_BASE_URL);
@@ -619,7 +605,7 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 	 *	Configure a shared worker executor for running blocking tasks in the background. 
 	 *	Return a promise that configures the shared worker executor. 
 	 **/
-	private Future<Void> configureSharedWorkerExecutor() {
+	public Future<Void> configureSharedWorkerExecutor() {
 		Promise<Void> promise = Promise.promise();
 		try {
 			String name = "MainVerticle-WorkerExecutor";
@@ -644,7 +630,7 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 	 *	Configure health checks for the status of the website and it's dependent services. 
 	 *	Return a promise that configures the health checks. 
 	 **/
-	private Future<Void> configureHealthChecks() {
+	public Future<Void> configureHealthChecks() {
 		Promise<Void> promise = Promise.promise();
 		try {
 			ClusterManager clusterManager = ((VertxImpl)vertx).getClusterManager();
@@ -681,7 +667,7 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 	 * Val.Complete.enUS:Configure websockets succeeded. 
 	 * Val.Fail.enUS:Configure websockets failed. 
 	 **/
-	private Future<Void> configureWebsockets() {
+	public Future<Void> configureWebsockets() {
 		Promise<Void> promise = Promise.promise();
 		try {
 			SockJSBridgeOptions options = new SockJSBridgeOptions()
@@ -702,7 +688,7 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 	 * Val.Complete.enUS:Configure sending email succeeded. 
 	 * Val.Fail.enUS:Configure sending email failed. 
 	 **/
-	private Future<Void> configureEmail() {
+	public Future<Void> configureEmail() {
 		Promise<Void> promise = Promise.promise();
 		try {
 			String emailHost = config().getString(ConfigKeys.EMAIL_HOST);
@@ -731,7 +717,7 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 	 * Val.Fail.enUS:Handlebars was not configured properly. 
 	 * Val.Complete.enUS:Handlebars was configured properly. 
 	 */
-	private Future<Void> configureHandlebars() {
+	public Future<Void> configureHandlebars() {
 		Promise<Void> promise = Promise.promise();
 		try {
 			templateEngine = HandlebarsTemplateEngine.create(vertx);
@@ -763,14 +749,12 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 	 * Val.Fail.enUS:The API was not configured properly. 
 	 * Val.Complete.enUS:The API was configured properly. 
 	 */
-	private Future<Void> configureApi() {
+	public Future<Void> configureApi() {
 		Promise<Void> promise = Promise.promise();
 		try {
 			SiteUserEnUSGenApiService.registerService(vertx.eventBus(), config(), workerExecutor, pgPool, webClient, oauth2AuthenticationProvider, authorizationProvider, templateEngine, vertx);
 			ArticleEnUSGenApiService.registerService(vertx.eventBus(), config(), workerExecutor, pgPool, webClient, oauth2AuthenticationProvider, authorizationProvider, templateEngine, vertx);
 			CourseEnUSGenApiService.registerService(vertx.eventBus(), config(), workerExecutor, pgPool, webClient, oauth2AuthenticationProvider, authorizationProvider, templateEngine, vertx);
-			C001EnUSGenApiService.registerService(vertx.eventBus(), config(), workerExecutor, pgPool, webClient, oauth2AuthenticationProvider, authorizationProvider, templateEngine, vertx);
-			C001LessonEnUSGenApiService.registerService(vertx.eventBus(), config(), workerExecutor, pgPool, webClient, oauth2AuthenticationProvider, authorizationProvider, templateEngine, vertx);
 			SitePageEnUSGenApiService.registerService(vertx.eventBus(), config(), workerExecutor, pgPool, webClient, oauth2AuthenticationProvider, authorizationProvider, templateEngine, vertx);
 			SiteHtmEnUSGenApiService.registerService(vertx.eventBus(), config(), workerExecutor, pgPool, webClient, oauth2AuthenticationProvider, authorizationProvider, templateEngine, vertx);
 			PixelArtEnUSGenApiService.registerService(vertx.eventBus(), config(), workerExecutor, pgPool, webClient, oauth2AuthenticationProvider, authorizationProvider, templateEngine, vertx);
@@ -788,7 +772,7 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 	 * Val.Fail.enUS:The UI was not configured properly. 
 	 * Val.Complete.enUS:The UI was configured properly. 
 	 */
-	private Future<Void> configureUi() {
+	public Future<Void> configureUi() {
 		Promise<Void> promise = Promise.promise();
 		try {
 			String staticPath = config().getString(ConfigKeys.STATIC_PATH);
@@ -990,7 +974,7 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 	 * Val.Fail.enUS:The Camel Component was not configured properly. 
 	 * Val.Complete.enUS:The Camel Component was configured properly. 
 	 */
-	private Future<Void> configureCamel() {
+	public Future<Void> configureCamel() {
 		Promise<Void> promise = Promise.promise();
 		promise.complete();
 
@@ -1006,7 +990,7 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 	 * 
 	 *	Start the Vert.x server. 
 	 **/
-	private Future<Void> startServer() {
+	public Future<Void> startServer() {
 		Promise<Void> promise = Promise.promise();
 
 		try {
@@ -1078,5 +1062,109 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 		}
 
 		return s;
+	}
+
+	public Integer getSiteInstances() {
+		return siteInstances;
+	}
+
+	public void setSiteInstances(Integer siteInstances) {
+		this.siteInstances = siteInstances;
+	}
+
+	public Integer getWorkerPoolSize() {
+		return workerPoolSize;
+	}
+
+	public void setWorkerPoolSize(Integer workerPoolSize) {
+		this.workerPoolSize = workerPoolSize;
+	}
+
+	public Integer getJdbcMaxPoolSize() {
+		return jdbcMaxPoolSize;
+	}
+
+	public void setJdbcMaxPoolSize(Integer jdbcMaxPoolSize) {
+		this.jdbcMaxPoolSize = jdbcMaxPoolSize;
+	}
+
+	public Integer getJdbcMaxWaitQueueSize() {
+		return jdbcMaxWaitQueueSize;
+	}
+
+	public void setJdbcMaxWaitQueueSize(Integer jdbcMaxWaitQueueSize) {
+		this.jdbcMaxWaitQueueSize = jdbcMaxWaitQueueSize;
+	}
+
+	public PgPool getPgPool() {
+		return pgPool;
+	}
+
+	public void setPgPool(PgPool pgPool) {
+		this.pgPool = pgPool;
+	}
+
+	public WebClient getWebClient() {
+		return webClient;
+	}
+
+	public void setWebClient(WebClient webClient) {
+		this.webClient = webClient;
+	}
+
+	public Router getRouter() {
+		return router;
+	}
+
+	public void setRouter(Router router) {
+		this.router = router;
+	}
+
+	public WorkerExecutor getWorkerExecutor() {
+		return workerExecutor;
+	}
+
+	public void setWorkerExecutor(WorkerExecutor workerExecutor) {
+		this.workerExecutor = workerExecutor;
+	}
+
+	public OAuth2Auth getOauth2AuthenticationProvider() {
+		return oauth2AuthenticationProvider;
+	}
+
+	public void setOauth2AuthenticationProvider(OAuth2Auth oauth2AuthenticationProvider) {
+		this.oauth2AuthenticationProvider = oauth2AuthenticationProvider;
+	}
+
+	public AuthorizationProvider getAuthorizationProvider() {
+		return authorizationProvider;
+	}
+
+	public void setAuthorizationProvider(AuthorizationProvider authorizationProvider) {
+		this.authorizationProvider = authorizationProvider;
+	}
+
+	public HandlebarsTemplateEngine getTemplateEngine() {
+		return templateEngine;
+	}
+
+	public void setTemplateEngine(HandlebarsTemplateEngine templateEngine) {
+		this.templateEngine = templateEngine;
+	}
+
+	public Handlebars getHandlebars() {
+		return handlebars;
+	}
+
+	public void setHandlebars(Handlebars handlebars) {
+		this.handlebars = handlebars;
+	}
+
+	public TemplateHandler getTemplateHandler() {
+		return templateHandler;
+	}
+
+	public void setTemplateHandler(TemplateHandler templateHandler) {
+		this.templateHandler = templateHandler;
 	}
 }
