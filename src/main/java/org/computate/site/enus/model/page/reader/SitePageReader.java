@@ -2,6 +2,8 @@ package org.computate.site.enus.model.page.reader;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -11,6 +13,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Stack;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -90,14 +94,24 @@ public class SitePageReader extends SitePageReaderGen<Object> {
 	public Future<Void> importDataSitePage() {
 		Promise<Void> promise = Promise.promise();
 		ZonedDateTime now = ZonedDateTime.now(ZoneId.of(config.getString(ConfigKeys.SITE_ZONE)));
-		String dynamicPagePath = config.getString(ConfigKeys.DYNAMIC_PAGE_PATH);
-		File pageDir = new File(Optional.ofNullable(dynamicPagePath).orElse(getClass().getClassLoader().getResource("page").getFile()));
-		String[] fileNames = pageDir.list(new PatternFilenameFilter("^.*.yml$"));
+		List<String> dynamicPagePaths = Optional.ofNullable(config.getValue(ConfigKeys.DYNAMIC_PAGE_PATHS)).map(v -> v instanceof JsonArray ? (JsonArray)v : new JsonArray(v.toString())).orElse(new JsonArray()).stream().map(o -> o.toString()).collect(Collectors.toList());
+		List<String> pagePaths = new ArrayList<>();
+		dynamicPagePaths.forEach(dynamicPagePath -> {
+			try {
+				try(Stream<Path> stream = Files.walk(Paths.get(dynamicPagePath))) {
+					stream.filter(Files::isRegularFile).filter(p -> p.getFileName().toString().endsWith(".yml")).forEach(path -> {
+						pagePaths.add(path.toAbsolutePath().toString());
+					});
+				}
+			} catch(Exception ex) {
+				ExceptionUtils.rethrow(ex);
+			}
+		});
 		List<Future> futures = new ArrayList<>();
 		YamlProcessor yamlProcessor = new YamlProcessor();
 
-		for(String fileName : fileNames) {
-			futures.add(importSitePage(yamlProcessor, Paths.get(pageDir.getAbsolutePath(), fileName).toString()));
+		for(String pagePath : pagePaths) {
+			futures.add(importSitePage(yamlProcessor, pagePath));
 		}
 		CompositeFuture.all(futures).onSuccess(a -> {
 			String solrHostName = config.getString(ComputateConfigKeys.SOLR_HOST_NAME);

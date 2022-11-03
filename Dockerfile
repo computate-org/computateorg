@@ -5,12 +5,14 @@ MAINTAINER Christopher Tate <computate@computate.org>
 ENV APP_DEPENDENCIES="git java-11-openjdk-devel maven"
 
 USER root
-COPY . /root/src/computateorg
+COPY . /home/jboss/computateorg
 
 RUN yum install -y ${APP_DEPENDENCIES}
 RUN git clone https://github.com/computate-org/computate.git /root/src/computate
-WORKDIR /root/src/computateorg
+RUN git clone https://github.com/computate-org/computate-search.git /root/src/computate-search
+RUN git clone https://github.com/computate-org/computate-vertx.git /root/src/computate-vertx
+WORKDIR /home/jboss/computateorg
 RUN mvn clean install -DskipTests
-RUN cp /root/src/computateorg/target/*.jar /root/src/computateorg/app.jar
+RUN cp /home/jboss/computateorg/target/*.jar /home/jboss/app.jar
 CMD java $JAVA_OPTS -cp .:* org.computate.site.enus.vertx.MainVerticle
 
