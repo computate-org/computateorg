@@ -75,6 +75,28 @@ import org.computate.search.response.solr.SolrResponse;
  * <p>This class contains a comment <b>"Rows: 10"</b>, which means the PixelArt API will return a default of 10 records instead of 10 by default. 
  * Each API has built in pagination of the search records to ensure a user can query all the data a page at a time without running the application out of memory. 
  * </p>
+ * <p>
+ *   This class contains a comment <b>"Promise: true"</b>
+ *   Sometimes a Java class must be initialized asynchronously when it involves calling a blocking API. 
+ *   This means that the PixelArt Java class has promiseDeep methods which must be initialized asynchronously as a Vert.x Promise  instead of initDeep methods which are a simple non-asynchronous method. 
+ * </p>
+ * <p>
+ *   Adding protected void methods beginning with an underscore with a Promise as the only parameter will automatically set `Promise: true`. 
+ * </p>
+ * <p>
+ *   <pre>
+ *   
+ *   	protected void _promiseBefore(Promise&lt;Void&gt; promise) {
+ *   		promise.complete();
+ *   	}
+ *   </pre>
+ * </p>
+ * <p>
+ *   Java classes with the `Model: true` will automatically set `Promise: true`. 
+ * </p>
+ * <p>
+ *   If a super class of this Java class with `Model: true`, then the child class will also inherit `Promise: true`. 
+ * </p>
  * <p>This class contains a comment <b>"AName.enUS: a pixel art"</b>, which identifies the language context to describe a PixelArt as "a pixel art". 
  * </p>
  * <p>This class contains a comment <b>"Color: blue"</b>, which styles the PixelArt page "blue". 
@@ -457,19 +479,21 @@ public abstract class PixelArtGen<DEV> extends BaseModel {
 		return o != null;
 	}
 	public Object persistPixelArt(String var, Object val) {
-		switch(var.toLowerCase()) {
-			case "base64data":
-				if(val instanceof String)
+		String varLower = var.toLowerCase();
+			if("base64data".equals(varLower)) {
+				if(val instanceof String) {
 					setBase64Data((String)val);
+				}
 				saves.add("base64Data");
 				return val;
-			case "pixelartname":
-				if(val instanceof String)
+			} else if("pixelartname".equals(varLower)) {
+				if(val instanceof String) {
 					setPixelArtName((String)val);
+				}
 				saves.add("pixelArtName");
 				return val;
-			default:
-				return super.persistBaseModel(var, val);
+		} else {
+			return super.persistBaseModel(var, val);
 		}
 	}
 

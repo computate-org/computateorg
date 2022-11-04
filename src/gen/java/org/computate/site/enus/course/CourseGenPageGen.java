@@ -60,6 +60,28 @@ import io.vertx.core.Future;
  * The extended class contains many generated fields, getters, setters, initialization code, and helper methods to help build a website and API fast, reactive, and scalable. 
  * </p>
  * <p>
+ *   This class contains a comment <b>"Promise: true"</b>
+ *   Sometimes a Java class must be initialized asynchronously when it involves calling a blocking API. 
+ *   This means that the CourseGenPage Java class has promiseDeep methods which must be initialized asynchronously as a Vert.x Promise  instead of initDeep methods which are a simple non-asynchronous method. 
+ * </p>
+ * <p>
+ *   Adding protected void methods beginning with an underscore with a Promise as the only parameter will automatically set `Promise: true`. 
+ * </p>
+ * <p>
+ *   <pre>
+ *   
+ *   	protected void _promiseBefore(Promise&lt;Void&gt; promise) {
+ *   		promise.complete();
+ *   	}
+ *   </pre>
+ * </p>
+ * <p>
+ *   Java classes with the `Model: true` will automatically set `Promise: true`. 
+ * </p>
+ * <p>
+ *   If a super class of this Java class with `Model: true`, then the child class will also inherit `Promise: true`. 
+ * </p>
+ * <p>
  * Delete the class CourseGenPage in Solr: 
  * curl 'http://localhost:8983/solr/computate/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;classeNomCanonique_enUS_indexed_string:org.computate.site.enus.course.CourseGenPage&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'
  * </p>

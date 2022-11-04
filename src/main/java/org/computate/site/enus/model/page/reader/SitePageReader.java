@@ -19,13 +19,15 @@ import java.util.stream.Stream;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.computate.frFR.java.EcrireGenClasse;
+import org.computate.frFR.java.EcrireToutesClasses;
 import org.computate.search.serialize.ComputateZonedDateTimeSerializer;
 import org.computate.search.tool.XmlTool;
 import org.computate.search.wrap.Wrap;
 import org.computate.site.enus.config.ConfigKeys;
-import org.computate.site.enus.request.SiteRequestEnUS;
-import org.computate.site.enus.model.page.SitePage;
 import org.computate.site.enus.model.htm.SiteHtm;
+import org.computate.site.enus.model.page.SitePage;
+import org.computate.site.enus.request.SiteRequestEnUS;
 import org.computate.vertx.config.ComputateConfigKeys;
 
 import com.github.jknack.handlebars.Context;
@@ -100,7 +102,21 @@ public class SitePageReader extends SitePageReaderGen<Object> {
 		YamlProcessor yamlProcessor = new YamlProcessor();
 
 		i18nGeneratorPath(i18n, yamlProcessor, i18nPaths, 0).onSuccess(i18n2 -> {
-			promise.complete(i18n2);
+			vertx.fileSystem().readFile(String.format("%s/src/main/resources/org/computate/site/enus/computate/solr/TrafficSimulation.json", config.getString(ConfigKeys.SITE_SRC))).onSuccess(buffer -> {
+				try {
+					JsonObject classJson = new JsonObject(buffer);
+					EcrireToutesClasses ecrireClasse = new EcrireToutesClasses();
+					ecrireClasse.ecrireGenClasse(classJson, "enUS");
+					ecrireClasse.ecrireClasseCommentaire(i18n2, config.getString(ConfigKeys.SITE_NAME));
+					promise.complete(i18n2);
+				} catch(Exception ex) {
+					LOG.error(String.format(i18nGeneratorFail, SitePage.CLASS_SIMPLE_NAME), ex);
+					promise.fail(ex);
+				}
+			}).onFailure(ex -> {
+				LOG.error(String.format(i18nGeneratorFail, SitePage.CLASS_SIMPLE_NAME), ex);
+				promise.fail(ex);
+			});
 		}).onFailure(ex -> {
 			LOG.error(String.format(i18nGeneratorFail, SitePage.CLASS_SIMPLE_NAME), ex);
 			promise.fail(ex);

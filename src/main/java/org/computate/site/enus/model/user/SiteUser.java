@@ -37,7 +37,6 @@ import org.computate.site.enus.request.SiteRequestEnUS;
  * Color:  2017-shaded-spruce
  * IconGroup: regular
  * IconName: user-cog
- * NameVar.enUS: user
  * 
  * RoleUser: true
  * Role.enUS: SiteAdmin

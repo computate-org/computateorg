@@ -80,6 +80,28 @@ import io.vertx.core.json.JsonObject;
  * </p>
  * <p>This class contains a comment <b>"ApiUri: /api/course"</b>, which defines the base API URI for Course objects as "/api/course" in the OpenAPI spec. 
  * </p>
+ * <p>
+ *   This class contains a comment <b>"Promise: true"</b>
+ *   Sometimes a Java class must be initialized asynchronously when it involves calling a blocking API. 
+ *   This means that the Course Java class has promiseDeep methods which must be initialized asynchronously as a Vert.x Promise  instead of initDeep methods which are a simple non-asynchronous method. 
+ * </p>
+ * <p>
+ *   Adding protected void methods beginning with an underscore with a Promise as the only parameter will automatically set `Promise: true`. 
+ * </p>
+ * <p>
+ *   <pre>
+ *   
+ *   	protected void _promiseBefore(Promise&lt;Void&gt; promise) {
+ *   		promise.complete();
+ *   	}
+ *   </pre>
+ * </p>
+ * <p>
+ *   Java classes with the `Model: true` will automatically set `Promise: true`. 
+ * </p>
+ * <p>
+ *   If a super class of this Java class with `Model: true`, then the child class will also inherit `Promise: true`. 
+ * </p>
  * <p>This class contains a comment <b>"AName.enUS: a course"</b>, which identifies the language context to describe a Course as "a course". 
  * </p>
  * <p>This class contains a comment <b>"Color: green"</b>, which styles the Course page "green". 
@@ -447,10 +469,8 @@ public abstract class CourseGen<DEV> extends Article {
 		return o != null;
 	}
 	public Object persistCourse(String var, Object val) {
-		switch(var.toLowerCase()) {
-			default:
-				return super.persistArticle(var, val);
-		}
+		String varLower = var.toLowerCase();
+		return super.persistArticle(var, val);
 	}
 
 	/////////////

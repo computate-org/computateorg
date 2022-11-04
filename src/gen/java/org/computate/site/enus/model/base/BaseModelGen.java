@@ -87,6 +87,28 @@ import org.computate.search.response.solr.SolrResponse;
  * This means that the newly created class org.computate.site.enus.model.base.BaseModelPage extends org.computate.site.enus.page.PageLayout. 
  * </p>
  * <p>
+ *   This class contains a comment <b>"Promise: true"</b>
+ *   Sometimes a Java class must be initialized asynchronously when it involves calling a blocking API. 
+ *   This means that the BaseModel Java class has promiseDeep methods which must be initialized asynchronously as a Vert.x Promise  instead of initDeep methods which are a simple non-asynchronous method. 
+ * </p>
+ * <p>
+ *   Adding protected void methods beginning with an underscore with a Promise as the only parameter will automatically set `Promise: true`. 
+ * </p>
+ * <p>
+ *   <pre>
+ *   
+ *   	protected void _promiseBefore(Promise&lt;Void&gt; promise) {
+ *   		promise.complete();
+ *   	}
+ *   </pre>
+ * </p>
+ * <p>
+ *   Java classes with the `Model: true` will automatically set `Promise: true`. 
+ * </p>
+ * <p>
+ *   If a super class of this Java class with `Model: true`, then the child class will also inherit `Promise: true`. 
+ * </p>
+ * <p>
  * Delete the class BaseModel in Solr: 
  * curl 'http://localhost:8983/solr/computate/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;classeNomCanonique_enUS_indexed_string:org.computate.site.enus.model.base.BaseModel&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'
  * </p>
@@ -1678,49 +1700,53 @@ public abstract class BaseModelGen<DEV> extends Object {
 		return o != null;
 	}
 	public Object persistBaseModel(String var, Object val) {
-		switch(var.toLowerCase()) {
-			case "inheritpk":
-				if(val instanceof String)
+		String varLower = var.toLowerCase();
+			if("inheritpk".equals(varLower)) {
+				if(val instanceof String) {
 					setInheritPk((String)val);
+				}
 				saves.add("inheritPk");
 				return val;
-			case "created":
-				if(val instanceof ZonedDateTime)
-					setCreated((ZonedDateTime)val);
-				else if(val instanceof String)
+			} else if("created".equals(varLower)) {
+				if(val instanceof String) {
 					setCreated((String)val);
-				else if(val instanceof OffsetDateTime)
+				} else if(val instanceof OffsetDateTime) {
 					setCreated(((OffsetDateTime)val).atZoneSameInstant(ZoneId.of(siteRequest_.getConfig().getString(ConfigKeys.SITE_ZONE))));
+				}
 				saves.add("created");
 				return val;
-			case "archived":
-				if(val instanceof Boolean)
+			} else if("archived".equals(varLower)) {
+				if(val instanceof Boolean) {
 					setArchived((Boolean)val);
-				else if(val instanceof String)
-					setArchived((String)val);
+				} else {
+					setArchived(val == null ? null : val.toString());
+				}
 				saves.add("archived");
 				return val;
-			case "deleted":
-				if(val instanceof Boolean)
+			} else if("deleted".equals(varLower)) {
+				if(val instanceof Boolean) {
 					setDeleted((Boolean)val);
-				else if(val instanceof String)
-					setDeleted((String)val);
+				} else {
+					setDeleted(val == null ? null : val.toString());
+				}
 				saves.add("deleted");
 				return val;
-			case "sessionid":
-				if(val instanceof String)
+			} else if("sessionid".equals(varLower)) {
+				if(val instanceof String) {
 					setSessionId((String)val);
+				}
 				saves.add("sessionId");
 				return val;
-			case "userkey":
-				if(val instanceof Long)
+			} else if("userkey".equals(varLower)) {
+				if(val instanceof Long) {
 					setUserKey((Long)val);
-				else if(val instanceof String)
-					setUserKey((String)val);
+				} else {
+					setUserKey(val == null ? null : val.toString());
+				}
 				saves.add("userKey");
 				return val;
-			default:
-				return null;
+		} else {
+			return null;
 		}
 	}
 

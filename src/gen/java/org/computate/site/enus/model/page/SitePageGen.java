@@ -81,6 +81,28 @@ import io.vertx.core.json.JsonObject;
  * </p>
  * <p>This class contains a comment <b>"ApiUri: /api/page"</b>, which defines the base API URI for SitePage objects as "/api/page" in the OpenAPI spec. 
  * </p>
+ * <p>
+ *   This class contains a comment <b>"Promise: true"</b>
+ *   Sometimes a Java class must be initialized asynchronously when it involves calling a blocking API. 
+ *   This means that the SitePage Java class has promiseDeep methods which must be initialized asynchronously as a Vert.x Promise  instead of initDeep methods which are a simple non-asynchronous method. 
+ * </p>
+ * <p>
+ *   Adding protected void methods beginning with an underscore with a Promise as the only parameter will automatically set `Promise: true`. 
+ * </p>
+ * <p>
+ *   <pre>
+ *   
+ *   	protected void _promiseBefore(Promise&lt;Void&gt; promise) {
+ *   		promise.complete();
+ *   	}
+ *   </pre>
+ * </p>
+ * <p>
+ *   Java classes with the `Model: true` will automatically set `Promise: true`. 
+ * </p>
+ * <p>
+ *   If a super class of this Java class with `Model: true`, then the child class will also inherit `Promise: true`. 
+ * </p>
  * <p>This class contains a comment <b>"AName.enUS: an article"</b>, which identifies the language context to describe a SitePage as "an article". 
  * </p>
  * <p>This class contains a comment <b>"Color: 2017-shaded-spruce"</b>, which styles the SitePage page "2017-shaded-spruce". 
@@ -1712,9 +1734,9 @@ public abstract class SitePageGen<DEV> extends BaseResult {
 				}
 				saves.add("pageImageUri");
 				return val;
-			} else {
-				return super.persistBaseResult(var, val);
-			}
+		} else {
+			return super.persistBaseResult(var, val);
+		}
 	}
 
 	/////////////
