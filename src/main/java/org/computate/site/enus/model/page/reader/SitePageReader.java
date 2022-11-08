@@ -107,7 +107,12 @@ public class SitePageReader extends SitePageReaderGen<Object> {
 					JsonObject classJson = new JsonObject(buffer);
 					EcrireToutesClasses ecrireClasse = new EcrireToutesClasses();
 					ecrireClasse.ecrireGenClasse(classJson, "enUS");
-					ecrireClasse.ecrireClasseCommentaire(i18n2, config.getString(ConfigKeys.SITE_NAME));
+					ecrireClasse.setSolrUrlComputate(String.format("http://%s:%s/solr/%s"
+							, config.getString(ConfigKeys.SOLR_HOST_NAME)
+							, config.getString(ConfigKeys.SOLR_PORT)
+							, config.getString(ConfigKeys.SOLR_COLLECTION_COMPUTATE)
+							));
+					ecrireClasse.ecrireClasseCommentaire(i18n2, config.getString(ConfigKeys.SITE_NAME), "enUS");
 					promise.complete(i18n2);
 				} catch(Exception ex) {
 					LOG.error(String.format(i18nGeneratorFail, SitePage.CLASS_SIMPLE_NAME), ex);
@@ -246,7 +251,7 @@ public class SitePageReader extends SitePageReaderGen<Object> {
 						if(o instanceof String) {
 							try {
 								Template template = handlebars.compileInline((String)o);
-								Context engineContext = Context.newBuilder(json.getMap()).resolver(templateEngine.getResolvers()).build();
+								Context engineContext = Context.newBuilder(new JsonObject(json.toString()).getMap()).resolver(templateEngine.getResolvers()).build();
 								json.put(key, Buffer.buffer(template.apply(engineContext)).toString());
 							} catch (IOException ex) {
 								ExceptionUtils.rethrow(ex);
@@ -277,7 +282,7 @@ public class SitePageReader extends SitePageReaderGen<Object> {
 							Optional.ofNullable(json.getString("h1")).ifPresent(val -> {
 								try {
 									Template template = handlebars.compileInline(val);
-									Context engineContext = Context.newBuilder(json.getMap()).resolver(templateEngine.getResolvers()).build();
+									Context engineContext = Context.newBuilder(new JsonObject(json.toString()).getMap()).resolver(templateEngine.getResolvers()).build();
 									page.setH1(Buffer.buffer(template.apply(engineContext)).toString());
 								} catch (IOException ex) {
 									ExceptionUtils.rethrow(ex);
@@ -286,7 +291,7 @@ public class SitePageReader extends SitePageReaderGen<Object> {
 							Optional.ofNullable(json.getString("h2")).ifPresent(val -> {
 								try {
 									Template template = handlebars.compileInline(val);
-									Context engineContext = Context.newBuilder(json.getMap()).resolver(templateEngine.getResolvers()).build();
+									Context engineContext = Context.newBuilder(new JsonObject(json.toString()).getMap()).resolver(templateEngine.getResolvers()).build();
 									page.setH2(Buffer.buffer(template.apply(engineContext)).toString());
 								} catch (IOException ex) {
 									ExceptionUtils.rethrow(ex);
@@ -400,7 +405,7 @@ public class SitePageReader extends SitePageReaderGen<Object> {
 				if(comment != null) {
 					// Split text by lines and index each line as it's own value
 					Template template = handlebars.compileInline(comment);
-					Context engineContext = Context.newBuilder(json.getMap()).resolver(templateEngine.getResolvers()).build();
+					Context engineContext = Context.newBuilder(new JsonObject(json.toString()).getMap()).resolver(templateEngine.getResolvers()).build();
 					Buffer buffer = Buffer.buffer(template.apply(engineContext));
 					String[] strs = buffer.toString().split("\r?\n");
 					importItem.put(SiteHtm.VAR_comment, new JsonArray().addAll(new JsonArray(Arrays.asList(strs))));
@@ -411,12 +416,12 @@ public class SitePageReader extends SitePageReaderGen<Object> {
 				if(text != null) {
 					// Split text by lines and index each line as it's own value
 					Template template = handlebars.compileInline(text);
-					Context engineContext = Context.newBuilder(json.getMap()).resolver(templateEngine.getResolvers()).build();
+					Context engineContext = Context.newBuilder(new JsonObject(json.toString()).getMap()).resolver(templateEngine.getResolvers()).build();
 					Buffer buffer = Buffer.buffer(template.apply(engineContext));
 					String text2 = buffer.toString();
 					if(text2.contains("{{")) {
 						Template template2 = handlebars.compileInline(text2);
-						Context engineContext2 = Context.newBuilder(json.getMap()).resolver(templateEngine.getResolvers()).build();
+						Context engineContext2 = Context.newBuilder(new JsonObject(json.toString()).getMap()).resolver(templateEngine.getResolvers()).build();
 						Buffer buffer2 = Buffer.buffer(template2.apply(engineContext2));
 						text2 = buffer2.toString();
 					}
@@ -437,12 +442,12 @@ public class SitePageReader extends SitePageReaderGen<Object> {
 				if(htm != null) {
 					// Split text by lines and index each line as it's own value
 					Template template = handlebars.compileInline(htm);
-					Context engineContext = Context.newBuilder(json.getMap()).resolver(templateEngine.getResolvers()).build();
+					Context engineContext = Context.newBuilder(new JsonObject(json.toString()).getMap()).resolver(templateEngine.getResolvers()).build();
 					Buffer buffer = Buffer.buffer(template.apply(engineContext));
 					String htm2 = buffer.toString();
 					if(htm2.contains("{{")) {
 						Template template2 = handlebars.compileInline(htm2);
-						Context engineContext2 = Context.newBuilder(json.getMap()).resolver(templateEngine.getResolvers()).build();
+						Context engineContext2 = Context.newBuilder(new JsonObject(json.toString()).getMap()).resolver(templateEngine.getResolvers()).build();
 						Buffer buffer2 = Buffer.buffer(template2.apply(engineContext2));
 						htm2 = buffer2.toString();
 					}
@@ -489,12 +494,12 @@ public class SitePageReader extends SitePageReaderGen<Object> {
 						String val = a.getString(field);
 						if(val != null) {
 							Template template = handlebars.compileInline(val);
-							Context engineContext = Context.newBuilder(json.getMap()).resolver(templateEngine.getResolvers()).build();
+							Context engineContext = Context.newBuilder(new JsonObject(json.toString()).getMap()).resolver(templateEngine.getResolvers()).build();
 							Buffer buffer = Buffer.buffer(template.apply(engineContext));
 							String val2 = buffer.toString();
 							if(val2.contains("{{")) {
 								Template template2 = handlebars.compileInline(val2);
-								Context engineContext2 = Context.newBuilder(json.getMap()).resolver(templateEngine.getResolvers()).build();
+								Context engineContext2 = Context.newBuilder(new JsonObject(json.toString()).getMap()).resolver(templateEngine.getResolvers()).build();
 								Buffer buffer2 = Buffer.buffer(template2.apply(engineContext2));
 								val2 = buffer2.toString();
 							}
@@ -523,7 +528,7 @@ public class SitePageReader extends SitePageReaderGen<Object> {
 			if(each != null) {
 				// Process the "each" element by evaluating the template and processing the values
 				Template template = handlebars.compileInline(String.format("{{json %s }}", each));
-				Context engineContext = Context.newBuilder(json.getMap()).resolver(templateEngine.getResolvers()).build();
+				Context engineContext = Context.newBuilder(new JsonObject(json.toString()).getMap()).resolver(templateEngine.getResolvers()).build();
 				String str = template.apply(engineContext);
 				String eachVar = pageItem.getString("eachVar", "item");
 				String indexVar = pageItem.getString("indexVar", "@index");
@@ -546,10 +551,10 @@ public class SitePageReader extends SitePageReaderGen<Object> {
 							}
 						}
 					} else if(StringUtils.startsWith(str, "{")) {
-						JsonObject eachObject = new JsonObject(Buffer.buffer(str)).getJsonObject("map");
-						String[] keys = eachObject.fieldNames().toArray(new String[eachObject.fieldNames().size()]);
+						JsonObject eachObject = new JsonObject(Buffer.buffer(str));
+						List<String> keys = eachObject.fieldNames().stream().sorted().collect(Collectors.toList());
 						for(Integer j=0; j < eachObject.size(); j++) {
-							String key = keys[j];
+							String key = keys.get(j);
 							JsonObject eachJson = eachObject.getJsonObject(key);
 							JsonObject json2 = json.copy();
 							json2.put(eachVar, new JsonObject().put("key", key).put("value", eachJson));
