@@ -1,0 +1,77 @@
+apiVersion: keycloak.org/v1alpha1
+kind: KeycloakClient
+metadata:
+  name: computate-org
+  namespace: sso
+  labels:
+    app: sso
+    realm: COMPUTATE.ORG
+    client: computate.org
+spec:
+  realmSelector:
+     matchLabels:
+      app: sso
+      realm: COMPUTATE.ORG
+  client:
+    id: computate.org
+    clientId: computate.org
+    standardFlowEnabled: true
+    serviceAccountsEnabled: true
+    authorizationServicesEnabled: true
+    frontchannelLogout: true
+    protocol: openid-connect
+    redirectUris:
+      - http://localhost:12080/logout
+      - http://localhost:12080/callback
+      - https://oauth-openshift.apps-crc.testing/oauth2callback/sso
+    defaultClientScopes:
+      - profile
+      - computate.org
+    authorizationSettings:
+      scopes:
+        - id: POST
+          name: POST
+          displayName: POST
+        - id: DELETE
+          name: DELETE
+          displayName: DELETE
+        - id: GET
+          name: GET
+          displayName: GET
+        - id: PATCH
+          name: PATCH
+          displayName: PATCH
+        - id: PUTImport
+          name: PUTImport
+          displayName: PUTImport
+        - id: Search
+          name: Search
+          displayName: Search
+      resources:
+        - name: SiteUser
+          displayName: SiteUser
+          uris:
+            - /api/user
+            - /user
+          scopes:
+            - POST
+            - DELETE
+            - GET
+            - PATCH
+            - PUTImport
+            - Search
+      policies:
+        - id: SiteAdmin-policy
+          name: SiteAdmin
+          logic: POSITIVE
+          decisionStrategy: UNANIMOUS
+          type: role
+          config:
+            roles: "[{\"id\":\"SiteAdmin\",\"required\":true}]"
+        - id: user-policy
+          name: user
+          logic: POSITIVE
+          decisionStrategy: UNANIMOUS
+          type: client
+          config:
+            clients: "[\"computate.org\"]"

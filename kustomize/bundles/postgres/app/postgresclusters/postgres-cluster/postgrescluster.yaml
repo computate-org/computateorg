@@ -1,0 +1,55 @@
+apiVersion: postgres-operator.crunchydata.com/v1beta1
+kind: PostgresCluster
+metadata:
+  name: postgres-cluster
+  namespace: postgres
+spec:
+  openshift: false
+  backups:
+    pgbackrest:
+      # See https://github.com/CrunchyData/postgres-operator-examples/blob/main/kustomize/postgres/postgres.yaml
+      image: registry.developers.crunchydata.com/crunchydata/crunchy-pgbackrest:ubi8-2.45-3
+      repos:
+        - name: repo1
+          s3:
+            bucket: "<YOUR_AWS_S3_BUCKET_NAME>"
+            endpoint: "<YOUR_AWS_S3_ENDPOINT>"
+            region: "<YOUR_AWS_S3_REGION>"
+  instances:
+    - dataVolumeClaimSpec:
+        storageClassName: computate
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 5Gi
+      replicas: 1
+      name: 'postgres'
+  # See https://www.crunchydata.com/developers/download-postgres/containers/postgis
+  image: registry.developers.crunchydata.com/crunchydata/crunchy-postgres-gis:ubi8-15.3-3.3-3
+  postgresVersion: 15
+  postGISVersion: 3.3.0
+  users:
+    - name: keycloak
+      options: "SUPERUSER"
+      databases:
+        - keycloak
+    - name: trailblazehunt
+      options: "SUPERUSER"
+      databases:
+        - trailblazehunt
+    - name: computateorg
+      options: "SUPERUSER"
+      databases:
+        - computateorg
+  patroni:
+    dynamicConfiguration:
+      postgresql:
+        pg_hba:
+          - "host keycloak keycloak all md5"
+          - "local keycloak keycloak trust"
+          - "host trailblazehunt trailblazehunt all md5"
+          - "local trailblazehunt trailblazehunt trust"
+          - "host computateorg computateorg all md5"
+          - "local computateorg computateorg trust"
+        

@@ -1,0 +1,230 @@
+apiVersion: keycloak.org/v1alpha1
+kind: KeycloakRealm
+metadata:
+  name: trailblazehunt-com
+  namespace: keycloak
+  labels:
+    app: keycloak
+    realm: TRAILBLAZEHUNT.COM
+spec:
+  realm:
+    id: "TRAILBLAZEHUNT.COM"
+    realm: "TRAILBLAZEHUNT.COM"
+    enabled: true
+    displayName: "TRAILBLAZEHUNT.COM"
+    registrationAllowed: true
+    resetPasswordAllowed: true
+    editUsernameAllowed: true
+    rememberMe: true
+    verifyEmail: true
+    loginWithEmailAllowed: true
+    roles:
+      realm:
+        - id: SiteAdmin
+          name: Site Admin
+        - id: SuperAdmin
+          name: Super Admin
+          composite: true
+          composites:
+            realm:
+              - SiteAdmin
+    clientScopes:
+      - id: trailblazehunt.com
+        name: trailblazehunt.com
+        description: A client scope for trailblazehunt.com
+        protocol: openid-connect
+        protocolMappers: 
+          - config:
+              access.token.claim: 'true'
+              id.token.claim: 'false'
+              included.client.audience: 'trailblazehunt.com'
+            consentRequired: false
+            id: trailblazehunt-com
+            name: trailblazehunt.com
+            protocol: openid-connect
+            protocolMapper: oidc-audience-mapper
+      - id: trailblazehunt.com-profile
+        name: profile
+        description: "OpenID Connect built-in scope: profile"
+        protocol: openid-connect
+        protocolMappers: 
+          - config:
+              access.token.claim: 'true'
+              claim.name: email_verified
+              id.token.claim: 'true'
+              jsonType.label: boolean
+              user.attribute: emailVerified
+              userinfo.token.claim: 'true'
+            consentRequired: false
+            id: trailblazehunt.com-email-verified
+            name: email verified
+            protocol: openid-connect
+            protocolMapper: oidc-usermodel-property-mapper
+          - config:
+              access.token.claim: 'true'
+              claim.name: preferred_username
+              id.token.claim: 'true'
+              jsonType.label: String
+              user.attribute: username
+              userinfo.token.claim: 'true'
+            consentRequired: false
+            id: trailblazehunt.com-username
+            name: username
+            protocol: openid-connect
+            protocolMapper: oidc-usermodel-property-mapper
+          - config:
+              access.token.claim: 'true'
+              claim.name: groups
+              id.token.claim: 'true'
+              jsonType.label: String
+              multivalued: 'true'
+              user.attribute: foo
+            consentRequired: false
+            id: trailblazehunt.com-groups
+            name: groups
+            protocol: openid-connect
+            protocolMapper: oidc-usermodel-realm-role-mapper
+          - config:
+              access.token.claim: 'true'
+              claim.name: family_name
+              id.token.claim: 'true'
+              jsonType.label: String
+              user.attribute: lastName
+              userinfo.token.claim: 'true'
+            consentRequired: false
+            id: trailblazehunt.com-family-name
+            name: family name
+            protocol: openid-connect
+            protocolMapper: oidc-usermodel-property-mapper
+          - config:
+              access.token.claim: 'true'
+              claim.name: given_name
+              id.token.claim: 'true'
+              jsonType.label: String
+              user.attribute: firstName
+              userinfo.token.claim: 'true'
+            consentRequired: false
+            id: trailblazehunt.com-given-name
+            name: given name
+            protocol: openid-connect
+            protocolMapper: oidc-usermodel-property-mapper
+          - config:
+              access.token.claim: 'true'
+              claim.name: email
+              id.token.claim: 'true'
+              jsonType.label: String
+              user.attribute: email
+              userinfo.token.claim: 'true'
+            consentRequired: false
+            id: trailblazehunt.com-email
+            name: email
+            protocol: openid-connect
+            protocolMapper: oidc-usermodel-property-mapper
+          - config:
+              access.token.claim: 'true'
+              claim.name: middle_name
+              id.token.claim: 'true'
+              jsonType.label: String
+              user.attribute: middleName
+              userinfo.token.claim: 'true'
+            consentRequired: false
+            id: trailblazehunt.com-middle-name
+            name: middle name
+            protocol: openid-connect
+            protocolMapper: oidc-usermodel-attribute-mapper
+          - config:
+              access.token.claim: 'true'
+              claim.name: locale
+              id.token.claim: 'true'
+              jsonType.label: String
+              user.attribute: locale
+              userinfo.token.claim: 'true'
+            consentRequired: false
+            id: trailblazehunt.com-locale
+            name: locale
+            protocol: openid-connect
+            protocolMapper: oidc-usermodel-attribute-mapper
+          - config:
+              access.token.claim: 'true'
+              claim.name: nickname
+              id.token.claim: 'true'
+              jsonType.label: String
+              user.attribute: nickname
+              userinfo.token.claim: 'true'
+            consentRequired: false
+            id: trailblazehunt.com-nickname
+            name: nickname
+            protocol: openid-connect
+            protocolMapper: oidc-usermodel-attribute-mapper
+          - config:
+              access.token.claim: 'true'
+              claim.name: updated_at
+              id.token.claim: 'true'
+              jsonType.label: long
+              user.attribute: updatedAt
+              userinfo.token.claim: 'true'
+            consentRequired: false
+            id: trailblazehunt.com-updated-at
+            name: updated at
+            protocol: openid-connect
+            protocolMapper: oidc-usermodel-attribute-mapper
+          - config:
+              access.token.claim: 'true'
+              id.token.claim: 'true'
+              userinfo.token.claim: 'true'
+            consentRequired: false
+            id: trailblazehunt.com-full-name
+            name: full name
+            protocol: openid-connect
+            protocolMapper: oidc-full-name-mapper
+          - config:
+              access.token.claim: 'true'
+              claim.name: profile
+              id.token.claim: 'true'
+              jsonType.label: String
+              user.attribute: profile
+              userinfo.token.claim: 'true'
+            consentRequired: false
+            id: trailblazehunt.com-profile
+            name: profile
+            protocol: openid-connect
+            protocolMapper: oidc-usermodel-attribute-mapper
+          - config:
+              access.token.claim: 'true'
+              claim.name: resource_access.${client_id}.roles
+              jsonType.label: String
+              multivalued: 'true'
+              user.attribute: foo
+            consentRequired: false
+            id: trailblazehunt.com-client-roles
+            name: client roles
+            protocol: openid-connect
+            protocolMapper: oidc-usermodel-client-role-mapper
+          - config:
+              access.token.claim: 'true'
+              claim.name: zoneinfo
+              id.token.claim: 'true'
+              jsonType.label: String
+              user.attribute: zoneinfo
+              userinfo.token.claim: 'true'
+            consentRequired: false
+            id: trailblazehunt.com-zoneinfo
+            name: zoneinfo
+            protocol: openid-connect
+            protocolMapper: oidc-usermodel-attribute-mapper
+          - config:
+              access.token.claim: 'true'
+              claim.name: realm_access.roles
+              jsonType.label: String
+              multivalued: 'true'
+              user.attribute: foo
+            consentRequired: false
+            id: trailblazehunt.com-realm-roles
+            name: realm roles
+            protocol: openid-connect
+            protocolMapper: oidc-usermodel-realm-role-mapper
+    defaultDefaultClientScopes:
+      - trailblazehunt.com
+  instanceSelector:
+    matchLabels:
+      app: keycloak
