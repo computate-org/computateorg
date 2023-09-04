@@ -1,4 +1,27 @@
 
+## Install the GKE networking
+
+```bash
+oc apply -k kustomize/overlays/prod/networking/
+
+SOURCE_RANGES=$(gcloud container clusters describe computate --region us-west3 --format="value(ipAllocationPolicy.clusterIpv4CidrBlock)")
+gcloud compute firewall-rules create olm-source-ranges \
+  --allow=tcp:5443 \
+  --description="allow olm manager traffic" \
+  --direction=INGRESS \
+  --source-ranges=$SOURCE_RANGES \
+  --target-tags="<GCLOUD-VMs-NETWORK-TAG>"
+```
+
+## Install cert-manager
+
+See [Deploy cert-manager on Google Kubernetes Engine (GKE) and create SSL certificates for Ingress using Let's Encrypt](https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwiniNyrjJGBAxXeMUQIHT8tBnAQFnoECBQQAQ&url=https%3A%2F%2Fcert-manager.io%2Fdocs%2Ftutorials%2Fgetting-started-with-cert-manager-on-google-kubernetes-engine-using-lets-encrypt-for-ingress-ssl%2F&usg=AOvVaw0Qr4JC3dBHY_qkiWv8HwDB&opi=89978449)
+
+```bash
+oc apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.12.4/cert-manager.yaml
+...
+```
+
 ## Install the Operator SDK locally
 
 ```bash
@@ -17,7 +40,7 @@ sudo chmod +x operator-sdk_${OS}_${ARCH} && sudo mv operator-sdk_${OS}_${ARCH} /
 ## Install the Operator SDK to the cluster
 
 ```bash
-operator-sdk olm install
+operator-sdk olm install --timeout 5m
 ```
 
 ## Install Crunchy PostgreSQL Operator to the cluster
