@@ -1,5 +1,36 @@
 
 
+# Install Ansible dependencies
+
+```bash
+ansible-galaxy collection install community.hashi\_vault
+pip3 install hvac
+```
+
+# Obtain postgres password
+
+```bash
+# Get JDBC_PASSWORD: 
+oc -n postgres get secret/postgres-cluster-pguser-smartvillage -o jsonpath='{.data.password}' | base64 -d; echo
+```
+
+# Obtain kafka secrets
+
+```bash
+
+# Get KAFKA_SSL_KEYSTORE_LOCATION: 
+oc extract -n smart-village-view secret/smartvillage-kafka --to=$HOME/.local/src/smartabyar-smartvillage/config/ --keys=user.p12 --confirm
+
+# Get KAFKA_SSL_KEYSTORE_PASSWORD: 
+oc -n smart-village-view get secret/smartvillage-kafka -o jsonpath='{.data.user\.password}' | base64 -d; echo
+
+# Get KAFKA_SSL_TRUSTSTORE_LOCATION: 
+oc extract -n smart-village-view secret/smartvillage-kafka-cluster-ca-cert --to=$HOME/.local/src/smartabyar-smartvillage/config/ --keys=ca.p12 --confirm
+
+# Get KAFKA_SSL_TRUSTSTORE_PASSWORD: 
+oc -n smart-village-view get secret/smartvillage-kafka-cluster-ca-cert -o jsonpath='{.data.ca\.password}' | base64 -d; echo
+```
+
 # Setup computateorg development environment on MacOSX or Linux (Fedora, RHEL, CentOS, Ubuntu)
 
 ## Install Ansible dependencies on Linux
@@ -8,7 +39,7 @@
 pkcon install -y git
 pkcon install -y python3
 pkcon install -y python3-pip
-pkcon install -y python3-virtualenv
+pip install virtualenv psycopg2-binary openshift
 ```
 
 ## Install Ansible dependencies on MacOSX
@@ -38,6 +69,18 @@ pip install --upgrade pip
 pip install ansible
 ```
 
+## Update the Ansible Galaxy collections for kubernetes.core
+
+```bash
+ansible-galaxy collection install kubernetes.core
+```
+
+## Update the Ansible Galaxy collections for kubernetes.core
+
+```bash
+ansible-galaxy collection install kubernetes.core
+```
+
 # Setup the project
 
 ## Setup the directory for the project and clone the git repository into it 
@@ -51,18 +94,12 @@ git clone git@github.com:computate-org/computateorg.git ~/.local/src/computateor
 
 ```bash
 install -d ~/.ansible/roles
-git clone git@github.com:computate-org/computate_postgres.git ~/.ansible/roles/computate.computate_postgres
-git clone git@github.com:computate-org/computate_zookeeper.git ~/.ansible/roles/computate.computate_zookeeper
-git clone git@github.com:computate-org/computate_solr.git ~/.ansible/roles/computate.computate_solr
 git clone git@github.com:computate-org/computate_project.git ~/.ansible/roles/computate.computate_project
 ```
 
 ## Run the Ansible Galaxy roles to install the complete project locally. 
 
 ```bash
-ansible-playbook ~/.ansible/roles/computate.computate_postgres/install.yml -K
-ansible-playbook ~/.ansible/roles/computate.computate_zookeeper/install.yml -K
-ansible-playbook ~/.ansible/roles/computate.computate_solr/install.yml -K
 ansible-playbook ~/.ansible/roles/computate.computate_project/install.yml -e SITE_NAME=computateorg -e ENABLE_CODE_GENERATION_SERVICE=true
 ```
 
@@ -100,28 +137,34 @@ You can then run the project install automation again with the secrets in the va
 ansible-playbook ~/.ansible/roles/computate.computate_project/install.yml -e SITE_NAME=computateorg -e ENABLE_CODE_GENERATION_SERVICE=true -e @~/.local/src/computateorg-ansible/vault/$USER-local --vault-id @prompt
 ```
 
-# Configure Red Hat CodeReady Studio
+# Configure Eclipse IDE 
 
-You can download Red Hat Code Ready Studio here: 
+You can download Eclipse Installer here: 
 
-https://developers.redhat.com/products/codeready-studio/download
+https://www.eclipse.org/downloads/packages/
 
-You will want to create a Red Hat account if you do not already have one. 
-
-After you download CodeReady Studio, create a directory for it and install it with this command: 
+After you download the Eclipse installer, create a directory for it and extract it with this command: 
 
 ```bash
-install -d ~/.local/opt/codereadystudio
-java -jar ~/Downloads/codereadystudio-*-installer-standalone.jar
+install -d ~/.local/opt/eclipse-installer
+tar xvf ~/Downloads/eclipse-inst-jre-linux64.tar.gz -C ~/.local/opt/eclipse-installer --strip-components=1
 ```
 
-You can use the default installation settings. I suggest to install CodeReady Studio in your in $HOME/.local/opt/codereadystudio
+Now run the Eclipse installer: 
 
-When you run CodeReady Studio, I suggest you create your workspace here: ~/.local/src
+```bash
+~/.local/opt/eclipse-installer/eclipse-inst
+```
+
+- Select [ Eclipse IDE for Java Developers ]
+- I recommend installing Eclipse in the following subdirectory of your home directory: .local/opt/eclipse
+- Click [ Accept Now ] for the User Agreement
+
+When you run Eclipse Studio, I suggest you create your workspace here: ~/.local/src
 
 ## Install these update sites: 
 
-In CodeReady Studio, go to Help -> Install New Software...
+In Eclipse, go to Help -> Install New Software...
 
 Add these update sites and install these useful plugins: 
 
@@ -143,17 +186,17 @@ Add these update sites and install these useful plugins:
 - http://www.genuitec.com/updates/devstyle/ci/
     - Choose "DevStyle Features" for themes
 
-## Import the computateorg project into CodeReady Studio
+## Import the computateorg project into Eclipse
 
-* In CodeReady Studio, go to File -> Import...
+* In Eclipse, go to File -> Import...
 * Select Maven -> Existing Maven Projects
 * Click [ Next > ]
 * Browse to the directory: ~/.local/src/computateorg
 * Click [ Finish ]
 
-## Setup a CodeReady Studio Debug/Run configuration to generate the OpenAPI 3 spec and the SQL create and drop scripts in computateorg
+## Setup a Eclipse Debug/Run configuration to generate the OpenAPI 3 spec and the SQL create and drop scripts in computateorg
 
-* In CodeReady Studio, go to File -> Debug Configurations...
+* In Eclipse, go to File -> Debug Configurations...
 * Right click on Java Application -> New Configuration
 * Name: computateorg-OpenAPIGenerator
 * Project: computateorg
@@ -166,12 +209,13 @@ Setup the following variables to setup the Vert.x verticle.
 * CONFIG_PATH: ~/.local/src/computateorg/config/computateorg.yml
 * RUN_OPENAPI3_GENERATOR: true
 * RUN_SQL_GENERATOR: true
+* RUN_FIWARE_GENERATOR: true
 
 Click [ Apply ] and [ Debug ] to debug the generation of the OpenAPI Spec src/main/resources/webroot and the SQL create and drop scripts in src/main/resources/sql. 
 
-## Setup a CodeReady Studio Debug/Run configuration to run and debug computateorg
+## Setup a Eclipse Debug/Run configuration to run and debug computateorg
 
-* In CodeReady Studio, go to File -> Debug Configurations...
+* In Eclipse, go to File -> Debug Configurations...
 * Right click on Java Application -> New Configuration
 * Name: computateorg
 * Project: computateorg
@@ -252,13 +296,13 @@ ZOOKEEPER_STORAGE_CLASS_NAME: "{{ REDHAT_OPENSHIFT_STORAGE_CLASS_NAME }}"
 SOLR_VOLUME_SIZE: 2Gi
 SOLR_STORAGE_CLASS_NAME: "{{ REDHAT_OPENSHIFT_STORAGE_CLASS_NAME }}"
 
-AUTH_REALM: TEAM19
-AUTH_RESOURCE: team19
+AUTH_REALM: SMARTVILLAGE
+AUTH_CLIENT: smartvillage
 AUTH_SECRET: ...
 AUTH_HOST_NAME: sso.computate.org
 AUTH_PORT: 443
 AUTH_SSL: true
-AUTH_TOKEN_URI: "/auth/realms/RH-IMPACT/protocol/openid-connect/token"
+AUTH_TOKEN_URI: "/auth/realms/SMARTVILLAGE/protocol/openid-connect/token"
 ```
 
 ## Run the Ansible automation to deploy the applications to OpenShift

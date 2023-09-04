@@ -15,6 +15,14 @@ spec:
     hostname: keycloak.computate.org
   http:
     httpEnabled: true
+  ingress:
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-issuer
+      networking.gke.io/managed-certificates: networking-managed-cert
+      networking.gke.io/v1beta1.FrontendConfig: networking-fc
+      kubernetes.io/ingress.global-static-ip-name: computate
+      kubernetes.io/ingress.class: gce
+    className: gce
   keycloakDeploymentSpec:
     experimental:
       env:

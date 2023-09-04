@@ -23,19 +23,19 @@ import io.vertx.core.json.JsonObject;
  * Page: true
  * SuperPage.enUS: BaseResultPage
  * Indexed: true
- * Map.Integer.sqlSort: 101
- * Map.Integer.classSort: 101
+ * SqlOrder: 101
+ * Order: 101
  * 
  * ApiTag.enUS: HTM
  * ApiUri.enUS: /api/htm
  * 
- * ApiMethod.enUS: Search
+ * ApiMethod: Search
  * ApiMethod: GET
  * ApiMethod: POST
  * ApiMethod: PATCH
  * ApiMethod: PUTImport
  * 
- * ApiMethod.enUS: SearchPage
+ * ApiMethod: SearchPage
  * Page.SearchPage.enUS: SiteHtmPage
  * ApiUri.SearchPage.enUS: /htm
  * 
@@ -43,7 +43,6 @@ import io.vertx.core.json.JsonObject;
  * Color: 2017-shaded-spruce
  * IconGroup: duotone
  * IconName: code
- * NameVar: htm
  * 
  * Role.enUS: SiteAdmin
  * Description: An HTML part that is indexed in the search engine. 
@@ -54,12 +53,26 @@ public class SiteHtm extends SiteHtmGen<BaseResult> {
 	 * {@inheritDoc}
 	 * DocValues: true
 	 * Persist: true
-	 * HtmlRow: 3
-	 * HtmlCell: 1
-	 * HtmlColumn: 3
+	 * HtmRow: 3
+	 * HtmCell: 1
+	 * HtmColumn: 3
 	 * Facet: true
-	 * DisplayName: Page URI
-	 * Description: The ID for this page. 
+	 * DisplayName: Page URL
+	 * Description: The URL for this page. 
+	 */
+	protected void _url(Wrap<String> w) {
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * DocValues: true
+	 * Persist: true
+	 * HtmRow: 3
+	 * HtmCell: 2
+	 * HtmColumn: 4
+	 * Facet: true
+	 * DisplayName: URI
+	 * Description: The relative URI for this page. 
 	 */
 	protected void _uri(Wrap<String> w) {
 	}
@@ -68,9 +81,9 @@ public class SiteHtm extends SiteHtmGen<BaseResult> {
 	 * {@inheritDoc}
 	 * DocValues: true
 	 * Persist: true
-	 * HtmlRow: 3
-	 * HtmlCell: 2
-	 * HtmlColumn: 4
+	 * HtmRow: 3
+	 * HtmCell: 2
+	 * HtmColumn: 4
 	 * Facet: true
 	 * DisplayName: Page ID
 	 * Description: The ID for this page. 
@@ -82,9 +95,9 @@ public class SiteHtm extends SiteHtmGen<BaseResult> {
 	 * {@inheritDoc}
 	 * DocValues: true
 	 * Persist: true
-	 * HtmlRow: 3
-	 * HtmlCell: 3
-	 * HtmlColumn: 5
+	 * HtmRow: 3
+	 * HtmCell: 3
+	 * HtmColumn: 5
 	 * Facet: true
 	 * DisplayName: Sequence Number
 	 * Description: The sequence number for this page. 
@@ -148,6 +161,7 @@ public class SiteHtm extends SiteHtmGen<BaseResult> {
 	 * Persist: true
 	 * DisplayName: Text
 	 * Description: The text. 
+	 * Val._markdown.enUS:markdown
 	 */
 	protected void _text(List<String> w) {
 	}
@@ -228,6 +242,16 @@ public class SiteHtm extends SiteHtmGen<BaseResult> {
 		}
 		if(b.length() > 0)
 			w.o(b.toString());
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * Text: true
+	 * Persist: true
+	 * DisplayName: HTML middle
+	 * Description: The HTML that comes in the middle. 
+	 */
+	protected void _htmMiddle(List<String> w) {
 	}
 
 	/**

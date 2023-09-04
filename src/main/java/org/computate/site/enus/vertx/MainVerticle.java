@@ -2,8 +2,10 @@ package org.computate.site.enus.vertx;
 
 import java.net.URLDecoder;
 import java.text.Normalizer;
-import java.util.Map.Entry;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
@@ -11,6 +13,7 @@ import java.util.function.Consumer;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.computate.search.tool.SearchTool;
+import org.computate.smartvillageview.enus.config.ConfigKeys;
 import org.computate.vertx.handlebars.AuthHelpers;
 import org.computate.vertx.handlebars.DateHelpers;
 import org.computate.vertx.handlebars.SiteHelpers;
@@ -26,11 +29,6 @@ import org.computate.site.enus.page.dynamic.DynamicPage;
 import org.computate.site.enus.model.user.SiteUserEnUSGenApiService;
 import org.computate.site.enus.model.page.SitePageEnUSGenApiService;
 import org.computate.site.enus.model.htm.SiteHtmEnUSGenApiService;
-import org.computate.site.enus.article.ArticleEnUSGenApiService;
-import org.computate.site.enus.course.CourseEnUSGenApiService;
-import org.computate.site.enus.model.page.SitePageEnUSGenApiService;
-import org.computate.site.enus.model.htm.SiteHtmEnUSGenApiService;
-import org.computate.site.enus.model.pixelart.PixelArtEnUSGenApiService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,6 +36,7 @@ import com.github.jknack.handlebars.Handlebars;
 import com.github.jknack.handlebars.Jackson2Helper;
 import com.github.jknack.handlebars.helper.ConditionalHelpers;
 import com.github.jknack.handlebars.helper.StringHelpers;
+import com.github.jknack.handlebars.internal.lang3.BooleanUtils;
 
 import io.vertx.config.ConfigRetriever;
 import io.vertx.config.ConfigRetrieverOptions;
@@ -45,11 +44,11 @@ import io.vertx.config.ConfigStoreOptions;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.DeploymentOptions;
 import io.vertx.core.Future;
+import io.vertx.core.MultiMap;
 import io.vertx.core.Promise;
 import io.vertx.core.Vertx;
 import io.vertx.core.VertxOptions;
 import io.vertx.core.WorkerExecutor;
-import io.vertx.core.eventbus.DeliveryOptions;
 import io.vertx.core.eventbus.EventBusOptions;
 import io.vertx.core.http.Cookie;
 import io.vertx.core.http.HttpClientOptions;
@@ -58,14 +57,12 @@ import io.vertx.core.http.HttpServerOptions;
 import io.vertx.core.impl.VertxImpl;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
-import io.vertx.core.MultiMap;
 import io.vertx.core.net.JksOptions;
 import io.vertx.core.net.PemKeyCertOptions;
 import io.vertx.core.spi.cluster.ClusterManager;
 import io.vertx.core.spi.cluster.NodeInfo;
 import io.vertx.ext.auth.authorization.AuthorizationProvider;
 import io.vertx.ext.auth.oauth2.OAuth2Auth;
-import io.vertx.ext.auth.oauth2.OAuth2FlowType;
 import io.vertx.ext.auth.oauth2.OAuth2Options;
 import io.vertx.ext.auth.oauth2.authorization.KeycloakAuthorization;
 import io.vertx.ext.auth.oauth2.providers.OpenIDConnectAuth;
@@ -79,6 +76,7 @@ import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.Session;
 import io.vertx.ext.web.api.service.ServiceRequest;
 import io.vertx.ext.web.client.WebClient;
+import io.vertx.ext.web.client.WebClientOptions;
 import io.vertx.ext.web.handler.OAuth2AuthHandler;
 import io.vertx.ext.web.handler.SessionHandler;
 import io.vertx.ext.web.handler.StaticHandler;
@@ -88,10 +86,13 @@ import io.vertx.ext.web.handler.sockjs.SockJSHandler;
 import io.vertx.ext.web.openapi.RouterBuilder;
 import io.vertx.ext.web.sstore.LocalSessionStore;
 import io.vertx.ext.web.templ.handlebars.HandlebarsTemplateEngine;
+import io.vertx.kafka.client.producer.KafkaProducer;
+import io.vertx.mqtt.MqttClient;
 import io.vertx.pgclient.PgConnectOptions;
 import io.vertx.pgclient.PgPool;
 import io.vertx.spi.cluster.zookeeper.ZookeeperClusterManager;
 import io.vertx.sqlclient.PoolOptions;
+import io.vertx.sqlclient.Tuple;
 
 
 
@@ -128,6 +129,10 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 
 	private TemplateHandler templateHandler;
 
+	private KafkaProducer<String, String> kafkaProducer;
+
+	private MqttClient mqttClient;
+
 	/**	
 	 *	The main method for the Vert.x application that runs the Vert.x Runner class
 	 **/
@@ -138,17 +143,19 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 			try {
 				Future<Void> originalFuture = Future.future(a -> a.complete());
 				Future<Void> future = originalFuture;
-				WebClient webClient = WebClient.create(vertx);
+				WebClient webClient = WebClient.create(vertx, new WebClientOptions().setVerifyHost(false).setTrustAll(true));
 				Boolean runOpenApi3Generator = Optional.ofNullable(config.getBoolean(ConfigKeys.RUN_OPENAPI3_GENERATOR)).orElse(false);
 				Boolean runSqlGenerator = Optional.ofNullable(config.getBoolean(ConfigKeys.RUN_SQL_GENERATOR)).orElse(false);
 				Boolean runArticleGenerator = Optional.ofNullable(config.getBoolean(ConfigKeys.RUN_ARTICLE_GENERATOR)).orElse(false);
+				Boolean runFiwareGenerator = Optional.ofNullable(config.getBoolean(ConfigKeys.RUN_FIWARE_GENERATOR)).orElse(false);
 
-				if(runOpenApi3Generator || runSqlGenerator || runArticleGenerator) {
+				if(runOpenApi3Generator || runSqlGenerator || runArticleGenerator || runFiwareGenerator) {
 					SiteRequestEnUS siteRequest = new SiteRequestEnUS();
 					siteRequest.setConfig(config);
 					siteRequest.setWebClient(webClient);
 					siteRequest.initDeepSiteRequestEnUS();
 					OpenApi3Generator api = new OpenApi3Generator();
+					api.setVertx_(vertx);
 					api.setWebClient(webClient);
 					api.setConfig(config);
 					api.initDeepOpenApi3Generator(siteRequest);
@@ -158,6 +165,8 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 						future = future.compose(a -> api.writeSql());
 					if(runArticleGenerator)
 						future = future.compose(a -> api.writeArticle());
+					if(runFiwareGenerator)
+						future = future.compose(a -> api.writeFiware());
 					future.compose(a -> vertx.close());
 				} else {
 					future = future.compose(a -> run(config));
@@ -175,7 +184,7 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 
 	public static void  runOpenApi3Generator(String[] args, Vertx vertx, JsonObject config) {
 		OpenApi3Generator api = new OpenApi3Generator();
-		WebClient webClient = WebClient.create(vertx);
+		WebClient webClient = WebClient.create(vertx, new WebClientOptions().setVerifyHost(false).setTrustAll(true));
 		SiteRequestEnUS siteRequest = new SiteRequestEnUS();
 		siteRequest.setConfig(config);
 		siteRequest.setWebClient(webClient);
@@ -254,38 +263,50 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 			}
 			Long vertxWarningExceptionSeconds = config.getLong(ConfigKeys.VERTX_WARNING_EXCEPTION_SECONDS);
 			Long vertxMaxEventLoopExecuteTime = config.getLong(ConfigKeys.VERTX_MAX_EVENT_LOOP_EXECUTE_TIME);
+			Long vertxMaxWorkerExecuteTime = config.getLong(ConfigKeys.VERTX_MAX_WORKER_EXECUTE_TIME);
 			Integer siteInstances = config.getInteger(ConfigKeys.SITE_INSTANCES);
 			vertxOptions.setEventBusOptions(eventBusOptions);
 			vertxOptions.setWarningExceptionTime(vertxWarningExceptionSeconds);
 			vertxOptions.setWarningExceptionTimeUnit(TimeUnit.SECONDS);
 			vertxOptions.setMaxEventLoopExecuteTime(vertxMaxEventLoopExecuteTime);
 			vertxOptions.setMaxEventLoopExecuteTimeUnit(TimeUnit.SECONDS);
+			vertxOptions.setMaxWorkerExecuteTime(vertxMaxWorkerExecuteTime);
+			vertxOptions.setMaxWorkerExecuteTimeUnit(TimeUnit.SECONDS);
 			vertxOptions.setWorkerPoolSize(config.getInteger(ConfigKeys.WORKER_POOL_SIZE));
 			Consumer<Vertx> runner = vertx -> {
 				try {
 					DeploymentOptions deploymentOptions = new DeploymentOptions();
 					deploymentOptions.setInstances(siteInstances);
 					deploymentOptions.setConfig(config);
+					deploymentOptions.setMaxWorkerExecuteTime(vertxMaxWorkerExecuteTime);
+					deploymentOptions.setMaxWorkerExecuteTimeUnit(TimeUnit.SECONDS);
 		
 					DeploymentOptions emailVerticleDeploymentOptions = new DeploymentOptions();
 					emailVerticleDeploymentOptions.setConfig(config);
 					emailVerticleDeploymentOptions.setWorker(true);
+					emailVerticleDeploymentOptions.setMaxWorkerExecuteTime(vertxMaxWorkerExecuteTime);
+					emailVerticleDeploymentOptions.setMaxWorkerExecuteTimeUnit(TimeUnit.SECONDS);
 		
 					DeploymentOptions WorkerVerticleDeploymentOptions = new DeploymentOptions();
 					WorkerVerticleDeploymentOptions.setConfig(config);
 					WorkerVerticleDeploymentOptions.setInstances(1);
+					WorkerVerticleDeploymentOptions.setMaxWorkerExecuteTime(vertxMaxWorkerExecuteTime);
+					WorkerVerticleDeploymentOptions.setMaxWorkerExecuteTimeUnit(TimeUnit.SECONDS);
 		
 					vertx.deployVerticle(MainVerticle.class, deploymentOptions).onSuccess(a -> {
 						LOG.info("Started main verticle. ");
-						vertx.deployVerticle(WorkerVerticle.class, WorkerVerticleDeploymentOptions).onSuccess(b -> {
-							LOG.info("Started worker verticle. ");
-							vertx.deployVerticle(EmailVerticle.class, emailVerticleDeploymentOptions).onSuccess(c -> {
-								LOG.info("Started email verticle. ");
-							}).onFailure(ex -> {
-								LOG.error("Failed to start worker verticle. ", ex);
-							});
+						vertx.deployVerticle(EmailVerticle.class, emailVerticleDeploymentOptions).onSuccess(c -> {
+							LOG.info("Started email verticle. ");
+							if(config.getBoolean(ConfigKeys.ENABLE_IMPORT_DATA)) {
+								vertx.deployVerticle(WorkerVerticle.class, WorkerVerticleDeploymentOptions).onSuccess(b -> {
+								LOG.info("Started worker verticle. ");
+									LOG.info("Started worker verticle. ");
+								}).onFailure(ex -> {
+									LOG.error("Failed to start worker verticle. ", ex);
+								});
+							}
 						}).onFailure(ex -> {
-							LOG.error("Failed to start worker verticle. ", ex);
+							LOG.error("Failed to start email verticle. ", ex);
 						});
 					}).onFailure(ex -> {
 						LOG.error("Failed to start main verticle. ", ex);
@@ -325,17 +346,17 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 	public void  start(Promise<Void> startPromise) throws Exception, Exception {
 		try {
 			configureWebClient().onComplete(a ->
-				configureData().onComplete(b -> 
+				configureDataLoop().onComplete(b -> 
 					configureOpenApi().onComplete(d -> 
 						configureHealthChecks().onComplete(e -> 
 							configureSharedWorkerExecutor().onComplete(f -> 
 								configureWebsockets().onComplete(g -> 
 									configureEmail().onComplete(i -> 
 										configureHandlebars().onComplete(j -> 
-											configureApi().onComplete(k -> 
-												configureUi().onComplete(l -> 
-													configureCamel().onComplete(m -> 
-														startServer().onComplete(n -> startPromise.complete())
+											configureKafka().onComplete(k -> 
+												configureApi().onComplete(m -> 
+													configureUi().onComplete(n -> 
+														startServer().onComplete(o -> startPromise.complete())
 													).onFailure(ex -> startPromise.fail(ex))
 												).onFailure(ex -> startPromise.fail(ex))
 											).onFailure(ex -> startPromise.fail(ex))
@@ -358,13 +379,102 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 		Promise<Void> promise = Promise.promise();
 
 		try {
-			webClient = WebClient.create(vertx);
+			Boolean sslVerify = config().getBoolean(ConfigKeys.SSL_VERIFY);
+			webClient = WebClient.create(vertx, new WebClientOptions().setVerifyHost(sslVerify).setTrustAll(!sslVerify));
 			promise.complete();
 		} catch(Exception ex) {
 			LOG.error("Unable to configure site context. ", ex);
 			promise.fail(ex);
 		}
 
+		return promise.future();
+	}
+
+	/**
+	 * Val.Success.enUS:The Kafka producer was initialized successfully. 
+	 **/
+	public Future<KafkaProducer<String, String>> configureKafka() {
+		Promise<KafkaProducer<String, String>> promise = Promise.promise();
+
+		try {
+			Map<String, String> kafkaConfig = new HashMap<>();
+			kafkaConfig.put("bootstrap.servers", config().getString(ConfigKeys.KAFKA_BROKERS));
+			kafkaConfig.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+			kafkaConfig.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+			kafkaConfig.put("acks", "1");
+			kafkaConfig.put("security.protocol", "SSL");
+			Optional.ofNullable(config().getString(ConfigKeys.KAFKA_SSL_KEYSTORE_TYPE)).ifPresent(keystoreType -> {
+				kafkaConfig.put("ssl.keystore.type", keystoreType);
+				kafkaConfig.put("ssl.keystore.location", config().getString(ConfigKeys.KAFKA_SSL_KEYSTORE_LOCATION));
+				kafkaConfig.put("ssl.keystore.password", config().getString(ConfigKeys.KAFKA_SSL_KEYSTORE_PASSWORD));
+			});
+			Optional.ofNullable(config().getString(ConfigKeys.KAFKA_SSL_KEYSTORE_TYPE)).ifPresent(truststoreType -> {
+				kafkaConfig.put("ssl.truststore.type", truststoreType);
+				kafkaConfig.put("ssl.truststore.location", config().getString(ConfigKeys.KAFKA_SSL_TRUSTSTORE_LOCATION));
+				kafkaConfig.put("ssl.truststore.password", config().getString(ConfigKeys.KAFKA_SSL_TRUSTSTORE_PASSWORD));
+			});
+
+			kafkaProducer = KafkaProducer.createShared(vertx, SITE_NAME, kafkaConfig);
+			LOG.info(configureKafkaSuccess);
+			promise.complete(kafkaProducer);
+		} catch(Exception ex) {
+			LOG.error("Unable to configure site context. ", ex);
+			promise.fail(ex);
+		}
+
+		return promise.future();
+	}
+
+	/**
+	 * Val.Success.enUS:The MQTT client was initialized successfully. 
+	 * Val.Fail.enUS:The MQTT client failed to initialize. 
+	 **/
+	public Future<MqttClient> configureMqtt() {
+		Promise<MqttClient> promise = Promise.promise();
+
+		try {
+			if(BooleanUtils.isTrue(config().getBoolean(ConfigKeys.MQTT_ENABLED))) {
+				try {
+					mqttClient = MqttClient.create(vertx);
+					mqttClient.connect(config().getInteger(ConfigKeys.MQTT_PORT), config().getString(ConfigKeys.MQTT_HOST)).onSuccess(a -> {
+						try {
+							new MqttMessageReader(mqttClient, config());
+							LOG.info(configureMqttSuccess);
+							promise.complete(mqttClient);
+						} catch(Exception ex) {
+							LOG.error(configureMqttFail, ex);
+							promise.fail(ex);
+						}
+					}).onFailure(ex -> {
+						LOG.error(configureMqttFail, ex);
+						promise.fail(ex);
+					});
+				} catch(Exception ex) {
+					LOG.error(configureMqttFail, ex);
+					promise.fail(ex);
+				}
+			} else {
+				promise.complete();
+			}
+		} catch(Exception ex) {
+			LOG.error(configureMqttFail, ex);
+			promise.fail(ex);
+		}
+
+		return promise.future();
+	}
+
+	public Future<Void> configureDataLoop() {
+		Promise<Void> promise = Promise.promise();
+		configureData().onSuccess(a -> {
+			promise.complete();
+		}).onFailure(ex -> {
+			LOG.info("Call timer");
+			vertx.setTimer(10000, a -> {
+			LOG.info("Timer triggered");
+				configureDataLoop();
+			});
+		});
 		return promise.future();
 	}
 
@@ -391,7 +501,7 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 			pgOptions.setPassword(config().getString(ConfigKeys.JDBC_PASSWORD));
 			pgOptions.setIdleTimeout(config().getInteger(ConfigKeys.JDBC_MAX_IDLE_TIME, 10));
 			pgOptions.setIdleTimeoutUnit(TimeUnit.SECONDS);
-			pgOptions.setConnectTimeout(config().getInteger(ConfigKeys.JDBC_CONNECT_TIMEOUT, 5));
+			pgOptions.setConnectTimeout(config().getInteger(ConfigKeys.JDBC_CONNECT_TIMEOUT, 1000));
 
 			PoolOptions poolOptions = new PoolOptions();
 			jdbcMaxPoolSize = config().getInteger(ConfigKeys.JDBC_MAX_POOL_SIZE, 1);
@@ -400,9 +510,24 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 			poolOptions.setMaxWaitQueueSize(jdbcMaxWaitQueueSize);
 
 			pgPool = PgPool.pool(vertx, pgOptions, poolOptions);
-
-			LOG.info(configureDataInitSuccess);
-			promise.complete();
+			Promise<Void> promise1 = Promise.promise();
+			pgPool.withConnection(sqlConnection -> {
+				sqlConnection.preparedQuery("SELECT")
+						.execute(Tuple.tuple()
+						).onSuccess(result -> {
+					promise1.complete();
+				}).onFailure(ex -> {
+					LOG.error(configureDataInitError, ex);
+					promise1.fail(ex);
+				});
+				return promise1.future();
+			}).onSuccess(a -> {
+				LOG.info(configureDataInitSuccess);
+				promise.complete();
+			}).onFailure(ex -> {
+				LOG.error(configureDataInitError, ex);
+				promise.fail(ex);
+			});
 		} catch (Exception ex) {
 			LOG.error(configureDataInitError, ex);
 			promise.fail(ex);
@@ -433,14 +558,13 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 			String authUrl = String.format("%s://%s%s/auth", (authSsl ? "https" : "http"), authHostName, (authPort == 443 || authPort == 80 ? "" : ":" + authPort));
 			oauth2ClientOptions.setSite(authUrl + "/realms/" + config().getString(ConfigKeys.AUTH_REALM));
 			oauth2ClientOptions.setTenant(config().getString(ConfigKeys.AUTH_REALM));
-			oauth2ClientOptions.setClientId(config().getString(ConfigKeys.AUTH_RESOURCE));
+			oauth2ClientOptions.setClientId(config().getString(ConfigKeys.AUTH_CLIENT));
 			oauth2ClientOptions.setClientSecret(config().getString(ConfigKeys.AUTH_SECRET));
-			oauth2ClientOptions.setFlow(OAuth2FlowType.AUTH_CODE);
 			oauth2ClientOptions.setAuthorizationPath("/oauth/authorize");
 			JsonObject extraParams = new JsonObject();
 			extraParams.put("scope", "profile");
 			oauth2ClientOptions.setExtraParameters(extraParams);
-			oauth2ClientOptions.setHttpClientOptions(new HttpClientOptions().setConnectTimeout(120000));
+			oauth2ClientOptions.setHttpClientOptions(new HttpClientOptions().setTrustAll(true).setVerifyHost(false).setConnectTimeout(120000));
 
 			OpenIDConnectAuth.discover(vertx, oauth2ClientOptions, a -> {
 				if(a.succeeded()) {
@@ -460,92 +584,89 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 					if(StringUtils.startsWith(siteBaseUrl, "https://"))
 						sessionHandler.setCookieSecureFlag(true);
 			
-					RouterBuilder.create(vertx, "webroot/openapi3-enUS.yml", b -> {
-						if (b.succeeded()) {
-							RouterBuilder routerBuilder = b.result();
-							routerBuilder.mountServicesFromExtensions();
-			
-							routerBuilder.serviceExtraPayloadMapper(routingContext -> new JsonObject()
-									.put("uri", routingContext.request().uri())
-									.put("method", routingContext.request().method().name())
-									);
-							routerBuilder.rootHandler(sessionHandler);
-							routerBuilder.securityHandler("openIdConnect", oauth2AuthHandler);
-							routerBuilder.operation("callback").handler(ctx -> {
-			
-								// Handle the callback of the flow
-								final String code = ctx.request().getParam("code");
-			
-								// code is a require value
-								if (code == null) {
-									ctx.fail(400);
-									return;
-								}
-			
-								final String state = ctx.request().getParam("state");
-			
-								final JsonObject config = new JsonObject().put("code", code);
-			
-								config.put("redirectUri", siteBaseUrl + "/callback");
-			
-								oauth2AuthenticationProvider.authenticate(config, res -> {
-									if (res.failed()) {
-										LOG.error("Failed to authenticate user. ", res.cause());
-										ctx.fail(res.cause());
+					RouterBuilder.create(vertx, "webroot/openapi3-enUS.yml").onSuccess(routerBuilder -> {
+						routerBuilder.mountServicesFromExtensions();
+		
+						routerBuilder.serviceExtraPayloadMapper(routingContext -> new JsonObject()
+								.put("uri", routingContext.request().uri())
+								.put("method", routingContext.request().method().name())
+								);
+						routerBuilder.rootHandler(sessionHandler);
+						routerBuilder.securityHandler("openIdConnect", oauth2AuthHandler);
+						routerBuilder.operation("callback").handler(ctx -> {
+		
+							// Handle the callback of the flow
+							final String code = ctx.request().getParam("code");
+		
+							// code is a require value
+							if (code == null) {
+								ctx.fail(400);
+								return;
+							}
+		
+							final String state = ctx.request().getParam("state");
+		
+							final JsonObject config = new JsonObject().put("code", code);
+		
+							config.put("redirectUri", siteBaseUrl + "/callback");
+		
+							oauth2AuthenticationProvider.authenticate(config, res -> {
+								if (res.failed()) {
+									LOG.error("Failed to authenticate user. ", res.cause());
+									ctx.fail(res.cause());
+								} else {
+									ctx.setUser(res.result());
+									Session session = ctx.session();
+									if (session != null) {
+										// the user has upgraded from unauthenticated to authenticated
+										// session should be upgraded as recommended by owasp
+										Cookie cookie = Cookie.cookie("sessionIdBefore", session.id());
+										if(StringUtils.startsWith(siteBaseUrl, "https://"))
+											cookie.setSecure(true);
+										ctx.addCookie(cookie);
+										session.regenerateId();
+										String redirectUri = session.get("redirect_uri");
+										// we should redirect the UA so this link becomes invalid
+										ctx.response()
+												// disable all caching
+												.putHeader(HttpHeaders.CACHE_CONTROL, "no-cache, no-store, must-revalidate")
+												.putHeader("Pragma", "no-cache")
+												.putHeader(HttpHeaders.EXPIRES, "0")
+												// redirect (when there is no state, redirect to home
+												.putHeader(HttpHeaders.LOCATION, redirectUri != null ? redirectUri : "/")
+												.setStatusCode(302)
+												.end("Redirecting to " + (redirectUri != null ? redirectUri : "/") + ".");
 									} else {
-										ctx.setUser(res.result());
-										Session session = ctx.session();
-										if (session != null) {
-											// the user has upgraded from unauthenticated to authenticated
-											// session should be upgraded as recommended by owasp
-											Cookie cookie = Cookie.cookie("sessionIdBefore", session.id());
-											if(StringUtils.startsWith(siteBaseUrl, "https://"))
-												cookie.setSecure(true);
-											ctx.addCookie(cookie);
-											session.regenerateId();
-											String redirectUri = session.get("redirect_uri");
-											// we should redirect the UA so this link becomes invalid
-											ctx.response()
-													// disable all caching
-													.putHeader(HttpHeaders.CACHE_CONTROL, "no-cache, no-store, must-revalidate")
-													.putHeader("Pragma", "no-cache")
-													.putHeader(HttpHeaders.EXPIRES, "0")
-													// redirect (when there is no state, redirect to home
-													.putHeader(HttpHeaders.LOCATION, redirectUri != null ? redirectUri : "/")
-													.setStatusCode(302)
-													.end("Redirecting to " + (redirectUri != null ? redirectUri : "/") + ".");
-										} else {
-											// there is no session object so we cannot keep state
-											ctx.reroute(state != null ? state : "/");
-										}
+										// there is no session object so we cannot keep state
+										ctx.reroute(state != null ? state : "/");
 									}
-								});
+								}
 							});
-							routerBuilder.operation("callback").failureHandler(ex -> {
-								LOG.error("Failed callback. ", ex);
-							});
-			
-							routerBuilder.operation("logout").handler(rc -> {
-								String redirectUri = rc.request().params().get("redirect_uri");
-								if(redirectUri == null)
-									redirectUri = "/";
-								rc.clearUser();
-								rc.response()
-										.putHeader(HttpHeaders.LOCATION, redirectUri)
-										.setStatusCode(302)
-										.end("Redirecting to " + redirectUri + ".");
-							});
-							routerBuilder.operation("logout").handler(c -> {});
-			
-							router = routerBuilder.createRouter();
-			
-							LOG.info(configureOpenApiSuccess);
-							promise.complete();
-						} else {
-							Exception ex = new RuntimeException("OpenID Connect Discovery failed", b.cause());
-							LOG.error(configureOpenApiError, ex);
-							promise.fail(ex);
-						}
+						});
+						routerBuilder.operation("callback").failureHandler(ex -> {
+							LOG.error("Failed callback. ", ex);
+						});
+		
+						routerBuilder.operation("logout").handler(rc -> {
+							String redirectUri = rc.request().params().get("redirect_uri");
+							if(redirectUri == null)
+								redirectUri = "/";
+							rc.clearUser();
+							rc.response()
+									.putHeader(HttpHeaders.LOCATION, redirectUri)
+									.setStatusCode(302)
+									.end("Redirecting to " + redirectUri + ".");
+						});
+						routerBuilder.operation("logout").handler(c -> {});
+		
+						router = routerBuilder.createRouter();
+		
+						LOG.info(configureOpenApiSuccess);
+						promise.complete();
+					}).onFailure(ex -> {
+						Exception ex2 = new RuntimeException("OpenID Connect Discovery failed", ex);
+						LOG.error(configureOpenApiError, ex2);
+						promise.fail(ex2);
 					});
 				} else {
 					Exception ex = new RuntimeException("OpenID Connect Discovery failed", a.cause());
@@ -610,7 +731,8 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 		try {
 			String name = "MainVerticle-WorkerExecutor";
 			Integer workerPoolSize = System.getenv(ConfigKeys.WORKER_POOL_SIZE) == null ? 5 : Integer.parseInt(System.getenv(ConfigKeys.WORKER_POOL_SIZE));
-			workerExecutor = vertx.createSharedWorkerExecutor(name, workerPoolSize);
+			Long vertxMaxWorkerExecuteTime = config().getLong(ConfigKeys.VERTX_MAX_WORKER_EXECUTE_TIME);
+			workerExecutor = vertx.createSharedWorkerExecutor(name, workerPoolSize, vertxMaxWorkerExecuteTime, TimeUnit.SECONDS);
 			LOG.info(configureSharedWorkerExecutorComplete, name);
 			promise.complete();
 		} catch (Exception ex) {
@@ -728,6 +850,7 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 			handlebars.registerHelpers(AuthHelpers.class);
 			handlebars.registerHelpers(SiteHelpers.class);
 			handlebars.registerHelpers(DateHelpers.class);
+			handlebars.registerHelpers(ProjectHelpers.class);
 			handlebars.registerHelper("json", Jackson2Helper.INSTANCE);
 
 			String templatePath = config().getString(ConfigKeys.TEMPLATE_PATH);
@@ -752,12 +875,7 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 	public Future<Void> configureApi() {
 		Promise<Void> promise = Promise.promise();
 		try {
-			SiteUserEnUSGenApiService.registerService(vertx.eventBus(), config(), workerExecutor, pgPool, webClient, oauth2AuthenticationProvider, authorizationProvider, templateEngine, vertx);
-			ArticleEnUSGenApiService.registerService(vertx.eventBus(), config(), workerExecutor, pgPool, webClient, oauth2AuthenticationProvider, authorizationProvider, templateEngine, vertx);
-			CourseEnUSGenApiService.registerService(vertx.eventBus(), config(), workerExecutor, pgPool, webClient, oauth2AuthenticationProvider, authorizationProvider, templateEngine, vertx);
-			SitePageEnUSGenApiService.registerService(vertx.eventBus(), config(), workerExecutor, pgPool, webClient, oauth2AuthenticationProvider, authorizationProvider, templateEngine, vertx);
-			SiteHtmEnUSGenApiService.registerService(vertx.eventBus(), config(), workerExecutor, pgPool, webClient, oauth2AuthenticationProvider, authorizationProvider, templateEngine, vertx);
-			PixelArtEnUSGenApiService.registerService(vertx.eventBus(), config(), workerExecutor, pgPool, webClient, oauth2AuthenticationProvider, authorizationProvider, templateEngine, vertx);
+			SiteUserEnUSGenApiService.registerService(vertx.eventBus(), config(), workerExecutor, pgPool, kafkaProducer, webClient, oauth2AuthenticationProvider, authorizationProvider, templateEngine, vertx);
 
 			LOG.info(configureApiComplete);
 			promise.complete();
@@ -837,6 +955,7 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 
 			router.getWithRegex("(?<uri>\\/(?<lang>(?<lang1>[a-z][a-z])-(?<lang2>[a-z][a-z]))\\/.*)").handler(ctx -> {
 				String uri = ctx.pathParam("uri");
+				String url = String.format("%s%s", config().getString(ConfigKeys.SITE_BASE_URL), uri);
 				String lang = String.format("%s%s", ctx.pathParam("lang1"), ctx.pathParam("lang2").toUpperCase());
 				JsonObject query = new JsonObject();
 				MultiMap queryParams = ctx.queryParams();
@@ -867,7 +986,7 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 				SearchList<SitePage> l = new SearchList<>();
 				l.q("*:*");
 				l.setC(SitePage.class);
-				l.fq(String.format("%s_docvalues_string:%s", SitePage.VAR_uri, SearchTool.escapeQueryChars(uri)));
+				l.fq(String.format("%s_docvalues_string:%s", SitePage.VAR_url, SearchTool.escapeQueryChars(url)));
 				l.setStore(true);
 				ctx.response().headers().add("Content-Type", "text/html");
 				l.promiseDeepForClass(siteRequest).onSuccess(a -> {
@@ -875,7 +994,9 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 					try {
 						DynamicPage page = new DynamicPage();
 						page.setPage(JsonObject.mapFrom(result));
+						page.setUrl(url);
 						page.setUri(uri);
+						page.setPageImageUri(result.getPageImageUri());
 						page.promiseDeepForClass(siteRequest).onSuccess(b -> {
 							JsonObject json = JsonObject.mapFrom(page);
 							json.put(ConfigKeys.STATIC_BASE_URL, config().getString(ConfigKeys.STATIC_BASE_URL));
@@ -933,6 +1054,7 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 			if(staticPath != null) {
 				staticHandler.setAllowRootFileSystemAccess(true);
 				staticHandler.setWebRoot(staticPath);
+				staticHandler.setFilesReadOnly(true);
 			}
 			router.route("/static/*").handler(staticHandler);
 
@@ -967,17 +1089,6 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 			LOG.error(String.format("putVarsInRoutingContext failed. "), ex);
 			promise.fail(ex);
 		}
-		return promise.future();
-	}
-
-	/**
-	 * Val.Fail.enUS:The Camel Component was not configured properly. 
-	 * Val.Complete.enUS:The Camel Component was configured properly. 
-	 */
-	public Future<Void> configureCamel() {
-		Promise<Void> promise = Promise.promise();
-		promise.complete();
-
 		return promise.future();
 	}
 
@@ -1035,20 +1146,58 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 	/**	
 	 *	This is called by Vert.x when the verticle instance is undeployed. 
 	 *	Setup the stopPromise to handle tearing down the server. 
+	 **/
+	@Override()
+	public void stop(Promise<Void> promise) throws Exception, Exception {
+		stopPgPool().onComplete(a -> {
+			stopMqtt().onComplete(b -> {
+				promise.complete();
+			});
+		});
+	}
+
+	/**
 	 * Val.Fail.enUS:Could not close the database client connection. 
 	 * Val.Complete.enUS:The database client connection was closed. 
 	 **/
-	@Override()
-	public void  stop(Promise<Void> promise) throws Exception, Exception {
+	public Future<Void> stopPgPool() {
+		Promise<Void> promise = Promise.promise();
+
 		if(pgPool != null) {
 			pgPool.close().onSuccess(a -> {
-				LOG.info(stopComplete);
+				LOG.info(stopPgPoolComplete);
 				promise.complete();
 			}).onFailure(ex -> {
-				LOG.error(stopFail, ex);
+				LOG.error(stopPgPoolFail, ex);
 				promise.fail(ex);
 			});
+		} else {
+			promise.complete();
 		}
+
+		return promise.future();
+	}
+
+	/**
+	 * Val.Fail.enUS:Could not close the MQTT client connection. 
+	 * Val.Complete.enUS:The MQTT client connection was closed. 
+	 **/
+	public Future<Void> stopMqtt() {
+		Promise<Void> promise = Promise.promise();
+
+		if(mqttClient != null) {
+			mqttClient.disconnect().onSuccess(a -> {
+				LOG.info(stopMqttComplete);
+				promise.complete();
+			}).onFailure(ex -> {
+				LOG.error(stopMqttFail, ex);
+				promise.fail(ex);
+			});
+		} else {
+			promise.complete();
+		}
+
+		return promise.future();
 	}
 
 	public String toId(String s) {

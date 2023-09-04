@@ -42,9 +42,9 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.computate.search.response.solr.SolrResponse;
 
 /**	
- * <h1>About the PixelArt class and it's generated class PixelArtGen&lt;BaseModel&gt;: </h1>
+ * <h3>About the PixelArt class and it's generated class PixelArtGen&lt;BaseModel&gt;: </h3>extends PixelArtGen
  * <p>
- * This Java class extends a generated Java class built by the <a href="https://github.com/computate-org/computate">https://github.com/computate-org/computate</a> project. 
+ * This Java class extends a generated Java class PixelArtGen built by the <a href="https://github.com/computate-org/computate">https://github.com/computate-org/computate</a> project. 
  * Whenever this Java class is modified or touched, the watch service installed as described in the README, indexes all the information about this Java class in a local Apache Solr Search Engine. 
  * If you are running the service, you can see the indexed data about this Java Class here: 
  * </p>
@@ -53,28 +53,64 @@ import org.computate.search.response.solr.SolrResponse;
  * The extended class ending with "Gen" did not exist at first, but was automatically created by the same watch service based on the data retrieved from the local Apache Server search engine. 
  * The extended class contains many generated fields, getters, setters, initialization code, and helper methods to help build a website and API fast, reactive, and scalable. 
  * </p>
- * <p>This class contains a comment <b>"Model: true"</b>, which means this class will be stored in the database. 
- * Every protected void method that begins with "_" that contains a "Persist: true" comment will be a persisted field in the database table. 
+ * extends PixelArtGen<BaseModel>
+ * <p>This <code>class PixelArt extends PixelArtGen&lt;BaseModel&gt;</code>, which means it extends a newly generated PixelArtGen. 
+ * The generated <code>class PixelArtGen extends BaseModel</code> which means that PixelArt extends PixelArtGen which extends BaseModel. 
+ * This generated inheritance is a powerful feature that allows a lot of boiler plate code to be created for you automatically while still preserving inheritance through the power of Java Generic classes. 
  * </p>
+ * Api: true
+ * <p>This class contains a comment <b>"Api: true"</b>, which means this class will have Java Vert.x API backend code generated for these objects. 
+ * </p>
+ * ApiTag.enUS: Pixel Art
+ * <p>This class contains a comment <b>"ApiTag: Pixel Art"</b>, which groups all of the OpenAPIs for PixelArt objects under the tag "Pixel Art". 
+ * </p>
+ * ApiUri.enUS: /api/pixel-art
+ * <p>This class contains a comment <b>"ApiUri: /api/pixel-art"</b>, which defines the base API URI for PixelArt objects as "/api/pixel-art" in the OpenAPI spec. 
+ * </p>
+ * Color: blue
+ * <p>This class contains a comment <b>"Color: blue"</b>, which styles the PixelArt page "blue". 
+ * This will reference a CSS class defined by the stylesheets in the project that starts with "w3-". 
+ * A css class of "w3-blue" is expected to exist in the project stylesheets, and is inspired by W3 CSS colors. 
+ * See: <a href="https://www.w3schools.com/w3css/w3css_colors.asp">https://www.w3schools.com/w3css/w3css_colors.asp</a>. 
+ * </p>
+ * IconGroup: thin
+ * <p>This class contains a comment <b>"IconGroup: thin"</b>, which adds icons on the PixelArt page with a group of "thin". 
+ * This will reference a Font Awesome icon group that starts with "fa-" followed by the icon group "thin", together is "fa-thin". 
+ * A Font Awesome icon group of "thin" is expected to exist. 
+ * The Font Awesome groups currently supported include: solid, regular, light, thin, duotone, and sharp. 
+ * See: <a href="https://fontawesome.com/docs/web/dig-deeper/styles">https://fontawesome.com/docs/web/dig-deeper/styles</a>. 
+ * </p>
+ * IconName: table-cells
+ * <p>This class contains a comment <b>"IconName: table-cells"</b>, which adds icons on the PixelArt page with a name of "table-cells". 
+ * This will reference a Font Awesome icon that starts with the icon group "fa-thin fa-" followed by the icon name, which is "fa-thin fa-table-cells". 
+ * A Font Awesome icon of "fa-thin fa-table-cells" is expected to exist. 
+ * See: <a href="https://fontawesome.com/icons">https://fontawesome.com/icons</a>. 
+ * </p>
+ * Indexed: true
  * <p>This class contains a comment <b>"Indexed: true"</b>, which means this class will be indexed in the search engine. 
  * Every protected void method that begins with "_" that is marked to be searched with a comment like "Indexed: true", "Stored: true", or "DocValues: true" will be indexed in the search engine. 
  * </p>
+ * {@inheritDoc}
+ * <p>By adding a class comment "{@inheritDoc}", the PixelArt class will inherit the helpful inherited class comments from the super class PixelArtGen. 
+ * </p>
+ * Rows: 10
+ * <p>This class contains a comment <b>"Rows: 10"</b>, which means the PixelArt API will return a default of 10 records instead of 10 by default. 
+ * Each API has built in pagination of the search records to ensure a user can query all the data a page at a time without running the application out of memory. 
+ * </p>
+ * Model: true
+ * <p>This class contains a comment <b>"Model: true"</b>, which means this class will be stored in the database. 
+ * Every protected void method that begins with "_" that contains a "Persist: true" comment will be a persisted field in the database table. 
+ * </p>
+ * Page: true
  * <p>This class contains a comment <b>"Page: true"</b>, which means this class will have webpage code generated for these objects. 
  * Java Vert.x backend API code, Handlebars HTML template frontend code, and JavaScript code will all generated and can be extended. 
  * This creates a new Java class org.computate.site.enus.model.pixelart.PixelArtPage. 
  * </p>
+ * SuperPage.enUS: BaseModelPage
  * <p>This class contains a comment <b>"SuperPage.enUS: BaseModelPage"</b>, which identifies the Java super class of the page code by it's class simple name "BaseModelPage". 
  * This means that the newly created class org.computate.site.enus.model.pixelart.PixelArtPage extends org.computate.site.enus.model.base.BaseModelPage. 
  * </p>
- * <p>This class contains a comment <b>"Api: true"</b>, which means this class will have Java Vert.x API backend code generated for these objects. 
- * </p>
- * <p>This class contains a comment <b>"ApiTag: Pixel Art"</b>, which groups all of the OpenAPIs for PixelArt objects under the tag "Pixel Art". 
- * </p>
- * <p>This class contains a comment <b>"ApiUri: /api/pixel-art"</b>, which defines the base API URI for PixelArt objects as "/api/pixel-art" in the OpenAPI spec. 
- * </p>
- * <p>This class contains a comment <b>"Rows: 10"</b>, which means the PixelArt API will return a default of 10 records instead of 10 by default. 
- * Each API has built in pagination of the search records to ensure a user can query all the data a page at a time without running the application out of memory. 
- * </p>
+ * Promise: true
  * <p>
  *   This class contains a comment <b>"Promise: true"</b>
  *   Sometimes a Java class must be initialized asynchronously when it involves calling a blocking API. 
@@ -97,18 +133,14 @@ import org.computate.search.response.solr.SolrResponse;
  * <p>
  *   If a super class of this Java class with `Model: true`, then the child class will also inherit `Promise: true`. 
  * </p>
+ * Role.enUS: SiteAdmin
+ * <p>
+ * This class contains a comment <b>"Role.enUS: SiteAdmin"</b>, which identifies the default role name "SiteAdmin" of the OAuth2/OpenID Connect user role required to access this PixelArt API. 
+ * It's possible to reconfigure the roles required to access the PixelArt API by configuring an environment variable like this: 
+ * </p>
+ * <pre>AUTH_ROLES_REQUIRED_PixelArt: ["SiteAdmin"]</pre>
+ * AName: a pixel art
  * <p>This class contains a comment <b>"AName.enUS: a pixel art"</b>, which identifies the language context to describe a PixelArt as "a pixel art". 
- * </p>
- * <p>This class contains a comment <b>"Color: blue"</b>, which styles the PixelArt page "blue". 
- * This will reference a CSS class defined by the stylesheets in the project that starts with "w3-". 
- * A css class of "w3-blue" is expected to exist in the project stylesheets, and is inspired by W3 CSS colors. 
- * See: <a href="https://www.w3schools.com/w3css/w3css_colors.asp">https://www.w3schools.com/w3css/w3css_colors.asp</a>. 
- * </p>
- * <p>This class contains a comment <b>"IconGroup: thin"</b>, which adds icons on the PixelArt page with a group of "thin". 
- * This will reference a Font Awesome icon group defined by the stylesheets in the project that starts with "fa" followed by the first letter of the icon group, which is "fat". 
- * A Font Awesome icon group of "blue" is expected to exist. 
- * The Font Awesome groups currently supported include: solid, thin, duotone. 
- * See: <a href="https://www.w3schools.com/w3css/w3css_colors.asp">https://www.w3schools.com/w3css/w3css_colors.asp</a>. 
  * </p>
  * <p>
  * Delete the class PixelArt in Solr: 
@@ -167,6 +199,7 @@ public abstract class PixelArtGen<DEV> extends BaseModel {
 	// base64Data //
 	////////////////
 
+
 	/**	 The entity base64Data
 	 *	 is defined as null before being initialized. 
 	 */
@@ -219,6 +252,7 @@ public abstract class PixelArtGen<DEV> extends BaseModel {
 	//////////////////
 	// pixelArtName //
 	//////////////////
+
 
 	/**	 The entity pixelArtName
 	 *	 is defined as null before being initialized. 

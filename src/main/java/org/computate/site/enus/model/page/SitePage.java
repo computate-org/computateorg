@@ -31,19 +31,19 @@ import io.vertx.core.Promise;
  * Page: true
  * SuperPage.enUS: BaseResultPage
  * Indexed: true
- * Map.Integer.sqlSort: 100
- * Map.Integer.classSort: 100
+ * SqlOrder: 100
+ * Order: 100
  * 
  * ApiTag.enUS: Page
  * ApiUri.enUS: /api/page
  * 
- * ApiMethod.enUS: Search
+ * ApiMethod: Search
  * ApiMethod: GET
  * ApiMethod: POST
  * ApiMethod: PATCH
  * ApiMethod: PUTImport
  * 
- * ApiMethod.enUS: SearchPage
+ * ApiMethod: SearchPage
  * Page.SearchPage.enUS: SitePagePage
  * ApiUri.SearchPage.enUS: /page
  * 
@@ -51,7 +51,6 @@ import io.vertx.core.Promise;
  * Color: 2017-shaded-spruce
  * IconGroup: duotone
  * IconName: newspaper
- * NameVar: page
  * 
  * Sort.desc: courseNum
  * Sort.desc: lessonNum
@@ -158,9 +157,22 @@ public class SitePage extends SitePageGen<BaseResult> {
 	 * {@inheritDoc}
 	 * DocValues: true
 	 * Persist: true
-	 * HtmlRow: 3
-	 * HtmlCell: 2
-	 * HtmlColumn: 4
+	 * HtmRow: 3
+	 * HtmCell: 2
+	 * HtmColumn: 4
+	 * Facet: true
+	 * DisplayName: URL
+	 * Description: The URL for this page. 
+	 */
+	protected void _url(Wrap<String> w) {
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * DocValues: true
+	 * Persist: true
+	 * HtmRow: 3
+	 * HtmCell: 2
 	 * Facet: true
 	 * DisplayName: URI
 	 * Description: The relative URI for this page. 
@@ -172,15 +184,13 @@ public class SitePage extends SitePageGen<BaseResult> {
 	 * {@inheritDoc}
 	 * DocValues: true
 	 * Persist: true
-	 * HtmlRow: 3
-	 * HtmlCell: 1
+	 * HtmRow: 3
+	 * HtmCell: 1
 	 * Facet: true
 	 * DisplayName: Page ID
 	 * Description: The ID for this page. 
 	 */
 	protected void _pageId(Wrap<String> w) {
-		if(uri != null)
-			w.o(StringUtils.substringAfterLast(uri, "/"));
 	}
 
 	/**
@@ -207,8 +217,8 @@ public class SitePage extends SitePageGen<BaseResult> {
 	 * {@inheritDoc}
 	 * DocValues: true
 	 * Persist: true
-	 * HtmlRow: 3
-	 * HtmlCell: 3
+	 * HtmRow: 3
+	 * HtmCell: 3
 	 * Facet: true
 	 * DisplayName.enUS: author
 	 * Description: The author
@@ -220,8 +230,8 @@ public class SitePage extends SitePageGen<BaseResult> {
 	 * {@inheritDoc}
 	 * DocValues: true
 	 * Persist: true
-	 * HtmlRow: 4
-	 * HtmlCell: 1
+	 * HtmRow: 4
+	 * HtmCell: 1
 	 * Facet: true
 	 * DisplayName.enUS: imageUri
 	 * Description: The page image URI
@@ -279,5 +289,15 @@ public class SitePage extends SitePageGen<BaseResult> {
 	@Override
 	protected void _id(Wrap<String> w) {
 		w.o(String.format("%s_%s", SitePage.CLASS_SIMPLE_NAME, pageId));
+	}
+
+	@Override
+	protected void _pageUrlId(Wrap<String> w) {
+		w.o(url);
+	}
+
+	@Override
+	protected void _pageUrlPk(Wrap<String> w) {
+		w.o(url);
 	}
 }

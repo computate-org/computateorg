@@ -57,21 +57,30 @@ import org.computate.search.response.solr.SolrResponse;
 import io.vertx.core.json.JsonObject;
 
 /**	
- * <h1>Suggestions that can generate more code for you: </h1>
- * <ol>
+<ol>
+<li>You can add a class comment "{@inheritDoc}" if you wish to inherit the helpful inherited class comments from class ArticleGen into the class Article. 
+</li>
+<li>You can add a class comment "Rows: 100" if you wish the Article API to return more or less than 10 records by default. 
+In this case, the API will return 100 records from the API instead of 10 by default. 
+Each API has built in pagination of the search records to ensure a user can query all the data a page at a time without running the application out of memory. 
+</li>
+<li>You can add a class comment "Model: true" if you wish to persist these Article objects in a relational PostgreSQL database transactionally in the RESTful API. 
+The code to persist and query the ArticleGen data in the database will then be automatically generated. 
+</li>
+0<h3>Suggestions that can generate more code for you: </h3></ol>
  * <li>You can add a class comment "{@inheritDoc}" if you wish to inherit the helpful inherited class comments from class ArticleGen into the class Article. 
- * </li>
- * <li>You can add a class comment "Model: true" if you wish to persist these Article objects in a relational PostgreSQL database transactionally in the RESTful API. 
- * The code to persist and query the ArticleGen data in the database will then be automatically generated. 
  * </li>
  * <li>You can add a class comment "Rows: 100" if you wish the Article API to return more or less than 10 records by default. 
  * In this case, the API will return 100 records from the API instead of 10 by default. 
  * Each API has built in pagination of the search records to ensure a user can query all the data a page at a time without running the application out of memory. 
  * </li>
- * </ol>
- * <h1>About the Article class and it's generated class ArticleGen&lt;Object&gt;: </h1>
+ * <li>You can add a class comment "Model: true" if you wish to persist these Article objects in a relational PostgreSQL database transactionally in the RESTful API. 
+ * The code to persist and query the ArticleGen data in the database will then be automatically generated. 
+ * </li>
+ * 0<h3>Suggestions that can generate more code for you: </h3>
+ * <h3>About the Article class and it's generated class ArticleGen&lt;Object&gt;: </h3>extends ArticleGen
  * <p>
- * This Java class extends a generated Java class built by the <a href="https://github.com/computate-org/computate">https://github.com/computate-org/computate</a> project. 
+ * This Java class extends a generated Java class ArticleGen built by the <a href="https://github.com/computate-org/computate">https://github.com/computate-org/computate</a> project. 
  * Whenever this Java class is modified or touched, the watch service installed as described in the README, indexes all the information about this Java class in a local Apache Solr Search Engine. 
  * If you are running the service, you can see the indexed data about this Java Class here: 
  * </p>
@@ -80,22 +89,58 @@ import io.vertx.core.json.JsonObject;
  * The extended class ending with "Gen" did not exist at first, but was automatically created by the same watch service based on the data retrieved from the local Apache Server search engine. 
  * The extended class contains many generated fields, getters, setters, initialization code, and helper methods to help build a website and API fast, reactive, and scalable. 
  * </p>
+ * extends ArticleGen<Object>
+ * <p>This <code>class Article extends ArticleGen&lt;Object&gt;</code>, which means it extends a newly generated ArticleGen. 
+ * The generated <code>class ArticleGen extends Object</code> which means that Article extends ArticleGen which extends Object. 
+ * This generated inheritance is a powerful feature that allows a lot of boiler plate code to be created for you automatically while still preserving inheritance through the power of Java Generic classes. 
+ * </p>
+ * Api: true
+ * <p>This class contains a comment <b>"Api: true"</b>, which means this class will have Java Vert.x API backend code generated for these objects. 
+ * </p>
+ * ApiTag.enUS: Article
+ * <p>This class contains a comment <b>"ApiTag: Article"</b>, which groups all of the OpenAPIs for Article objects under the tag "Article". 
+ * </p>
+ * ApiUri.enUS: /api/article
+ * <p>This class contains a comment <b>"ApiUri: /api/article"</b>, which defines the base API URI for Article objects as "/api/article" in the OpenAPI spec. 
+ * </p>
+ * Color: green
+ * <p>This class contains a comment <b>"Color: green"</b>, which styles the Article page "green". 
+ * This will reference a CSS class defined by the stylesheets in the project that starts with "w3-". 
+ * A css class of "w3-green" is expected to exist in the project stylesheets, and is inspired by W3 CSS colors. 
+ * See: <a href="https://www.w3schools.com/w3css/w3css_colors.asp">https://www.w3schools.com/w3css/w3css_colors.asp</a>. 
+ * </p>
+ * IconGroup: regular
+ * <p>This class contains a comment <b>"IconGroup: regular"</b>, which adds icons on the Article page with a group of "regular". 
+ * This will reference a Font Awesome icon group that starts with "fa-" followed by the icon group "regular", together is "fa-regular". 
+ * A Font Awesome icon group of "regular" is expected to exist. 
+ * The Font Awesome groups currently supported include: solid, regular, light, thin, duotone, and sharp. 
+ * See: <a href="https://fontawesome.com/docs/web/dig-deeper/styles">https://fontawesome.com/docs/web/dig-deeper/styles</a>. 
+ * </p>
+ * IconName: university
+ * <p>This class contains a comment <b>"IconName: university"</b>, which adds icons on the Article page with a name of "university". 
+ * This will reference a Font Awesome icon that starts with the icon group "fa-regular fa-" followed by the icon name, which is "fa-regular fa-university". 
+ * A Font Awesome icon of "fa-regular fa-university" is expected to exist. 
+ * See: <a href="https://fontawesome.com/icons">https://fontawesome.com/icons</a>. 
+ * </p>
+ * Indexed: true
  * <p>This class contains a comment <b>"Indexed: true"</b>, which means this class will be indexed in the search engine. 
  * Every protected void method that begins with "_" that is marked to be searched with a comment like "Indexed: true", "Stored: true", or "DocValues: true" will be indexed in the search engine. 
  * </p>
+ * {@inheritDoc}
+ * <p>By adding a class comment "{@inheritDoc}", the Article class will inherit the helpful inherited class comments from the super class ArticleGen. 
+ * </p>
+ * Rows: null
+ * Model: true
+ * Page: true
  * <p>This class contains a comment <b>"Page: true"</b>, which means this class will have webpage code generated for these objects. 
  * Java Vert.x backend API code, Handlebars HTML template frontend code, and JavaScript code will all generated and can be extended. 
  * This creates a new Java class org.computate.site.enus.article.ArticlePage. 
  * </p>
+ * SuperPage.enUS: PageLayout
  * <p>This class contains a comment <b>"SuperPage.enUS: PageLayout"</b>, which identifies the Java super class of the page code by it's class simple name "PageLayout". 
  * This means that the newly created class org.computate.site.enus.article.ArticlePage extends org.computate.site.enus.page.PageLayout. 
  * </p>
- * <p>This class contains a comment <b>"Api: true"</b>, which means this class will have Java Vert.x API backend code generated for these objects. 
- * </p>
- * <p>This class contains a comment <b>"ApiTag: Article"</b>, which groups all of the OpenAPIs for Article objects under the tag "Article". 
- * </p>
- * <p>This class contains a comment <b>"ApiUri: /api/article"</b>, which defines the base API URI for Article objects as "/api/article" in the OpenAPI spec. 
- * </p>
+ * Promise: true
  * <p>
  *   This class contains a comment <b>"Promise: true"</b>
  *   Sometimes a Java class must be initialized asynchronously when it involves calling a blocking API. 
@@ -118,18 +163,8 @@ import io.vertx.core.json.JsonObject;
  * <p>
  *   If a super class of this Java class with `Model: true`, then the child class will also inherit `Promise: true`. 
  * </p>
+ * AName: an article
  * <p>This class contains a comment <b>"AName.enUS: an article"</b>, which identifies the language context to describe a Article as "an article". 
- * </p>
- * <p>This class contains a comment <b>"Color: green"</b>, which styles the Article page "green". 
- * This will reference a CSS class defined by the stylesheets in the project that starts with "w3-". 
- * A css class of "w3-green" is expected to exist in the project stylesheets, and is inspired by W3 CSS colors. 
- * See: <a href="https://www.w3schools.com/w3css/w3css_colors.asp">https://www.w3schools.com/w3css/w3css_colors.asp</a>. 
- * </p>
- * <p>This class contains a comment <b>"IconGroup: regular"</b>, which adds icons on the Article page with a group of "regular". 
- * This will reference a Font Awesome icon group defined by the stylesheets in the project that starts with "fa" followed by the first letter of the icon group, which is "far". 
- * A Font Awesome icon group of "green" is expected to exist. 
- * The Font Awesome groups currently supported include: solid, thin, duotone. 
- * See: <a href="https://www.w3schools.com/w3css/w3css_colors.asp">https://www.w3schools.com/w3css/w3css_colors.asp</a>. 
  * </p>
  * <p>
  * Delete the class Article in Solr: 
@@ -187,6 +222,7 @@ public abstract class ArticleGen<DEV> extends Object {
 	// promiseBefore //
 	///////////////////
 
+
 	/**	 The entity promiseBefore
 	 *	 is defined as null before being initialized. 
 	 */
@@ -228,6 +264,7 @@ public abstract class ArticleGen<DEV> extends Object {
 	///////////////////
 	// staticBaseUrl //
 	///////////////////
+
 
 	/**	 The entity staticBaseUrl
 	 *	 is defined as null before being initialized. 
@@ -278,6 +315,7 @@ public abstract class ArticleGen<DEV> extends Object {
 	// domainName //
 	////////////////
 
+
 	/**	 The entity domainName
 	 *	 is defined as null before being initialized. 
 	 */
@@ -326,6 +364,7 @@ public abstract class ArticleGen<DEV> extends Object {
 	//////////////
 	// siteName //
 	//////////////
+
 
 	/**	 The entity siteName
 	 *	 is defined as null before being initialized. 
@@ -376,6 +415,7 @@ public abstract class ArticleGen<DEV> extends Object {
 	// siteHostName //
 	//////////////////
 
+
 	/**	 The entity siteHostName
 	 *	 is defined as null before being initialized. 
 	 */
@@ -424,6 +464,7 @@ public abstract class ArticleGen<DEV> extends Object {
 	/////////////////////
 	// sitePackageName //
 	/////////////////////
+
 
 	/**	 The entity sitePackageName
 	 *	 is defined as null before being initialized. 
@@ -474,6 +515,7 @@ public abstract class ArticleGen<DEV> extends Object {
 	// computerHostName //
 	//////////////////////
 
+
 	/**	 The entity computerHostName
 	 *	 is defined as null before being initialized. 
 	 */
@@ -522,6 +564,7 @@ public abstract class ArticleGen<DEV> extends Object {
 	//////////////
 	// userName //
 	//////////////
+
 
 	/**	 The entity userName
 	 *	 is defined as null before being initialized. 
@@ -572,6 +615,7 @@ public abstract class ArticleGen<DEV> extends Object {
 	// cheminProjet //
 	//////////////////
 
+
 	/**	 The entity cheminProjet
 	 *	 is defined as null before being initialized. 
 	 */
@@ -621,6 +665,7 @@ public abstract class ArticleGen<DEV> extends Object {
 	// groupName //
 	///////////////
 
+
 	/**	 The entity groupName
 	 *	 is defined as null before being initialized. 
 	 */
@@ -669,6 +714,7 @@ public abstract class ArticleGen<DEV> extends Object {
 	//////////////
 	// isCourse //
 	//////////////
+
 
 	/**	 The entity isCourse
 	 *	 is defined as null before being initialized. 
@@ -724,6 +770,7 @@ public abstract class ArticleGen<DEV> extends Object {
 	// isLesson //
 	//////////////
 
+
 	/**	 The entity isLesson
 	 *	 is defined as null before being initialized. 
 	 */
@@ -778,6 +825,7 @@ public abstract class ArticleGen<DEV> extends Object {
 	// isArticle //
 	///////////////
 
+
 	/**	 The entity isArticle
 	 *	 is defined as null before being initialized. 
 	 */
@@ -831,6 +879,7 @@ public abstract class ArticleGen<DEV> extends Object {
 	//////////////////
 	// courseNumber //
 	//////////////////
+
 
 	/**	 The entity courseNumber
 	 *	 is defined as null before being initialized. 
@@ -889,6 +938,7 @@ public abstract class ArticleGen<DEV> extends Object {
 	// lessonNumber //
 	//////////////////
 
+
 	/**	 The entity lessonNumber
 	 *	 is defined as null before being initialized. 
 	 */
@@ -946,6 +996,7 @@ public abstract class ArticleGen<DEV> extends Object {
 	// lessonDescription //
 	///////////////////////
 
+
 	/**	 The entity lessonDescription
 	 *	 is defined as null before being initialized. 
 	 */
@@ -994,6 +1045,7 @@ public abstract class ArticleGen<DEV> extends Object {
 	////////////////////
 	// articleH1_enUS //
 	////////////////////
+
 
 	/**	 The entity articleH1_enUS
 	 *	 is defined as null before being initialized. 
@@ -1044,6 +1096,7 @@ public abstract class ArticleGen<DEV> extends Object {
 	// articleH1_frFR //
 	////////////////////
 
+
 	/**	 The entity articleH1_frFR
 	 *	 is defined as null before being initialized. 
 	 */
@@ -1092,6 +1145,7 @@ public abstract class ArticleGen<DEV> extends Object {
 	////////////////////
 	// articleH2_enUS //
 	////////////////////
+
 
 	/**	 The entity articleH2_enUS
 	 *	 is defined as null before being initialized. 
@@ -1142,6 +1196,7 @@ public abstract class ArticleGen<DEV> extends Object {
 	// articleH2_frFR //
 	////////////////////
 
+
 	/**	 The entity articleH2_frFR
 	 *	 is defined as null before being initialized. 
 	 */
@@ -1190,6 +1245,7 @@ public abstract class ArticleGen<DEV> extends Object {
 	///////////////
 	// articleH1 //
 	///////////////
+
 
 	/**	 The entity articleH1
 	 *	 is defined as null before being initialized. 
@@ -1240,6 +1296,7 @@ public abstract class ArticleGen<DEV> extends Object {
 	// articleH2 //
 	///////////////
 
+
 	/**	 The entity articleH2
 	 *	 is defined as null before being initialized. 
 	 */
@@ -1288,6 +1345,7 @@ public abstract class ArticleGen<DEV> extends Object {
 	////////////////////////
 	// articleDescription //
 	////////////////////////
+
 
 	/**	 The entity articleDescription
 	 *	 is defined as null before being initialized. 
@@ -1338,6 +1396,7 @@ public abstract class ArticleGen<DEV> extends Object {
 	// pageDescription //
 	/////////////////////
 
+
 	/**	 The entity pageDescription
 	 *	 is defined as null before being initialized. 
 	 */
@@ -1386,6 +1445,7 @@ public abstract class ArticleGen<DEV> extends Object {
 	////////////////////
 	// articleCreated //
 	////////////////////
+
 
 	/**	 The entity articleCreated
 	 *	 is defined as null before being initialized. 
@@ -1460,6 +1520,7 @@ public abstract class ArticleGen<DEV> extends Object {
 	// pageUri_enUS //
 	//////////////////
 
+
 	/**	 The entity pageUri_enUS
 	 *	 is defined as null before being initialized. 
 	 */
@@ -1508,6 +1569,7 @@ public abstract class ArticleGen<DEV> extends Object {
 	//////////////////
 	// pageUri_frFR //
 	//////////////////
+
 
 	/**	 The entity pageUri_frFR
 	 *	 is defined as null before being initialized. 
@@ -1558,6 +1620,7 @@ public abstract class ArticleGen<DEV> extends Object {
 	// pageUri //
 	/////////////
 
+
 	/**	 The entity pageUri
 	 *	 is defined as null before being initialized. 
 	 */
@@ -1606,6 +1669,7 @@ public abstract class ArticleGen<DEV> extends Object {
 	///////////////////////
 	// pageImageUri_enUS //
 	///////////////////////
+
 
 	/**	 The entity pageImageUri_enUS
 	 *	 is defined as null before being initialized. 
@@ -1656,6 +1720,7 @@ public abstract class ArticleGen<DEV> extends Object {
 	// pageImageUri_frFR //
 	///////////////////////
 
+
 	/**	 The entity pageImageUri_frFR
 	 *	 is defined as null before being initialized. 
 	 */
@@ -1705,6 +1770,7 @@ public abstract class ArticleGen<DEV> extends Object {
 	// pageImageUri //
 	//////////////////
 
+
 	/**	 The entity pageImageUri
 	 *	 is defined as null before being initialized. 
 	 */
@@ -1753,6 +1819,7 @@ public abstract class ArticleGen<DEV> extends Object {
 	/////////////////
 	// pageCreated //
 	/////////////////
+
 
 	/**	 The entity pageCreated
 	 *	 is defined as null before being initialized. 
@@ -1827,6 +1894,7 @@ public abstract class ArticleGen<DEV> extends Object {
 	// pageH1 //
 	////////////
 
+
 	/**	 The entity pageH1
 	 *	 is defined as null before being initialized. 
 	 */
@@ -1875,6 +1943,7 @@ public abstract class ArticleGen<DEV> extends Object {
 	////////////
 	// pageH2 //
 	////////////
+
 
 	/**	 The entity pageH2
 	 *	 is defined as null before being initialized. 
@@ -1925,6 +1994,7 @@ public abstract class ArticleGen<DEV> extends Object {
 	// pageH3 //
 	////////////
 
+
 	/**	 The entity pageH3
 	 *	 is defined as null before being initialized. 
 	 */
@@ -1974,6 +2044,7 @@ public abstract class ArticleGen<DEV> extends Object {
 	// pageTitle //
 	///////////////
 
+
 	/**	 The entity pageTitle
 	 *	 is defined as null before being initialized. 
 	 */
@@ -2022,6 +2093,7 @@ public abstract class ArticleGen<DEV> extends Object {
 	/////////////////////
 	// pageSearch_enUS //
 	/////////////////////
+
 
 	/**	 The entity pageSearch_enUS
 	 *	 It is constructed before being initialized with the constructor by default. 
@@ -2089,6 +2161,7 @@ public abstract class ArticleGen<DEV> extends Object {
 	// pageSearch_frFR //
 	/////////////////////
 
+
 	/**	 The entity pageSearch_frFR
 	 *	 It is constructed before being initialized with the constructor by default. 
 	 */
@@ -2155,6 +2228,7 @@ public abstract class ArticleGen<DEV> extends Object {
 	// siteUser_ //
 	///////////////
 
+
 	/**	 The entity siteUser_
 	 *	 is defined as null before being initialized. 
 	 */
@@ -2192,6 +2266,7 @@ public abstract class ArticleGen<DEV> extends Object {
 	////////////
 	// userId //
 	////////////
+
 
 	/**	 The entity userId
 	 *	 is defined as null before being initialized. 
@@ -2242,6 +2317,7 @@ public abstract class ArticleGen<DEV> extends Object {
 	// siteRequest_ //
 	//////////////////
 
+
 	/**	 The entity siteRequest_
 	 *	 is defined as null before being initialized. 
 	 */
@@ -2279,6 +2355,7 @@ public abstract class ArticleGen<DEV> extends Object {
 	///////////////
 	// inheritPk //
 	///////////////
+
 
 	/**	 The entity inheritPk
 	 *	 is defined as null before being initialized. 
@@ -2332,6 +2409,7 @@ public abstract class ArticleGen<DEV> extends Object {
 	/////////////
 	// created //
 	/////////////
+
 
 	/**	 The entity created
 	 *	 is defined as null before being initialized. 
@@ -2410,6 +2488,7 @@ public abstract class ArticleGen<DEV> extends Object {
 	// modified //
 	//////////////
 
+
 	/**	 The entity modified
 	 *	 is defined as null before being initialized. 
 	 */
@@ -2483,6 +2562,7 @@ public abstract class ArticleGen<DEV> extends Object {
 	// archived //
 	//////////////
 
+
 	/**	 The entity archived
 	 *	 is defined as null before being initialized. 
 	 */
@@ -2540,6 +2620,7 @@ public abstract class ArticleGen<DEV> extends Object {
 	/////////////
 	// deleted //
 	/////////////
+
 
 	/**	 The entity deleted
 	 *	 is defined as null before being initialized. 
@@ -2599,6 +2680,7 @@ public abstract class ArticleGen<DEV> extends Object {
 	// classCanonicalName //
 	////////////////////////
 
+
 	/**	 The entity classCanonicalName
 	 *	 is defined as null before being initialized. 
 	 */
@@ -2648,6 +2730,7 @@ public abstract class ArticleGen<DEV> extends Object {
 	// classSimpleName //
 	/////////////////////
 
+
 	/**	 The entity classSimpleName
 	 *	 is defined as null before being initialized. 
 	 */
@@ -2696,6 +2779,7 @@ public abstract class ArticleGen<DEV> extends Object {
 	/////////////////////////
 	// classCanonicalNames //
 	/////////////////////////
+
 
 	/**	 The entity classCanonicalNames
 	 *	 It is constructed before being initialized with the constructor by default. 
@@ -2763,6 +2847,7 @@ public abstract class ArticleGen<DEV> extends Object {
 	// sessionId //
 	///////////////
 
+
 	/**	 The entity sessionId
 	 *	 is defined as null before being initialized. 
 	 */
@@ -2815,6 +2900,7 @@ public abstract class ArticleGen<DEV> extends Object {
 	/////////////
 	// userKey //
 	/////////////
+
 
 	/**	 The entity userKey
 	 *	 is defined as null before being initialized. 
@@ -2876,6 +2962,7 @@ public abstract class ArticleGen<DEV> extends Object {
 	///////////
 	// saves //
 	///////////
+
 
 	/**	 The entity saves
 	 *	 It is constructed before being initialized with the constructor by default. 
@@ -2943,6 +3030,7 @@ public abstract class ArticleGen<DEV> extends Object {
 	// objectTitle //
 	/////////////////
 
+
 	/**	 The entity objectTitle
 	 *	 is defined as null before being initialized. 
 	 */
@@ -2991,6 +3079,7 @@ public abstract class ArticleGen<DEV> extends Object {
 	//////////////
 	// objectId //
 	//////////////
+
 
 	/**	 The entity objectId
 	 *	 is defined as null before being initialized. 
@@ -3041,9 +3130,11 @@ public abstract class ArticleGen<DEV> extends Object {
 		return objectId;
 	}
 
+
 	///////////////////
 	// objectNameVar //
 	///////////////////
+
 
 	/**	 The entity objectNameVar
 	 *	 is defined as null before being initialized. 
@@ -3094,6 +3185,7 @@ public abstract class ArticleGen<DEV> extends Object {
 	// objectSuggest //
 	///////////////////
 
+
 	/**	 The entity objectSuggest
 	 *	 is defined as null before being initialized. 
 	 */
@@ -3142,6 +3234,7 @@ public abstract class ArticleGen<DEV> extends Object {
 	////////////////
 	// objectText //
 	////////////////
+
 
 	/**	 The entity objectText
 	 *	 is defined as null before being initialized. 
@@ -3192,6 +3285,7 @@ public abstract class ArticleGen<DEV> extends Object {
 	// pageUrlId //
 	///////////////
 
+
 	/**	 The entity pageUrlId
 	 *	 is defined as null before being initialized. 
 	 */
@@ -3240,6 +3334,7 @@ public abstract class ArticleGen<DEV> extends Object {
 	///////////////
 	// pageUrlPk //
 	///////////////
+
 
 	/**	 The entity pageUrlPk
 	 *	 is defined as null before being initialized. 
@@ -3290,6 +3385,7 @@ public abstract class ArticleGen<DEV> extends Object {
 	// pageUrlApi //
 	////////////////
 
+
 	/**	 The entity pageUrlApi
 	 *	 is defined as null before being initialized. 
 	 */
@@ -3338,6 +3434,7 @@ public abstract class ArticleGen<DEV> extends Object {
 	////////
 	// id //
 	////////
+
 
 	/**	 The entity id
 	 *	 is defined as null before being initialized. 

@@ -27,7 +27,7 @@ import io.vertx.core.Promise;
  * Indexed: true
  * Page: true
  * SuperPage.enUS: PageLayout
- * Map.Integer.classSort: 1
+ * Order: 1
  * 
  * ApiTag: Article
  * ApiUri: /api/article

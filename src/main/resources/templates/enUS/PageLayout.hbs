@@ -7,7 +7,7 @@
 		<script src="{{ fontAwesomeKit }}"></script>
 {{/if}}
 		<script src="{{staticBaseUrl}}/js/site-enUS.js"></script>
-		<script src="{{staticBaseUrl}}/js/moment.js"></script>
+		<script src="{{staticBaseUrl}}/js/datePicker.js"></script>
 		<script src="{{staticBaseUrl}}/js/sockjs.js"></script>
 		<script src="{{staticBaseUrl}}/js/vertx-eventbus.js"></script>
 		<script src="{{staticBaseUrl}}/js/plotly-2.9.0.min.js"></script>
@@ -15,12 +15,14 @@
 {{/inline}}
 {{#*inline "htmScriptPageLayout"}}		<!-- #*inline "htmScriptPageLayout" -->
 {{/inline}}
+{{#*inline "websocketPageLayout"}}{{/inline}}
 {{#*inline "htmStylePageLayout"}}		<!-- #*inline "htmStylePageLayout" -->
 
 		<link rel="icon" href="{{staticBaseUrl}}/favicon.ico" />
 		<link rel="stylesheet" href="{{staticBaseUrl}}/css/w3.css" />
-		<link rel="stylesheet" href="{{staticBaseUrl}}/css/site-enUS.css" />
-		<link rel="stylesheet" href="{{staticBaseUrl}}/css/jquery-ui.css" />
+		<link rel="stylesheet" href="{{staticBaseUrl}}/css/site-enUS.css"/>
+		<link rel="stylesheet" href="{{staticBaseUrl}}/css/jquery-ui.css"/>
+		<link rel="stylesheet" href="{{staticBaseUrl}}/css/datePicker.css"/>
 		<link rel="stylesheet" href="{{staticBaseUrl}}/css/fullcalendar/main.min.css"/>
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Anonymous%20Pro%7CBellefair%7CJomhuria%7CPT%20Serif%3A700%7CStint%20Ultra%20Condensed&amp;display=swap"/>
 
@@ -28,7 +30,7 @@
 {{#*inline "htmMetaPageLayout"}}		<!-- #*inline "htmMetaPageLayout" -->
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
-{{#each htmMeta}}{{#if htmBefore}}{{{htmBefore}}}{{/if}}{{#if text}}{{#each text}}{{.}}{{/each}}{{/if}}{{#if htmAfter}}{{{htmAfter}}}{{/if}}{{/each}}
+{{#each htmMeta}}{{#if htmBefore}}{{{htmBefore}}}{{/if}}{{#if text}}{{#each text}}{{.}}{{/each}}{{/if}}{{#if htmMiddle}}{{#each htmMiddle}}{{.}}{{/each}}{{/if}}{{#if htmAfter}}{{{htmAfter}}}{{/if}}{{/each}}
 {{/inline}}
 {{#*inline "htmTitlePageLayout"}}		<!-- #*inline "htmTitlePageLayout" -->
 		<title>computateorg</title>
@@ -36,13 +38,13 @@
 {{#*inline "htmBodyMenuPageLayout"}}
 		<div class="w3-bar w3-hide-small ">
 			<div class="site-bar-item w3-bar-item ">
-				<a class="w3-bar-item " href="{{ siteBaseUrl }}"><i class="fad fa-house "></i> computateorg</a>
+				<a class="w3-bar-item " href="{{ siteBaseUrl }}"><i class="fad fa-house "></i> home</a>
 			</div>
 {{> "htmMenuItems"}}
 		</div>
 		<div class="w3-bar w3-hide-medium w3-hide-large ">
 			<div class="site-bar-item w3-bar-item ">
-				<a class="w3-bar-item " href="{{ siteBaseUrl }}"><i class="fad fa-house "></i> computateorg</a>
+				<a class="w3-bar-item " href="{{ siteBaseUrl }}"><i class="fad fa-house "></i> home</a>
 			</div>
 			<div class="w3-dropdown-hover ">
 				<button class="w3-button w3-text-black "><i class="fad fa-bars w3-text-black "></i> Menu</button>
@@ -60,19 +62,6 @@
 					<a class="header-icon-a w3-hover-opacity w3-center " href=" /en-us/faq"><i class="fa-solid fa-question "></i><span class="site-menu-item">FAQ</span></a>
 				</div>
 
-				<div class="site-bar-item w3-bar-item ">
-					<a href="/page{{#if defaultRangeGap}}?facet.range.gap={{encodeURIComponent defaultRangeGap }}&facet.range.start={{encodeURIComponent defaultRangeStart }}&facet.range.end={{encodeURIComponent defaultRangeEnd }}&facet.range={!tag=r1}created&facet.pivot={!range=r1}classSimpleName{{/if}}" class="header-icon-a w3-hover-opacity w3-center w3-text-2017-shaded-spruce "><i class="fad fa-newspaper w3-text-2017-shaded-spruce "></i> articles</a>
-				</div>
-				<div class="site-bar-item w3-bar-item ">
-					<form style="display: inline-block; " method="GET" action="/page" onsubmit="event.preventDefault(); search($('#searchPageInput')); return false; ">
-						<div class="w3-bar ">
-							<input type="text" placeholder="search articles" title="" class="w3-border w3-bar-item " name="objectText" id="searchPageInput">
-							<button class="w3-round w3-border w3-border-black w3-ripple w3-bar-item w3-2017-shaded-spruce ">
-								<i class="fas fa-search "></i>
-							</button>
-						</div>
-					</form>
-				</div>
 				<div class="site-bar-item w3-bar-item ">
 					<a target="_blank" rel="noopener noreferrer" data-ajax="false" href="https://www.youtube.com/channel/UC3ryOB2snhO7fItkx6dGx2Q"><img alt="" class="grow-20 " style="display: inline; width: 20px; height: 20px; " src="{{ staticBaseUrl }}/svg/youtube.svg"></a>
 				</div>
@@ -113,7 +102,7 @@
 {{/inline}}
 {{#*inline "htmBodyMiddlePageLayout"}}		<!-- #*inline "htmBodyMiddlePageLayout" -->
 	<div class="pageContent w3-content ">
-{{#each htmBody}}{{#if htmBefore}}{{{htmBefore}}}{{/if}}{{#if text}}{{#each text}}{{.}}{{/each}}{{/if}}{{#if htmAfter}}{{{htmAfter}}}{{/if}}{{/each}}
+{{#each htmBody}}{{#if htmBefore}}{{{htmBefore}}}{{/if}}{{#if text}}{{#each text}}{{.}}{{/each}}{{/if}}{{#if htmMiddle}}{{#each htmMiddle}}{{{.}}}{{/each}}{{/if}}{{#if htmAfter}}{{{htmAfter}}}{{/if}}{{/each}}
 	</div>
 {{/inline}}
 {{#*inline "htmBodyEndPageLayout"}}		<!-- #*inline "htmBodyEndPageLayout" -->
@@ -153,7 +142,7 @@
 	<footer class="w3-center w3-black w3-padding-48 ">
 		<div class="w3-xxlarge ">This site is open source. </div>
 		<div class="w3-large ">
-			<a href="https://github.com/{{ GITHUB_ORG }}/{{ SITE_NAME }}/" target="_blank" class="grow-20 ">View the source code here on github. </a>
+			<a href="https://github.com/{{ GITHUB_ORG }}/{{ SITE_NAME }}/" target="_blank" class="grow-20 ">View the source code here on GitHub. </a>
 		</div>
 		<div class="grow-20 w3-margin ">
 			<a class="w3-bar-item grow-20 w3-margin w3-text-white " href="{{ SITE_POWERED_BY_URL }}" target="_blank"><span class="w3-large ">Powered by </span>{{#if SITE_POWERED_BY_IMAGE_URI }}<img alt="" class="w3-image " style="display: inline-block; width: 200px; margin: 0 10px;" src="{{ staticBaseUrl }}{{ SITE_POWERED_BY_IMAGE_URI }}"/>{{else}}{{#if SITE_POWERED_BY_NAME}}{{ SITE_POWERED_BY_NAME }}{{/if}}{{/if}}</a>

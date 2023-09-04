@@ -85,8 +85,8 @@ htmBody:
       - e: ul
         in:
         - htm: |-
-            {{{ item.value.todo }}}
+            {{#if item.value.todo }}Todo: {{/if}}{{{ item.value.todo }}}
       - e: ul
         in:
         - htm: |-
-            {{{ item.value.suggere }}}
+            {{#if item.value.suggere }}<li><span class="font-style-italic ">Suggestion: </span>{{/if}}{{{ item.value.suggere }}}</li>

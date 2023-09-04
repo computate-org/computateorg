@@ -1,0 +1,19 @@
+---
+apiVersion: networking.gke.io/v1
+kind: ManagedCertificate
+metadata:
+  name: networking-managed-cert
+spec:
+  domains:
+    - www.trailblazehunt.com
+    - www.computate.org
+    - keycloak.computate.org
+---
+apiVersion: networking.gke.io/v1beta1
+kind: FrontendConfig
+metadata:
+  name: networking-fc
+spec:
+  redirectToHttps:
+    enabled: true
+    responseCodeName: MOVED_PERMANENTLY_DEFAULT

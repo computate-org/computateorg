@@ -10,6 +10,8 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -69,6 +71,8 @@ import io.vertx.ext.mail.MailConfig;
 import io.vertx.ext.web.client.WebClient;
 import io.vertx.ext.web.client.predicate.ResponsePredicate;
 import io.vertx.ext.web.templ.handlebars.HandlebarsTemplateEngine;
+import io.vertx.ext.web.client.WebClientOptions;
+import io.vertx.kafka.client.producer.KafkaProducer;
 import io.vertx.pgclient.PgConnectOptions;
 import io.vertx.pgclient.PgPool;
 import io.vertx.sqlclient.Cursor;
@@ -78,11 +82,6 @@ import io.vertx.sqlclient.RowStream;
 import io.vertx.sqlclient.SqlConnection;
 
 import org.computate.site.enus.model.user.SiteUser;
-import org.computate.site.enus.article.Article;
-import org.computate.site.enus.course.Course;
-import org.computate.site.enus.model.page.SitePage;
-import org.computate.site.enus.model.htm.SiteHtm;
-import org.computate.site.enus.model.pixelart.PixelArt;
 
 /**
  */
@@ -92,6 +91,8 @@ public class WorkerVerticle extends WorkerVerticleGen<AbstractVerticle> {
 	public static final Integer FACET_LIMIT = 100;
 
 	public final DateTimeFormatter TIME_FORMAT = DateTimeFormatter.ofPattern("HH:mm:ss VV");
+
+	private KafkaProducer<String, String> kafkaProducer;
 
 	/**
 	 * A io.vertx.ext.jdbc.JDBCClient for connecting to the relational database PostgreSQL. 
@@ -131,10 +132,14 @@ public class WorkerVerticle extends WorkerVerticleGen<AbstractVerticle> {
 					configureHandlebars().onSuccess(c -> 
 						configureSharedWorkerExecutor().onSuccess(d -> 
 							configureEmail().onSuccess(e -> 
-								importData().onSuccess(f -> 
-									refreshAllData().onSuccess(g -> {
-										startPromise.complete();
-									}).onFailure(ex -> startPromise.fail(ex))
+								configureKafka().onSuccess(f -> 
+									configureCamel().onSuccess(g -> 
+										importData().onSuccess(h -> 
+											refreshAllData().onSuccess(i -> {
+												startPromise.complete();
+											}).onFailure(ex -> startPromise.fail(ex))
+										).onFailure(ex -> startPromise.fail(ex))
+									).onFailure(ex -> startPromise.fail(ex))
 								).onFailure(ex -> startPromise.fail(ex))
 							).onFailure(ex -> startPromise.fail(ex))
 						).onFailure(ex -> startPromise.fail(ex))
@@ -178,7 +183,8 @@ public class WorkerVerticle extends WorkerVerticleGen<AbstractVerticle> {
 		Promise<Void> promise = Promise.promise();
 
 		try {
-			webClient = WebClient.create(vertx);
+			Boolean sslVerify = config().getBoolean(ConfigKeys.SSL_VERIFY);
+			webClient = WebClient.create(vertx, new WebClientOptions().setVerifyHost(sslVerify).setTrustAll(!sslVerify));
 			promise.complete();
 		} catch(Exception ex) {
 			LOG.error("Unable to configure site context. ", ex);
@@ -214,7 +220,7 @@ public class WorkerVerticle extends WorkerVerticleGen<AbstractVerticle> {
 			pgOptions.setPassword(config().getString(ConfigKeys.JDBC_PASSWORD));
 			pgOptions.setIdleTimeout(config().getInteger(ConfigKeys.JDBC_MAX_IDLE_TIME, 24));
 			pgOptions.setIdleTimeoutUnit(TimeUnit.HOURS);
-			pgOptions.setConnectTimeout(config().getInteger(ConfigKeys.JDBC_CONNECT_TIMEOUT, 86400000));
+			pgOptions.setConnectTimeout(config().getInteger(ConfigKeys.JDBC_CONNECT_TIMEOUT, 5000));
 
 			PoolOptions poolOptions = new PoolOptions();
 			poolOptions.setMaxSize(jdbcMaxPoolSize);
@@ -244,7 +250,8 @@ public class WorkerVerticle extends WorkerVerticleGen<AbstractVerticle> {
 		try {
 			String name = "WorkerVerticle-WorkerExecutor";
 			Integer workerPoolSize = System.getenv(ConfigKeys.WORKER_POOL_SIZE) == null ? 5 : Integer.parseInt(System.getenv(ConfigKeys.WORKER_POOL_SIZE));
-			workerExecutor = vertx.createSharedWorkerExecutor(name, workerPoolSize);
+			Long vertxMaxWorkerExecuteTime = config().getLong(ConfigKeys.VERTX_MAX_WORKER_EXECUTE_TIME);
+			workerExecutor = vertx.createSharedWorkerExecutor(name, workerPoolSize, vertxMaxWorkerExecuteTime, TimeUnit.SECONDS);
 			LOG.info(configureSharedWorkerExecutorComplete, name);
 			promise.complete();
 		} catch (Exception ex) {
@@ -281,6 +288,52 @@ public class WorkerVerticle extends WorkerVerticleGen<AbstractVerticle> {
 			LOG.error(configureEmailFail, ex);
 			promise.fail(ex);
 		}
+		return promise.future();
+	}
+
+	/**
+	 **/
+	public Future<KafkaProducer<String, String>> configureKafka() {
+		Promise<KafkaProducer<String, String>> promise = Promise.promise();
+
+		try {
+			Map<String, String> kafkaConfig = new HashMap<>();
+			kafkaConfig.put("bootstrap.servers", config().getString(ConfigKeys.KAFKA_BROKERS));
+			kafkaConfig.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+			kafkaConfig.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+			kafkaConfig.put("acks", "1");
+			kafkaConfig.put("security.protocol", "SSL");
+			kafkaConfig.put("ssl.keystore.type", config().getString(ConfigKeys.KAFKA_SSL_KEYSTORE_TYPE));
+			kafkaConfig.put("ssl.keystore.location", config().getString(ConfigKeys.KAFKA_SSL_KEYSTORE_LOCATION));
+			kafkaConfig.put("ssl.keystore.password", config().getString(ConfigKeys.KAFKA_SSL_KEYSTORE_PASSWORD));
+			kafkaConfig.put("ssl.truststore.type", config().getString(ConfigKeys.KAFKA_SSL_TRUSTSTORE_TYPE));
+			kafkaConfig.put("ssl.truststore.location", config().getString(ConfigKeys.KAFKA_SSL_TRUSTSTORE_LOCATION));
+			kafkaConfig.put("ssl.truststore.password", config().getString(ConfigKeys.KAFKA_SSL_TRUSTSTORE_PASSWORD));
+
+			kafkaProducer = KafkaProducer.createShared(vertx, MainVerticle.SITE_NAME, kafkaConfig);
+			promise.complete(kafkaProducer);
+		} catch(Exception ex) {
+			LOG.error("Unable to configure site context. ", ex);
+			promise.fail(ex);
+		}
+
+		return promise.future();
+	}
+
+	/**
+	 * Val.Fail.enUS:The Camel Component was not configured properly. 
+	 * Val.Complete.enUS:The Camel Component was configured properly. 
+	 */
+	public Future<Void> configureCamel() {
+		Promise<Void> promise = Promise.promise();
+		CamelIntegration.configureCamel(vertx, config()).onSuccess(a -> {
+			LOG.info(configureCamelComplete);
+			promise.complete();
+		}).onFailure(ex -> {
+			LOG.error(configureCamelFail, ex);
+			promise.fail(ex);
+		});
+
 		return promise.future();
 	}
 
@@ -325,16 +378,31 @@ public class WorkerVerticle extends WorkerVerticleGen<AbstractVerticle> {
 			ZonedDateTime nextStartTime2 = nextStartTime;
 
 			if(importStartTime == null) {
-				importDataClass(classSimpleName, nextStartTime2).onSuccess(a -> {
+				try {
+					vertx.setTimer(1, a -> {
+						workerExecutor.executeBlocking(promise2 -> {
+							importDataClass(classSimpleName, null).onSuccess(b -> {
+								promise2.complete();
+							}).onFailure(ex -> {
+								promise2.fail(ex);
+							});
+						});
+					});
 					promise.complete();
-				}).onFailure(ex -> {
+				} catch(Exception ex) {
 					LOG.error(String.format(importTimerFail, classSimpleName), ex);
 					promise.fail(ex);
-				});
+				}
 			} else {
 				try {
 					vertx.setTimer(nextStartDuration.toMillis(), a -> {
-						importDataClass(classSimpleName, nextStartTime2);
+						workerExecutor.executeBlocking(promise2 -> {
+							importDataClass(classSimpleName, nextStartTime2).onSuccess(b -> {
+								promise2.complete();
+							}).onFailure(ex -> {
+								promise2.fail(ex);
+							});
+						});
 					});
 					promise.complete();
 				} catch(Exception ex) {
@@ -416,33 +484,8 @@ public class WorkerVerticle extends WorkerVerticleGen<AbstractVerticle> {
 			if(config().getBoolean(ConfigKeys.ENABLE_REFRESH_DATA, false)) {
 				LOG.info(refreshAllDataStarted);
 				refreshData(SiteUser.CLASS_SIMPLE_NAME).onSuccess(q -> {
-					refreshData(Article.CLASS_SIMPLE_NAME).onSuccess(q1 -> {
-						refreshData(Course.CLASS_SIMPLE_NAME).onSuccess(q2 -> {
-							refreshData(SitePage.CLASS_SIMPLE_NAME).onSuccess(q3 -> {
-								refreshData(SiteHtm.CLASS_SIMPLE_NAME).onSuccess(q4 -> {
-									refreshData(PixelArt.CLASS_SIMPLE_NAME).onSuccess(q5 -> {
-										LOG.info(refreshAllDataComplete);
-										promise.complete();
-									}).onFailure(ex -> {
-										LOG.error(refreshAllDataFail, ex);
-										promise.fail(ex);
-									});
-								}).onFailure(ex -> {
-									LOG.error(refreshAllDataFail, ex);
-									promise.fail(ex);
-								});
-							}).onFailure(ex -> {
-								LOG.error(refreshAllDataFail, ex);
-								promise.fail(ex);
-							});
-						}).onFailure(ex -> {
-							LOG.error(refreshAllDataFail, ex);
-							promise.fail(ex);
-						});
-					}).onFailure(ex -> {
-						LOG.error(refreshAllDataFail, ex);
-						promise.fail(ex);
-					});
+					LOG.info(refreshAllDataComplete);
+					promise.complete();
 				}).onFailure(ex -> {
 					LOG.error(refreshAllDataFail, ex);
 					promise.fail(ex);
@@ -535,10 +578,7 @@ public class WorkerVerticle extends WorkerVerticleGen<AbstractVerticle> {
 															apiRequest.setTimeRemaining(apiRequest.calculateTimeRemaining());
 															vertx.eventBus().publish(String.format("websocket%s", tableName), JsonObject.mapFrom(apiRequest));
 														}
-													}).onFailure(ex -> {
-														LOG.error(String.format(refreshDataFail, tableName), ex);
-														promise1.fail(ex);
-													});
+													}).onFailure(ex -> promise1.fail(ex));
 												} catch (Exception ex) {
 													LOG.error(String.format(refreshDataFail, tableName), ex);
 													promise1.fail(ex);
@@ -548,10 +588,7 @@ public class WorkerVerticle extends WorkerVerticleGen<AbstractVerticle> {
 											LOG.error(String.format(refreshDataFail, tableName), ex);
 											promise1.fail(ex);
 										}
-									}).onFailure(ex -> {
-										LOG.error(String.format(refreshDataFail, tableName), ex);
-										promise1.fail(ex);
-									});
+									}).onFailure(ex -> promise1.fail(ex));
 								} else {
 									promise1.complete();
 								}
@@ -559,17 +596,11 @@ public class WorkerVerticle extends WorkerVerticleGen<AbstractVerticle> {
 								LOG.error(String.format(refreshDataFail, tableName), ex);
 								promise1.fail(ex);
 							}
-						}).onFailure(ex -> {
-							LOG.error(String.format(refreshDataFail, tableName), ex);
-							promise1.fail(ex);
-						});
+						}).onFailure(ex -> promise1.fail(ex));
 						return promise1.future();
 					}).onSuccess(a -> {
 						promise.complete();
-					}).onFailure(ex -> {
-						LOG.error(String.format(refreshDataFail, tableName), ex);
-						promise.fail(ex);
-					});
+					}).onFailure(ex -> promise.fail(ex));
 				} catch (Exception ex) {
 					LOG.error(String.format(refreshDataFail, tableName), ex);
 					promise.fail(ex);

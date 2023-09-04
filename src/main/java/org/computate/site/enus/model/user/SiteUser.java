@@ -13,18 +13,18 @@ import org.computate.site.enus.request.SiteRequestEnUS;
  * Page: true
  * SuperPage.enUS: BaseModelPage
  * Indexed: true
- * Map.Integer.sqlSort: 1
- * Map.Integer.classSort: 3
+ * SqlOrder: 1
+ * Order: 3
  * 
  * ApiTag.enUS: User
  * ApiUri.enUS: /api/user
  * 
- * ApiMethod.enUS: Search
+ * ApiMethod: Search
  * ApiMethod: PATCH
  * ApiMethod: POST
  * ApiMethod: PUTImport
  * 
- * ApiMethod.enUS: SearchPage
+ * ApiMethod: SearchPage
  * Page.SearchPage.enUS: SiteUserPage
  * PageSuper.SearchPage.enUS: BaseModelPage
  * ApiUri.SearchPage.enUS: /user
@@ -34,7 +34,7 @@ import org.computate.site.enus.request.SiteRequestEnUS;
  * Filter: userId
  * 
  * AName.enUS: a site user
- * Color:  2017-shaded-spruce
+ * Color: 2017-shaded-spruce
  * IconGroup: regular
  * IconName: user-cog
  * 
@@ -111,8 +111,8 @@ public class SiteUser extends SiteUserGen<BaseModel> implements ComputateSiteUse
 	 * {@inheritDoc}
 	 * DocValues: true
 	 * Persist: true
-	 * HtmlRow: 3
-	 * HtmlCell: 2
+	 * HtmRow: 3
+	 * HtmCell: 2
 	 * DisplayName.enUS: see archived
 	 * Description: A user field allowing a user to see archived records
 	 */
@@ -124,8 +124,8 @@ public class SiteUser extends SiteUserGen<BaseModel> implements ComputateSiteUse
 	 * {@inheritDoc}
 	 * DocValues: true
 	 * Persist: true
-	 * HtmlRow: 3
-	 * HtmlCell: 3
+	 * HtmRow: 3
+	 * HtmCell: 3
 	 * DisplayName.enUS: see deleted
 	 * Description: A user field allowing a user to see deleted records
 	 */

@@ -17,6 +17,26 @@
 		</license>
 	</licenses>
 
+	<mailingLists>
+		<mailingList>
+			<name>Users</name>
+			<subscribe>https://computate.topicbox.com/groups/computate</subscribe>
+			<unsubscribe>https://computate.topicbox.com/groups/computate</unsubscribe>
+			<post>mailto:computate@computate.topicbox.com</post>
+			<archive>https://computate.topicbox.com/groups/computate</archive>
+		</mailingList>
+	</mailingLists>
+
+	<issueManagement>
+		<system>GitHub</system>
+		<url>https://github.com/computate-org/computateorg/issues</url>
+	</issueManagement>
+
+	<organization>
+		<name>computate.org</name>
+		<url>https://www.computate.org/</url>
+	</organization>
+
 	<developers>
 		<developer>
 			<name>Christopher Tate</name>
@@ -47,28 +67,56 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
-		<maven-surefire-plugin.version>2.19.1</maven-surefire-plugin.version>
-		<vertx-maven-plugin.version>1.0.18</vertx-maven-plugin.version>
-		<build-helper-maven-plugin.version>3.0.0</build-helper-maven-plugin.version>
-		<exec-maven-plugin.version>1.5.0</exec-maven-plugin.version>
-		<nexus-staging-maven-plugin.version>1.6.8</nexus-staging-maven-plugin.version>
-		<maven-jar-plugin.version>3.1.0</maven-jar-plugin.version>
-		<flatten-maven-plugin.version>1.0.0</flatten-maven-plugin.version>
-		<maven-source-plugin.version>2.4</maven-source-plugin.version>
-		<maven-javadoc-plugin.version>2.10.4</maven-javadoc-plugin.version>
-		<maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
-		<postgresql.version>42.5.0</postgresql.version>
-		<junit.version>4.13.2</junit.version>
-		<mockito.version>4.8.1</mockito.version>
-		<vertx.version>4.2.5.redhat-00001</vertx.version>
-		<computate.version>4.2.5.16</computate.version>
+		<maven-compiler-plugin.version>3.10.1</maven-compiler-plugin.version>
+		<maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
+		<vertx-maven-plugin.version>1.0.28</vertx-maven-plugin.version>
+		<build-helper-maven-plugin.version>3.3.0</build-helper-maven-plugin.version>
+		<exec-maven-plugin.version>3.1.0</exec-maven-plugin.version>
+		<nexus-staging-maven-plugin.version>1.6.13</nexus-staging-maven-plugin.version>
+		<maven-jar-plugin.version>3.3.0</maven-jar-plugin.version>
+		<flatten-maven-plugin.version>1.3.0</flatten-maven-plugin.version>
+		<maven-source-plugin.version>3.2.1</maven-source-plugin.version>
+		<maven-javadoc-plugin.version>3.4.1</maven-javadoc-plugin.version>
+		<maven-gpg-plugin.version>3.0.1</maven-gpg-plugin.version>
+		<postgresql.version>42.5.1</postgresql.version>
+		<ongres-scram.version>2.1</ongres-scram.version>
+		<junit.version>5.9.1</junit.version>
+		<junit-platform-launcher.version>1.4.2</junit-platform-launcher.version>
+		<mockito.version>4.10.0</mockito.version>
+		<commonmark.version>0.21.0</commonmark.version>
+
+		<quarkus-base.version>2.7.6</quarkus-base.version>
+		<quarkus.version>${quarkus-base.version}.Final-redhat-00006</quarkus.version>
+		<quarkus-plugin.version>${quarkus.version}</quarkus-plugin.version>
+		<quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
+		<quarkus.platform.group-id>io.quarkus</quarkus.platform.group-id>
+		<quarkus.platform.version>${quarkus.version}</quarkus.platform.version>
+
+		<vertx-base.version>4.2.7</vertx-base.version>
+		<vertx.version>${vertx-base.version}.redhat-00003</vertx.version>
+
 		<jfreechart.version>1.5.3</jfreechart.version>
 		<handlebars.version>4.3.1</handlebars.version>
 		<flying-saucer.version>9.1.22</flying-saucer.version>
 		<openpdf.version>1.3.30</openpdf.version>
-		<itext.version>5.2.0</itext.version>
+		<itext-asian.version>5.2.0</itext-asian.version>
 		<commons-text.version>1.10.0</commons-text.version>
+		<log4j.version>2.19.0</log4j.version>
+		<log4j-slf4j-impl.version>2.19.0</log4j-slf4j-impl.version>
+		<slf4j.version>2.0.6</slf4j.version>
+		<jacoco-maven-plugin.version>0.8.8</jacoco-maven-plugin.version>
+		<solr.version>8.11.1</solr.version>
+		<jackson.version>2.14.1</jackson.version>
+		<jackson-databind.version>2.14.1</jackson-databind.version>
+		<commons-lang3.version>3.12.0.redhat-00001</commons-lang3.version>
+		<commons-configuration2.version>2.8.0</commons-configuration2.version>
+		<snakeyaml.version>1.33.0.redhat-00001</snakeyaml.version>
+		<camel.version>3.18.3.redhat-00022</camel.version>
+		<kie.version>7.67.0.Final-redhat-00017</kie.version>
+		<drools.version>8.32.0.Final</drools.version>
+		<cloudevents.version>2.4.0</cloudevents.version>
+
+		<computate.version>4.2.7.27</computate.version>
 	</properties>
 
 	<dependencyManagement>
@@ -78,6 +126,22 @@
 				<groupId>io.vertx</groupId>
 				<artifactId>vertx-dependencies</artifactId>
 				<version>${vertx.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>${quarkus.platform.group-id}</groupId>
+				<artifactId>${quarkus.platform.artifact-id}</artifactId>
+				<version>${quarkus.platform.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>org.apache.camel</groupId>
+				<artifactId>camel-bom</artifactId>
+				<version>${camel.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -108,12 +172,6 @@
 
 		<dependency>
 			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-exec</artifactId>
-			<version>1.3</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-text</artifactId>
 			<version>${commons-text.version}</version>
 		</dependency>
@@ -126,6 +184,18 @@
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 			<version>${postgresql.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.ongres.scram</groupId>
+			<artifactId>common</artifactId>
+			<version>${ongres-scram.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.ongres.scram</groupId>
+			<artifactId>client</artifactId>
+			<version>${ongres-scram.version}</version>
 		</dependency>
 
 		<!-- ################# -->
@@ -159,7 +229,7 @@
 		<dependency>
 			<groupId>com.itextpdf</groupId>
 			<artifactId>itext-asian</artifactId>
-			<version>${itext.version}</version>
+			<version>${itext-asian.version}</version>
 		</dependency>
 
 		<!-- ###### -->
@@ -199,6 +269,7 @@
 		<dependency>
 			<groupId>io.vertx</groupId>
 			<artifactId>vertx-zookeeper</artifactId>
+			<version>4.3.6</version>
 		</dependency>
 
 		<dependency>
@@ -270,6 +341,33 @@
 			<groupId>io.vertx</groupId>
 			<artifactId>vertx-health-check</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>io.vertx</groupId>
+			<artifactId>vertx-kafka-client</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.apache.kafka</groupId>
+					<artifactId>kafka-clients</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.kafka</groupId>
+			<artifactId>kafka-clients</artifactId>
+			<version>2.6.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.vertx</groupId>
+			<artifactId>vertx-mqtt</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-simple</artifactId>
+			<version>${slf4j.version}</version>
+		</dependency>
 		
 		<!-- ########## -->
 		<!-- jfreechart -->
@@ -280,16 +378,82 @@
 			<version>${jfreechart.version}</version>
 		</dependency>
 
+		<!-- markdown -->
+
+		<dependency>
+			<groupId>org.commonmark</groupId>
+			<artifactId>commonmark</artifactId>
+			<version>${commonmark.version}</version>
+		</dependency>
+
+		<!-- logging -->
+
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-core</artifactId>
+			<version>${log4j.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>${slf4j.version}</version>
+		</dependency>
+
 		<!-- ############ -->
 		<!-- Unit Testing -->
 		<!-- ############ -->
 
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-engine</artifactId>
 			<version>${junit.version}</version>
 			<scope>test</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-params</artifactId>
+			<version>${junit.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-api</artifactId>
+			<version>${junit.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-junit-jupiter</artifactId>
+			<version>${mockito.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>io.vertx</groupId>
+			<artifactId>vertx-unit</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>io.vertx</groupId>
+			<artifactId>vertx-junit5</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.junit.platform</groupId>
+			<artifactId>junit-platform-launcher</artifactId>
+			<scope>test</scope>
+			<version>${junit-platform-launcher.version}</version>
+		</dependency>
+
+		<!-- ##### -->
+		<!-- Other -->
+		<!-- ##### -->
 
 		<dependency>
 			<groupId>org.computate</groupId>
@@ -298,11 +462,51 @@
 		</dependency>
 		
 
+		<!-- ##### -->
+		<!-- Camel -->
+		<!-- ##### -->
+
 		<dependency>
-			<groupId>org.mockito</groupId>
-			<artifactId>mockito-core</artifactId>
-			<version>${mockito.version}</version>
-			<scope>test</scope>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-activemq</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-vertx</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-vertx-kafka</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.apache.kafka</groupId>
+					<artifactId>kafka-clients</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-vertx-http</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-core-languages</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-jackson</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-jbpm</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-http</artifactId>
 		</dependency>
 	</dependencies>
 
@@ -385,6 +589,18 @@
 
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>${exec-maven-plugin.version}</version>
+				<configuration>
+					<executable>maven</executable>
+					<includePluginDependencies>false</includePluginDependencies>
+					<includeProjectDependencies>true</includeProjectDependencies>
+					<mainClass>org.computate.site.enus.vertx.MainVerticle</mainClass>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>flatten-maven-plugin</artifactId>
 				<version>${flatten-maven-plugin.version}</version>
 				<configuration>
@@ -424,8 +640,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>${maven-compiler-plugin.version}</version>
 				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
+					<source>11</source>
+					<target>11</target>
 					<encoding>UTF-8</encoding>
 					<annotationProcessors>
 						<annotationProcessor>io.vertx.codegen.CodeGenProcessor</annotationProcessor>
@@ -480,6 +696,28 @@
 				<configuration>
 					<redeploy>true</redeploy>
 				</configuration>
+			</plugin>
+
+			<!-- JaCoCo Code Coverage Plugin -->
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.6</version>
+				<executions>
+					<execution>
+						<id>prepare-agent</id>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>report</id>
+						<phase>test</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 
 			<!-- Nexus Staging Plugin -->

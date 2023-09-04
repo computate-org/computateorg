@@ -17,7 +17,6 @@ spec:
             region: "<YOUR_AWS_S3_REGION>"
   instances:
     - dataVolumeClaimSpec:
-        storageClassName: computate
         accessModes:
           - ReadWriteOnce
         resources:

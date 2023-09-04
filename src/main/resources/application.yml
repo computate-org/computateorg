@@ -1,5 +1,6 @@
 ---
 
+API_VERSION: 1.0.0
 SITE_NAME: computateorg
 SITE_DISPLAY_NAME: your website
 SITE_PUBLIC_URL: https://www.computate.org
@@ -12,9 +13,12 @@ SITE_LOCALE: en-US
 SITE_INSTANCES: 5
 WORKER_POOL_SIZE: 2
 VERTX_MAX_EVENT_LOOP_EXECUTE_TIME: 30
+VERTX_MAX_WORKER_EXECUTE_TIME: 6000
 VERTX_WARNING_EXCEPTION_SECONDS: 60
 CLUSTER_HOST_NAME: localhost
 CLUSTER_PORT: 10181
+FACEBOOK_GRAPH_VERSION: v15.0
+FACEBOOK_APP_ID: 1871568493111919
 GITHUB_ORG: "computate-org"
 QUAYIO_ORG: "computateorg"
 SITE_POWERED_BY_URL: "https://access.redhat.com/products/openshift-online-red-hat"
@@ -27,23 +31,27 @@ STATIC_PATH: "/usr/local/src/computateorg-static"
 API_CONTACT_EMAIL: 
 API_COUNTER_RESUME: 0
 API_COUNTER_FETCH: 10
+API_COUNTER_FETCH_SitePage: 10
+API_COUNTER_FETCH_SiteHtm: 10
 
 JDBC_HOST: localhost
 JDBC_PORT: 5432
 JDBC_DATABASE: computateorg
 JDBC_USERNAME: computateorg
-JDBC_PASSWORD: 
+JDBC_PASSWORD: password
 JDBC_MAX_POOL_SIZE: 10
 JDBC_MAX_WAIT_QUEUE_SIZE: 1000
 
 AUTH_REALM: 
-AUTH_RESOURCE: 
+AUTH_CLIENT: 
 AUTH_SECRET: 
 AUTH_HOST_NAME: 
 AUTH_PORT: 443
 AUTH_SSL: true
 AUTH_SSL_REQUIRED: all
 AUTH_TOKEN_URI: /auth/realms/AUTH_REALM/protocol/openid-connect/token
+AUTH_FINE_GRAINED_POLICY_PERMISSIONS: false
+SSL_VERIFY: true
 
 ZOOKEEPER_HOST_NAME: localhost
 ZOOKEEPER_PORT: 2181
@@ -53,11 +61,16 @@ ZOOKEEPER_MAX_RETRIES: 5
 ZOOKEEPER_CONNECTION_TIMEOUT_MILLIS: 3000
 ZOOKEEPER_SESSION_TIMEOUT_MILLIS: 5000
 
-SOLR_URL: http://localhost:8983/solr/computateorg
-SOLR_HOST_NAME: localhost
-SOLR_PORT: 8983
-SOLR_COLLECTION: computateorg
+SOLR_URL: https://solr-smartvillage.apps-crc.testing/solr/smartabyar-smartvillage
+SOLR_HOST_NAME: solr-smartvillage.apps-crc.testing
+SOLR_PORT: 443
+SOLR_COLLECTION: smartvillage
+SOLR_SSL: true
+SOLR_HOST_NAME_COMPUTATE: solr-solr.apps-crc.testing
+SOLR_PORT_COMPUTATE: 443
 SOLR_COLLECTION_COMPUTATE: computate
+SOLR_SSL_COMPUTATE: true
+SOLR_URL_COMPUTATE: "https://solr-solr.apps-crc.testing/solr/computate"
 SOLR_WORKER_COMMIT_WITHIN_MILLIS: 10000
 
 EMAIL_HOST: 
@@ -71,30 +84,10 @@ EMAIL_ADMIN:
 
 REFRESH_DATA_PAUSE_IN_SECONDS: 10
 ENABLE_REFRESH_DATA: false
-ENABLE_REFRESH_DATA_Article: true
-ENABLE_REFRESH_DATA_Course: true
-ENABLE_REFRESH_DATA_SitePage: true
-ENABLE_REFRESH_DATA_SiteHtm: true
-ENABLE_REFRESH_DATA_PixelArt: true
 
 ENABLE_IMPORT_DATA: true
-ENABLE_IMPORT_DATA_Article: true
-ENABLE_IMPORT_DATA_Course: true
-ENABLE_IMPORT_DATA_SitePage: true
-ENABLE_IMPORT_DATA_SiteHtm: true
-ENABLE_IMPORT_DATA_PixelArt: true
 
 # The Auth roles required to be an admin in the site. 
-AUTH_ROLES_ADMIN: ['SiteAdmin']
+AUTH_ROLE_ADMIN: 'SiteAdmin'
 # The Auth roles required to add and modify site user records. 
-AUTH_ROLES_REQUIRED_SiteUser: ['SiteAdmin']
-# The Auth roles required to add and modify article records. 
-AUTH_ROLES_REQUIRED_Article: ['SiteAdmin']
-# The Auth roles required to add and modify course records. 
-AUTH_ROLES_REQUIRED_Course: ['SiteAdmin']
-# The Auth roles required to add and modify article records. 
-AUTH_ROLES_REQUIRED_SitePage: ['SiteAdmin']
-# The Auth roles required to add and modify HTML records. 
-AUTH_ROLES_REQUIRED_SiteHtm: ['SiteAdmin']
-# The Auth roles required to add and modify pixel art records. 
-AUTH_ROLES_REQUIRED_PixelArt: ['SiteAdmin']
+AUTH_ROLE_REQUIRED_SiteUser: 'SiteAdmin'

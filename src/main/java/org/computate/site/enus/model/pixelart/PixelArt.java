@@ -10,7 +10,7 @@ import org.computate.site.enus.model.base.BaseModel;
  * Model: true
  * Page: true
  * SuperPage.enUS: BaseModelPage
- * Map.Integer.sqlSort: 4
+ * SqlOrder: 4
  * 
  * ApiTag.enUS: Pixel Art
  * ApiUri.enUS: /api/pixel-art

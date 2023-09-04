@@ -9,7 +9,7 @@ import org.computate.site.enus.article.Article;
  * Indexed: true
  * Page: true
  * SuperPage.enUS: ArticlePage
- * Map.Integer.classSort: 2
+ * Order: 2
  * 
  * ApiTag: Course
  * ApiUri: /api/course
