@@ -1,15 +1,16 @@
 apiVersion: cert-manager.io/v1
-kind: ClusterIssuer
+kind: Issuer
 metadata:
-  name: letsencrypt-clusterissuer
+  name: keycloak-prod
+  namespace: keycloak
 spec:
   acme:
     email: computate@computate.org
     preferredChain: ''
     privateKeySecretRef:
-      name: letsencrypt-key
+      name: keycloak-prod
     server: 'https://acme-v02.api.letsencrypt.org/directory'
     solvers:
       - http01:
           ingress:
-            class: openshift-default
+            name: keycloak-ingress

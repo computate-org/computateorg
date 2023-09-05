@@ -7,33 +7,28 @@ metadata:
     app: keycloak
 spec:
   instances: 1
-  externalAccess:
-    enabled: true
-  externalDatabase:
-    enabled: true
+  additionalOptions:
+    - name: proxy
+      value: edge
+  db:
+    database: keycloak
+    host: postgres-cluster-ha.postgres.svc.cluster.local
+    port: 5432
+    passwordSecret:
+      name: keycloak-db-secret
+      key: POSTGRES_PASSWORD
+    usernameSecret:
+      name: keycloak-db-secret
+      key: POSTGRES_USERNAME
   hostname:
     hostname: keycloak.computate.org
   http:
-    httpEnabled: true
+    httpEnabled: false
   ingress:
+    enabled: true
     annotations:
-      cert-manager.io/cluster-issuer: letsencrypt-issuer
-      networking.gke.io/managed-certificates: networking-managed-cert
-      networking.gke.io/v1beta1.FrontendConfig: networking-fc
       kubernetes.io/ingress.global-static-ip-name: computate
       kubernetes.io/ingress.class: gce
+      networking.gke.io/managed-certificates: keycloak
     className: gce
-  keycloakDeploymentSpec:
-    experimental:
-      env:
-        - name: DB_ADDR
-          valueFrom:
-            secretKeyRef:
-              name: keycloak-db-secret
-              key: POSTGRES_EXTERNAL_ADDRESS
-        - name: KEYCLOAK_POSTGRESQL_SERVICE_HOST
-          valueFrom:
-            secretKeyRef:
-              name: keycloak-db-secret
-              key: POSTGRES_EXTERNAL_ADDRESS
     

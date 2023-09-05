@@ -2,11 +2,9 @@
 apiVersion: networking.gke.io/v1
 kind: ManagedCertificate
 metadata:
-  name: networking-managed-cert
+  name: keycloak-cert
 spec:
   domains:
-    - www.trailblazehunt.com
-    - www.computate.org
     - keycloak.computate.org
 ---
 apiVersion: networking.gke.io/v1beta1
