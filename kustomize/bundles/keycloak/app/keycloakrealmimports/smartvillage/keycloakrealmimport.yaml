@@ -1,17 +1,18 @@
-apiVersion: keycloak.org/v1alpha1
-kind: KeycloakRealm
+apiVersion: k8s.keycloak.org/v2alpha1
+kind: KeycloakRealmImport
 metadata:
-  name: trailblazehunt-com
+  name: smartvillage
   namespace: keycloak
   labels:
     app: keycloak
-    realm: TRAILBLAZEHUNT.COM
+    realm: SMARTVILLAGE
 spec:
+  keycloakCRName: keycloak
   realm:
-    id: "TRAILBLAZEHUNT.COM"
-    realm: "TRAILBLAZEHUNT.COM"
+    id: "SMARTVILLAGE"
+    realm: "SMARTVILLAGE"
     enabled: true
-    displayName: "TRAILBLAZEHUNT.COM"
+    displayName: "SMARTVILLAGE"
     registrationAllowed: true
     resetPasswordAllowed: true
     editUsernameAllowed: true
@@ -29,21 +30,21 @@ spec:
             realm:
               - SiteAdmin
     clientScopes:
-      - id: trailblazehunt.com
-        name: trailblazehunt.com
-        description: A client scope for trailblazehunt.com
+      - id: smartvillage
+        name: smartvillage
+        description: A client scope for smartvillage
         protocol: openid-connect
         protocolMappers: 
           - config:
               access.token.claim: 'true'
               id.token.claim: 'false'
-              included.client.audience: 'trailblazehunt.com'
+              included.client.audience: 'smartvillage'
             consentRequired: false
-            id: trailblazehunt-com
-            name: trailblazehunt.com
+            id: smartvillage
+            name: smartvillage
             protocol: openid-connect
             protocolMapper: oidc-audience-mapper
-      - id: trailblazehunt.com-profile
+      - id: smartvillage-profile
         name: profile
         description: "OpenID Connect built-in scope: profile"
         protocol: openid-connect
@@ -56,7 +57,7 @@ spec:
               user.attribute: emailVerified
               userinfo.token.claim: 'true'
             consentRequired: false
-            id: trailblazehunt.com-email-verified
+            id: smartvillage-email-verified
             name: email verified
             protocol: openid-connect
             protocolMapper: oidc-usermodel-property-mapper
@@ -68,7 +69,7 @@ spec:
               user.attribute: username
               userinfo.token.claim: 'true'
             consentRequired: false
-            id: trailblazehunt.com-username
+            id: smartvillage-username
             name: username
             protocol: openid-connect
             protocolMapper: oidc-usermodel-property-mapper
@@ -80,7 +81,7 @@ spec:
               multivalued: 'true'
               user.attribute: foo
             consentRequired: false
-            id: trailblazehunt.com-groups
+            id: smartvillage-groups
             name: groups
             protocol: openid-connect
             protocolMapper: oidc-usermodel-realm-role-mapper
@@ -92,7 +93,7 @@ spec:
               user.attribute: lastName
               userinfo.token.claim: 'true'
             consentRequired: false
-            id: trailblazehunt.com-family-name
+            id: smartvillage-family-name
             name: family name
             protocol: openid-connect
             protocolMapper: oidc-usermodel-property-mapper
@@ -104,7 +105,7 @@ spec:
               user.attribute: firstName
               userinfo.token.claim: 'true'
             consentRequired: false
-            id: trailblazehunt.com-given-name
+            id: smartvillage-given-name
             name: given name
             protocol: openid-connect
             protocolMapper: oidc-usermodel-property-mapper
@@ -116,7 +117,7 @@ spec:
               user.attribute: email
               userinfo.token.claim: 'true'
             consentRequired: false
-            id: trailblazehunt.com-email
+            id: smartvillage-email
             name: email
             protocol: openid-connect
             protocolMapper: oidc-usermodel-property-mapper
@@ -128,7 +129,7 @@ spec:
               user.attribute: middleName
               userinfo.token.claim: 'true'
             consentRequired: false
-            id: trailblazehunt.com-middle-name
+            id: smartvillage-middle-name
             name: middle name
             protocol: openid-connect
             protocolMapper: oidc-usermodel-attribute-mapper
@@ -140,7 +141,7 @@ spec:
               user.attribute: locale
               userinfo.token.claim: 'true'
             consentRequired: false
-            id: trailblazehunt.com-locale
+            id: smartvillage-locale
             name: locale
             protocol: openid-connect
             protocolMapper: oidc-usermodel-attribute-mapper
@@ -152,7 +153,7 @@ spec:
               user.attribute: nickname
               userinfo.token.claim: 'true'
             consentRequired: false
-            id: trailblazehunt.com-nickname
+            id: smartvillage-nickname
             name: nickname
             protocol: openid-connect
             protocolMapper: oidc-usermodel-attribute-mapper
@@ -164,7 +165,7 @@ spec:
               user.attribute: updatedAt
               userinfo.token.claim: 'true'
             consentRequired: false
-            id: trailblazehunt.com-updated-at
+            id: smartvillage-updated-at
             name: updated at
             protocol: openid-connect
             protocolMapper: oidc-usermodel-attribute-mapper
@@ -173,7 +174,7 @@ spec:
               id.token.claim: 'true'
               userinfo.token.claim: 'true'
             consentRequired: false
-            id: trailblazehunt.com-full-name
+            id: smartvillage-full-name
             name: full name
             protocol: openid-connect
             protocolMapper: oidc-full-name-mapper
@@ -185,7 +186,7 @@ spec:
               user.attribute: profile
               userinfo.token.claim: 'true'
             consentRequired: false
-            id: trailblazehunt.com-profile
+            id: smartvillage-profile
             name: profile
             protocol: openid-connect
             protocolMapper: oidc-usermodel-attribute-mapper
@@ -196,7 +197,7 @@ spec:
               multivalued: 'true'
               user.attribute: foo
             consentRequired: false
-            id: trailblazehunt.com-client-roles
+            id: smartvillage-client-roles
             name: client roles
             protocol: openid-connect
             protocolMapper: oidc-usermodel-client-role-mapper
@@ -208,7 +209,7 @@ spec:
               user.attribute: zoneinfo
               userinfo.token.claim: 'true'
             consentRequired: false
-            id: trailblazehunt.com-zoneinfo
+            id: smartvillage-zoneinfo
             name: zoneinfo
             protocol: openid-connect
             protocolMapper: oidc-usermodel-attribute-mapper
@@ -219,12 +220,87 @@ spec:
               multivalued: 'true'
               user.attribute: foo
             consentRequired: false
-            id: trailblazehunt.com-realm-roles
+            id: smartvillage-realm-roles
             name: realm roles
             protocol: openid-connect
             protocolMapper: oidc-usermodel-realm-role-mapper
     defaultDefaultClientScopes:
-      - trailblazehunt.com
+      - smartvillage
+    clients:
+      - id: smartvillage
+        clientId: smartvillage
+        standardFlowEnabled: true
+        serviceAccountsEnabled: true
+        authorizationServicesEnabled: true
+        frontchannelLogout: true
+        protocol: openid-connect
+        redirectUris:
+          - http://localhost:12080/logout
+          - http://localhost:12080/callback
+          - https://oauth-openshift.apps-crc.testing/oauth2callback/sso
+        defaultClientScopes:
+          - profile
+          - smartvillage
+        authorizationSettings:
+          scopes:
+            - id: POST
+              name: POST
+              displayName: POST
+            - id: DELETE
+              name: DELETE
+              displayName: DELETE
+            - id: GET
+              name: GET
+              displayName: GET
+            - id: PATCH
+              name: PATCH
+              displayName: PATCH
+            - id: PUTImport
+              name: PUTImport
+              displayName: PUTImport
+            - id: Search
+              name: Search
+              displayName: Search
+          resources:
+            - name: SiteUser
+              displayName: SiteUser
+              uris:
+                - /api/user
+                - /user
+              scopes:
+                - id: POST
+                  name: POST
+                  displayName: POST
+                - id: DELETE
+                  name: DELETE
+                  displayName: DELETE
+                - id: GET
+                  name: GET
+                  displayName: GET
+                - id: PATCH
+                  name: PATCH
+                  displayName: PATCH
+                - id: PUTImport
+                  name: PUTImport
+                  displayName: PUTImport
+                - id: Search
+                  name: Search
+                  displayName: Search
+          policies:
+            - id: SiteAdmin-policy
+              name: SiteAdmin
+              logic: POSITIVE
+              decisionStrategy: UNANIMOUS
+              type: role
+              config:
+                roles: "[{\"id\":\"SiteAdmin\",\"required\":true}]"
+            - id: user-policy
+              name: user
+              logic: POSITIVE
+              decisionStrategy: UNANIMOUS
+              type: client
+              config:
+                clients: "[\"smartvillage\"]"
   instanceSelector:
     matchLabels:
       app: keycloak

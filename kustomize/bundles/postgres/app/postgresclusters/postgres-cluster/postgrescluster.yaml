@@ -37,6 +37,10 @@ spec:
       options: "SUPERUSER"
       databases:
         - trailblazehunt
+    - name: southerncoalition
+      options: "SUPERUSER"
+      databases:
+        - southerncoalition
     - name: computateorg
       options: "SUPERUSER"
       databases:
@@ -49,6 +53,8 @@ spec:
           - "local keycloak keycloak trust"
           - "host trailblazehunt trailblazehunt all md5"
           - "local trailblazehunt trailblazehunt trust"
+          - "host southerncoalition southerncoalition all md5"
+          - "local southerncoalition southerncoalition trust"
           - "host computateorg computateorg all md5"
           - "local computateorg computateorg trust"
         

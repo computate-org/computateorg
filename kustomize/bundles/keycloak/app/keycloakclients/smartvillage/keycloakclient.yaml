@@ -54,12 +54,24 @@ spec:
             - /api/user
             - /user
           scopes:
-            - POST
-            - DELETE
-            - GET
-            - PATCH
-            - PUTImport
-            - Search
+            - id: POST
+              name: POST
+              displayName: POST
+            - id: DELETE
+              name: DELETE
+              displayName: DELETE
+            - id: GET
+              name: GET
+              displayName: GET
+            - id: PATCH
+              name: PATCH
+              displayName: PATCH
+            - id: PUTImport
+              name: PUTImport
+              displayName: PUTImport
+            - id: Search
+              name: Search
+              displayName: Search
       policies:
         - id: SiteAdmin-policy
           name: SiteAdmin

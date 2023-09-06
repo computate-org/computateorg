@@ -1,17 +1,18 @@
-apiVersion: keycloak.org/v1alpha1
-kind: KeycloakRealm
+apiVersion: k8s.keycloak.org/v2alpha1
+kind: KeycloakRealmImport
 metadata:
-  name: smartvillage
+  name: computate-org
   namespace: keycloak
   labels:
     app: keycloak
-    realm: SMARTVILLAGE
+    realm: COMPUTATE.ORG
 spec:
+  keycloakCRName: keycloak
   realm:
-    id: "SMARTVILLAGE"
-    realm: "SMARTVILLAGE"
+    id: "COMPUTATE.ORG"
+    realm: "COMPUTATE.ORG"
     enabled: true
-    displayName: "SMARTVILLAGE"
+    displayName: "COMPUTATE.ORG"
     registrationAllowed: true
     resetPasswordAllowed: true
     editUsernameAllowed: true
@@ -24,26 +25,26 @@ spec:
           name: Site Admin
         - id: SuperAdmin
           name: Super Admin
-          composite: true
-          composites:
-            realm:
-              - SiteAdmin
+#          composite: true
+#          composites:
+#            realm:
+#              - SiteAdmin
     clientScopes:
-      - id: smartvillage
-        name: smartvillage
-        description: A client scope for smartvillage
+      - id: computate.org
+        name: computate.org
+        description: A client scope for computate.org
         protocol: openid-connect
         protocolMappers: 
           - config:
               access.token.claim: 'true'
               id.token.claim: 'false'
-              included.client.audience: 'smartvillage'
+              included.client.audience: 'computate.org'
             consentRequired: false
-            id: smartvillage
-            name: smartvillage
+            id: computate-org
+            name: computate.org
             protocol: openid-connect
             protocolMapper: oidc-audience-mapper
-      - id: smartvillage-profile
+      - id: computate.org-profile
         name: profile
         description: "OpenID Connect built-in scope: profile"
         protocol: openid-connect
@@ -56,7 +57,7 @@ spec:
               user.attribute: emailVerified
               userinfo.token.claim: 'true'
             consentRequired: false
-            id: smartvillage-email-verified
+            id: computate.org-email-verified
             name: email verified
             protocol: openid-connect
             protocolMapper: oidc-usermodel-property-mapper
@@ -68,7 +69,7 @@ spec:
               user.attribute: username
               userinfo.token.claim: 'true'
             consentRequired: false
-            id: smartvillage-username
+            id: computate.org-username
             name: username
             protocol: openid-connect
             protocolMapper: oidc-usermodel-property-mapper
@@ -80,7 +81,7 @@ spec:
               multivalued: 'true'
               user.attribute: foo
             consentRequired: false
-            id: smartvillage-groups
+            id: computate.org-groups
             name: groups
             protocol: openid-connect
             protocolMapper: oidc-usermodel-realm-role-mapper
@@ -92,7 +93,7 @@ spec:
               user.attribute: lastName
               userinfo.token.claim: 'true'
             consentRequired: false
-            id: smartvillage-family-name
+            id: computate.org-family-name
             name: family name
             protocol: openid-connect
             protocolMapper: oidc-usermodel-property-mapper
@@ -104,7 +105,7 @@ spec:
               user.attribute: firstName
               userinfo.token.claim: 'true'
             consentRequired: false
-            id: smartvillage-given-name
+            id: computate.org-given-name
             name: given name
             protocol: openid-connect
             protocolMapper: oidc-usermodel-property-mapper
@@ -116,7 +117,7 @@ spec:
               user.attribute: email
               userinfo.token.claim: 'true'
             consentRequired: false
-            id: smartvillage-email
+            id: computate.org-email
             name: email
             protocol: openid-connect
             protocolMapper: oidc-usermodel-property-mapper
@@ -128,7 +129,7 @@ spec:
               user.attribute: middleName
               userinfo.token.claim: 'true'
             consentRequired: false
-            id: smartvillage-middle-name
+            id: computate.org-middle-name
             name: middle name
             protocol: openid-connect
             protocolMapper: oidc-usermodel-attribute-mapper
@@ -140,7 +141,7 @@ spec:
               user.attribute: locale
               userinfo.token.claim: 'true'
             consentRequired: false
-            id: smartvillage-locale
+            id: computate.org-locale
             name: locale
             protocol: openid-connect
             protocolMapper: oidc-usermodel-attribute-mapper
@@ -152,7 +153,7 @@ spec:
               user.attribute: nickname
               userinfo.token.claim: 'true'
             consentRequired: false
-            id: smartvillage-nickname
+            id: computate.org-nickname
             name: nickname
             protocol: openid-connect
             protocolMapper: oidc-usermodel-attribute-mapper
@@ -164,7 +165,7 @@ spec:
               user.attribute: updatedAt
               userinfo.token.claim: 'true'
             consentRequired: false
-            id: smartvillage-updated-at
+            id: computate.org-updated-at
             name: updated at
             protocol: openid-connect
             protocolMapper: oidc-usermodel-attribute-mapper
@@ -173,7 +174,7 @@ spec:
               id.token.claim: 'true'
               userinfo.token.claim: 'true'
             consentRequired: false
-            id: smartvillage-full-name
+            id: computate.org-full-name
             name: full name
             protocol: openid-connect
             protocolMapper: oidc-full-name-mapper
@@ -185,7 +186,7 @@ spec:
               user.attribute: profile
               userinfo.token.claim: 'true'
             consentRequired: false
-            id: smartvillage-profile
+            id: computate.org-profile
             name: profile
             protocol: openid-connect
             protocolMapper: oidc-usermodel-attribute-mapper
@@ -196,7 +197,7 @@ spec:
               multivalued: 'true'
               user.attribute: foo
             consentRequired: false
-            id: smartvillage-client-roles
+            id: computate.org-client-roles
             name: client roles
             protocol: openid-connect
             protocolMapper: oidc-usermodel-client-role-mapper
@@ -208,7 +209,7 @@ spec:
               user.attribute: zoneinfo
               userinfo.token.claim: 'true'
             consentRequired: false
-            id: smartvillage-zoneinfo
+            id: computate.org-zoneinfo
             name: zoneinfo
             protocol: openid-connect
             protocolMapper: oidc-usermodel-attribute-mapper
@@ -219,12 +220,87 @@ spec:
               multivalued: 'true'
               user.attribute: foo
             consentRequired: false
-            id: smartvillage-realm-roles
+            id: computate.org-realm-roles
             name: realm roles
             protocol: openid-connect
             protocolMapper: oidc-usermodel-realm-role-mapper
     defaultDefaultClientScopes:
-      - smartvillage
+      - computate.org
+    clients:
+      - id: computate.org
+        clientId: computate.org
+        standardFlowEnabled: true
+        serviceAccountsEnabled: true
+        authorizationServicesEnabled: true
+        frontchannelLogout: true
+        protocol: openid-connect
+        redirectUris:
+          - http://localhost:12080/logout
+          - http://localhost:12080/callback
+          - https://oauth-openshift.apps-crc.testing/oauth2callback/sso
+        defaultClientScopes:
+          - profile
+          - computate.org
+        authorizationSettings:
+          scopes:
+            - id: POST
+              name: POST
+              displayName: POST
+            - id: DELETE
+              name: DELETE
+              displayName: DELETE
+            - id: GET
+              name: GET
+              displayName: GET
+            - id: PATCH
+              name: PATCH
+              displayName: PATCH
+            - id: PUTImport
+              name: PUTImport
+              displayName: PUTImport
+            - id: Search
+              name: Search
+              displayName: Search
+          resources:
+            - name: SiteUser
+              displayName: SiteUser
+              uris:
+                - /api/user
+                - /user
+              scopes:
+                - id: POST
+                  name: POST
+                  displayName: POST
+                - id: DELETE
+                  name: DELETE
+                  displayName: DELETE
+                - id: GET
+                  name: GET
+                  displayName: GET
+                - id: PATCH
+                  name: PATCH
+                  displayName: PATCH
+                - id: PUTImport
+                  name: PUTImport
+                  displayName: PUTImport
+                - id: Search
+                  name: Search
+                  displayName: Search
+          policies:
+            - id: SiteAdmin-policy
+              name: SiteAdmin
+              logic: POSITIVE
+              decisionStrategy: UNANIMOUS
+              type: role
+              config:
+                roles: "[{\"id\":\"SiteAdmin\",\"required\":true}]"
+            - id: user-policy
+              name: user
+              logic: POSITIVE
+              decisionStrategy: UNANIMOUS
+              type: client
+              config:
+                clients: "[\"computate.org\"]"
   instanceSelector:
     matchLabels:
       app: keycloak
