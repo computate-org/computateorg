@@ -25,10 +25,10 @@ spec:
           name: Site Admin
         - id: SuperAdmin
           name: Super Admin
-          composite: true
-          composites:
-            realm:
-              - SiteAdmin
+#          composite: true
+#          composites:
+#            realm:
+#              - SiteAdmin
     clientScopes:
       - id: smartvillage
         name: smartvillage
