@@ -5,14 +5,14 @@ metadata:
   namespace: keycloak
   labels:
     app: keycloak
-    realm: TRAILBLAZEHUNT.COM
+    realm: TRAILBLAZEHUNT
 spec:
   keycloakCRName: keycloak
   realm:
-    id: "TRAILBLAZEHUNT.COM"
-    realm: "TRAILBLAZEHUNT.COM"
+    id: "TRAILBLAZEHUNT"
+    realm: "TRAILBLAZEHUNT"
     enabled: true
-    displayName: "TRAILBLAZEHUNT.COM"
+    displayName: "TRAILBLAZEHUNT"
     registrationAllowed: true
     resetPasswordAllowed: true
     editUsernameAllowed: true
@@ -22,9 +22,9 @@ spec:
     roles:
       realm:
         - id: SiteAdmin
-          name: Site Admin
+          name: SiteAdmin
         - id: SuperAdmin
-          name: Super Admin
+          name: SuperAdmin
 #          composite: true
 #          composites:
 #            realm:
@@ -235,9 +235,12 @@ spec:
         frontchannelLogout: true
         protocol: openid-connect
         redirectUris:
-          - http://localhost:12080/logout
-          - http://localhost:12080/callback
-          - https://oauth-openshift.apps-crc.testing/oauth2callback/sso
+          - https://trailblazehunt.computate.org/
+          - https://trailblazehunt.com/site/*
+          - https://trailblazehunt.computate.org/site/*
+          - https://trailblazehunt.com/
+          - https://www.trailblazehunt.com/site/*
+          - https://www.trailblazehunt.com/
         defaultClientScopes:
           - profile
           - trailblazehunt.com

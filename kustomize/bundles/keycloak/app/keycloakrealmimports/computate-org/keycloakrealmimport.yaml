@@ -5,14 +5,14 @@ metadata:
   namespace: keycloak
   labels:
     app: keycloak
-    realm: COMPUTATE.ORG
+    realm: COMPUTATE
 spec:
   keycloakCRName: keycloak
   realm:
-    id: "COMPUTATE.ORG"
-    realm: "COMPUTATE.ORG"
+    id: "COMPUTATE"
+    realm: "COMPUTATE"
     enabled: true
-    displayName: "COMPUTATE.ORG"
+    displayName: "COMPUTATE"
     registrationAllowed: true
     resetPasswordAllowed: true
     editUsernameAllowed: true
@@ -22,9 +22,9 @@ spec:
     roles:
       realm:
         - id: SiteAdmin
-          name: Site Admin
+          name: SiteAdmin
         - id: SuperAdmin
-          name: Super Admin
+          name: SuperAdmin
 #          composite: true
 #          composites:
 #            realm:

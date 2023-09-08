@@ -20,6 +20,15 @@ spec:
               storage: 5Gi
   customSolrKubeOptions:
     podOptions:
+      nodeSelector:
+        cloud.google.com/compute-class: Balanced
+      defaultInitContainerResources:
+        limits:
+          memory: '500Mi'
+          cpu: '500m'
+        requests:
+          memory: '200Mi'
+          cpu: '200m'
       podSecurityContext:
         runAsNonRoot: true
         runAsUser: 8983
@@ -30,10 +39,10 @@ spec:
       resources:
         limits:
           memory: '2Gi'
-          cpu: '1'
+          cpu: '1.5'
         requests:
-          memory: '500Mi'
-          cpu: '500m'
+          memory: '1Gi'
+          cpu: '1'
       volumes:
         - name: computate-configset
           source:
@@ -43,6 +52,14 @@ spec:
           defaultContainerMount:
               mountPath: /opt/solr/server/solr/configsets/computate/conf
               name: computate-configset
+        - name: trailblazehunt-configset
+          source:
+            configMap:
+              defaultMode: 440
+              name: trailblazehunt-configset
+          defaultContainerMount:
+              mountPath: /opt/solr/server/solr/configsets/trailblazehunt/conf
+              name: trailblazehunt-configset
   zookeeperRef:
     provided:
       replicas: 1

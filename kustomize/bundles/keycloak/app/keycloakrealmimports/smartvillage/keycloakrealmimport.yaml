@@ -22,9 +22,9 @@ spec:
     roles:
       realm:
         - id: SiteAdmin
-          name: Site Admin
+          name: SiteAdmin
         - id: SuperAdmin
-          name: Super Admin
+          name: SuperAdmin
 #          composite: true
 #          composites:
 #            realm:

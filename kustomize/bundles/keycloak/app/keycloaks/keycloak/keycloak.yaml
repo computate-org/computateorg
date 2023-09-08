@@ -27,8 +27,9 @@ spec:
   ingress:
     enabled: true
     annotations:
-      kubernetes.io/ingress.global-static-ip-name: computate
+      kubernetes.io/ingress.global-static-ip-name: keycloak
       kubernetes.io/ingress.class: gce
       networking.gke.io/managed-certificates: keycloak
+      networking.gke.io/v1beta1.FrontendConfig: keycloak
     className: gce
     
