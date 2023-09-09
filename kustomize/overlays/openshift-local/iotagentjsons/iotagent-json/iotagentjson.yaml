@@ -1,0 +1,13 @@
+apiVersion: smartvillage.computate.org/v1
+kind: IoTAgentJson
+metadata:
+  name: iotagent-json
+  namespace: smartvillage
+spec:
+  orionld:
+    service_name: scorpiobroker
+    port: 9090
+  iotagent:
+    replicas: 1
+    route:
+      create: true
