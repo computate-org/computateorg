@@ -2,8 +2,9 @@ apiVersion: smartvillage.computate.org/v1
 kind: EdgePostgres
 metadata:
   name: postgres
-  namespace: smartvillage
+  namespace: postgres
 spec:
+  managementState: Managed
   postgres:
     enable_dev_nodeports: true
     instances:
@@ -27,11 +28,27 @@ spec:
           requests:
             memory: 200Mi
             cpu: 200m
+      - name: rerc
+        replicas: 1
+        storage: 1Gi
+        resources:
+          limits:
+            memory: 500Mi
+            cpu: 500m
+          requests:
+            memory: 200Mi
+            cpu: 200m
+      - name: opendatapolicing
+        replicas: 1
+        storage: 1Gi
+        resources:
+          limits:
+            memory: 500Mi
+            cpu: 500m
+          requests:
+            memory: 200Mi
+            cpu: 200m
     users:
-      - name: sso
-        options: "SUPERUSER"
-        databases:
-          - sso
       - name: smartvillage
         options: "SUPERUSER"
         databases:
@@ -40,10 +57,24 @@ spec:
         options: "SUPERUSER CREATEDB"
         databases:
           - scorpiobroker
+      - name: rerc
+        options: "SUPERUSER"
+        databases:
+          - rerc
+      - name: opendatapolicing
+        options: "SUPERUSER"
+        databases:
+          - opendatapolicing
     pg_hba:
-      - "host sso sso all md5"
-      - "local sso sso trust"
+
       - "host smartvillage smartvillage all md5"
       - "local smartvillage smartvillage trust"
+
       - "host all scorpiobroker all md5"
       - "local all scorpiobroker trust"
+
+      - "host all rerc all md5"
+      - "local all rerc trust"
+
+      - "host all opendatapolicing all md5"
+      - "local all opendatapolicing trust"
