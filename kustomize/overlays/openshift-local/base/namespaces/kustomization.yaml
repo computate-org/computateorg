@@ -4,3 +4,6 @@ resources:
   - postgres/
   - solr/
   - kafka/
+  - rabbitmq/
+  - mongodb/
+  - smartvillage/
