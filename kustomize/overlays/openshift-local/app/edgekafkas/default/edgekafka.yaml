@@ -15,7 +15,7 @@ spec:
         memory: 200Mi
         cpu: 200m
     users:
-      - name: smartvillage
+      - name: smartvillage-kafka
         cluster: default
         acls:
           - resource:
@@ -32,7 +32,7 @@ spec:
             operations:
               - All
             type: allow
-      - name: scorpiobroker
+      - name: scorpiobroker-kafka
         cluster: default
         acls:
           - resource:

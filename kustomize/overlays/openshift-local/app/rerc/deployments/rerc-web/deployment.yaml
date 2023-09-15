@@ -7,7 +7,6 @@ spec:
   replicas: 1
   revisionHistoryLimit: 10
   selector:
-  selector:
     matchLabels:
       app: rerc
       deployment: rerc
@@ -117,7 +116,7 @@ spec:
         - name: solrPort
           value: "80"
         - name: solrUrl
-          value: http://default-solrcloud-common:8983/solr/site
+          value: http://default-solrcloud-common.solr.svc:8983/solr/rerc
         - name: siteHostName
           value: rerc.apps-crc.testing
         - name: sitePort

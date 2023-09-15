@@ -6,4 +6,8 @@ resources:
   - kafka/
   - rabbitmq/
   - mongodb/
+  - scorpiobroker/
+  - iotagent/
   - smartvillage/
+  - rerc/
+  - opendatapolicing/
