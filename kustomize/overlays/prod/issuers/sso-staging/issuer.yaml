@@ -1,16 +1,16 @@
 apiVersion: cert-manager.io/v1
 kind: Issuer
 metadata:
-  name: keycloak-prod
-  namespace: keycloak
+  name: sso-staging
+  namespace: sso
 spec:
   acme:
     email: computate@computate.org
     preferredChain: ''
     privateKeySecretRef:
-      name: keycloak-prod
-    server: 'https://acme-v02.api.letsencrypt.org/directory'
+      name: sso-staging
+    server: 'https://acme-staging-v02.api.letsencrypt.org/directory'
     solvers:
       - http01:
           ingress:
-            name: keycloak-ingress
+            name: sso-ingress

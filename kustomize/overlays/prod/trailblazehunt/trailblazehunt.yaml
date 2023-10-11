@@ -101,17 +101,17 @@ spec:
         - name: ZOOKEEPER_PORT
           value: "2181"
         - name: SOLR_HOST_NAME
-          value: solr.solr-solrcloud-headless.svc
+          value: solr-solrcloud-headless.solr.svc
         - name: SOLR_PORT
           value: "8983"
         - name: SOLR_URL
           value: http://solr.solr-solrcloud-headless.svc:8983/solr/trailblazehunt
         - name: SITE_HOST_NAME
-          value: trailblazehunt.computate.org
+          value: www.trailblazehunt.com
         - name: SITE_PORT
           value: "8080"
         - name: SITE_BASE_URL
-          value: https://trailblazehunt.computate.org
+          value: https://www.trailblazehunt.com
         - name: NUMBER_EXECUTORS
           value: "5"
         - name: STATIC_BASE_URL

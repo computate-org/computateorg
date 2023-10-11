@@ -32,6 +32,25 @@ oc -n rabbitmq get secret default-rabbitmq -o json \
     | oc -n iotagent apply -f -
 ```
 
+### Copy the `sso` secrets to the `sso` namespace. 
+
+Install Keycloak operator
+
+```bash
+oc -n sso apply -f https://raw.githubusercontent.com/keycloak/keycloak-k8s-resources/22.0.4/kubernetes/kubernetes.yml
+```
+
+```bash
+oc -n postgres get secret postgres-cluster-pguser-sso -o json \
+    | jq 'del(.metadata["namespace","creationTimestamp","resourceVersion","selfLink","uid","ownerReferences"])' \
+    | oc -n sso apply -f -
+
+SSO_ADMIN_PASSWORD=...
+oc -n sso create secret generic sso-admin --from-literal password="$SSO_ADMIN_PASSWORD"
+oc -n sso create secret generic keycloak-service --from-literal user=service --from-literal password="$SSO_ADMIN_PASSWORD"
+oc -n sso create secret generic sso-db-secret --from-literal POSTGRES_USERNAME=sso --from-literal POSTGRES_PASSWORD="$(oc -n postgres get secret/postgres-cluster-pguser-sso -o jsonpath={.data.password} | base64 -d)"
+```
+
 ### Copy the `smartvillage` secrets to the `smartvillage` namespace. 
 
 ```bash

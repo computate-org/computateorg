@@ -8,37 +8,7 @@ spec:
   postgres:
     enable_dev_nodeports: true
     instances:
-      - name: scorpiobroker
-        replicas: 1
-        storage: 1Gi
-        resources:
-          limits:
-            memory: 500Mi
-            cpu: 500m
-          requests:
-            memory: 200Mi
-            cpu: 200m
-      - name: smartvillage
-        replicas: 1
-        storage: 1Gi
-        resources:
-          limits:
-            memory: 500Mi
-            cpu: 500m
-          requests:
-            memory: 200Mi
-            cpu: 200m
-      - name: rerc
-        replicas: 1
-        storage: 1Gi
-        resources:
-          limits:
-            memory: 500Mi
-            cpu: 500m
-          requests:
-            memory: 200Mi
-            cpu: 200m
-      - name: opendatapolicing
+      - name: postgres
         replicas: 1
         storage: 1Gi
         resources:

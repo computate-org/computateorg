@@ -29,10 +29,10 @@ spec:
   postgresVersion: 15
   postGISVersion: 3.3.0
   users:
-    - name: keycloak
+    - name: sso
       options: "SUPERUSER"
       databases:
-        - keycloak
+        - sso
     - name: trailblazehunt
       options: "SUPERUSER"
       databases:
@@ -49,6 +49,8 @@ spec:
     dynamicConfiguration:
       postgresql:
         pg_hba:
+          - "host sso sso all md5"
+          - "local sso sso trust"
           - "host keycloak keycloak all md5"
           - "local keycloak keycloak trust"
           - "host trailblazehunt trailblazehunt all md5"
