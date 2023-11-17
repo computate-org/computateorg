@@ -38,6 +38,11 @@ import com.github.jknack.handlebars.helper.ConditionalHelpers;
 import com.github.jknack.handlebars.helper.StringHelpers;
 import com.github.jknack.handlebars.internal.lang3.BooleanUtils;
 
+import io.opentelemetry.api.OpenTelemetry;
+import io.opentelemetry.api.trace.propagation.W3CTraceContextPropagator;
+import io.opentelemetry.context.propagation.ContextPropagators;
+import io.opentelemetry.sdk.OpenTelemetrySdk;
+import io.opentelemetry.sdk.trace.SdkTracerProvider;
 import io.vertx.config.ConfigRetriever;
 import io.vertx.config.ConfigRetrieverOptions;
 import io.vertx.config.ConfigStoreOptions;
@@ -93,6 +98,7 @@ import io.vertx.pgclient.PgPool;
 import io.vertx.spi.cluster.zookeeper.ZookeeperClusterManager;
 import io.vertx.sqlclient.PoolOptions;
 import io.vertx.sqlclient.Tuple;
+import io.vertx.tracing.opentelemetry.OpenTelemetryOptions;
 
 
 
@@ -273,6 +279,16 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 			vertxOptions.setMaxWorkerExecuteTime(vertxMaxWorkerExecuteTime);
 			vertxOptions.setMaxWorkerExecuteTimeUnit(TimeUnit.SECONDS);
 			vertxOptions.setWorkerPoolSize(config.getInteger(ConfigKeys.WORKER_POOL_SIZE));
+
+			if(config.getBoolean(ConfigKeys.OPEN_TELEMETRY_ENABLED)) {
+				SdkTracerProvider sdkTracerProvider = SdkTracerProvider.builder().build();
+				OpenTelemetry openTelemetry = OpenTelemetrySdk.builder()
+						.setTracerProvider(sdkTracerProvider)
+						.setPropagators(ContextPropagators.create(W3CTraceContextPropagator.getInstance()))
+						.buildAndRegisterGlobal();
+				vertxOptions.setTracingOptions(new OpenTelemetryOptions(openTelemetry));
+			}
+
 			Consumer<Vertx> runner = vertx -> {
 				try {
 					DeploymentOptions deploymentOptions = new DeploymentOptions();
@@ -555,7 +571,7 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 			Boolean authSsl = config().getBoolean(ConfigKeys.AUTH_SSL);
 			String authHostName = config().getString(ConfigKeys.AUTH_HOST_NAME);
 			Integer authPort = config().getInteger(ConfigKeys.AUTH_PORT);
-			String authUrl = String.format("%s://%s%s/auth", (authSsl ? "https" : "http"), authHostName, (authPort == 443 || authPort == 80 ? "" : ":" + authPort));
+			String authUrl = String.format("%s", config().getString(ConfigKeys.AUTH_URL));
 			oauth2ClientOptions.setSite(authUrl + "/realms/" + config().getString(ConfigKeys.AUTH_REALM));
 			oauth2ClientOptions.setTenant(config().getString(ConfigKeys.AUTH_REALM));
 			oauth2ClientOptions.setClientId(config().getString(ConfigKeys.AUTH_CLIENT));

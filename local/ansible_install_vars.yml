@@ -31,16 +31,16 @@ SITE_POM_VERSION: "{{ SITE_POM_VERSION_PREFIX }}{{ SITE_POM_VERSION_SUFFIX }}"
 SITE_JAVA_PACKAGE: "{{ SITE_POM_GROUP_ID }}.{{ SITE_POM_ARTIFACT_ID_ROOT }}.enus"
 SITE_PORT: 10180
 CLUSTER_PORT: "{{ SITE_PORT | regex_replace('(...)', '\\1') }}81"
-JDBC_DATABASE: "{{ SITE_NAME }}"
-JDBC_USERNAME: "{{ SITE_NAME }}"
+JDBC_DATABASE: "{{ SITE_SHORT_NAME }}"
+JDBC_USERNAME: "{{ SITE_SHORT_NAME }}"
 
-AUTH_REALM: SMARTVILLAGE
-AUTH_CLIENT: smartvillage
+AUTH_REALM: "COMPUTATE"
+AUTH_CLIENT: "computate"
 
 SOLR_HOST_NAME: solr-solr.apps-crc.testing
 SOLR_PORT: 443
-SOLR_COLLECTION: "{{ SITE_NAME }}"
-SOLR_URL: "https://solr-solr.apps-crc.testing/solr/{{ SITE_NAME }}"
+SOLR_COLLECTION: "{{ SITE_SHORT_NAME }}"
+SOLR_URL: "https://solr-solr.apps-crc.testing/solr/{{ SITE_SHORT_NAME }}"
 SOLR_URL_COMPUTATE: "https://solr-solr.apps-crc.testing/solr/computate"
 SOLR_SSL: true
 JAVA_OPTS: -XX:+UseParallelOldGC -XX:MinHeapFreeRatio=10 -XX:MaxHeapFreeRatio=20 -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -XX:MaxMetaspaceSize=100m -XX:ParallelGCThreads=1 -Djava.util.concurrent.ForkJoinPool.common.parallelism=1 -XX:CICompilerCount=2 -XX:+ExitOnOutOfMemoryError
@@ -119,6 +119,8 @@ PROJECTS:
         template: page/DynamicGenPage.hbs
       - path: "{{ SITE_SRC }}/src/main/java/{{ SITE_JAVA_PACKAGE | replace('.', '/') }}/{{ RELATIVE_PACKAGE_MainVerticle | replace('.', '/') }}/{{ CLASS_SIMPLE_NAME_MainVerticle }}.java"
         template: vertx/MainVerticle.java
+      - path: "{{ SITE_SRC }}/src/main/java/{{ SITE_JAVA_PACKAGE | replace('.', '/') }}/{{ RELATIVE_PACKAGE_MainVerticle | replace('.', '/') }}/ProjectHelpers.java"
+        template: handlebars/ProjectHelpers.java
       - path: "{{ SITE_SRC }}/src/main/java/{{ SITE_JAVA_PACKAGE | replace('.', '/') }}/{{ RELATIVE_PACKAGE_WorkerVerticle | replace('.', '/') }}/{{ CLASS_SIMPLE_NAME_WorkerVerticle }}.java"
         template: vertx/WorkerVerticle.java
       - path: "{{ SITE_SRC }}/src/main/java/{{ SITE_JAVA_PACKAGE | replace('.', '/') }}/{{ RELATIVE_PACKAGE_BaseModel | replace('.', '/') }}/{{ CLASS_SIMPLE_NAME_BaseModel }}.java"

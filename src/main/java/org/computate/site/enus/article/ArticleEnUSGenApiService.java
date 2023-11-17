@@ -15,18 +15,20 @@ import io.vertx.ext.web.api.service.ServiceResponse;
 import io.vertx.ext.web.templ.handlebars.HandlebarsTemplateEngine;
 import io.vertx.core.WorkerExecutor;
 import io.vertx.pgclient.PgPool;
+import io.vertx.kafka.client.producer.KafkaProducer;
 import io.vertx.ext.auth.oauth2.OAuth2Auth;
 import io.vertx.ext.auth.authorization.AuthorizationProvider;
 
 /**
  * Translate: false
  * Gen: false
+ * Generated: true
  **/
 @WebApiServiceGen
 @ProxyGen
 public interface ArticleEnUSGenApiService {
-	static void registerService(EventBus eventBus, JsonObject config, WorkerExecutor workerExecutor, PgPool pgPool, WebClient webClient, OAuth2Auth oauth2AuthenticationProvider, AuthorizationProvider authorizationProvider, HandlebarsTemplateEngine templateEngine, Vertx vertx) {
-		new ServiceBinder(vertx).setAddress("computateorg-enUS-Article").register(ArticleEnUSGenApiService.class, new ArticleEnUSApiServiceImpl(eventBus, config, workerExecutor, pgPool, webClient, oauth2AuthenticationProvider, authorizationProvider, templateEngine));
+	static void registerService(EventBus eventBus, JsonObject config, WorkerExecutor workerExecutor, PgPool pgPool, KafkaProducer<String, String> kafkaProducer, WebClient webClient, OAuth2Auth oauth2AuthenticationProvider, AuthorizationProvider authorizationProvider, HandlebarsTemplateEngine templateEngine, Vertx vertx) {
+		new ServiceBinder(vertx).setAddress("computateorg-enUS-Article").register(ArticleEnUSGenApiService.class, new ArticleEnUSApiServiceImpl(eventBus, config, workerExecutor, pgPool, kafkaProducer, webClient, oauth2AuthenticationProvider, authorizationProvider, templateEngine));
 	}
 
 	public void searchArticle(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler);

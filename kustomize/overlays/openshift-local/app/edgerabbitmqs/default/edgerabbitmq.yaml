@@ -3,4 +3,5 @@ kind: EdgeRabbitMQ
 metadata:
   name: default
   namespace: rabbitmq
-spec: {}
+spec:
+  enable_dev_nodeports: true

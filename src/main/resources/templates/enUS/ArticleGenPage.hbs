@@ -1,5 +1,5 @@
 {{#*inline "htmTitleArticlePage"}}		<!-- inline "htmTitleArticlePage" -->
-		<title>{{#if searchListArticle_}}{{#eq articleCount int1}}{{#eq params.query.q "*:*"}}article{{else}}article{{/eq}}{{else}}no article found{{/eq}}{{else}}articles{{/if}}</title>
+		<title>{{#if searchListArticle_}}{{#eq articleCount int1}}{{#if id}}article{{else}}article{{/if}}{{else}}no article found{{/eq}}{{else}}articles{{/if}}</title>
 {{/inline}}
 {{#*inline "htmMetaArticlePage"}}{{> "htmMetaPageLayout"}}{{/inline}}
 {{#*inline "htmStyleArticlePage"}}{{> "htmStylePageLayout"}}{{/inline}}
@@ -8,6 +8,14 @@
 {{/inline}}
 {{#*inline "htmScriptArticlePage"}}		<!-- inline "htmScriptArticlePage" -->
 		<script>
+			$('#site-calendar-box').accordion({ collapsible: true, active: false });
+{{#if DEFAULT_MAP_LOCATION }}
+			window.DEFAULT_MAP_LOCATION = { lat: {{ DEFAULT_MAP_LOCATION.lat }}, lon: {{ DEFAULT_MAP_LOCATION.lon }} };
+{{/if}}
+{{#if DEFAULT_MAP_ZOOM }}
+			window.DEFAULT_MAP_ZOOM = {{ DEFAULT_MAP_ZOOM }};
+{{/if}}
+			window.DEFAULT_ZONE_ID = '{{ defaultZoneId }}';
 			$(document).ready(function() {
 				document.onkeydown = function(evt) {
 					evt = evt || window.event;
@@ -24,25 +32,26 @@
 				window.eventBus = new EventBus('/eventbus');
 				var pk = {{#if pk}}{{pk}}{{else}}null{{/if}};
 				if(pk != null) {
+					window.article = JSON.parse($('.pageForm .article').val());
 				}
-				websocketArticle(websocketArticleInner);
+					window.listArticle = JSON.parse($('.pageForm .listArticle').val());
 				window.varsFq = JSON.parse('{{{toJsonObjectStringInApostrophes varsFq}}}');
-				pageGraph();
+				window.varsRange = JSON.parse('{{{toJsonObjectStringInApostrophes varsRange}}}');
+				window.defaultRangeVar = '{{ defaultRangeVar }}';
+				pageGraphArticle();
 
 				var calendarEl = document.getElementById('site-calendar');
 				var calendar = new FullCalendar.Calendar(calendarEl, {
 					initialView: 'dayGridMonth'
 				});
 				//calendar.render();
+{{#block "websocket"}}{{/block}}
 			});
-			$('#site-calendar-box').accordion({ collapsible: true, active: false });
-{{#if DEFAULT_MAP_LOCATION }}
-			window.DEFAULT_MAP_LOCATION = { lat: {{ DEFAULT_MAP_LOCATION.lat }}, lon: {{ DEFAULT_MAP_LOCATION.lon }} };
-{{/if}}
-{{#if DEFAULT_MAP_ZOOM }}
-			window.DEFAULT_MAP_ZOOM = {{ DEFAULT_MAP_ZOOM }};
-{{/if}}
 		</script>
+{{/inline}}
+{{#*inline "websocketArticlePage"}}
+				<!-- inline "websocketArticlePage" -->
+				websocketArticle(websocketArticleInner);
 {{/inline}}
 {{#*inline "htmUrlArticle"}}{{pageUri}}?q={{query.q}}&amp;rows={{#if rows}}{{rows}}{{else}}{{pagination.rows}}{{/if}}&amp;rows={{#if start}}{{start}}{{else}}{{pagination.start}}{{/if}}{{#each query.fq}}{{#eq fq this}}{{else}}&fq={{fq}}:{{val}}{{/eq}}{{/each}}{{#each query.sort}}{{#eq sort this}}{{else}}&sort={{var}} {{order}}{{/eq}}{{/each}}{{/inline}}
 {{#*inline "htmHeadArticlePage"}}{{#block "htmTitle"}}{{/block}}{{#block "htmMeta"}}{{/block}}{{#block "htmStyle"}}{{/block}}{{#block "htmScripts"}}{{/block}}{{#block "htmScript"}}{{/block}}{{/inline}}
@@ -56,7 +65,7 @@
 									</div>
 									<div class="w3-cell-row ">
 										<div class="w3-cell w3-cell-top ">
-											<input id="qArticle_{{ @key }}" placeholder="{{ displayName }}" class="" {{#eq ../var 'objectSuggest' }}onkeyup{{else}}onchange{{/eq}}="qChange(this); " data-var="{{ var }}" autocomplete="off="/>
+											<input id="qArticle_{{ @key }}" placeholder="{{ displayName }}" class="" {{#eq ../var 'objectSuggest' }}onkeyup{{else}}onchange{{/eq}}="qChange('Article', this); " data-var="{{ var }}" autocomplete="off="/>
 											<div class="pageSearchVal w3-tiny "></div>
 										</div>
 									</div>
@@ -68,8 +77,8 @@
 									</div>
 									<div class="w3-cell-row ">
 										<div class="w3-cell w3-cell-top ">
-											<input id="qArticle_start" placeholder="{{ displayName }}" class="" onchange="paramChange(this); " data-var="start" autocomplete="off="/>
-											<div class="pageSearchVal w3-tiny "></div>
+											<input id="qArticle_start" placeholder="{{ displayName }}" class="" onchange="paramChange('Article', this); " data-var="start" autocomplete="off=" value="{{ start }}"/>
+											<div class="pageSearchVal w3-tiny ">start={{ start }}</div>
 										</div>
 									</div>
 									<div class="w3-cell-row ">
@@ -79,8 +88,8 @@
 									</div>
 									<div class="w3-cell-row ">
 										<div class="w3-cell w3-cell-top ">
-											<input id="qArticle_rows" placeholder="{{ displayName }}" class="" onchange="paramChange(this); " data-var="rows" autocomplete="off="/>
-											<div class="pageSearchVal w3-tiny "></div>
+											<input id="qArticle_rows" placeholder="{{ displayName }}" class="" onchange="paramChange('Article', this); " data-var="rows" autocomplete="off" value="{{ rows }}"/>
+											<div class="pageSearchVal w3-tiny ">rows={{ rows }}</div>
 										</div>
 									</div>
 								</div>
@@ -92,10 +101,10 @@
 										<label for="fqArticle_{{ @key }}">{{ displayName }}<sup class="w3-tiny "> ({{ classSimpleName }})</sup></label>
 										<div class="w3-cell-row ">
 											<div class="w3-cell w3-cell-top ">
-												<button id="buttonFacetArticle_{{ @key }}" class="" onclick="facetFieldChange(this); " title="see values " data-var="{{ var }}" data-clear="{{#if facetField }}true{{else}}false{{/if}}"><i class="fas fa-list "></i></button>
+												<button id="buttonFacetArticle_{{ @key }}" class="" onclick="facetFieldChange('Article', this); " title="see values " data-var="{{ var }}" data-clear="{{#if facetField }}true{{else}}false{{/if}}"><i class="fas fa-list "></i></button>
 											</div>
 											<div class="w3-cell w3-cell-top ">
-												<input id="fqArticle_{{ @key }}" placeholder="{{ displayName }}" class="" onchange="fqChange(this); " data-var="{{ var }}" autocomplete="off=" value="{{ val }}"/>
+												<input id="fqArticle_{{ @key }}" placeholder="{{ displayName }}" class="" onchange="fqChange('Article', this); " data-var="{{ var }}" autocomplete="off=" value="{{ val }}"/>
 											</div>
 										</div>
 									</div>
@@ -104,7 +113,7 @@
 										<div class="pageSearchVal " id="pageSearchVal-buttonFacetArticle_{{ @key }}">{{#if facetField.var }}facet.field={{ facetField.var }}{{/if}}</div>
 										<ol class="pageFacetField w3-small pageFacetFieldArticle_{{ @key }} " id="pageFacetFieldArticle_{{ @key }}">
 {{#each facetField.counts }}
-											<li class="cursor-pointer " data-class="Article" data-var="{{ ../var }}" data-val="{{ @key }}" onclick="fqReplace(this); ">{{ @key }}: {{ this }}</li>
+											<li class="cursor-pointer " data-class="Article" data-var="{{ ../var }}" data-val="{{ @key }}" onclick="fqReplace('Article', this); ">{{ @key }}: {{ this }}</li>
 {{/each}}
 										</ol>
 									</div>
@@ -115,9 +124,9 @@
 								<table class="w3-padding ">
 									<tr>
 										<td class="w3-padding w3-tiny " colspan="2">
-											<div class="pageSearchVal " id="pageSearchVal-pageFacetRangeGap-Article">{{#if defaultRangeGap }}facet.range.gap={{encodeURIComponent defaultRangeGap }}{{/if}}</div>
-											<div class="pageSearchVal " id="pageSearchVal-pageFacetRangeStart-Article">{{#if defaultRangeStart }}facet.range.start={{encodeURIComponent defaultRangeStart }}{{/if}}</div>
-											<div class="pageSearchVal " id="pageSearchVal-pageFacetRangeEnd-Article">{{#if defaultRangeEnd }}facet.range.end={{encodeURIComponent defaultRangeEnd }}{{/if}}</div>
+											<div class="pageSearchVal " id="pageSearchVal-pageFacetRangeGap-Article">{{#if rangeGap }}facet.range.gap={{encodeURIComponent rangeGap }}{{/if}}</div>
+											<div class="pageSearchVal " id="pageSearchVal-pageFacetRangeStart-Article">{{#if rangeStart }}facet.range.start={{encodeURIComponent rangeStart }}{{/if}}</div>
+											<div class="pageSearchVal " id="pageSearchVal-pageFacetRangeEnd-Article">{{#if rangeEnd }}facet.range.end={{encodeURIComponent rangeEnd }}{{/if}}</div>
 											<div class="pageSearchVal " id="pageSearchVal-pageFacetRangeVar-Article">{{#if defaultRangeVar }}facet.range={!tag=r1}{{encodeURIComponent defaultRangeVar }}{{/if}}</div>
 										</td>
 									</tr>
@@ -128,7 +137,7 @@
 											<span>Range Gap</span>
 										</td>
 										<td class="">
-											<select name="facet.range.gap" id="pageFacetRangeGap-Article" onchange="facetRangeChange(this, 'Article'); ">
+											<select name="facet.range.gap" id="pageFacetRangeGap-Article" onchange="facetRangeGapChange('Article', this); ">
 												<option value="+1YEAR"{{#eq defaultRangeGap '+1YEAR'}} selected="selected"{{else}}{{/eq}}>Year</option>
 												<option value="+1MONTH"{{#eq defaultRangeGap '+1MONTH'}} selected="selected"{{else}}{{/eq}}>Month</option>
 												<option value="+1WEEK"{{#eq defaultRangeGap '+1WEEK'}} selected="selected"{{else}}{{/eq}}>Week</option>
@@ -146,7 +155,7 @@
 									</tr>
 									<tr class="">
 										<td class="" colspan="2">
-											<span><input type="datetime-local" name="facetRangeStart" id="pageFacetRangeStart-Article" value="{{formatZonedDateTime defaultRangeStart "yyyy-MM-dd'T'HH:mm" defaultLocaleId defaultZoneId}}" onclick="facetRangeChange(this, 'Article'); "/></span>
+											<span><input type="datetime-local" name="facetRangeStart" id="pageFacetRangeStart-Article" value="{{formatZonedDateTime defaultRangeStart "yyyy-MM-dd'T'HH:mm" defaultLocaleId defaultZoneId}}" onclick="facetRangeStartChange('Article', this); "/></span>
 										</td>
 									</tr>
 									<tr class="">
@@ -156,7 +165,7 @@
 									</tr>
 									<tr class="">
 										<td class="" colspan="2">
-											<span><input type="datetime-local" name="facetRangeEnd" id="pageFacetRangeEnd-Article" value="{{formatZonedDateTime defaultRangeEnd "yyyy-MM-dd'T'HH:mm" defaultLocaleId defaultZoneId}}" onclick="facetRangeChange(this, 'Article'); "/></span>
+											<span><input type="datetime-local" name="facetRangeEnd" id="pageFacetRangeEnd-Article" value="{{formatZonedDateTime defaultRangeEnd "yyyy-MM-dd'T'HH:mm" defaultLocaleId defaultZoneId}}" onclick="facetRangeEndChange('Article', this); "/></span>
 										</td>
 									</tr>
 								</table>
@@ -164,7 +173,7 @@
 {{#each varsRange }}
 									<tr class="">
 										<td class="">
-											<span><input type="radio" name="pageFacetRange" class="pageFacetRange " id="pageFacetRangeArticle_{{ @key }}" value="{{ var }}"{{#eq defaultRangeVar var }} checked="checked"{{/eq}} onclick="facetRangeChange(this, 'Article'); "/></span>
+											<span><input type="radio" name="pageFacetRange" class="pageFacetRange " id="pageFacetRangeArticle_{{ @key }}" value="{{ var }}"{{#eq defaultRangeVar var }} checked="checked"{{/eq}} onclick="facetRangeChange('Article', this); "/></span>
 										</td>
 										<td class="">
 											<label for="pageFacetRangeArticle_{{ @key }}">{{ displayName }}</label>
@@ -188,7 +197,7 @@
 {{#each varsFq }}
 									<tr class="">
 										<td class="">
-											<span><input type="checkbox" name="pageFacetPivot" class="pageFacetPivot " id="pageFacetPivotArticle_{{ @key }}" value="{{ var }}"{{#if pivot }} checked="checked"{{/if}} onclick="facetPivotChange(this, 'Article'); "/></span>
+											<span><input type="checkbox" name="pageFacetPivot" class="pageFacetPivot " id="pageFacetPivotArticle_{{ @key }}" value="{{ var }}"{{#if pivot }} checked="checked"{{/if}} onclick="facetPivotChange('Article', this); "/></span>
 										</td>
 										<td class="w3-cell ">
 											<label for="pageFacetPivotArticle_{{ @key }}">{{ displayName }}</label>
@@ -212,7 +221,7 @@
 {{#each varsFq }}
 									<tr class="">
 										<td class="">
-											<span><input type="checkbox" name="pageFieldList" class="pageFieldList " id="pageFieldListArticle_{{ @key }}" value="{{ var }}"{{#if fieldList }} checked="checked"{{/if}} onclick="facetFieldListChange(this, 'Article'); "/></span>
+											<span><input type="checkbox" name="pageFieldList" class="pageFieldList " id="pageFieldListArticle_{{ @key }}" value="{{ var }}"{{#if fieldList }} checked="checked"{{/if}} onclick="facetFieldListChange('Article', this); "/></span>
 										</td>
 										<td class="w3-cell ">
 											<label for="pageFieldListArticle_{{ @key }}">{{ displayName }}</label>
@@ -237,7 +246,7 @@
 {{#if enableStats }}
 									<tr class="">
 										<td class="">
-											<span><input type="checkbox" name="pageStats" class="pageStats " id="pageStatsArticle_{{ @key }}" value="{{ var }}"{{#if ./stats }} checked="checked"{{/if}} onclick="facetStatsChange(this, 'Article'); "/></span>
+											<span><input type="checkbox" name="pageStats" class="pageStats " id="pageStatsArticle_{{ @key }}" value="{{ var }}"{{#if ./stats }} checked="checked"{{/if}} onclick="facetStatsChange('Article', this); "/></span>
 										</td>
 										<td class="w3-cell ">
 											<div>
@@ -264,6 +273,8 @@
 {{> "htmBodyMenuPageLayout"}}{{/inline}}
 {{#*inline "htmBodyGraphArticlePage"}}		<!-- #*inline "htmBodyGraphArticlePage" -->
 <div id="htmBodyGraphPageLayout" class="w3-content htmBodyGraph "></div>{{/inline}}
+{{#*inline "htmBodyGraphLocationArticlePage"}}		<!-- #*inline "htmBodyGraphLocationArticlePage" -->
+<div id="htmBodyGraphLocationPageLayout" class="w3-content htmBodyGraphLocation "></div>{{/inline}}
 {{#*inline "htmBodyCount0ArticlePage"}}		<!-- #*inline "htmBodyCount0ArticlePage" -->
 		<h1>
 			<a href="{{pageUri}}" class="w3-bar-item w3-btn w3-center w3-block w3-green w3-hover-green">
@@ -281,6 +292,12 @@
 				<span class="">no article found</span>
 			</span>
 		</h2>
+{{#block "htmBodyGraphLocation"}}{{/block}}
+{{#block "htmBodyGraph"}}{{/block}}
+	<div class="pageContent w3-content ">
+		<div id="site-calendar-box">
+			<div id="site-calendar"><!-- // --></div>
+		</div>
 {{/inline}}
 {{#*inline "htmBodyCount1AllArticlePage"}}		<!-- #*inline "htmBodyCount1AllArticlePage" -->
 		<h1 class="w3-center ">
@@ -296,6 +313,12 @@
 				<span class="">{{article_.objectTitle}}</span>
 			</span>
 		</h2>
+{{#block "htmBodyGraphLocation"}}{{/block}}
+{{#block "htmBodyGraph"}}{{/block}}
+	<div class="pageContent w3-content ">
+		<div id="site-calendar-box">
+			<div id="site-calendar"><!-- // --></div>
+		</div>
 {{/inline}}
 {{#*inline "htmBodyCount1ArticlePage"}}		<!-- #*inline "htmBodyCount1ArticlePage" -->
 		<h1>
@@ -303,37 +326,20 @@
 	{{#if classIconCssClasses}}
 				<i class="{{ classIconCssClasses }} site-menu-icon "></i>
 	{{/if}}
-				<span class="">articles</span>
+				<span class="">article</span>
 			</a>
 		</h1>
-		<div>
-	{{#if pagination.pagePrevious}}
-			<a href="{{pageUri}}?start={{pagination.pagePrevious.start}}&amp;rows={{pagination.rows}}">
-				<i class="fas fa-arrow-square-left "></i>
-			</a>
-	{{else}}
-			<i class="fas fa-arrow-square-left w3-opacity "></i>
-	{{/if}}
-	{{#gte pagination.rowsPrevious pagination.1L}}
-			<a href="{{pageUri}}?start={{pagination.start}}&amp;rows={{ pagination.rowsPrevious }}">
-				<i class="fas fa-minus-square "></i>
-			</a>
-	{{else}}
-			<i class="fas fa-minus-square w3-opacity "></i>
-	{{/gte}}
-			<a href="{{pageUri}}?start={{pagination.start}}&amp;rows={{ pagination.rowsNext }}">
-				<i class="fas fa-plus-square "></i>
-			</a>
-	{{#if pagination.pageNext}}
-			<a href="{{pageUri}}?start={{pagination.pageNext.start}}&amp;rows={{pagination.rows}}">
-				<i class="fas fa-arrow-square-right "></i>
-			</a>
-	{{else}}
-			<i class="fas fa-arrow-square-right w3-opacity "></i>
-	{{/if}}
-			<span>{{ pagination.startNum }} - {{ pagination.endNum }} of {{ pagination.foundNum }}</span>
+		<h2 class="w3-center ">
+			<span class="w3-bar-item w3-padding w3-center w3-block w3-green">
+				<span class="">{{article_.objectTitle}}</span>
+			</span>
+		</h2>
+{{#block "htmBodyGraphLocation"}}{{/block}}
+{{#block "htmBodyGraph"}}{{/block}}
+	<div class="pageContent w3-content ">
+		<div id="site-calendar-box">
+			<div id="site-calendar"><!-- // --></div>
 		</div>
-{{> "table1ArticlePage"}}
 {{/inline}}
 {{#*inline "htmBodyAllArticlePage"}}		<!-- #*inline "htmBodyAllArticlePage" -->
 		<h1>
@@ -344,6 +350,11 @@
 				<span class="">articles</span>
 			</a>
 		</h1>
+{{#block "htmBodyGraphLocation"}}{{/block}}
+{{#block "htmBodyGraph"}}{{/block}}
+		<div id="site-calendar-box">
+			<div id="site-calendar"><!-- // --></div>
+		</div>
 		<div class="">
 			<div>
 	{{#if pagination.pagePrevious}}
@@ -383,19 +394,30 @@
 {{/if}}
 			<input name="focusId" type="hidden"/>
 			<input name="pageResponse" id="pageResponse" class="pageResponse"  value='{{{toJsonObjectStringInApostrophes pageResponse }}}' type="hidden"/>
+			<input name="article" id="article" class="article"  value='{{{toJsonObjectStringInApostrophes article_ }}}' type="hidden"/>
+			<input name="listArticle" id="listArticle" class="listArticle"  value='{{{toJsonArrayStringInApostrophes listArticle }}}' type="hidden"/>
 		</form>
 {{#if id}}
+{{#block "htmButton_searchpageArticle"}}{{/block}}
 {{#block "htmForm_searchpageArticle"}}{{/block}}
 {{/if}}
 {{/inline}}
-{{#*inline "htmFormArticlePage_patchArticle"}}
+{{#*inline "htmButtonArticlePage_patchArticle"}}
 		<button
 			class="w3-btn w3-round w3-border w3-border-black w3-ripple w3-padding w3-green "
 			onclick="$('#patchArticleModal').show(); "
 			>
 			<i class="fas fa-edit "></i>
-			Modify articles
+			Modify article
 		</button>
+{{/inline}}
+{{#*inline "htmFormButtonArticlePage_patchArticle"}}
+						<button
+							class="w3-btn w3-round w3-border w3-border-black w3-ripple w3-padding w3-margin w3-green "
+							onclick="patchArticle(null, $('#patchArticleFormValues')); "
+							>Modify article</button>
+{{/inline}}
+{{#*inline "htmFormArticlePage_patchArticle"}}
 		<div id="patchArticleModal" class="w3-modal ">
 			<div class="w3-modal-content ">
 				<div class="w3-card-4 ">
@@ -403,27 +425,16 @@
 	{{#eq "Page" classApiMethodMethod}}
 						<span class="w3-button w3-display-topright " onclick="$('#patchArticleModal').hide(); ">×</span>
 	{{/eq}}
-						<h2 class="w3-padding ">Modify articles</h2>
+						<h2 class="w3-padding ">Modify article</h2>
 					</header>
 					<div class="" id="patchArticleFormValues">
-							<div class="w3-cell-row ">
-{{> "htmCreated" classApiMethodMethod="PATCH"}}
-{{> "htmObjectId" classApiMethodMethod="PATCH"}}
-							</div>
-							<div class="w3-cell-row ">
-{{> "htmArchived" classApiMethodMethod="PATCH"}}
-{{> "htmDeleted" classApiMethodMethod="PATCH"}}
-							</div>
-						<button
-							class="w3-btn w3-round w3-border w3-border-black w3-ripple w3-padding w3-margin w3-green "
-							onclick="patchArticle(null, $('#patchArticleFormValues')); "
-							>Modify articles</button>
+{{#block "htmFormButton_patchArticle"}}{{/block}}
 					</div>
 				</div>
 			</div>
 		</div>
 {{/inline}}
-{{#*inline "htmFormArticlePage_postArticle"}}
+{{#*inline "htmButtonArticlePage_postArticle"}}
 		<button
 			class="w3-btn w3-round w3-border w3-border-black w3-ripple w3-padding w3-green "
 			onclick="$('#postArticleModal').show(); "
@@ -431,6 +442,14 @@
 			<i class="fas fa-file-plus "></i>
 			Create an article
 		</button>
+{{/inline}}
+{{#*inline "htmFormButtonArticlePage_postArticle"}}
+						<button
+							class="w3-btn w3-round w3-border w3-border-black w3-ripple w3-padding w3-margin w3-green "
+							onclick="postArticle($('#postArticleForm')); "
+							>Create an article</button>
+{{/inline}}
+{{#*inline "htmFormArticlePage_postArticle"}}
 		<div id="postArticleModal" class="w3-modal ">
 			<div class="w3-modal-content ">
 				<div class="w3-card-4 ">
@@ -439,28 +458,19 @@
 						<span class="w3-button w3-display-topright " onclick="$('#postArticleModal').hide(); ">×</span>
 	{{/eq}}
 						<h2 class="w3-padding ">Create an article</h2>
+						<div class="">You can override any default values below: </div>
 					</header>
 					<div class="" id="postArticleFormValues">
 						<div id="postArticleForm">
-							<div class="w3-cell-row ">
-{{> "htmCreated" classApiMethodMethod="POST"}}
-{{> "htmObjectId" classApiMethodMethod="POST"}}
-							</div>
-							<div class="w3-cell-row ">
-{{> "htmArchived" classApiMethodMethod="POST"}}
-{{> "htmDeleted" classApiMethodMethod="POST"}}
-							</div>
+{{#block "htmFormButton_postArticle"}}{{/block}}
 						</div>
-						<button
-							class="w3-btn w3-round w3-border w3-border-black w3-ripple w3-padding w3-margin w3-green "
-							onclick="postArticle($('#postArticleForm')); "
-							>Create an article</button>
+{{#block "htmFormButton_postArticle"}}{{/block}}
 					</div>
 				</div>
 			</div>
 		</div>
 {{/inline}}
-{{#*inline "htmFormArticlePage_putimportArticle"}}
+{{#*inline "htmButtonArticlePage_putimportArticle"}}
 		<button
 			class="w3-btn w3-round w3-border w3-border-black w3-ripple w3-padding w3-green "
 			onclick="$('#putimportArticleModal').show(); "
@@ -468,6 +478,14 @@
 			<i class="fas fa-file-import "></i>
 			Import articles
 		</button>
+{{/inline}}
+{{#*inline "htmFormButtonArticlePage_putimportArticle"}}
+						<button
+							class="w3-btn w3-round w3-border w3-border-black w3-ripple w3-padding w3-margin w3-green "
+							onclick="putimportArticle($('#putimportArticleFormValues')); "
+							>Import articles</button>
+{{/inline}}
+{{#*inline "htmFormArticlePage_putimportArticle"}}
 		<div id="putimportArticleModal" class="w3-modal ">
 			<div class="w3-modal-content ">
 				<div class="w3-card-4 ">
@@ -485,14 +503,19 @@
 								placeholder="{ 'searchList': [ { 'pk': ... , 'saves': [ ... ] }, ... ] }"
 								></textarea>
 						</div>
-						<button
-							class="w3-btn w3-round w3-border w3-border-black w3-ripple w3-padding w3-margin w3-green "
-							onclick="putimportArticle($('#putimportArticleFormValues')); "
-							>Import articles</button>
+{{#block "htmFormButton_putimportArticle"}}{{/block}}
 					</div>
 				</div>
 			</div>
 		</div>
+{{/inline}}
+{{#*inline "htmButtonArticlePage_searchpageArticle"}}
+{{/inline}}
+{{#*inline "htmFormButtonArticlePage_searchpageArticle"}}
+						<button
+							class="w3-btn w3-round w3-border w3-border-black w3-ripple w3-padding w3-margin w3-green "
+							onclick="searchpageArticle(); "
+							>Search articles</button>
 {{/inline}}
 {{#*inline "htmFormArticlePage_searchpageArticle"}}
 		<div id="searchpageArticleModal" class="">
@@ -500,15 +523,6 @@
 				<div class="w3-card-4 ">
 					<div class="" id="searchpageArticleFormValues">
 						<div id="searchpageArticleForm">
-							<div class="w3-cell-row ">
-{{> "htmCreated" classApiMethodMethod="Page"}}
-{{> "htmModified" classApiMethodMethod="Page"}}
-{{> "htmObjectId" classApiMethodMethod="Page"}}
-							</div>
-							<div class="w3-cell-row ">
-{{> "htmArchived" classApiMethodMethod="Page"}}
-{{> "htmDeleted" classApiMethodMethod="Page"}}
-							</div>
 						</div>
 					</div>
 				</div>
@@ -524,7 +538,7 @@
 						<span title="Pivot" class="siteSidebarToggle w3-padding-small w3-hover-black w3-green " onclick="$('.siteSidebarToggleStats').hide(); $('.siteSidebarToggleFieldList').hide(); $('.siteSidebarToggleSearch').hide(); $('.siteSidebarToggleFilters').hide(); $('.siteSidebarToggleRange').hide(); $('.siteSidebarTogglePivot').toggle(); $('.siteSidebarToggle').removeClass('w3-black'); $('.siteSidebarToggle').addClass('w3-green'); $(this).addClass('w3-black'); $(this).removeClass('w3-green'); "><i class="fad fa-table-pivot hover-box-shadow w3-xlarge "></i> Pivot</span>
 						<span title="FieldList" class="siteSidebarToggle w3-padding-small w3-hover-black w3-green " onclick="$('.siteSidebarToggleStats').hide(); $('.siteSidebarTogglePivot').hide(); $('.siteSidebarToggleSearch').hide(); $('.siteSidebarToggleFilters').hide(); $('.siteSidebarToggleRange').hide(); $('.siteSidebarToggleFieldList').toggle(); $('.siteSidebarToggle').removeClass('w3-black'); $('.siteSidebarToggle').addClass('w3-green'); $(this).addClass('w3-black'); $(this).removeClass('w3-green'); "><i class="fad fa-list-ul hover-box-shadow w3-xlarge "></i> FieldList</span>
 						<span title="Stats" class="siteSidebarToggle w3-padding-small w3-hover-black w3-green " onclick="$('.siteSidebarToggleFieldList').hide(); $('.siteSidebarTogglePivot').hide(); $('.siteSidebarToggleSearch').hide(); $('.siteSidebarToggleFilters').hide(); $('.siteSidebarToggleRange').hide(); $('.siteSidebarToggleStats').toggle(); $('.siteSidebarToggle').removeClass('w3-black'); $('.siteSidebarToggle').addClass('w3-green'); $(this).addClass('w3-black'); $(this).removeClass('w3-green'); "><i class="fad fa-chart-candlestick hover-box-shadow w3-xlarge "></i> Stats</span>
-						<a title="API" class="siteSidebarToggle w3-padding-small w3-hover-black w3-green " href="{{ apiUri }}{{ queryStr }}"><i class="fad fa-brackets-curly hover-box-shadow w3-xlarge "></i> API</a>
+						<a title="API" class="siteSidebarToggle w3-padding-small w3-hover-black w3-green " href="{{ apiUri }}{{#if pk }}/{{ pk }}{{else}}{{#if id }}/{{ id }}{{else}}{{ queryStr }}{{/if}}{{/if}}"><i class="fad fa-brackets-curly hover-box-shadow w3-xlarge "></i> API</a>
 					</div>
 					<div class=" ">
 						<div class="siteSidebarToggle siteSidebarToggleSearch w3-dropdown-content min-width-300px w3-white w3-border w3-border-green " style="display: none; ">
@@ -602,20 +616,16 @@
 		<div class="w3-bar w3-content ">
 {{#block "htmBodySidebar"}}{{/block}}
 		</div>
-{{#block "htmBodyGraph"}}{{/block}}
 	<div class="pageContent w3-content ">
-		<div id="site-calendar-box">
-			<div id="site-calendar"><!-- // --></div>
-		</div>
 	{{#eq articleCount int0}}
 {{#block "htmBodyCount0"}}{{/block}}
 	{{else}}
 		{{#eq articleCount int1}}
-			{{#eq params.query.q "*:*"}}
-{{#block "htmBodyCount1All"}}{{/block}}
-			{{else}}
+			{{#if id}}
 {{#block "htmBodyCount1"}}{{/block}}
-			{{/eq}}
+			{{else}}
+{{#block "htmBodyAll"}}{{/block}}
+			{{/if}}
 		{{else}}
 {{#block "htmBodyAll"}}{{/block}}
 		{{/eq}}
@@ -643,8 +653,6 @@
 {{/inline}}
 {{#*inline "thead2ArticlePage"}}
 			<tr>
-						<th>created</th>
-						<th></th>
 			</tr>
 {{/inline}}
 {{#*inline "tbody1ArticlePage"}}
@@ -655,17 +663,6 @@
 {{#*inline "tbody2ArticlePage"}}
 		{{#each listArticle}}
 					<tr>
-						<td>
-							<a href="{{pageUrlPk}}">
-								<span class="white-space-pre-wrap ">{{siteZonedDateTimeFormat created "MMM d, yyyy h:mm:ss a" siteLocale}}</span>
-							</a>
-						</td>
-						<td>
-							<a href="{{pageUrlPk}}">
-								<i class="far fa-university "></i>
-								<span class="white-space-pre-wrap ">{{objectTitle}}</span>
-							</a>
-						</td>
 					</tr>
 		{{/each}}
 {{/inline}}
@@ -676,18 +673,10 @@
 {{/inline}}
 {{#*inline "tfoot2ArticlePage"}}
 			<tr>
-			{{#if getColumnCreated}}
-				<td>
-				</td>
-			{{/if}}
-			{{#if getColumnObjectTitle}}
-				<td>
-				</td>
-			{{/if}}
 			</tr>
 	{{/inline}}
 {{#*inline "htmFormsArticlePage"}}
-	{{#ifContainsAnyRoles roles rolesRequired}}
+{{#ifContainsAnyRoles roles authRoleSuperAdmin}}
 		{{#eq articleCount int1}}
 		<button
 			class="w3-btn w3-round w3-border w3-border-black w3-ripple w3-padding w3-green "
@@ -697,16 +686,31 @@
 			refresh this article
 		</button>
 		{{/eq}}
-	{{/ifContainsAnyRoles}}
-	{{#ifContainsAnyRoles roles authRolesAdmin}}
+{{/ifContainsAnyRoles}}
+{{#ifContainsAnyRoles roles authRoleSuperAdmin}}
+{{#block "htmButton_patchArticle"}}{{/block}}
 {{#block "htmForm_patchArticle"}}{{/block}}
+{{/ifContainsAnyRoles}}
+{{#ifContainsAnyRoles roles authRoleAdmin}}
+{{#eq articleCount int1}}
+{{#if id}}
+{{else}}
+{{#block "htmButton_postArticle"}}{{/block}}
 {{#block "htmForm_postArticle"}}{{/block}}
+{{/if}}
+{{else}}
+{{#block "htmButton_postArticle"}}{{/block}}
+{{#block "htmForm_postArticle"}}{{/block}}
+{{/eq}}
+{{/ifContainsAnyRoles}}
+{{#ifContainsAnyRoles roles authRoleSuperAdmin}}
+{{#block "htmButton_putimportArticle"}}{{/block}}
 {{#block "htmForm_putimportArticle"}}{{/block}}
-	{{/ifContainsAnyRoles}}
+{{/ifContainsAnyRoles}}
 {{#block "htmSuggested"}}{{/block}}
 {{/inline}}
 {{#*inline "htmSuggestedArticlePage"}}
-			{{#ifContainsAnyRoles roles rolesRequired}}
+			{{#ifContainsAnyRoles roles roleForWrite}}
 					<div class="">
 						<button id="refreshAllArticleGenPage{{id}}" class="w3-btn w3-round w3-border w3-border-black w3-ripple w3-padding w3-green "
 							onclick="patch{{classSimpleName}}Vals([], {}, function() { addGlow($('#refreshAllArticleGenPage{{id}}')); }, function() { addError($('#refreshAllArticleGenPage{{id}}')); }); "
@@ -757,359 +761,3 @@
 			</div>
 {{/inline}}
 {{> PageLayout}}
-
-{{#*inline "htmInheritPk"}}
-								<div class="w3-cell w3-cell-top w3-center w3-mobile ">
-									<div class="w3-padding ">
-										<div id="suggest{{classApiMethodMethod}}ArticleInheritPk">
-											<div class="w3-card ">
-												<div class="w3-cell-row w3-padding ">
-													<div class="w3-cell ">
-														{{> "inputInheritPk"}}
-													</div>
-		{{#eq 'Page' classApiMethodMethod}}
-															<div class="w3-cell w3-left-align w3-cell-top ">
-																<button
-																		tabindex="-1"
-																		class="w3-btn w3-round w3-border w3-border-black w3-ripple w3-padding w3-bar-item w3-green "
-																		onclick="removeGlow($('#{{classApiMethodMethod}}_inheritPk')); $('#{{classApiMethodMethod}}_inheritPk').val(null); patch{{classSimpleName}}Val([{ name: 'softCommit', value: 'true' }, { name: 'fq', value: 'id:' + $('#ArticleForm :input[name=id]').val() }], 'setInheritPk', null, function() { addGlow($('#{{classApiMethodMethod}}_inheritPk')); }, function() { addError($('#{{classApiMethodMethod}}_inheritPk')); }); "
-																		>
-																	<i class="far fa-eraser "></i>
-																</button>
-															</div>
-														{{/eq}}
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-{{/inline}}
-
-{{#*inline "inputInheritPk"}}
-														<input
-															type="text"
-															title="An optional inherited primary key from a legacy system for this object in the database"
-															id="{{classApiMethodMethod}}_inheritPk"
-	{{#eq "Page" classApiMethodMethod}}
-																class="setInheritPk classArticle inputArticle{{id}}InheritPk w3-input w3-border "
-																name="setInheritPk"
-	{{else}}
-		{{#eq "PATCH" classApiMethodMethod}}
-																class="setInheritPk classArticle inputArticle{{id}}InheritPk w3-input w3-border "
-																name="setInheritPk"
-		{{else}}
-																class="valueInheritPk w3-input w3-border classArticle inputArticle{{id}}InheritPk w3-input w3-border "
-																name="inheritPk"
-		{{/eq}}
-	{{/eq}}
-	{{#eq "Page" classApiMethodMethod}}
-																onclick="removeGlow($(this)); "
-																onchange="patch{{classSimpleName}}Val([{ name: 'softCommit', value: 'true' }, { name: 'fq', value: 'id:{{id}}' }], 'setInheritPk', $(this).val(), function() { addGlow($('#{{classApiMethodMethod}}_inheritPk')); }, function() { addError($('#{{classApiMethodMethod}}_inheritPk')); }); "
-	{{/eq}}
-	{{#eq "Page" classApiMethodMethod}}
-															value="{{article_.inheritPk}}"
-	{{/eq}}
-														/>
-
-{{/inline}}
-
-{{#*inline "htmCreated"}}
-								<div class="w3-cell w3-cell-top w3-center w3-mobile ">
-									<div class="w3-padding ">
-										<div id="suggest{{classApiMethodMethod}}ArticleCreated">
-											<div class="w3-card ">
-												<div class="w3-cell-row w3-green">
-													<label for="{{classApiMethodMethod}}_created">created</label>
-												</div>
-												<div class="w3-cell-row w3-padding ">
-													<div class="w3-cell ">
-														{{> "inputCreated"}}
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-{{/inline}}
-
-{{#*inline "inputCreated"}}
-	{{#eq 'Page' classApiMethodMethod}}
-														<span class="varArticle{{id}}Created " title="{{formatZonedDateTime article_.created 'EEEE MMMM d yyyy H:mm:ss.SSS zz VV' defaultLocaleId defaultZoneId}}">{{formatZonedDateTime article_.created 'EEE MMM d yyyy h:mm a zz' defaultLocaleId defaultZoneId}}</span>
-	{{/eq}}
-{{/inline}}
-
-{{#*inline "htmModified"}}
-								<div class="w3-cell w3-cell-top w3-center w3-mobile ">
-									{{#eq 'Page' classApiMethodMethod}}
-										<div class="w3-padding ">
-											<div class="w3-card ">
-												<div class="w3-cell-row w3-green">
-													<label>modified</label>
-												</div>
-												<div class="w3-cell-row  ">
-													<div class="w3-cell ">
-														<div class="w3-rest ">
-															<span class="">
-																{{> "inputModified"}}
-															</span>
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-	{{/eq}}
-								</div>
-{{/inline}}
-
-{{#*inline "inputModified"}}
-	{{#eq 'Page' classApiMethodMethod}}
-														<span class="varArticle{{id}}Modified " title="{{formatZonedDateTime article_.modified 'EEEE MMMM d yyyy H:mm:ss.SSS zz VV' defaultLocaleId defaultZoneId}}">{{formatZonedDateTime article_.modified 'EEE MMM d yyyy h:mm a zz' defaultLocaleId defaultZoneId}}</span>
-	{{/eq}}
-{{/inline}}
-
-{{#*inline "htmArchived"}}
-								<div class="w3-cell w3-cell-top w3-center w3-mobile ">
-									<div class="w3-padding ">
-										<div id="suggest{{classApiMethodMethod}}ArticleArchived">
-											<div class="w3-card ">
-												<div class="w3-cell-row w3-green">
-													<label for="{{classApiMethodMethod}}_archived">archived</label>
-												</div>
-												<div class="w3-cell-row w3-padding ">
-													<div class="w3-cell ">
-														{{> "inputArchived"}}
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-{{/inline}}
-
-{{#*inline "inputArchived"}}
-	{{#eq 'Page' classApiMethodMethod}}
-															<input
-																type="checkbox"
-																id="{{classApiMethodMethod}}_archived"
-																value="true"
-	{{else}}
-														<select
-															id="{{classApiMethodMethod}}_archived"
-	{{/eq}}
-	{{#eq 'Page' classApiMethodMethod}}
-															class="classArticle inputArticle{{id}}Archived w3-input w3-border "
-															name="setArchived"
-	{{else}}
-		{{#eq 'Page' classApiMethodMethod}}
-																class="classArticle inputArticle{{id}}Archived w3-input w3-border "
-																name="setArchived"
-		{{else}}
-																class="setArchived valueArchived classArticle inputArticle{{id}}Archived w3-input w3-border "
-																name="setArchived"
-		{{/eq}}
-	{{/eq}}
-	{{#eq 'Page' classApiMethodMethod}}
-															onchange="patch{{classSimpleName}}Val([{ name: 'softCommit', value: 'true' }, { name: 'fq', value: 'id:{{id}}' }], 'setArchived', $(this).prop('checked'), function() { addGlow($('#{{classApiMethodMethod}}_archived')); }, function() { addError($('#{{classApiMethodMethod}}_archived')); }); "
-	{{/eq}}
-	{{#eq 'Page' classApiMethodMethod}}
-		{{#if article_.archived}}
-																checked="checked"
-		{{/if}}
-																/>
-	{{else}}
-															>
-															<option value="" selected="selected"></option>
-															<option value="true">true</option>
-															<option value="false">false</option>
-														</select>
-	{{/eq}}
-
-{{/inline}}
-
-{{#*inline "htmDeleted"}}
-								<div class="w3-cell w3-cell-top w3-center w3-mobile ">
-									<div class="w3-padding ">
-										<div id="suggest{{classApiMethodMethod}}ArticleDeleted">
-											<div class="w3-card ">
-												<div class="w3-cell-row w3-green">
-													<label for="{{classApiMethodMethod}}_deleted">deleted</label>
-												</div>
-												<div class="w3-cell-row w3-padding ">
-													<div class="w3-cell ">
-														{{> "inputDeleted"}}
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-{{/inline}}
-
-{{#*inline "inputDeleted"}}
-	{{#eq 'Page' classApiMethodMethod}}
-															<input
-																type="checkbox"
-																id="{{classApiMethodMethod}}_deleted"
-																value="true"
-	{{else}}
-														<select
-															id="{{classApiMethodMethod}}_deleted"
-	{{/eq}}
-	{{#eq 'Page' classApiMethodMethod}}
-															class="classArticle inputArticle{{id}}Deleted w3-input w3-border "
-															name="setDeleted"
-	{{else}}
-		{{#eq 'Page' classApiMethodMethod}}
-																class="classArticle inputArticle{{id}}Deleted w3-input w3-border "
-																name="setDeleted"
-		{{else}}
-																class="setDeleted valueDeleted classArticle inputArticle{{id}}Deleted w3-input w3-border "
-																name="setDeleted"
-		{{/eq}}
-	{{/eq}}
-	{{#eq 'Page' classApiMethodMethod}}
-															onchange="patch{{classSimpleName}}Val([{ name: 'softCommit', value: 'true' }, { name: 'fq', value: 'id:{{id}}' }], 'setDeleted', $(this).prop('checked'), function() { addGlow($('#{{classApiMethodMethod}}_deleted')); }, function() { addError($('#{{classApiMethodMethod}}_deleted')); }); "
-	{{/eq}}
-	{{#eq 'Page' classApiMethodMethod}}
-		{{#if article_.deleted}}
-																checked="checked"
-		{{/if}}
-																/>
-	{{else}}
-															>
-															<option value="" selected="selected"></option>
-															<option value="true">true</option>
-															<option value="false">false</option>
-														</select>
-	{{/eq}}
-
-{{/inline}}
-
-{{#*inline "htmSessionId"}}
-								<div class="w3-cell w3-cell-top w3-center w3-mobile ">
-									<div class="w3-padding ">
-										<div id="suggest{{classApiMethodMethod}}ArticleSessionId">
-											<div class="w3-card ">
-												<div class="w3-cell-row w3-padding ">
-													<div class="w3-cell ">
-														{{> "inputSessionId"}}
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-{{/inline}}
-
-{{#*inline "inputSessionId"}}
-	{{#eq 'Page' classApiMethodMethod}}
-														<span class="varArticle{{id}}SessionId ">{{article_.sessionId}}</span>
-	{{/eq}}
-{{/inline}}
-
-{{#*inline "htmUserKey"}}
-								<div class="w3-cell w3-cell-top w3-center w3-mobile ">
-									<div class="w3-padding ">
-										<div id="suggest{{classApiMethodMethod}}ArticleUserKey">
-											<div class="w3-card ">
-												<div class="w3-cell-row w3-padding ">
-													<div class="w3-cell ">
-														{{> "inputUserKey"}}
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-{{/inline}}
-
-{{#*inline "inputUserKey"}}
-	{{#eq 'Page' classApiMethodMethod}}
-														<span class="varArticle{{id}}UserKey ">{{article_.userKey}}</span>
-	{{/eq}}
-{{/inline}}
-
-{{#*inline "htmObjectTitle"}}
-								<div class="w3-cell w3-cell-top w3-center w3-mobile ">
-									{{#eq 'Page' classApiMethodMethod}}
-										<div class="w3-padding ">
-											<div class="w3-card ">
-												<div class="w3-cell-row  ">
-													<div class="w3-cell ">
-														<div class="w3-rest ">
-															<span class="">
-																{{> "inputObjectTitle"}}
-															</span>
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-	{{/eq}}
-								</div>
-{{/inline}}
-
-{{#*inline "inputObjectTitle"}}
-	{{#eq 'Page' classApiMethodMethod}}
-														<span class="varArticle{{id}}ObjectTitle ">{{article_.objectTitle}}</span>
-	{{/eq}}
-{{/inline}}
-
-{{#*inline "htmObjectId"}}
-								<div class="w3-cell w3-cell-top w3-center w3-mobile ">
-									<div class="w3-padding ">
-										<div id="suggest{{classApiMethodMethod}}ArticleObjectId">
-											<div class="w3-card ">
-												<div class="w3-cell-row w3-green">
-													<label for="{{classApiMethodMethod}}_objectId">ID</label>
-												</div>
-												<div class="w3-cell-row w3-padding ">
-													<div class="w3-cell ">
-														{{> "inputObjectId"}}
-													</div>
-		{{#eq 'Page' classApiMethodMethod}}
-															<div class="w3-cell w3-left-align w3-cell-top ">
-																<button
-																		tabindex="-1"
-																		class="w3-btn w3-round w3-border w3-border-black w3-ripple w3-padding w3-bar-item w3-green "
-																		onclick="removeGlow($('#{{classApiMethodMethod}}_objectId')); $('#{{classApiMethodMethod}}_objectId').val(null); patch{{classSimpleName}}Val([{ name: 'softCommit', value: 'true' }, { name: 'fq', value: 'id:' + $('#ArticleForm :input[name=id]').val() }], 'setObjectId', null, function() { addGlow($('#{{classApiMethodMethod}}_objectId')); }, function() { addError($('#{{classApiMethodMethod}}_objectId')); }); "
-																		>
-																	<i class="far fa-eraser "></i>
-																</button>
-															</div>
-														{{/eq}}
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-{{/inline}}
-
-{{#*inline "inputObjectId"}}
-														<input
-															type="text"
-															placeholder="ID"
-															title="A URL friendly unique ID for this object"
-															id="{{classApiMethodMethod}}_objectId"
-	{{#eq "Page" classApiMethodMethod}}
-																class="setObjectId classArticle inputArticle{{id}}ObjectId w3-input w3-border "
-																name="setObjectId"
-	{{else}}
-		{{#eq "PATCH" classApiMethodMethod}}
-																class="setObjectId classArticle inputArticle{{id}}ObjectId w3-input w3-border "
-																name="setObjectId"
-		{{else}}
-																class="valueObjectId w3-input w3-border classArticle inputArticle{{id}}ObjectId w3-input w3-border "
-																name="objectId"
-		{{/eq}}
-	{{/eq}}
-	{{#eq "Page" classApiMethodMethod}}
-																onclick="removeGlow($(this)); "
-																onchange="patch{{classSimpleName}}Val([{ name: 'softCommit', value: 'true' }, { name: 'fq', value: 'id:{{id}}' }], 'setObjectId', $(this).val(), function() { addGlow($('#{{classApiMethodMethod}}_objectId')); }, function() { addError($('#{{classApiMethodMethod}}_objectId')); }); "
-	{{/eq}}
-	{{#eq "Page" classApiMethodMethod}}
-															value="{{article_.objectId}}"
-	{{/eq}}
-														/>
-
-{{/inline}}
