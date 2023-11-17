@@ -1,0 +1,39 @@
+apiVersion: k8s.keycloak.org/v2alpha1
+kind: Keycloak
+metadata:
+  name: sso
+  namespace: sso
+  labels:
+    app: sso
+spec:
+  instances: 1
+  additionalOptions:
+    - name: proxy
+      value: edge
+  db:
+    vendor: postgres
+    database: sso
+    host: postgres-cluster-ha.postgres.svc
+    port: 5432
+    passwordSecret:
+      name: sso-db-secret
+      key: POSTGRES_PASSWORD
+    usernameSecret:
+      name: sso-db-secret
+      key: POSTGRES_USERNAME
+    poolInitialSize: 1
+    poolMinSize: 2
+    poolMaxSize: 3
+  hostname:
+    hostname: sso.computate.org
+  http:
+    httpEnabled: false
+  ingress:
+    enabled: true
+    annotations:
+      kubernetes.io/ingress.global-static-ip-name: sso
+      kubernetes.io/ingress.class: gce
+      networking.gke.io/managed-certificates: sso
+      networking.gke.io/v1beta1.FrontendConfig: sso
+    className: gce
+    

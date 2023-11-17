@@ -1,4 +1,63 @@
 
+# Install resources to OpenShift Local
+
+```
+
+```
+
+## Copy secrets to individual namespaces
+
+### Copy the `scorpiobroker` secrets to the `scorpiobroker` namespace. 
+
+```bash
+oc -n postgres get secret postgres-pguser-scorpiobroker -o json \
+    | jq 'del(.metadata["namespace","creationTimestamp","resourceVersion","selfLink","uid","ownerReferences"])' \
+    | oc -n scorpiobroker apply -f -
+oc -n kafka get secret scorpiobroker-kafka -o json \
+    | jq 'del(.metadata["namespace","creationTimestamp","resourceVersion","selfLink","uid","ownerReferences"])' \
+    | oc -n scorpiobroker apply -f -
+oc -n kafka get secret default-cluster-ca-cert -o json \
+    | jq 'del(.metadata["namespace","creationTimestamp","resourceVersion","selfLink","uid","ownerReferences"])' \
+    | oc -n scorpiobroker apply -f -
+```
+
+### Copy the `iotagent-json` secrets to the `iotagent` namespace. 
+
+```bash
+oc -n mongodb get secret mongodb -o json \
+    | jq 'del(.metadata["namespace","creationTimestamp","resourceVersion","selfLink","uid","ownerReferences"])' \
+    | oc -n iotagent apply -f -
+oc -n rabbitmq get secret default-rabbitmq -o json \
+    | jq 'del(.metadata["namespace","creationTimestamp","resourceVersion","selfLink","uid","ownerReferences"])' \
+    | oc -n iotagent apply -f -
+```
+
+### Copy the `sso` secrets to the `sso` namespace. 
+
+Install Keycloak operator
+
+```bash
+oc -n sso apply -f https://raw.githubusercontent.com/keycloak/keycloak-k8s-resources/22.0.4/kubernetes/kubernetes.yml
+```
+
+```bash
+oc -n postgres get secret postgres-cluster-pguser-sso -o json \
+    | jq 'del(.metadata["namespace","creationTimestamp","resourceVersion","selfLink","uid","ownerReferences"])' \
+    | oc -n sso apply -f -
+
+SSO_ADMIN_PASSWORD=...
+oc -n sso create secret generic sso-admin --from-literal password="$SSO_ADMIN_PASSWORD"
+oc -n sso create secret generic keycloak-service --from-literal user=service --from-literal password="$SSO_ADMIN_PASSWORD"
+oc -n sso create secret generic sso-db-secret --from-literal POSTGRES_USERNAME=sso --from-literal POSTGRES_PASSWORD="$(oc -n postgres get secret/postgres-cluster-pguser-sso -o jsonpath={.data.password} | base64 -d)"
+```
+
+### Copy the `smartvillage` secrets to the `smartvillage` namespace. 
+
+```bash
+oc -n rabbitmq get secret default-rabbitmq -o json \
+    | jq 'del(.metadata["namespace","creationTimestamp","resourceVersion","selfLink","uid","ownerReferences"])' \
+    | oc -n smartvillage apply -f -
+```
 
 # Install Ansible dependencies
 
