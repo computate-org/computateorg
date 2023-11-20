@@ -1,0 +1,86 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    app: postgres
+    statefulset: postgres
+  name: postgres
+  namespace: postgres
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  test: false
+  selector:
+    matchLabels:
+      app: postgres
+      statefulset: postgres
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  volumeClaimTemplates:
+    - kind: PersistentVolumeClaim
+      apiVersion: v1
+      metadata:
+        name: postgres
+        labels:
+          app: postgres
+          statefulset: postgres
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: "5Gi"
+          limits:
+            storage: "5Gi"
+        volumeMode: Filesystem
+  template:
+    metadata:
+      name: postgres
+      labels:
+        app: postgres
+        statefulset: postgres
+    spec:
+      serviceAccountName: postgres
+      containers:
+        - name: postgres
+          imagePullPolicy: Always
+          image: 'docker.io/postgis/postgis:15-3.3'
+          resources:
+            limits:
+              memory: 1Gi
+              cpu: 500m
+            requests:
+              memory: 1Gi
+              cpu: 500m
+          env:
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: "postgres-cluster-pguser-sso"
+                  key: user
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: "postgres-cluster-pguser-sso"
+                  key: password
+            - name: POSTGRES_DB
+              valueFrom:
+                secretKeyRef:
+                  name: "postgres-cluster-pguser-sso"
+                  key: dbname
+          ports:
+            - containerPort: 5432
+              protocol: TCP
+          volumeMounts:
+            - name: postgres
+              mountPath: /var/lib/postgresql
+          terminationMessagePolicy: File
+          terminationMessagePath: /dev/termination-log
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      securityContext: {}
+      schedulerName: default-scheduler
