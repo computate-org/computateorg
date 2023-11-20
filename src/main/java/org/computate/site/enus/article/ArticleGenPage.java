@@ -13,6 +13,7 @@ import java.time.LocalTime;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Locale;
@@ -31,18 +32,19 @@ import java.util.Arrays;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.math.MathContext;
-import org.apache.commons.collections4.CollectionUtils;
 import java.util.Objects;
 import io.vertx.core.Promise;
 import org.computate.site.enus.config.ConfigKeys;
 import org.computate.search.response.solr.SolrResponse;
 import java.util.HashMap;
 import org.computate.search.tool.TimeTool;
+import org.computate.search.tool.SearchTool;
 import java.time.ZoneId;
 
 
 /**
  * Translate: false
+ * Generated: true
  **/
 public class ArticleGenPage extends ArticleGenPageGen<PageLayout> {
 
@@ -121,7 +123,7 @@ public class ArticleGenPage extends ArticleGenPageGen<PageLayout> {
 			json.put("var", var);
 			json.put("displayName", Optional.ofNullable(Article.displayNameArticle(var)).map(d -> StringUtils.isBlank(d) ? var : d).orElse(var));
 			json.put("classSimpleName", Optional.ofNullable(Article.classSimpleNameArticle(var)).map(d -> StringUtils.isBlank(d) ? var : d).orElse(var));
-			json.put("val", Optional.ofNullable(searchListArticle_.getRequest().getQuery()).filter(fq -> fq.startsWith(Article.varIndexedArticle(var) + ":")).map(s -> StringUtils.substringAfter(s, ":")).orElse(null));
+			json.put("val", Optional.ofNullable(searchListArticle_.getRequest().getQuery()).filter(fq -> fq.startsWith(Article.varIndexedArticle(var) + ":")).map(s -> SearchTool.unescapeQueryChars(StringUtils.substringAfter(s, ":"))).orElse(null));
 			vars.put(var, json);
 		});
 	}
@@ -139,7 +141,7 @@ public class ArticleGenPage extends ArticleGenPageGen<PageLayout> {
 			String type = StringUtils.substringAfterLast(varIndexed, "_");
 			json.put("displayName", Optional.ofNullable(Article.displayNameArticle(var)).map(d -> StringUtils.isBlank(d) ? var : d).orElse(var));
 			json.put("classSimpleName", Optional.ofNullable(Article.classSimpleNameArticle(var)).map(d -> StringUtils.isBlank(d) ? var : d).orElse(var));
-			json.put("val", searchListArticle_.getRequest().getFilterQueries().stream().filter(fq -> fq.startsWith(Article.varIndexedArticle(var) + ":")).findFirst().map(s -> StringUtils.substringAfter(s, ":")).orElse(null));
+			json.put("val", searchListArticle_.getRequest().getFilterQueries().stream().filter(fq -> fq.startsWith(Article.varIndexedArticle(var) + ":")).findFirst().map(s -> SearchTool.unescapeQueryChars(StringUtils.substringAfter(s, ":"))).orElse(null));
 			Optional.ofNullable(stats).map(s -> s.get(varIndexed)).ifPresent(stat -> {
 				json.put("stats", JsonObject.mapFrom(stat));
 			});
@@ -158,8 +160,12 @@ public class ArticleGenPage extends ArticleGenPageGen<PageLayout> {
 			}
 			if(StringUtils.equalsAny(type, "date") && json.containsKey("stats")) {
 				JsonObject stats = json.getJsonObject("stats");
-				Instant min = Instant.parse(stats.getString("min"));
-				Instant max = Instant.parse(stats.getString("max"));
+				Instant min = Optional.ofNullable(stats.getString("min")).map(val -> Instant.parse(val.toString())).orElse(Instant.now());
+				Instant max = Optional.ofNullable(stats.getString("max")).map(val -> Instant.parse(val.toString())).orElse(Instant.now());
+				if(min.equals(max)) {
+					min = min.minus(1, ChronoUnit.DAYS);
+					max = max.plus(2, ChronoUnit.DAYS);
+				}
 				Duration duration = Duration.between(min, max);
 				String gap = "DAY";
 				if(duration.toDays() >= 365)
@@ -177,8 +183,8 @@ public class ArticleGenPage extends ArticleGenPageGen<PageLayout> {
 				else if(duration.toMillis() >= 1)
 					gap = "MILLI";
 				json.put("defaultRangeGap", String.format("+1%s", gap));
-				json.put("defaultRangeEnd", stats.getString("max"));
-				json.put("defaultRangeStart", stats.getString("min"));
+				json.put("defaultRangeEnd", max.toString());
+				json.put("defaultRangeStart", min.toString());
 				json.put("enableCalendar", true);
 				setDefaultRangeStats(json);
 			}
@@ -203,7 +209,7 @@ public class ArticleGenPage extends ArticleGenPageGen<PageLayout> {
 			json.put("var", var);
 			json.put("displayName", Optional.ofNullable(Article.displayNameArticle(var)).map(d -> StringUtils.isBlank(d) ? var : d).orElse(var));
 			json.put("classSimpleName", Optional.ofNullable(Article.classSimpleNameArticle(var)).map(d -> StringUtils.isBlank(d) ? var : d).orElse(var));
-			json.put("val", searchListArticle_.getRequest().getFilterQueries().stream().filter(fq -> fq.startsWith(Article.varIndexedArticle(var) + ":")).findFirst().map(s -> StringUtils.substringAfter(s, ":")).orElse(null));
+			json.put("val", searchListArticle_.getRequest().getFilterQueries().stream().filter(fq -> fq.startsWith(Article.varIndexedArticle(var) + ":")).findFirst().map(s -> SearchTool.unescapeQueryChars(StringUtils.substringAfter(s, ":"))).orElse(null));
 			vars.put(var, json);
 		});
 	}
@@ -295,18 +301,48 @@ public class ArticleGenPage extends ArticleGenPageGen<PageLayout> {
 	}
 
 	@Override
+	protected void _rows(Wrap<Long> w) {
+		if(serviceRequest.getParams().getJsonObject("query").getString("rows", null) != null)
+			w.o(searchListArticle_.getRows());
+	}
+
+	@Override
+	protected void _start(Wrap<Long> w) {
+		if(serviceRequest.getParams().getJsonObject("query").getString("start", null) != null)
+			w.o(searchListArticle_.getStart());
+	}
+
+	@Override
+	protected void _rangeGap(Wrap<String> w) {
+		if(serviceRequest.getParams().getJsonObject("query").getString("facet.range.gap", null) != null)
+			w.o(Optional.ofNullable(searchListArticle_.getFacetRangeGap()).orElse(null));
+	}
+
+	@Override
+	protected void _rangeEnd(Wrap<ZonedDateTime> w) {
+		if(serviceRequest.getParams().getJsonObject("query").getString("facet.range.end", null) != null)
+			w.o(Optional.ofNullable(searchListArticle_.getFacetRangeEnd()).map(s -> TimeTool.parseZonedDateTime(defaultTimeZone, s)).orElse(null));
+	}
+
+	@Override
+	protected void _rangeStart(Wrap<ZonedDateTime> w) {
+		if(serviceRequest.getParams().getJsonObject("query").getString("facet.range.start", null) != null)
+			w.o(Optional.ofNullable(searchListArticle_.getFacetRangeStart()).map(s -> TimeTool.parseZonedDateTime(defaultTimeZone, s)).orElse(null));
+	}
+
+	@Override
 	protected void _defaultRangeGap(Wrap<String> w) {
-		w.o(Optional.ofNullable(searchListArticle_.getFacetRangeGap()).orElse(Optional.ofNullable(defaultRangeStats).map(s -> s.getString("defaultRangeGap")).orElse("+1DAY")));
+		w.o(Optional.ofNullable(rangeGap).orElse(Optional.ofNullable(defaultRangeStats).map(s -> s.getString("defaultRangeGap")).orElse("+1DAY")));
 	}
 
 	@Override
 	protected void _defaultRangeEnd(Wrap<ZonedDateTime> w) {
-		w.o(Optional.ofNullable(searchListArticle_.getFacetRangeEnd()).map(s -> TimeTool.parseZonedDateTime(defaultTimeZone, s)).orElse(Optional.ofNullable(defaultRangeStats).map(s -> Instant.parse(s.getString("defaultRangeEnd")).atZone(defaultTimeZone)).orElse(ZonedDateTime.now(defaultTimeZone).toLocalDate().atStartOfDay(defaultTimeZone).plusDays(1))));
+		w.o(Optional.ofNullable(rangeEnd).orElse(Optional.ofNullable(defaultRangeStats).map(s -> Instant.parse(s.getString("defaultRangeEnd")).atZone(defaultTimeZone)).orElse(ZonedDateTime.now(defaultTimeZone).toLocalDate().atStartOfDay(defaultTimeZone).plusDays(1))));
 	}
 
 	@Override
 	protected void _defaultRangeStart(Wrap<ZonedDateTime> w) {
-		w.o(Optional.ofNullable(searchListArticle_.getFacetRangeStart()).map(s -> TimeTool.parseZonedDateTime(defaultTimeZone, s)).orElse(Optional.ofNullable(defaultRangeStats).map(s -> Instant.parse(s.getString("defaultRangeStart")).atZone(defaultTimeZone)).orElse(defaultRangeEnd.minusDays(7).toLocalDate().atStartOfDay(defaultTimeZone))));
+		w.o(Optional.ofNullable(rangeStart).orElse(Optional.ofNullable(defaultRangeStats).map(s -> Instant.parse(s.getString("defaultRangeStart")).atZone(defaultTimeZone)).orElse(defaultRangeEnd.minusDays(7).toLocalDate().atStartOfDay(defaultTimeZone))));
 	}
 
 	@Override
@@ -414,12 +450,12 @@ public class ArticleGenPage extends ArticleGenPageGen<PageLayout> {
 	}
 
 	protected void _article_(Wrap<Article> w) {
-		if(articleCount == 1)
+		if(articleCount == 1 && Optional.ofNullable(siteRequest_.getServiceRequest().getParams().getJsonObject("path")).map(o -> o.getString("id")).orElse(null) != null)
 			w.o(searchListArticle_.get(0));
 	}
 
 	protected void _id(Wrap<String> w) {
-		if(articleCount == 1)
+		if(article_ != null)
 			w.o(article_.getId());
 	}
 

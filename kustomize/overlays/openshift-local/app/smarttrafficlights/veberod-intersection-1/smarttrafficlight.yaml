@@ -1,0 +1,21 @@
+apiVersion: smartvillage.computate.org/v1
+kind: TrafficSimulation
+metadata:
+  name: veberod-intersection-1
+  namespace: smartvillage
+spec:
+  device:
+    id: SmartTrafficLight-veberod-intersection-1
+  attributes:
+    smartTrafficLightName: Veberöd Intersection 1
+    location: 55.633703, 13.492540
+    simulationName: Veberöd intersection 1
+    sumocfgPath: /usr/local/src/TLC/input/Veberod_intersection_pedestrian.sumocfg
+    fcdFilePath: /usr/local/src/TLC/output/veberod-fcd.xml
+    startSeconds: 0
+    endSeconds: 300
+    stepSeconds: 1
+    paramStepSize: 1
+    paramRunTime: 1000
+    paramItersPerPar: 3
+    paramTotalIterNum: 5

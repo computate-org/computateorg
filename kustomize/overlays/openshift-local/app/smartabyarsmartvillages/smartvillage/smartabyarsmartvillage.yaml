@@ -13,26 +13,12 @@ spec:
   site:
     create: true
     enable_dev_nodeports: true
-    web_replicas: 0
-    sumo_replicas: 1
-    worker_replicas: 1
-    web_resources:
-      limits:
-        memory: 1000Mi
-        cpu: 600m
-      requests:
-        memory: 500Mi
-        cpu: 400m
-    worker_resources:
-      limits:
-        memory: 1000Mi
-        cpu: 600m
-      requests:
-        memory: 500Mi
-        cpu: 400m
     host_name: smartvillage.apps-crc.testing
     zone: America/New_York
-    instances: 3
+    web_replicas: 0
+    worker_replicas: 1
+    sumo_replicas: 1
+    instances: 1
     worker_pool_size: 1
     enable_zookeeper_cluster: false
     ssl_verify: false
@@ -40,20 +26,15 @@ spec:
     default_map_zoom: 11
   zookeeper:
     create: true
+    host: zookeeper.smartvillage.svc
     replicas: 1
-    limits:
-      memory: 500Mi
-      cpu: 500m
-    requests:
-      memory: 200Mi
-      cpu: 200m
   auth:
-    host_name: keycloak.computate.org
+    host_name: sso.smartabyarsmartvillage.org
     port: 443
     ssl: true
     realm: SMARTVILLAGE
     client: smartvillage
-    token_uri: /realms/SMARTVILLAGE/protocol/openid-connect/token
+    token_uri: /auth/realms/SMARTVILLAGE/protocol/openid-connect/token
   postgres:
     create: true
     service_name: postgres-primary
@@ -142,7 +123,7 @@ spec:
   kafka:
     create: true
     keystore_secret: smartvillage-kafka
-    truststore_secret: smartvillage-kafka-cluster-ca-cert
+    truststore_secret: default-cluster-ca-cert
     service_name: smartvillage-kafka-kafka-bootstrap
     port: 9093
     group: smartvillage-kafka
@@ -151,10 +132,3 @@ spec:
     ssl_keystore_location: /opt/kafka/keystore/user.p12
     ssl_truststore_type: PKCS12
     ssl_truststore_location: /opt/kafka/truststore/ca.p12
-    resources:
-      limits:
-        memory: 500Mi
-        cpu: 500m
-      requests:
-        memory: 200Mi
-        cpu: 200m

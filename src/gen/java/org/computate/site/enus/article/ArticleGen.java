@@ -8,6 +8,8 @@ import java.util.Optional;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -56,35 +58,23 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.computate.search.response.solr.SolrResponse;
 import io.vertx.core.json.JsonObject;
 
-/**	
-<ol>
-<li>You can add a class comment "{@inheritDoc}" if you wish to inherit the helpful inherited class comments from class ArticleGen into the class Article. 
-</li>
-<li>You can add a class comment "Rows: 100" if you wish the Article API to return more or less than 10 records by default. 
-In this case, the API will return 100 records from the API instead of 10 by default. 
-Each API has built in pagination of the search records to ensure a user can query all the data a page at a time without running the application out of memory. 
-</li>
-<li>You can add a class comment "Model: true" if you wish to persist these Article objects in a relational PostgreSQL database transactionally in the RESTful API. 
-The code to persist and query the ArticleGen data in the database will then be automatically generated. 
-</li>
-0<h3>Suggestions that can generate more code for you: </h3></ol>
+/**
+ * <ol>
+<h3>Suggestions that can generate more code for you: </h3> * </ol>
  * <li>You can add a class comment "{@inheritDoc}" if you wish to inherit the helpful inherited class comments from class ArticleGen into the class Article. 
- * </li>
- * <li>You can add a class comment "Rows: 100" if you wish the Article API to return more or less than 10 records by default. 
+ * </li><li>You can add a class comment "Rows: 100" if you wish the Article API to return more or less than 10 records by default. 
  * In this case, the API will return 100 records from the API instead of 10 by default. 
  * Each API has built in pagination of the search records to ensure a user can query all the data a page at a time without running the application out of memory. 
- * </li>
- * <li>You can add a class comment "Model: true" if you wish to persist these Article objects in a relational PostgreSQL database transactionally in the RESTful API. 
+ * </li><li>You can add a class comment "Model: true" if you wish to persist these Article objects in a relational PostgreSQL database transactionally in the RESTful API. 
  * The code to persist and query the ArticleGen data in the database will then be automatically generated. 
  * </li>
- * 0<h3>Suggestions that can generate more code for you: </h3>
  * <h3>About the Article class and it's generated class ArticleGen&lt;Object&gt;: </h3>extends ArticleGen
  * <p>
  * This Java class extends a generated Java class ArticleGen built by the <a href="https://github.com/computate-org/computate">https://github.com/computate-org/computate</a> project. 
  * Whenever this Java class is modified or touched, the watch service installed as described in the README, indexes all the information about this Java class in a local Apache Solr Search Engine. 
  * If you are running the service, you can see the indexed data about this Java Class here: 
  * </p>
- * <p><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstClasse_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article">Find the class Article in Solr. </a></p>
+ * <p><a href="https://solr-solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstClasse_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article">Find the class Article in Solr. </a></p>
  * <p>
  * The extended class ending with "Gen" did not exist at first, but was automatically created by the same watch service based on the data retrieved from the local Apache Server search engine. 
  * The extended class contains many generated fields, getters, setters, initialization code, and helper methods to help build a website and API fast, reactive, and scalable. 
@@ -94,53 +84,74 @@ The code to persist and query the ArticleGen data in the database will then be a
  * The generated <code>class ArticleGen extends Object</code> which means that Article extends ArticleGen which extends Object. 
  * This generated inheritance is a powerful feature that allows a lot of boiler plate code to be created for you automatically while still preserving inheritance through the power of Java Generic classes. 
  * </p>
- * Api: true
+ * <h2>Api: true</h2>
  * <p>This class contains a comment <b>"Api: true"</b>, which means this class will have Java Vert.x API backend code generated for these objects. 
  * </p>
- * ApiTag.enUS: Article
+ * <h2>ApiMethode: Search</h2>
+ * <p>This class contains a comment <b>"ApiMethod: Search"</b>, which creates an API "Search". 
+ * </p>
+ * <h2>ApiMethode: GET</h2>
+ * <p>This class contains a comment <b>"ApiMethod: GET"</b>, which creates an API "GET". 
+ * </p>
+ * <h2>ApiMethode: PATCH</h2>
+ * <p>This class contains a comment <b>"ApiMethod: PATCH"</b>, which creates an API "PATCH". 
+ * </p>
+ * <h2>ApiMethode: POST</h2>
+ * <p>This class contains a comment <b>"ApiMethod: POST"</b>, which creates an API "POST". 
+ * </p>
+ * <h2>ApiMethode: PUTImport</h2>
+ * <p>This class contains a comment <b>"ApiMethod: PUTImport"</b>, which creates an API "PUTImport". 
+ * </p>
+ * <h2>ApiMethode: SearchPage</h2>
+ * <p>This class contains a comment <b>"ApiMethod: SearchPage"</b>, which creates an API "SearchPage". 
+ * </p>
+ * <h2>ApiTag.enUS: true</h2>
  * <p>This class contains a comment <b>"ApiTag: Article"</b>, which groups all of the OpenAPIs for Article objects under the tag "Article". 
  * </p>
- * ApiUri.enUS: /api/article
+ * <h2>ApiUri.enUS: /api/article</h2>
  * <p>This class contains a comment <b>"ApiUri: /api/article"</b>, which defines the base API URI for Article objects as "/api/article" in the OpenAPI spec. 
  * </p>
- * Color: green
+ * <h2>Color: green</h2>
  * <p>This class contains a comment <b>"Color: green"</b>, which styles the Article page "green". 
  * This will reference a CSS class defined by the stylesheets in the project that starts with "w3-". 
  * A css class of "w3-green" is expected to exist in the project stylesheets, and is inspired by W3 CSS colors. 
  * See: <a href="https://www.w3schools.com/w3css/w3css_colors.asp">https://www.w3schools.com/w3css/w3css_colors.asp</a>. 
  * </p>
- * IconGroup: regular
+ * <h2>IconGroup: regular</h2>
  * <p>This class contains a comment <b>"IconGroup: regular"</b>, which adds icons on the Article page with a group of "regular". 
  * This will reference a Font Awesome icon group that starts with "fa-" followed by the icon group "regular", together is "fa-regular". 
  * A Font Awesome icon group of "regular" is expected to exist. 
- * The Font Awesome groups currently supported include: solid, regular, light, thin, duotone, and sharp. 
+ * The Font Awesome groups currently supported include: solid, regular, light, thin, duotone, sharp, and kit. 
  * See: <a href="https://fontawesome.com/docs/web/dig-deeper/styles">https://fontawesome.com/docs/web/dig-deeper/styles</a>. 
  * </p>
- * IconName: university
+ * <h2>IconName: university</h2>
  * <p>This class contains a comment <b>"IconName: university"</b>, which adds icons on the Article page with a name of "university". 
  * This will reference a Font Awesome icon that starts with the icon group "fa-regular fa-" followed by the icon name, which is "fa-regular fa-university". 
  * A Font Awesome icon of "fa-regular fa-university" is expected to exist. 
  * See: <a href="https://fontawesome.com/icons">https://fontawesome.com/icons</a>. 
  * </p>
- * Indexed: true
+ * <h2>Indexed: true</h2>
  * <p>This class contains a comment <b>"Indexed: true"</b>, which means this class will be indexed in the search engine. 
  * Every protected void method that begins with "_" that is marked to be searched with a comment like "Indexed: true", "Stored: true", or "DocValues: true" will be indexed in the search engine. 
  * </p>
- * {@inheritDoc}
+ * <h2>{@inheritDoc}</h2>
  * <p>By adding a class comment "{@inheritDoc}", the Article class will inherit the helpful inherited class comments from the super class ArticleGen. 
  * </p>
- * Rows: null
- * Model: true
- * Page: true
+ * <h2>Rows: null</h2>
+ * <h2>Order: 1</h2>
+ * <p>This class contains a comment <b>"Order: 1"</b>, which means this class will be sorted by the given number 1 ascending when code that relates to multiple classes at the same time is generated. 
+ * </p>
+ * <h2>Model: true</h2>
+ * <h2>Page: true</h2>
  * <p>This class contains a comment <b>"Page: true"</b>, which means this class will have webpage code generated for these objects. 
  * Java Vert.x backend API code, Handlebars HTML template frontend code, and JavaScript code will all generated and can be extended. 
  * This creates a new Java class org.computate.site.enus.article.ArticlePage. 
  * </p>
- * SuperPage.enUS: PageLayout
+ * <h2>SuperPage.enUS: PageLayout</h2>
  * <p>This class contains a comment <b>"SuperPage.enUS: PageLayout"</b>, which identifies the Java super class of the page code by it's class simple name "PageLayout". 
  * This means that the newly created class org.computate.site.enus.article.ArticlePage extends org.computate.site.enus.page.PageLayout. 
  * </p>
- * Promise: true
+ * <h2>Promise: true</h2>
  * <p>
  *   This class contains a comment <b>"Promise: true"</b>
  *   Sometimes a Java class must be initialized asynchronously when it involves calling a blocking API. 
@@ -163,21 +174,22 @@ The code to persist and query the ArticleGen data in the database will then be a
  * <p>
  *   If a super class of this Java class with `Model: true`, then the child class will also inherit `Promise: true`. 
  * </p>
- * AName: an article
+ * <h2>AName.enUS: an article</h2>
  * <p>This class contains a comment <b>"AName.enUS: an article"</b>, which identifies the language context to describe a Article as "an article". 
  * </p>
  * <p>
  * Delete the class Article in Solr: 
- * curl 'http://localhost:8983/solr/computate/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'
+ * curl -k 'https://solr-solr.apps-crc.testing/solr/computate/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'
  * </p>
  * <p>
  * Delete  the package org.computate.site.enus.article in Solr: 
- * curl 'http://localhost:8983/solr/computate/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;classeNomEnsemble_enUS_indexed_string:org.computate.site.enus.article&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'
+ * curl -k 'https://solr-solr.apps-crc.testing/solr/computate/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;classeNomEnsemble_enUS_indexed_string:org.computate.site.enus.article&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'
  * </p>
  * <p>
  * Delete  the project computateorg in Solr: 
- * curl 'http://localhost:8983/solr/computate/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;siteNom_indexed_string:computateorg&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'
+ * curl -k 'https://solr-solr.apps-crc.testing/solr/computate/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;siteNom_indexed_string:computateorg&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'
  * </p>
+ * Generated: true
  **/
 public abstract class ArticleGen<DEV> extends Object {
 	protected static final Logger LOG = LoggerFactory.getLogger(Article.class);
@@ -232,7 +244,7 @@ public abstract class ArticleGen<DEV> extends Object {
 
 	/**	<br> The entity promiseBefore
 	 *  is defined as null before being initialized. 
-	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:promiseBefore">Find the entity promiseBefore in Solr</a>
+	 * <br><a href="https://solr-solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:promiseBefore">Find the entity promiseBefore in Solr</a>
 	 * <br>
 	 * @param promise is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -275,7 +287,7 @@ public abstract class ArticleGen<DEV> extends Object {
 
 	/**	<br> The entity staticBaseUrl
 	 *  is defined as null before being initialized. 
-	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:staticBaseUrl">Find the entity staticBaseUrl in Solr</a>
+	 * <br><a href="https://solr-solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:staticBaseUrl">Find the entity staticBaseUrl in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -294,7 +306,9 @@ public abstract class ArticleGen<DEV> extends Object {
 		Wrap<String> staticBaseUrlWrap = new Wrap<String>().var("staticBaseUrl");
 		if(staticBaseUrl == null) {
 			_staticBaseUrl(staticBaseUrlWrap);
-			setStaticBaseUrl(staticBaseUrlWrap.o);
+			Optional.ofNullable(staticBaseUrlWrap.getO()).ifPresent(o -> {
+				setStaticBaseUrl(o);
+			});
 		}
 		return (Article)this;
 	}
@@ -325,7 +339,7 @@ public abstract class ArticleGen<DEV> extends Object {
 
 	/**	<br> The entity domainName
 	 *  is defined as null before being initialized. 
-	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:domainName">Find the entity domainName in Solr</a>
+	 * <br><a href="https://solr-solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:domainName">Find the entity domainName in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -344,7 +358,9 @@ public abstract class ArticleGen<DEV> extends Object {
 		Wrap<String> domainNameWrap = new Wrap<String>().var("domainName");
 		if(domainName == null) {
 			_domainName(domainNameWrap);
-			setDomainName(domainNameWrap.o);
+			Optional.ofNullable(domainNameWrap.getO()).ifPresent(o -> {
+				setDomainName(o);
+			});
 		}
 		return (Article)this;
 	}
@@ -375,7 +391,7 @@ public abstract class ArticleGen<DEV> extends Object {
 
 	/**	<br> The entity siteName
 	 *  is defined as null before being initialized. 
-	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:siteName">Find the entity siteName in Solr</a>
+	 * <br><a href="https://solr-solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:siteName">Find the entity siteName in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -394,7 +410,9 @@ public abstract class ArticleGen<DEV> extends Object {
 		Wrap<String> siteNameWrap = new Wrap<String>().var("siteName");
 		if(siteName == null) {
 			_siteName(siteNameWrap);
-			setSiteName(siteNameWrap.o);
+			Optional.ofNullable(siteNameWrap.getO()).ifPresent(o -> {
+				setSiteName(o);
+			});
 		}
 		return (Article)this;
 	}
@@ -425,7 +443,7 @@ public abstract class ArticleGen<DEV> extends Object {
 
 	/**	<br> The entity siteHostName
 	 *  is defined as null before being initialized. 
-	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:siteHostName">Find the entity siteHostName in Solr</a>
+	 * <br><a href="https://solr-solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:siteHostName">Find the entity siteHostName in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -444,7 +462,9 @@ public abstract class ArticleGen<DEV> extends Object {
 		Wrap<String> siteHostNameWrap = new Wrap<String>().var("siteHostName");
 		if(siteHostName == null) {
 			_siteHostName(siteHostNameWrap);
-			setSiteHostName(siteHostNameWrap.o);
+			Optional.ofNullable(siteHostNameWrap.getO()).ifPresent(o -> {
+				setSiteHostName(o);
+			});
 		}
 		return (Article)this;
 	}
@@ -475,7 +495,7 @@ public abstract class ArticleGen<DEV> extends Object {
 
 	/**	<br> The entity sitePackageName
 	 *  is defined as null before being initialized. 
-	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:sitePackageName">Find the entity sitePackageName in Solr</a>
+	 * <br><a href="https://solr-solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:sitePackageName">Find the entity sitePackageName in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -494,7 +514,9 @@ public abstract class ArticleGen<DEV> extends Object {
 		Wrap<String> sitePackageNameWrap = new Wrap<String>().var("sitePackageName");
 		if(sitePackageName == null) {
 			_sitePackageName(sitePackageNameWrap);
-			setSitePackageName(sitePackageNameWrap.o);
+			Optional.ofNullable(sitePackageNameWrap.getO()).ifPresent(o -> {
+				setSitePackageName(o);
+			});
 		}
 		return (Article)this;
 	}
@@ -525,7 +547,7 @@ public abstract class ArticleGen<DEV> extends Object {
 
 	/**	<br> The entity computerHostName
 	 *  is defined as null before being initialized. 
-	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:computerHostName">Find the entity computerHostName in Solr</a>
+	 * <br><a href="https://solr-solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:computerHostName">Find the entity computerHostName in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -544,7 +566,9 @@ public abstract class ArticleGen<DEV> extends Object {
 		Wrap<String> computerHostNameWrap = new Wrap<String>().var("computerHostName");
 		if(computerHostName == null) {
 			_computerHostName(computerHostNameWrap);
-			setComputerHostName(computerHostNameWrap.o);
+			Optional.ofNullable(computerHostNameWrap.getO()).ifPresent(o -> {
+				setComputerHostName(o);
+			});
 		}
 		return (Article)this;
 	}
@@ -575,7 +599,7 @@ public abstract class ArticleGen<DEV> extends Object {
 
 	/**	<br> The entity userName
 	 *  is defined as null before being initialized. 
-	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:userName">Find the entity userName in Solr</a>
+	 * <br><a href="https://solr-solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:userName">Find the entity userName in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -594,7 +618,9 @@ public abstract class ArticleGen<DEV> extends Object {
 		Wrap<String> userNameWrap = new Wrap<String>().var("userName");
 		if(userName == null) {
 			_userName(userNameWrap);
-			setUserName(userNameWrap.o);
+			Optional.ofNullable(userNameWrap.getO()).ifPresent(o -> {
+				setUserName(o);
+			});
 		}
 		return (Article)this;
 	}
@@ -625,7 +651,7 @@ public abstract class ArticleGen<DEV> extends Object {
 
 	/**	<br> The entity cheminProjet
 	 *  is defined as null before being initialized. 
-	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:cheminProjet">Find the entity cheminProjet in Solr</a>
+	 * <br><a href="https://solr-solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:cheminProjet">Find the entity cheminProjet in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -644,7 +670,9 @@ public abstract class ArticleGen<DEV> extends Object {
 		Wrap<String> cheminProjetWrap = new Wrap<String>().var("cheminProjet");
 		if(cheminProjet == null) {
 			_cheminProjet(cheminProjetWrap);
-			setCheminProjet(cheminProjetWrap.o);
+			Optional.ofNullable(cheminProjetWrap.getO()).ifPresent(o -> {
+				setCheminProjet(o);
+			});
 		}
 		return (Article)this;
 	}
@@ -675,7 +703,7 @@ public abstract class ArticleGen<DEV> extends Object {
 
 	/**	<br> The entity groupName
 	 *  is defined as null before being initialized. 
-	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:groupName">Find the entity groupName in Solr</a>
+	 * <br><a href="https://solr-solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:groupName">Find the entity groupName in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -694,7 +722,9 @@ public abstract class ArticleGen<DEV> extends Object {
 		Wrap<String> groupNameWrap = new Wrap<String>().var("groupName");
 		if(groupName == null) {
 			_groupName(groupNameWrap);
-			setGroupName(groupNameWrap.o);
+			Optional.ofNullable(groupNameWrap.getO()).ifPresent(o -> {
+				setGroupName(o);
+			});
 		}
 		return (Article)this;
 	}
@@ -725,7 +755,7 @@ public abstract class ArticleGen<DEV> extends Object {
 
 	/**	<br> The entity isCourse
 	 *  is defined as null before being initialized. 
-	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:isCourse">Find the entity isCourse in Solr</a>
+	 * <br><a href="https://solr-solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:isCourse">Find the entity isCourse in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -749,7 +779,9 @@ public abstract class ArticleGen<DEV> extends Object {
 		Wrap<Boolean> isCourseWrap = new Wrap<Boolean>().var("isCourse");
 		if(isCourse == null) {
 			_isCourse(isCourseWrap);
-			setIsCourse(isCourseWrap.o);
+			Optional.ofNullable(isCourseWrap.getO()).ifPresent(o -> {
+				setIsCourse(o);
+			});
 		}
 		return (Article)this;
 	}
@@ -780,7 +812,7 @@ public abstract class ArticleGen<DEV> extends Object {
 
 	/**	<br> The entity isLesson
 	 *  is defined as null before being initialized. 
-	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:isLesson">Find the entity isLesson in Solr</a>
+	 * <br><a href="https://solr-solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:isLesson">Find the entity isLesson in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -804,7 +836,9 @@ public abstract class ArticleGen<DEV> extends Object {
 		Wrap<Boolean> isLessonWrap = new Wrap<Boolean>().var("isLesson");
 		if(isLesson == null) {
 			_isLesson(isLessonWrap);
-			setIsLesson(isLessonWrap.o);
+			Optional.ofNullable(isLessonWrap.getO()).ifPresent(o -> {
+				setIsLesson(o);
+			});
 		}
 		return (Article)this;
 	}
@@ -835,7 +869,7 @@ public abstract class ArticleGen<DEV> extends Object {
 
 	/**	<br> The entity isArticle
 	 *  is defined as null before being initialized. 
-	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:isArticle">Find the entity isArticle in Solr</a>
+	 * <br><a href="https://solr-solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:isArticle">Find the entity isArticle in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -859,7 +893,9 @@ public abstract class ArticleGen<DEV> extends Object {
 		Wrap<Boolean> isArticleWrap = new Wrap<Boolean>().var("isArticle");
 		if(isArticle == null) {
 			_isArticle(isArticleWrap);
-			setIsArticle(isArticleWrap.o);
+			Optional.ofNullable(isArticleWrap.getO()).ifPresent(o -> {
+				setIsArticle(o);
+			});
 		}
 		return (Article)this;
 	}
@@ -891,7 +927,7 @@ public abstract class ArticleGen<DEV> extends Object {
 
 	/**	<br> The entity courseNumber
 	 *  is defined as null before being initialized. 
-	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:courseNumber">Find the entity courseNumber in Solr</a>
+	 * <br><a href="https://solr-solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:courseNumber">Find the entity courseNumber in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -917,7 +953,9 @@ public abstract class ArticleGen<DEV> extends Object {
 		Wrap<Integer> courseNumberWrap = new Wrap<Integer>().var("courseNumber");
 		if(courseNumber == null) {
 			_courseNumber(courseNumberWrap);
-			setCourseNumber(courseNumberWrap.o);
+			Optional.ofNullable(courseNumberWrap.getO()).ifPresent(o -> {
+				setCourseNumber(o);
+			});
 		}
 		return (Article)this;
 	}
@@ -949,7 +987,7 @@ public abstract class ArticleGen<DEV> extends Object {
 
 	/**	<br> The entity lessonNumber
 	 *  is defined as null before being initialized. 
-	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:lessonNumber">Find the entity lessonNumber in Solr</a>
+	 * <br><a href="https://solr-solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:lessonNumber">Find the entity lessonNumber in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -975,7 +1013,9 @@ public abstract class ArticleGen<DEV> extends Object {
 		Wrap<Integer> lessonNumberWrap = new Wrap<Integer>().var("lessonNumber");
 		if(lessonNumber == null) {
 			_lessonNumber(lessonNumberWrap);
-			setLessonNumber(lessonNumberWrap.o);
+			Optional.ofNullable(lessonNumberWrap.getO()).ifPresent(o -> {
+				setLessonNumber(o);
+			});
 		}
 		return (Article)this;
 	}
@@ -1006,7 +1046,7 @@ public abstract class ArticleGen<DEV> extends Object {
 
 	/**	<br> The entity lessonDescription
 	 *  is defined as null before being initialized. 
-	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:lessonDescription">Find the entity lessonDescription in Solr</a>
+	 * <br><a href="https://solr-solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:lessonDescription">Find the entity lessonDescription in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -1025,7 +1065,9 @@ public abstract class ArticleGen<DEV> extends Object {
 		Wrap<String> lessonDescriptionWrap = new Wrap<String>().var("lessonDescription");
 		if(lessonDescription == null) {
 			_lessonDescription(lessonDescriptionWrap);
-			setLessonDescription(lessonDescriptionWrap.o);
+			Optional.ofNullable(lessonDescriptionWrap.getO()).ifPresent(o -> {
+				setLessonDescription(o);
+			});
 		}
 		return (Article)this;
 	}
@@ -1056,7 +1098,7 @@ public abstract class ArticleGen<DEV> extends Object {
 
 	/**	<br> The entity articleH1_enUS
 	 *  is defined as null before being initialized. 
-	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:articleH1_enUS">Find the entity articleH1_enUS in Solr</a>
+	 * <br><a href="https://solr-solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:articleH1_enUS">Find the entity articleH1_enUS in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -1075,7 +1117,9 @@ public abstract class ArticleGen<DEV> extends Object {
 		Wrap<String> articleH1_enUSWrap = new Wrap<String>().var("articleH1_enUS");
 		if(articleH1_enUS == null) {
 			_articleH1_enUS(articleH1_enUSWrap);
-			setArticleH1_enUS(articleH1_enUSWrap.o);
+			Optional.ofNullable(articleH1_enUSWrap.getO()).ifPresent(o -> {
+				setArticleH1_enUS(o);
+			});
 		}
 		return (Article)this;
 	}
@@ -1106,7 +1150,7 @@ public abstract class ArticleGen<DEV> extends Object {
 
 	/**	<br> The entity articleH1_frFR
 	 *  is defined as null before being initialized. 
-	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:articleH1_frFR">Find the entity articleH1_frFR in Solr</a>
+	 * <br><a href="https://solr-solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:articleH1_frFR">Find the entity articleH1_frFR in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -1125,7 +1169,9 @@ public abstract class ArticleGen<DEV> extends Object {
 		Wrap<String> articleH1_frFRWrap = new Wrap<String>().var("articleH1_frFR");
 		if(articleH1_frFR == null) {
 			_articleH1_frFR(articleH1_frFRWrap);
-			setArticleH1_frFR(articleH1_frFRWrap.o);
+			Optional.ofNullable(articleH1_frFRWrap.getO()).ifPresent(o -> {
+				setArticleH1_frFR(o);
+			});
 		}
 		return (Article)this;
 	}
@@ -1156,7 +1202,7 @@ public abstract class ArticleGen<DEV> extends Object {
 
 	/**	<br> The entity articleH2_enUS
 	 *  is defined as null before being initialized. 
-	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:articleH2_enUS">Find the entity articleH2_enUS in Solr</a>
+	 * <br><a href="https://solr-solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:articleH2_enUS">Find the entity articleH2_enUS in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -1175,7 +1221,9 @@ public abstract class ArticleGen<DEV> extends Object {
 		Wrap<String> articleH2_enUSWrap = new Wrap<String>().var("articleH2_enUS");
 		if(articleH2_enUS == null) {
 			_articleH2_enUS(articleH2_enUSWrap);
-			setArticleH2_enUS(articleH2_enUSWrap.o);
+			Optional.ofNullable(articleH2_enUSWrap.getO()).ifPresent(o -> {
+				setArticleH2_enUS(o);
+			});
 		}
 		return (Article)this;
 	}
@@ -1206,7 +1254,7 @@ public abstract class ArticleGen<DEV> extends Object {
 
 	/**	<br> The entity articleH2_frFR
 	 *  is defined as null before being initialized. 
-	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:articleH2_frFR">Find the entity articleH2_frFR in Solr</a>
+	 * <br><a href="https://solr-solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:articleH2_frFR">Find the entity articleH2_frFR in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -1225,7 +1273,9 @@ public abstract class ArticleGen<DEV> extends Object {
 		Wrap<String> articleH2_frFRWrap = new Wrap<String>().var("articleH2_frFR");
 		if(articleH2_frFR == null) {
 			_articleH2_frFR(articleH2_frFRWrap);
-			setArticleH2_frFR(articleH2_frFRWrap.o);
+			Optional.ofNullable(articleH2_frFRWrap.getO()).ifPresent(o -> {
+				setArticleH2_frFR(o);
+			});
 		}
 		return (Article)this;
 	}
@@ -1256,7 +1306,7 @@ public abstract class ArticleGen<DEV> extends Object {
 
 	/**	<br> The entity articleH1
 	 *  is defined as null before being initialized. 
-	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:articleH1">Find the entity articleH1 in Solr</a>
+	 * <br><a href="https://solr-solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:articleH1">Find the entity articleH1 in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -1275,7 +1325,9 @@ public abstract class ArticleGen<DEV> extends Object {
 		Wrap<String> articleH1Wrap = new Wrap<String>().var("articleH1");
 		if(articleH1 == null) {
 			_articleH1(articleH1Wrap);
-			setArticleH1(articleH1Wrap.o);
+			Optional.ofNullable(articleH1Wrap.getO()).ifPresent(o -> {
+				setArticleH1(o);
+			});
 		}
 		return (Article)this;
 	}
@@ -1306,7 +1358,7 @@ public abstract class ArticleGen<DEV> extends Object {
 
 	/**	<br> The entity articleH2
 	 *  is defined as null before being initialized. 
-	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:articleH2">Find the entity articleH2 in Solr</a>
+	 * <br><a href="https://solr-solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:articleH2">Find the entity articleH2 in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -1325,7 +1377,9 @@ public abstract class ArticleGen<DEV> extends Object {
 		Wrap<String> articleH2Wrap = new Wrap<String>().var("articleH2");
 		if(articleH2 == null) {
 			_articleH2(articleH2Wrap);
-			setArticleH2(articleH2Wrap.o);
+			Optional.ofNullable(articleH2Wrap.getO()).ifPresent(o -> {
+				setArticleH2(o);
+			});
 		}
 		return (Article)this;
 	}
@@ -1356,7 +1410,7 @@ public abstract class ArticleGen<DEV> extends Object {
 
 	/**	<br> The entity articleDescription
 	 *  is defined as null before being initialized. 
-	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:articleDescription">Find the entity articleDescription in Solr</a>
+	 * <br><a href="https://solr-solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:articleDescription">Find the entity articleDescription in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -1375,7 +1429,9 @@ public abstract class ArticleGen<DEV> extends Object {
 		Wrap<String> articleDescriptionWrap = new Wrap<String>().var("articleDescription");
 		if(articleDescription == null) {
 			_articleDescription(articleDescriptionWrap);
-			setArticleDescription(articleDescriptionWrap.o);
+			Optional.ofNullable(articleDescriptionWrap.getO()).ifPresent(o -> {
+				setArticleDescription(o);
+			});
 		}
 		return (Article)this;
 	}
@@ -1406,7 +1462,7 @@ public abstract class ArticleGen<DEV> extends Object {
 
 	/**	<br> The entity pageDescription
 	 *  is defined as null before being initialized. 
-	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:pageDescription">Find the entity pageDescription in Solr</a>
+	 * <br><a href="https://solr-solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:pageDescription">Find the entity pageDescription in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -1425,7 +1481,9 @@ public abstract class ArticleGen<DEV> extends Object {
 		Wrap<String> pageDescriptionWrap = new Wrap<String>().var("pageDescription");
 		if(pageDescription == null) {
 			_pageDescription(pageDescriptionWrap);
-			setPageDescription(pageDescriptionWrap.o);
+			Optional.ofNullable(pageDescriptionWrap.getO()).ifPresent(o -> {
+				setPageDescription(o);
+			});
 		}
 		return (Article)this;
 	}
@@ -1459,7 +1517,7 @@ public abstract class ArticleGen<DEV> extends Object {
 
 	/**	<br> The entity articleCreated
 	 *  is defined as null before being initialized. 
-	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:articleCreated">Find the entity articleCreated in Solr</a>
+	 * <br><a href="https://solr-solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:articleCreated">Find the entity articleCreated in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -1470,7 +1528,7 @@ public abstract class ArticleGen<DEV> extends Object {
 	}
 
 	public void setArticleCreated(ZonedDateTime articleCreated) {
-		this.articleCreated = articleCreated;
+		this.articleCreated = Optional.ofNullable(articleCreated).map(v -> v.truncatedTo(ChronoUnit.MILLIS)).orElse(null);
 	}
 	@JsonIgnore
 	public void setArticleCreated(Instant o) {
@@ -1499,7 +1557,9 @@ public abstract class ArticleGen<DEV> extends Object {
 		Wrap<ZonedDateTime> articleCreatedWrap = new Wrap<ZonedDateTime>().var("articleCreated");
 		if(articleCreated == null) {
 			_articleCreated(articleCreatedWrap);
-			setArticleCreated(articleCreatedWrap.o);
+			Optional.ofNullable(articleCreatedWrap.getO()).ifPresent(o -> {
+				setArticleCreated(o);
+			});
 		}
 		return (Article)this;
 	}
@@ -1530,7 +1590,7 @@ public abstract class ArticleGen<DEV> extends Object {
 
 	/**	<br> The entity pageUri_enUS
 	 *  is defined as null before being initialized. 
-	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:pageUri_enUS">Find the entity pageUri_enUS in Solr</a>
+	 * <br><a href="https://solr-solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:pageUri_enUS">Find the entity pageUri_enUS in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -1549,7 +1609,9 @@ public abstract class ArticleGen<DEV> extends Object {
 		Wrap<String> pageUri_enUSWrap = new Wrap<String>().var("pageUri_enUS");
 		if(pageUri_enUS == null) {
 			_pageUri_enUS(pageUri_enUSWrap);
-			setPageUri_enUS(pageUri_enUSWrap.o);
+			Optional.ofNullable(pageUri_enUSWrap.getO()).ifPresent(o -> {
+				setPageUri_enUS(o);
+			});
 		}
 		return (Article)this;
 	}
@@ -1580,7 +1642,7 @@ public abstract class ArticleGen<DEV> extends Object {
 
 	/**	<br> The entity pageUri_frFR
 	 *  is defined as null before being initialized. 
-	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:pageUri_frFR">Find the entity pageUri_frFR in Solr</a>
+	 * <br><a href="https://solr-solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:pageUri_frFR">Find the entity pageUri_frFR in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -1599,7 +1661,9 @@ public abstract class ArticleGen<DEV> extends Object {
 		Wrap<String> pageUri_frFRWrap = new Wrap<String>().var("pageUri_frFR");
 		if(pageUri_frFR == null) {
 			_pageUri_frFR(pageUri_frFRWrap);
-			setPageUri_frFR(pageUri_frFRWrap.o);
+			Optional.ofNullable(pageUri_frFRWrap.getO()).ifPresent(o -> {
+				setPageUri_frFR(o);
+			});
 		}
 		return (Article)this;
 	}
@@ -1630,7 +1694,7 @@ public abstract class ArticleGen<DEV> extends Object {
 
 	/**	<br> The entity pageUri
 	 *  is defined as null before being initialized. 
-	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:pageUri">Find the entity pageUri in Solr</a>
+	 * <br><a href="https://solr-solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:pageUri">Find the entity pageUri in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -1649,7 +1713,9 @@ public abstract class ArticleGen<DEV> extends Object {
 		Wrap<String> pageUriWrap = new Wrap<String>().var("pageUri");
 		if(pageUri == null) {
 			_pageUri(pageUriWrap);
-			setPageUri(pageUriWrap.o);
+			Optional.ofNullable(pageUriWrap.getO()).ifPresent(o -> {
+				setPageUri(o);
+			});
 		}
 		return (Article)this;
 	}
@@ -1680,7 +1746,7 @@ public abstract class ArticleGen<DEV> extends Object {
 
 	/**	<br> The entity pageImageUri_enUS
 	 *  is defined as null before being initialized. 
-	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:pageImageUri_enUS">Find the entity pageImageUri_enUS in Solr</a>
+	 * <br><a href="https://solr-solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:pageImageUri_enUS">Find the entity pageImageUri_enUS in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -1699,7 +1765,9 @@ public abstract class ArticleGen<DEV> extends Object {
 		Wrap<String> pageImageUri_enUSWrap = new Wrap<String>().var("pageImageUri_enUS");
 		if(pageImageUri_enUS == null) {
 			_pageImageUri_enUS(pageImageUri_enUSWrap);
-			setPageImageUri_enUS(pageImageUri_enUSWrap.o);
+			Optional.ofNullable(pageImageUri_enUSWrap.getO()).ifPresent(o -> {
+				setPageImageUri_enUS(o);
+			});
 		}
 		return (Article)this;
 	}
@@ -1730,7 +1798,7 @@ public abstract class ArticleGen<DEV> extends Object {
 
 	/**	<br> The entity pageImageUri_frFR
 	 *  is defined as null before being initialized. 
-	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:pageImageUri_frFR">Find the entity pageImageUri_frFR in Solr</a>
+	 * <br><a href="https://solr-solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:pageImageUri_frFR">Find the entity pageImageUri_frFR in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -1749,7 +1817,9 @@ public abstract class ArticleGen<DEV> extends Object {
 		Wrap<String> pageImageUri_frFRWrap = new Wrap<String>().var("pageImageUri_frFR");
 		if(pageImageUri_frFR == null) {
 			_pageImageUri_frFR(pageImageUri_frFRWrap);
-			setPageImageUri_frFR(pageImageUri_frFRWrap.o);
+			Optional.ofNullable(pageImageUri_frFRWrap.getO()).ifPresent(o -> {
+				setPageImageUri_frFR(o);
+			});
 		}
 		return (Article)this;
 	}
@@ -1780,7 +1850,7 @@ public abstract class ArticleGen<DEV> extends Object {
 
 	/**	<br> The entity pageImageUri
 	 *  is defined as null before being initialized. 
-	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:pageImageUri">Find the entity pageImageUri in Solr</a>
+	 * <br><a href="https://solr-solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:pageImageUri">Find the entity pageImageUri in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -1799,7 +1869,9 @@ public abstract class ArticleGen<DEV> extends Object {
 		Wrap<String> pageImageUriWrap = new Wrap<String>().var("pageImageUri");
 		if(pageImageUri == null) {
 			_pageImageUri(pageImageUriWrap);
-			setPageImageUri(pageImageUriWrap.o);
+			Optional.ofNullable(pageImageUriWrap.getO()).ifPresent(o -> {
+				setPageImageUri(o);
+			});
 		}
 		return (Article)this;
 	}
@@ -1833,7 +1905,7 @@ public abstract class ArticleGen<DEV> extends Object {
 
 	/**	<br> The entity pageCreated
 	 *  is defined as null before being initialized. 
-	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:pageCreated">Find the entity pageCreated in Solr</a>
+	 * <br><a href="https://solr-solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:pageCreated">Find the entity pageCreated in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -1844,7 +1916,7 @@ public abstract class ArticleGen<DEV> extends Object {
 	}
 
 	public void setPageCreated(ZonedDateTime pageCreated) {
-		this.pageCreated = pageCreated;
+		this.pageCreated = Optional.ofNullable(pageCreated).map(v -> v.truncatedTo(ChronoUnit.MILLIS)).orElse(null);
 	}
 	@JsonIgnore
 	public void setPageCreated(Instant o) {
@@ -1873,7 +1945,9 @@ public abstract class ArticleGen<DEV> extends Object {
 		Wrap<ZonedDateTime> pageCreatedWrap = new Wrap<ZonedDateTime>().var("pageCreated");
 		if(pageCreated == null) {
 			_pageCreated(pageCreatedWrap);
-			setPageCreated(pageCreatedWrap.o);
+			Optional.ofNullable(pageCreatedWrap.getO()).ifPresent(o -> {
+				setPageCreated(o);
+			});
 		}
 		return (Article)this;
 	}
@@ -1904,7 +1978,7 @@ public abstract class ArticleGen<DEV> extends Object {
 
 	/**	<br> The entity pageH1
 	 *  is defined as null before being initialized. 
-	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:pageH1">Find the entity pageH1 in Solr</a>
+	 * <br><a href="https://solr-solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:pageH1">Find the entity pageH1 in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -1923,7 +1997,9 @@ public abstract class ArticleGen<DEV> extends Object {
 		Wrap<String> pageH1Wrap = new Wrap<String>().var("pageH1");
 		if(pageH1 == null) {
 			_pageH1(pageH1Wrap);
-			setPageH1(pageH1Wrap.o);
+			Optional.ofNullable(pageH1Wrap.getO()).ifPresent(o -> {
+				setPageH1(o);
+			});
 		}
 		return (Article)this;
 	}
@@ -1954,7 +2030,7 @@ public abstract class ArticleGen<DEV> extends Object {
 
 	/**	<br> The entity pageH2
 	 *  is defined as null before being initialized. 
-	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:pageH2">Find the entity pageH2 in Solr</a>
+	 * <br><a href="https://solr-solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:pageH2">Find the entity pageH2 in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -1973,7 +2049,9 @@ public abstract class ArticleGen<DEV> extends Object {
 		Wrap<String> pageH2Wrap = new Wrap<String>().var("pageH2");
 		if(pageH2 == null) {
 			_pageH2(pageH2Wrap);
-			setPageH2(pageH2Wrap.o);
+			Optional.ofNullable(pageH2Wrap.getO()).ifPresent(o -> {
+				setPageH2(o);
+			});
 		}
 		return (Article)this;
 	}
@@ -2004,7 +2082,7 @@ public abstract class ArticleGen<DEV> extends Object {
 
 	/**	<br> The entity pageH3
 	 *  is defined as null before being initialized. 
-	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:pageH3">Find the entity pageH3 in Solr</a>
+	 * <br><a href="https://solr-solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:pageH3">Find the entity pageH3 in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -2023,7 +2101,9 @@ public abstract class ArticleGen<DEV> extends Object {
 		Wrap<String> pageH3Wrap = new Wrap<String>().var("pageH3");
 		if(pageH3 == null) {
 			_pageH3(pageH3Wrap);
-			setPageH3(pageH3Wrap.o);
+			Optional.ofNullable(pageH3Wrap.getO()).ifPresent(o -> {
+				setPageH3(o);
+			});
 		}
 		return (Article)this;
 	}
@@ -2054,7 +2134,7 @@ public abstract class ArticleGen<DEV> extends Object {
 
 	/**	<br> The entity pageTitle
 	 *  is defined as null before being initialized. 
-	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:pageTitle">Find the entity pageTitle in Solr</a>
+	 * <br><a href="https://solr-solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:pageTitle">Find the entity pageTitle in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -2073,7 +2153,9 @@ public abstract class ArticleGen<DEV> extends Object {
 		Wrap<String> pageTitleWrap = new Wrap<String>().var("pageTitle");
 		if(pageTitle == null) {
 			_pageTitle(pageTitleWrap);
-			setPageTitle(pageTitleWrap.o);
+			Optional.ofNullable(pageTitleWrap.getO()).ifPresent(o -> {
+				setPageTitle(o);
+			});
 		}
 		return (Article)this;
 	}
@@ -2105,7 +2187,7 @@ public abstract class ArticleGen<DEV> extends Object {
 
 	/**	<br> The entity pageSearch_enUS
 	 *  It is constructed before being initialized with the constructor by default. 
-	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:pageSearch_enUS">Find the entity pageSearch_enUS in Solr</a>
+	 * <br><a href="https://solr-solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:pageSearch_enUS">Find the entity pageSearch_enUS in Solr</a>
 	 * <br>
 	 * @param l is the entity already constructed. 
 	 **/
@@ -2117,6 +2199,11 @@ public abstract class ArticleGen<DEV> extends Object {
 
 	public void setPageSearch_enUS(List<String> pageSearch_enUS) {
 		this.pageSearch_enUS = pageSearch_enUS;
+	}
+	public void setPageSearch_enUS(String o) {
+		String l = Article.staticSetPageSearch_enUS(siteRequest_, o);
+		if(l != null)
+			addPageSearch_enUS(l);
 	}
 	public static String staticSetPageSearch_enUS(SiteRequestEnUS siteRequest_, String o) {
 		return o;
@@ -2135,6 +2222,8 @@ public abstract class ArticleGen<DEV> extends Object {
 	@JsonIgnore
 	public void setPageSearch_enUS(JsonArray objects) {
 		pageSearch_enUS.clear();
+		if(objects == null)
+			return;
 		for(int i = 0; i < objects.size(); i++) {
 			String o = objects.getString(i);
 			addPageSearch_enUS(o);
@@ -2172,7 +2261,7 @@ public abstract class ArticleGen<DEV> extends Object {
 
 	/**	<br> The entity pageSearch_frFR
 	 *  It is constructed before being initialized with the constructor by default. 
-	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:pageSearch_frFR">Find the entity pageSearch_frFR in Solr</a>
+	 * <br><a href="https://solr-solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:pageSearch_frFR">Find the entity pageSearch_frFR in Solr</a>
 	 * <br>
 	 * @param l is the entity already constructed. 
 	 **/
@@ -2184,6 +2273,11 @@ public abstract class ArticleGen<DEV> extends Object {
 
 	public void setPageSearch_frFR(List<String> pageSearch_frFR) {
 		this.pageSearch_frFR = pageSearch_frFR;
+	}
+	public void setPageSearch_frFR(String o) {
+		String l = Article.staticSetPageSearch_frFR(siteRequest_, o);
+		if(l != null)
+			addPageSearch_frFR(l);
 	}
 	public static String staticSetPageSearch_frFR(SiteRequestEnUS siteRequest_, String o) {
 		return o;
@@ -2202,6 +2296,8 @@ public abstract class ArticleGen<DEV> extends Object {
 	@JsonIgnore
 	public void setPageSearch_frFR(JsonArray objects) {
 		pageSearch_frFR.clear();
+		if(objects == null)
+			return;
 		for(int i = 0; i < objects.size(); i++) {
 			String o = objects.getString(i);
 			addPageSearch_frFR(o);
@@ -2238,7 +2334,7 @@ public abstract class ArticleGen<DEV> extends Object {
 
 	/**	<br> The entity siteUser_
 	 *  is defined as null before being initialized. 
-	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:siteUser_">Find the entity siteUser_ in Solr</a>
+	 * <br><a href="https://solr-solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:siteUser_">Find the entity siteUser_ in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -2258,7 +2354,9 @@ public abstract class ArticleGen<DEV> extends Object {
 		Wrap<SiteUser> siteUser_Wrap = new Wrap<SiteUser>().var("siteUser_");
 		if(siteUser_ == null) {
 			_siteUser_(siteUser_Wrap);
-			setSiteUser_(siteUser_Wrap.o);
+			Optional.ofNullable(siteUser_Wrap.getO()).ifPresent(o -> {
+				setSiteUser_(o);
+			});
 		}
 		return (Article)this;
 	}
@@ -2277,7 +2375,7 @@ public abstract class ArticleGen<DEV> extends Object {
 
 	/**	<br> The entity userId
 	 *  is defined as null before being initialized. 
-	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:userId">Find the entity userId in Solr</a>
+	 * <br><a href="https://solr-solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:userId">Find the entity userId in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -2296,7 +2394,9 @@ public abstract class ArticleGen<DEV> extends Object {
 		Wrap<String> userIdWrap = new Wrap<String>().var("userId");
 		if(userId == null) {
 			_userId(userIdWrap);
-			setUserId(userIdWrap.o);
+			Optional.ofNullable(userIdWrap.getO()).ifPresent(o -> {
+				setUserId(o);
+			});
 		}
 		return (Article)this;
 	}
@@ -2327,7 +2427,7 @@ public abstract class ArticleGen<DEV> extends Object {
 
 	/**	<br> The entity siteRequest_
 	 *  is defined as null before being initialized. 
-	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:siteRequest_">Find the entity siteRequest_ in Solr</a>
+	 * <br><a href="https://solr-solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:siteRequest_">Find the entity siteRequest_ in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -2347,7 +2447,9 @@ public abstract class ArticleGen<DEV> extends Object {
 		Wrap<SiteRequestEnUS> siteRequest_Wrap = new Wrap<SiteRequestEnUS>().var("siteRequest_");
 		if(siteRequest_ == null) {
 			_siteRequest_(siteRequest_Wrap);
-			setSiteRequest_(siteRequest_Wrap.o);
+			Optional.ofNullable(siteRequest_Wrap.getO()).ifPresent(o -> {
+				setSiteRequest_(o);
+			});
 		}
 		return (Article)this;
 	}
@@ -2366,7 +2468,7 @@ public abstract class ArticleGen<DEV> extends Object {
 
 	/**	<br> The entity inheritPk
 	 *  is defined as null before being initialized. 
-	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:inheritPk">Find the entity inheritPk in Solr</a>
+	 * <br><a href="https://solr-solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:inheritPk">Find the entity inheritPk in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -2385,7 +2487,9 @@ public abstract class ArticleGen<DEV> extends Object {
 		Wrap<String> inheritPkWrap = new Wrap<String>().var("inheritPk");
 		if(inheritPk == null) {
 			_inheritPk(inheritPkWrap);
-			setInheritPk(inheritPkWrap.o);
+			Optional.ofNullable(inheritPkWrap.getO()).ifPresent(o -> {
+				setInheritPk(o);
+			});
 		}
 		return (Article)this;
 	}
@@ -2423,7 +2527,7 @@ public abstract class ArticleGen<DEV> extends Object {
 
 	/**	<br> The entity created
 	 *  is defined as null before being initialized. 
-	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:created">Find the entity created in Solr</a>
+	 * <br><a href="https://solr-solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:created">Find the entity created in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -2434,7 +2538,7 @@ public abstract class ArticleGen<DEV> extends Object {
 	}
 
 	public void setCreated(ZonedDateTime created) {
-		this.created = created;
+		this.created = Optional.ofNullable(created).map(v -> v.truncatedTo(ChronoUnit.MILLIS)).orElse(null);
 	}
 	@JsonIgnore
 	public void setCreated(Instant o) {
@@ -2463,7 +2567,9 @@ public abstract class ArticleGen<DEV> extends Object {
 		Wrap<ZonedDateTime> createdWrap = new Wrap<ZonedDateTime>().var("created");
 		if(created == null) {
 			_created(createdWrap);
-			setCreated(createdWrap.o);
+			Optional.ofNullable(createdWrap.getO()).ifPresent(o -> {
+				setCreated(o);
+			});
 		}
 		return (Article)this;
 	}
@@ -2501,7 +2607,7 @@ public abstract class ArticleGen<DEV> extends Object {
 
 	/**	<br> The entity modified
 	 *  is defined as null before being initialized. 
-	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:modified">Find the entity modified in Solr</a>
+	 * <br><a href="https://solr-solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:modified">Find the entity modified in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -2512,7 +2618,7 @@ public abstract class ArticleGen<DEV> extends Object {
 	}
 
 	public void setModified(ZonedDateTime modified) {
-		this.modified = modified;
+		this.modified = Optional.ofNullable(modified).map(v -> v.truncatedTo(ChronoUnit.MILLIS)).orElse(null);
 	}
 	@JsonIgnore
 	public void setModified(Instant o) {
@@ -2541,7 +2647,9 @@ public abstract class ArticleGen<DEV> extends Object {
 		Wrap<ZonedDateTime> modifiedWrap = new Wrap<ZonedDateTime>().var("modified");
 		if(modified == null) {
 			_modified(modifiedWrap);
-			setModified(modifiedWrap.o);
+			Optional.ofNullable(modifiedWrap.getO()).ifPresent(o -> {
+				setModified(o);
+			});
 		}
 		return (Article)this;
 	}
@@ -2572,7 +2680,7 @@ public abstract class ArticleGen<DEV> extends Object {
 
 	/**	<br> The entity archived
 	 *  is defined as null before being initialized. 
-	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:archived">Find the entity archived in Solr</a>
+	 * <br><a href="https://solr-solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:archived">Find the entity archived in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -2596,7 +2704,9 @@ public abstract class ArticleGen<DEV> extends Object {
 		Wrap<Boolean> archivedWrap = new Wrap<Boolean>().var("archived");
 		if(archived == null) {
 			_archived(archivedWrap);
-			setArchived(archivedWrap.o);
+			Optional.ofNullable(archivedWrap.getO()).ifPresent(o -> {
+				setArchived(o);
+			});
 		}
 		return (Article)this;
 	}
@@ -2631,7 +2741,7 @@ public abstract class ArticleGen<DEV> extends Object {
 
 	/**	<br> The entity deleted
 	 *  is defined as null before being initialized. 
-	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:deleted">Find the entity deleted in Solr</a>
+	 * <br><a href="https://solr-solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:deleted">Find the entity deleted in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -2655,7 +2765,9 @@ public abstract class ArticleGen<DEV> extends Object {
 		Wrap<Boolean> deletedWrap = new Wrap<Boolean>().var("deleted");
 		if(deleted == null) {
 			_deleted(deletedWrap);
-			setDeleted(deletedWrap.o);
+			Optional.ofNullable(deletedWrap.getO()).ifPresent(o -> {
+				setDeleted(o);
+			});
 		}
 		return (Article)this;
 	}
@@ -2690,7 +2802,7 @@ public abstract class ArticleGen<DEV> extends Object {
 
 	/**	<br> The entity classCanonicalName
 	 *  is defined as null before being initialized. 
-	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:classCanonicalName">Find the entity classCanonicalName in Solr</a>
+	 * <br><a href="https://solr-solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:classCanonicalName">Find the entity classCanonicalName in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -2709,7 +2821,9 @@ public abstract class ArticleGen<DEV> extends Object {
 		Wrap<String> classCanonicalNameWrap = new Wrap<String>().var("classCanonicalName");
 		if(classCanonicalName == null) {
 			_classCanonicalName(classCanonicalNameWrap);
-			setClassCanonicalName(classCanonicalNameWrap.o);
+			Optional.ofNullable(classCanonicalNameWrap.getO()).ifPresent(o -> {
+				setClassCanonicalName(o);
+			});
 		}
 		return (Article)this;
 	}
@@ -2740,7 +2854,7 @@ public abstract class ArticleGen<DEV> extends Object {
 
 	/**	<br> The entity classSimpleName
 	 *  is defined as null before being initialized. 
-	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:classSimpleName">Find the entity classSimpleName in Solr</a>
+	 * <br><a href="https://solr-solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:classSimpleName">Find the entity classSimpleName in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -2759,7 +2873,9 @@ public abstract class ArticleGen<DEV> extends Object {
 		Wrap<String> classSimpleNameWrap = new Wrap<String>().var("classSimpleName");
 		if(classSimpleName == null) {
 			_classSimpleName(classSimpleNameWrap);
-			setClassSimpleName(classSimpleNameWrap.o);
+			Optional.ofNullable(classSimpleNameWrap.getO()).ifPresent(o -> {
+				setClassSimpleName(o);
+			});
 		}
 		return (Article)this;
 	}
@@ -2791,7 +2907,7 @@ public abstract class ArticleGen<DEV> extends Object {
 
 	/**	<br> The entity classCanonicalNames
 	 *  It is constructed before being initialized with the constructor by default. 
-	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:classCanonicalNames">Find the entity classCanonicalNames in Solr</a>
+	 * <br><a href="https://solr-solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:classCanonicalNames">Find the entity classCanonicalNames in Solr</a>
 	 * <br>
 	 * @param l is the entity already constructed. 
 	 **/
@@ -2803,6 +2919,11 @@ public abstract class ArticleGen<DEV> extends Object {
 
 	public void setClassCanonicalNames(List<String> classCanonicalNames) {
 		this.classCanonicalNames = classCanonicalNames;
+	}
+	public void setClassCanonicalNames(String o) {
+		String l = Article.staticSetClassCanonicalNames(siteRequest_, o);
+		if(l != null)
+			addClassCanonicalNames(l);
 	}
 	public static String staticSetClassCanonicalNames(SiteRequestEnUS siteRequest_, String o) {
 		return o;
@@ -2821,6 +2942,8 @@ public abstract class ArticleGen<DEV> extends Object {
 	@JsonIgnore
 	public void setClassCanonicalNames(JsonArray objects) {
 		classCanonicalNames.clear();
+		if(objects == null)
+			return;
 		for(int i = 0; i < objects.size(); i++) {
 			String o = objects.getString(i);
 			addClassCanonicalNames(o);
@@ -2857,7 +2980,7 @@ public abstract class ArticleGen<DEV> extends Object {
 
 	/**	<br> The entity sessionId
 	 *  is defined as null before being initialized. 
-	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:sessionId">Find the entity sessionId in Solr</a>
+	 * <br><a href="https://solr-solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:sessionId">Find the entity sessionId in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -2876,7 +2999,9 @@ public abstract class ArticleGen<DEV> extends Object {
 		Wrap<String> sessionIdWrap = new Wrap<String>().var("sessionId");
 		if(sessionId == null) {
 			_sessionId(sessionIdWrap);
-			setSessionId(sessionIdWrap.o);
+			Optional.ofNullable(sessionIdWrap.getO()).ifPresent(o -> {
+				setSessionId(o);
+			});
 		}
 		return (Article)this;
 	}
@@ -2912,7 +3037,7 @@ public abstract class ArticleGen<DEV> extends Object {
 
 	/**	<br> The entity userKey
 	 *  is defined as null before being initialized. 
-	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:userKey">Find the entity userKey in Solr</a>
+	 * <br><a href="https://solr-solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:userKey">Find the entity userKey in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -2938,7 +3063,9 @@ public abstract class ArticleGen<DEV> extends Object {
 		Wrap<Long> userKeyWrap = new Wrap<Long>().var("userKey");
 		if(userKey == null) {
 			_userKey(userKeyWrap);
-			setUserKey(userKeyWrap.o);
+			Optional.ofNullable(userKeyWrap.getO()).ifPresent(o -> {
+				setUserKey(o);
+			});
 		}
 		return (Article)this;
 	}
@@ -2974,7 +3101,7 @@ public abstract class ArticleGen<DEV> extends Object {
 
 	/**	<br> The entity saves
 	 *  It is constructed before being initialized with the constructor by default. 
-	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:saves">Find the entity saves in Solr</a>
+	 * <br><a href="https://solr-solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:saves">Find the entity saves in Solr</a>
 	 * <br>
 	 * @param l is the entity already constructed. 
 	 **/
@@ -2986,6 +3113,11 @@ public abstract class ArticleGen<DEV> extends Object {
 
 	public void setSaves(List<String> saves) {
 		this.saves = saves;
+	}
+	public void setSaves(String o) {
+		String l = Article.staticSetSaves(siteRequest_, o);
+		if(l != null)
+			addSaves(l);
 	}
 	public static String staticSetSaves(SiteRequestEnUS siteRequest_, String o) {
 		return o;
@@ -3004,6 +3136,8 @@ public abstract class ArticleGen<DEV> extends Object {
 	@JsonIgnore
 	public void setSaves(JsonArray objects) {
 		saves.clear();
+		if(objects == null)
+			return;
 		for(int i = 0; i < objects.size(); i++) {
 			String o = objects.getString(i);
 			addSaves(o);
@@ -3040,7 +3174,7 @@ public abstract class ArticleGen<DEV> extends Object {
 
 	/**	<br> The entity objectTitle
 	 *  is defined as null before being initialized. 
-	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:objectTitle">Find the entity objectTitle in Solr</a>
+	 * <br><a href="https://solr-solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:objectTitle">Find the entity objectTitle in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -3059,7 +3193,9 @@ public abstract class ArticleGen<DEV> extends Object {
 		Wrap<String> objectTitleWrap = new Wrap<String>().var("objectTitle");
 		if(objectTitle == null) {
 			_objectTitle(objectTitleWrap);
-			setObjectTitle(objectTitleWrap.o);
+			Optional.ofNullable(objectTitleWrap.getO()).ifPresent(o -> {
+				setObjectTitle(o);
+			});
 		}
 		return (Article)this;
 	}
@@ -3090,7 +3226,7 @@ public abstract class ArticleGen<DEV> extends Object {
 
 	/**	<br> The entity objectId
 	 *  is defined as null before being initialized. 
-	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:objectId">Find the entity objectId in Solr</a>
+	 * <br><a href="https://solr-solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:objectId">Find the entity objectId in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -3109,7 +3245,9 @@ public abstract class ArticleGen<DEV> extends Object {
 		Wrap<String> objectIdWrap = new Wrap<String>().var("objectId");
 		if(objectId == null) {
 			_objectId(objectIdWrap);
-			setObjectId(objectIdWrap.o);
+			Optional.ofNullable(objectIdWrap.getO()).ifPresent(o -> {
+				setObjectId(o);
+			});
 		}
 		return (Article)this;
 	}
@@ -3130,7 +3268,6 @@ public abstract class ArticleGen<DEV> extends Object {
 		return objectId;
 	}
 
-
 	///////////////////
 	// objectNameVar //
 	///////////////////
@@ -3145,7 +3282,7 @@ public abstract class ArticleGen<DEV> extends Object {
 
 	/**	<br> The entity objectNameVar
 	 *  is defined as null before being initialized. 
-	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:objectNameVar">Find the entity objectNameVar in Solr</a>
+	 * <br><a href="https://solr-solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:objectNameVar">Find the entity objectNameVar in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -3164,7 +3301,9 @@ public abstract class ArticleGen<DEV> extends Object {
 		Wrap<String> objectNameVarWrap = new Wrap<String>().var("objectNameVar");
 		if(objectNameVar == null) {
 			_objectNameVar(objectNameVarWrap);
-			setObjectNameVar(objectNameVarWrap.o);
+			Optional.ofNullable(objectNameVarWrap.getO()).ifPresent(o -> {
+				setObjectNameVar(o);
+			});
 		}
 		return (Article)this;
 	}
@@ -3195,7 +3334,7 @@ public abstract class ArticleGen<DEV> extends Object {
 
 	/**	<br> The entity objectSuggest
 	 *  is defined as null before being initialized. 
-	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:objectSuggest">Find the entity objectSuggest in Solr</a>
+	 * <br><a href="https://solr-solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:objectSuggest">Find the entity objectSuggest in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -3214,7 +3353,9 @@ public abstract class ArticleGen<DEV> extends Object {
 		Wrap<String> objectSuggestWrap = new Wrap<String>().var("objectSuggest");
 		if(objectSuggest == null) {
 			_objectSuggest(objectSuggestWrap);
-			setObjectSuggest(objectSuggestWrap.o);
+			Optional.ofNullable(objectSuggestWrap.getO()).ifPresent(o -> {
+				setObjectSuggest(o);
+			});
 		}
 		return (Article)this;
 	}
@@ -3245,7 +3386,7 @@ public abstract class ArticleGen<DEV> extends Object {
 
 	/**	<br> The entity objectText
 	 *  is defined as null before being initialized. 
-	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:objectText">Find the entity objectText in Solr</a>
+	 * <br><a href="https://solr-solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:objectText">Find the entity objectText in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -3264,7 +3405,9 @@ public abstract class ArticleGen<DEV> extends Object {
 		Wrap<String> objectTextWrap = new Wrap<String>().var("objectText");
 		if(objectText == null) {
 			_objectText(objectTextWrap);
-			setObjectText(objectTextWrap.o);
+			Optional.ofNullable(objectTextWrap.getO()).ifPresent(o -> {
+				setObjectText(o);
+			});
 		}
 		return (Article)this;
 	}
@@ -3295,7 +3438,7 @@ public abstract class ArticleGen<DEV> extends Object {
 
 	/**	<br> The entity pageUrlId
 	 *  is defined as null before being initialized. 
-	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:pageUrlId">Find the entity pageUrlId in Solr</a>
+	 * <br><a href="https://solr-solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:pageUrlId">Find the entity pageUrlId in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -3314,7 +3457,9 @@ public abstract class ArticleGen<DEV> extends Object {
 		Wrap<String> pageUrlIdWrap = new Wrap<String>().var("pageUrlId");
 		if(pageUrlId == null) {
 			_pageUrlId(pageUrlIdWrap);
-			setPageUrlId(pageUrlIdWrap.o);
+			Optional.ofNullable(pageUrlIdWrap.getO()).ifPresent(o -> {
+				setPageUrlId(o);
+			});
 		}
 		return (Article)this;
 	}
@@ -3345,7 +3490,7 @@ public abstract class ArticleGen<DEV> extends Object {
 
 	/**	<br> The entity pageUrlPk
 	 *  is defined as null before being initialized. 
-	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:pageUrlPk">Find the entity pageUrlPk in Solr</a>
+	 * <br><a href="https://solr-solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:pageUrlPk">Find the entity pageUrlPk in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -3364,7 +3509,9 @@ public abstract class ArticleGen<DEV> extends Object {
 		Wrap<String> pageUrlPkWrap = new Wrap<String>().var("pageUrlPk");
 		if(pageUrlPk == null) {
 			_pageUrlPk(pageUrlPkWrap);
-			setPageUrlPk(pageUrlPkWrap.o);
+			Optional.ofNullable(pageUrlPkWrap.getO()).ifPresent(o -> {
+				setPageUrlPk(o);
+			});
 		}
 		return (Article)this;
 	}
@@ -3395,7 +3542,7 @@ public abstract class ArticleGen<DEV> extends Object {
 
 	/**	<br> The entity pageUrlApi
 	 *  is defined as null before being initialized. 
-	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:pageUrlApi">Find the entity pageUrlApi in Solr</a>
+	 * <br><a href="https://solr-solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:pageUrlApi">Find the entity pageUrlApi in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -3414,7 +3561,9 @@ public abstract class ArticleGen<DEV> extends Object {
 		Wrap<String> pageUrlApiWrap = new Wrap<String>().var("pageUrlApi");
 		if(pageUrlApi == null) {
 			_pageUrlApi(pageUrlApiWrap);
-			setPageUrlApi(pageUrlApiWrap.o);
+			Optional.ofNullable(pageUrlApiWrap.getO()).ifPresent(o -> {
+				setPageUrlApi(o);
+			});
 		}
 		return (Article)this;
 	}
@@ -3445,7 +3594,7 @@ public abstract class ArticleGen<DEV> extends Object {
 
 	/**	<br> The entity id
 	 *  is defined as null before being initialized. 
-	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:id">Find the entity id in Solr</a>
+	 * <br><a href="https://solr-solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.Article&fq=entiteVar_enUS_indexed_string:id">Find the entity id in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -3464,7 +3613,9 @@ public abstract class ArticleGen<DEV> extends Object {
 		Wrap<String> idWrap = new Wrap<String>().var("id");
 		if(id == null) {
 			_id(idWrap);
-			setId(idWrap.o);
+			Optional.ofNullable(idWrap.getO()).ifPresent(o -> {
+				setId(o);
+			});
 		}
 		return (Article)this;
 	}
@@ -4391,8 +4542,118 @@ public abstract class ArticleGen<DEV> extends Object {
 	}
 	public void populateArticle(SolrResponse.Doc doc) {
 		Article oArticle = (Article)this;
-		saves = doc.get("saves_docvalues_strings");
+		saves = Optional.ofNullable((ArrayList<String>)doc.get("saves_docvalues_strings")).orElse(new ArrayList<String>());
 		if(saves != null) {
+
+			if(saves.contains("inheritPk")) {
+				String inheritPk = (String)doc.get("inheritPk_docvalues_string");
+				if(inheritPk != null)
+					oArticle.setInheritPk(inheritPk);
+			}
+
+			if(saves.contains("created")) {
+				Date created = (Date)doc.get("created_docvalues_date");
+				if(created != null)
+					oArticle.setCreated(created);
+			}
+
+			if(saves.contains("modified")) {
+				Date modified = (Date)doc.get("modified_docvalues_date");
+				if(modified != null)
+					oArticle.setModified(modified);
+			}
+
+			if(saves.contains("archived")) {
+				Boolean archived = (Boolean)doc.get("archived_docvalues_boolean");
+				if(archived != null)
+					oArticle.setArchived(archived);
+			}
+
+			if(saves.contains("deleted")) {
+				Boolean deleted = (Boolean)doc.get("deleted_docvalues_boolean");
+				if(deleted != null)
+					oArticle.setDeleted(deleted);
+			}
+
+			if(saves.contains("classCanonicalName")) {
+				String classCanonicalName = (String)doc.get("classCanonicalName_docvalues_string");
+				if(classCanonicalName != null)
+					oArticle.setClassCanonicalName(classCanonicalName);
+			}
+
+			if(saves.contains("classSimpleName")) {
+				String classSimpleName = (String)doc.get("classSimpleName_docvalues_string");
+				if(classSimpleName != null)
+					oArticle.setClassSimpleName(classSimpleName);
+			}
+
+			if(saves.contains("classCanonicalNames")) {
+				List<String> classCanonicalNames = (List<String>)doc.get("classCanonicalNames_docvalues_strings");
+				if(classCanonicalNames != null)
+					oArticle.classCanonicalNames.addAll(classCanonicalNames);
+			}
+
+			if(saves.contains("sessionId")) {
+				String sessionId = (String)doc.get("sessionId_docvalues_string");
+				if(sessionId != null)
+					oArticle.setSessionId(sessionId);
+			}
+
+			if(saves.contains("userKey")) {
+				Long userKey = (Long)doc.get("userKey_docvalues_long");
+				if(userKey != null)
+					oArticle.setUserKey(userKey);
+			}
+
+			if(saves.contains("saves")) {
+				List<String> saves = (List<String>)doc.get("saves_docvalues_strings");
+				if(saves != null)
+					oArticle.saves.addAll(saves);
+			}
+
+			if(saves.contains("objectTitle")) {
+				String objectTitle = (String)doc.get("objectTitle_docvalues_string");
+				if(objectTitle != null)
+					oArticle.setObjectTitle(objectTitle);
+			}
+
+			if(saves.contains("objectId")) {
+				String objectId = (String)doc.get("objectId_docvalues_string");
+				if(objectId != null)
+					oArticle.setObjectId(objectId);
+			}
+
+			if(saves.contains("objectSuggest")) {
+				String objectSuggest = (String)doc.get("objectSuggest_suggested");
+				oArticle.setObjectSuggest(objectSuggest);
+			}
+
+			if(saves.contains("objectText")) {
+				String objectText = (String)doc.get("objectText_docvalues_string");
+				if(objectText != null)
+					oArticle.setObjectText(objectText);
+			}
+
+			if(saves.contains("pageUrlId")) {
+				String pageUrlId = (String)doc.get("pageUrlId_docvalues_string");
+				if(pageUrlId != null)
+					oArticle.setPageUrlId(pageUrlId);
+			}
+
+			if(saves.contains("pageUrlPk")) {
+				String pageUrlPk = (String)doc.get("pageUrlPk_docvalues_string");
+				if(pageUrlPk != null)
+					oArticle.setPageUrlPk(pageUrlPk);
+			}
+
+			if(saves.contains("pageUrlApi")) {
+				String pageUrlApi = (String)doc.get("pageUrlApi_docvalues_string");
+				if(pageUrlApi != null)
+					oArticle.setPageUrlApi(pageUrlApi);
+			}
+
+			String id = (String)doc.get("id");
+			oArticle.setId(id);
 		}
 	}
 
@@ -4624,6 +4885,7 @@ public abstract class ArticleGen<DEV> extends Object {
 	}
 	public void storeArticle(SolrResponse.Doc doc) {
 		Article oArticle = (Article)this;
+		SiteRequestEnUS siteRequest = oArticle.getSiteRequest_();
 
 		oArticle.setInheritPk(Optional.ofNullable(doc.get("inheritPk_docvalues_string")).map(v -> v.toString()).orElse(null));
 		oArticle.setCreated(Optional.ofNullable(doc.get("created_docvalues_date")).map(v -> v.toString()).orElse(null));
@@ -4633,12 +4895,12 @@ public abstract class ArticleGen<DEV> extends Object {
 		oArticle.setClassCanonicalName(Optional.ofNullable(doc.get("classCanonicalName_docvalues_string")).map(v -> v.toString()).orElse(null));
 		oArticle.setClassSimpleName(Optional.ofNullable(doc.get("classSimpleName_docvalues_string")).map(v -> v.toString()).orElse(null));
 		Optional.ofNullable((List<?>)doc.get("classCanonicalNames_docvalues_strings")).orElse(Arrays.asList()).stream().filter(v -> v != null).forEach(v -> {
-			oArticle.addClassCanonicalNames(v.toString());
+			oArticle.addClassCanonicalNames(Article.staticSetClassCanonicalNames(siteRequest, v.toString()));
 		});
 		oArticle.setSessionId(Optional.ofNullable(doc.get("sessionId_docvalues_string")).map(v -> v.toString()).orElse(null));
 		oArticle.setUserKey(Optional.ofNullable(doc.get("userKey_docvalues_long")).map(v -> v.toString()).orElse(null));
 		Optional.ofNullable((List<?>)doc.get("saves_docvalues_strings")).orElse(Arrays.asList()).stream().filter(v -> v != null).forEach(v -> {
-			oArticle.addSaves(v.toString());
+			oArticle.addSaves(Article.staticSetSaves(siteRequest, v.toString()));
 		});
 		oArticle.setObjectTitle(Optional.ofNullable(doc.get("objectTitle_docvalues_string")).map(v -> v.toString()).orElse(null));
 		oArticle.setObjectId(Optional.ofNullable(doc.get("objectId_docvalues_string")).map(v -> v.toString()).orElse(null));
@@ -5187,46 +5449,22 @@ public abstract class ArticleGen<DEV> extends Object {
 		}
 	}
 
-	public static Integer htmlColumnArticle(String var) {
+	public static Integer htmColumnArticle(String var) {
 		switch(var) {
-		case VAR_created:
-			return 1;
-		case VAR_objectTitle:
-			return 2;
 			default:
 				return null;
 		}
 	}
 
-	public static Integer htmlRowArticle(String var) {
+	public static Integer htmRowArticle(String var) {
 		switch(var) {
-		case VAR_created:
-			return 1;
-		case VAR_modified:
-			return 1;
-		case VAR_archived:
-			return 2;
-		case VAR_deleted:
-			return 2;
-		case VAR_objectId:
-			return 1;
 			default:
 				return null;
 		}
 	}
 
-	public static Integer htmlCellArticle(String var) {
+	public static Integer htmCellArticle(String var) {
 		switch(var) {
-		case VAR_created:
-			return 2;
-		case VAR_modified:
-			return 3;
-		case VAR_archived:
-			return 1;
-		case VAR_deleted:
-			return 2;
-		case VAR_objectId:
-			return 4;
 			default:
 				return null;
 		}

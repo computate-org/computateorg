@@ -8,6 +8,8 @@ import java.util.Optional;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -36,25 +38,19 @@ import io.vertx.core.Promise;
 import io.vertx.core.Future;
 import io.vertx.core.json.JsonArray;
 
-/**	
-<ol>
-<li>You can add a class comment <b>"Api: true"</b> if you wish to GET, POST, PATCH or PUT these ArticlePage objects in a RESTful API. 
-</li>
-<li>You can add a class comment "{@inheritDoc}" if you wish to inherit the helpful inherited class comments from class ArticlePageGen into the class ArticlePage. 
-</li>
-0<h3>Suggestions that can generate more code for you: </h3></ol>
+/**
+ * <ol>
+<h3>Suggestions that can generate more code for you: </h3> * </ol>
  * <li>You can add a class comment <b>"Api: true"</b> if you wish to GET, POST, PATCH or PUT these ArticlePage objects in a RESTful API. 
+ * </li><li>You can add a class comment "{@inheritDoc}" if you wish to inherit the helpful inherited class comments from class ArticlePageGen into the class ArticlePage. 
  * </li>
- * <li>You can add a class comment "{@inheritDoc}" if you wish to inherit the helpful inherited class comments from class ArticlePageGen into the class ArticlePage. 
- * </li>
- * 0<h3>Suggestions that can generate more code for you: </h3>
  * <h3>About the ArticlePage class and it's generated class ArticlePageGen&lt;ArticleGenPage&gt;: </h3>extends ArticlePageGen
  * <p>
  * This Java class extends a generated Java class ArticlePageGen built by the <a href="https://github.com/computate-org/computate">https://github.com/computate-org/computate</a> project. 
  * Whenever this Java class is modified or touched, the watch service installed as described in the README, indexes all the information about this Java class in a local Apache Solr Search Engine. 
  * If you are running the service, you can see the indexed data about this Java Class here: 
  * </p>
- * <p><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstClasse_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.ArticlePage">Find the class ArticlePage in Solr. </a></p>
+ * <p><a href="https://solr-solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstClasse_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.ArticlePage">Find the class ArticlePage in Solr. </a></p>
  * <p>
  * The extended class ending with "Gen" did not exist at first, but was automatically created by the same watch service based on the data retrieved from the local Apache Server search engine. 
  * The extended class contains many generated fields, getters, setters, initialization code, and helper methods to help build a website and API fast, reactive, and scalable. 
@@ -64,56 +60,35 @@ import io.vertx.core.json.JsonArray;
  * The generated <code>class ArticlePageGen extends ArticleGenPage</code> which means that ArticlePage extends ArticlePageGen which extends ArticleGenPage. 
  * This generated inheritance is a powerful feature that allows a lot of boiler plate code to be created for you automatically while still preserving inheritance through the power of Java Generic classes. 
  * </p>
- * Api: true
- * ApiTag.enUS: null
- * ApiUri.enUS: null
- * Color: null
- * IconGroup: null
- * IconName: null
- * Indexed: true
- * {@inheritDoc}
+ * <h2>Api: true</h2>
+ * <h2>ApiTag.enUS: true</h2>
+ * <h2>ApiUri.enUS: null</h2>
+ * <h2>Color: null</h2>
+ * <h2>IconGroup: null</h2>
+ * <h2>IconName: null</h2>
+ * <h2>Indexed: true</h2>
+ * <h2>{@inheritDoc}</h2>
  * <p>By adding a class comment "{@inheritDoc}", the ArticlePage class will inherit the helpful inherited class comments from the super class ArticlePageGen. 
  * </p>
- * Rows: null
- * Model: true
- * Page: true
- * SuperPage.enUS: null
- * Promise: true
- * <p>
- *   This class contains a comment <b>"Promise: true"</b>
- *   Sometimes a Java class must be initialized asynchronously when it involves calling a blocking API. 
- *   This means that the ArticlePage Java class has promiseDeep methods which must be initialized asynchronously as a Vert.x Promise  instead of initDeep methods which are a simple non-asynchronous method. 
- * </p>
- * <p>
- *   Adding protected void methods beginning with an underscore with a Promise as the only parameter will automatically set `Promise: true`. 
- * </p>
- * <p>
- *   <pre>
- *   
- *   	protected void _promiseBefore(Promise&lt;Void&gt; promise) {
- *   		promise.complete();
- *   	}
- *   </pre>
- * </p>
- * <p>
- *   Java classes with the `Model: true` will automatically set `Promise: true`. 
- * </p>
- * <p>
- *   If a super class of this Java class with `Model: true`, then the child class will also inherit `Promise: true`. 
- * </p>
- * AName: null
+ * <h2>Rows: null</h2>
+ * <h2>Model: true</h2>
+ * <h2>Page: true</h2>
+ * <h2>SuperPage.enUS: null</h2>
+ * <h2>Promise: true</h2>
+ * <h2>AName.enUS: null</h2>
  * <p>
  * Delete the class ArticlePage in Solr: 
- * curl 'http://localhost:8983/solr/computate/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.ArticlePage&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'
+ * curl -k 'https://solr-solr.apps-crc.testing/solr/computate/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.ArticlePage&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'
  * </p>
  * <p>
  * Delete  the package org.computate.site.enus.article in Solr: 
- * curl 'http://localhost:8983/solr/computate/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;classeNomEnsemble_enUS_indexed_string:org.computate.site.enus.article&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'
+ * curl -k 'https://solr-solr.apps-crc.testing/solr/computate/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;classeNomEnsemble_enUS_indexed_string:org.computate.site.enus.article&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'
  * </p>
  * <p>
  * Delete  the project computateorg in Solr: 
- * curl 'http://localhost:8983/solr/computate/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;siteNom_indexed_string:computateorg&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'
+ * curl -k 'https://solr-solr.apps-crc.testing/solr/computate/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;siteNom_indexed_string:computateorg&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'
  * </p>
+ * Generated: true
  **/
 public abstract class ArticlePageGen<DEV> extends ArticleGenPage {
 	protected static final Logger LOG = LoggerFactory.getLogger(ArticlePage.class);
@@ -122,46 +97,21 @@ public abstract class ArticlePageGen<DEV> extends ArticleGenPage {
 	// initDeep //
 	//////////////
 
-	public Future<Void> promiseDeepArticlePage(SiteRequestEnUS siteRequest_) {
+	public ArticlePage initDeepArticlePage(SiteRequestEnUS siteRequest_) {
 		setSiteRequest_(siteRequest_);
-		return promiseDeepArticlePage();
+		initDeepArticlePage();
+		return (ArticlePage)this;
 	}
 
-	public Future<Void> promiseDeepArticlePage() {
-		Promise<Void> promise = Promise.promise();
-		Promise<Void> promise2 = Promise.promise();
-		promiseArticlePage(promise2);
-		promise2.future().onSuccess(a -> {
-			super.promiseDeepArticleGenPage(siteRequest_).onSuccess(b -> {
-				promise.complete();
-			}).onFailure(ex -> {
-				promise.fail(ex);
-			});
-		}).onFailure(ex -> {
-			promise.fail(ex);
-		});
-		return promise.future();
+	public void initDeepArticlePage() {
+		initArticlePage();
 	}
 
-	public Future<Void> promiseArticlePage(Promise<Void> promise) {
-		Future.future(a -> a.complete()).compose(a -> {
-			Promise<Void> promise2 = Promise.promise();
-			try {
-				promise2.complete();
-			} catch(Exception ex) {
-				promise2.fail(ex);
-			}
-			return promise2.future();
-		}).onSuccess(a -> {
-			promise.complete();
-		}).onFailure(ex -> {
-			promise.fail(ex);
-		});
-		return promise.future();
+	public void initArticlePage() {
 	}
 
-	@Override public Future<Void> promiseDeepForClass(SiteRequestEnUS siteRequest_) {
-		return promiseDeepArticlePage(siteRequest_);
+	public void initDeepForClass(SiteRequestEnUS siteRequest_) {
+		initDeepArticlePage(siteRequest_);
 	}
 
 	/////////////////
@@ -169,7 +119,6 @@ public abstract class ArticlePageGen<DEV> extends ArticleGenPage {
 	/////////////////
 
 	public void siteRequestArticlePage(SiteRequestEnUS siteRequest_) {
-			super.siteRequestArticleGenPage(siteRequest_);
 	}
 
 	public void siteRequestForClass(SiteRequestEnUS siteRequest_) {
@@ -180,7 +129,7 @@ public abstract class ArticlePageGen<DEV> extends ArticleGenPage {
 	// obtain //
 	/////////////
 
-	@Override public Object obtainForClass(String var) {
+	public Object obtainForClass(String var) {
 		String[] vars = StringUtils.split(var, ".");
 		Object o = null;
 		for(String v : vars) {
@@ -201,7 +150,7 @@ public abstract class ArticlePageGen<DEV> extends ArticleGenPage {
 		ArticlePage oArticlePage = (ArticlePage)this;
 		switch(var) {
 			default:
-				return super.obtainArticleGenPage(var);
+				return null;
 		}
 	}
 
@@ -209,7 +158,7 @@ public abstract class ArticlePageGen<DEV> extends ArticleGenPage {
 	// relate //
 	///////////////
 
-	@Override public boolean relateForClass(String var, Object val) {
+	public boolean relateForClass(String var, Object val) {
 		String[] vars = StringUtils.split(var, ".");
 		Object o = null;
 		for(String v : vars) {
@@ -226,7 +175,7 @@ public abstract class ArticlePageGen<DEV> extends ArticleGenPage {
 		ArticlePage oArticlePage = (ArticlePage)this;
 		switch(var) {
 			default:
-				return super.relateArticleGenPage(var, val);
+				return null;
 		}
 	}
 
@@ -240,7 +189,7 @@ public abstract class ArticlePageGen<DEV> extends ArticleGenPage {
 	public static Object staticSetArticlePage(String entityVar, SiteRequestEnUS siteRequest_, String o) {
 		switch(entityVar) {
 			default:
-				return ArticleGenPage.staticSetArticleGenPage(entityVar,  siteRequest_, o);
+				return null;
 		}
 	}
 
@@ -254,7 +203,7 @@ public abstract class ArticlePageGen<DEV> extends ArticleGenPage {
 	public static Object staticSearchArticlePage(String entityVar, SiteRequestEnUS siteRequest_, Object o) {
 		switch(entityVar) {
 			default:
-				return ArticleGenPage.staticSearchArticleGenPage(entityVar,  siteRequest_, o);
+				return null;
 		}
 	}
 
@@ -268,7 +217,7 @@ public abstract class ArticlePageGen<DEV> extends ArticleGenPage {
 	public static String staticSearchStrArticlePage(String entityVar, SiteRequestEnUS siteRequest_, Object o) {
 		switch(entityVar) {
 			default:
-				return ArticleGenPage.staticSearchStrArticleGenPage(entityVar,  siteRequest_, o);
+				return null;
 		}
 	}
 
@@ -282,7 +231,7 @@ public abstract class ArticlePageGen<DEV> extends ArticleGenPage {
 	public static String staticSearchFqArticlePage(String entityVar, SiteRequestEnUS siteRequest_, String o) {
 		switch(entityVar) {
 			default:
-				return ArticleGenPage.staticSearchFqArticleGenPage(entityVar,  siteRequest_, o);
+				return null;
 		}
 	}
 
@@ -292,7 +241,6 @@ public abstract class ArticlePageGen<DEV> extends ArticleGenPage {
 
 	@Override public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append(super.toString());
 		return sb.toString();
 	}
 
@@ -305,7 +253,7 @@ public abstract class ArticlePageGen<DEV> extends ArticleGenPage {
 	public static String displayNameArticlePage(String var) {
 		switch(var) {
 		default:
-			return ArticleGenPage.displayNameArticleGenPage(var);
+			return null;
 		}
 	}
 }

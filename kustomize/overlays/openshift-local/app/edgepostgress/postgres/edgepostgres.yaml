@@ -7,6 +7,16 @@ spec:
   managementState: Managed
   postgres:
     enable_dev_nodeports: true
+    config:
+      files:
+        - configMap:
+            name: smartvillage-db-create
+            items:
+              - key: db-create.sql
+                path: smartvillage-db-create.sql
+                instance: postgres
+                database: smartvillage
+                user: smartvillage
     instances:
       - name: postgres
         replicas: 1

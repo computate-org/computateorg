@@ -4,10 +4,13 @@ resources:
   - edgerabbitmqs/
   - edgekafkas/
   - edgepostgress/
+  - edgezookeepers/
   - edgesolrs/
   - orionldcontextbrokers/
   - scorpiobrokers/
   - iotagentjsons/
   - smartabyarsmartvillages/
   - trafficsimulations/
+  - smarttrafficlights/
   - trafficflowobserveds/
+  - crowdflowobserveds/

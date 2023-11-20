@@ -8,6 +8,8 @@ import java.util.Optional;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -40,25 +42,19 @@ import org.computate.search.wrap.Wrap;
 import io.vertx.core.Promise;
 import io.vertx.core.Future;
 
-/**	
-<ol>
-<li>You can add a class comment <b>"Api: true"</b> if you wish to GET, POST, PATCH or PUT these ArticleGenPage objects in a RESTful API. 
-</li>
-<li>You can add a class comment "{@inheritDoc}" if you wish to inherit the helpful inherited class comments from class ArticleGenPageGen into the class ArticleGenPage. 
-</li>
-0<h3>Suggestions that can generate more code for you: </h3></ol>
+/**
+ * <ol>
+<h3>Suggestions that can generate more code for you: </h3> * </ol>
  * <li>You can add a class comment <b>"Api: true"</b> if you wish to GET, POST, PATCH or PUT these ArticleGenPage objects in a RESTful API. 
+ * </li><li>You can add a class comment "{@inheritDoc}" if you wish to inherit the helpful inherited class comments from class ArticleGenPageGen into the class ArticleGenPage. 
  * </li>
- * <li>You can add a class comment "{@inheritDoc}" if you wish to inherit the helpful inherited class comments from class ArticleGenPageGen into the class ArticleGenPage. 
- * </li>
- * 0<h3>Suggestions that can generate more code for you: </h3>
  * <h3>About the ArticleGenPage class and it's generated class ArticleGenPageGen&lt;PageLayout&gt;: </h3>extends ArticleGenPageGen
  * <p>
  * This Java class extends a generated Java class ArticleGenPageGen built by the <a href="https://github.com/computate-org/computate">https://github.com/computate-org/computate</a> project. 
  * Whenever this Java class is modified or touched, the watch service installed as described in the README, indexes all the information about this Java class in a local Apache Solr Search Engine. 
  * If you are running the service, you can see the indexed data about this Java Class here: 
  * </p>
- * <p><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstClasse_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.ArticleGenPage">Find the class ArticleGenPage in Solr. </a></p>
+ * <p><a href="https://solr-solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstClasse_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.ArticleGenPage">Find the class ArticleGenPage in Solr. </a></p>
  * <p>
  * The extended class ending with "Gen" did not exist at first, but was automatically created by the same watch service based on the data retrieved from the local Apache Server search engine. 
  * The extended class contains many generated fields, getters, setters, initialization code, and helper methods to help build a website and API fast, reactive, and scalable. 
@@ -68,21 +64,21 @@ import io.vertx.core.Future;
  * The generated <code>class ArticleGenPageGen extends PageLayout</code> which means that ArticleGenPage extends ArticleGenPageGen which extends PageLayout. 
  * This generated inheritance is a powerful feature that allows a lot of boiler plate code to be created for you automatically while still preserving inheritance through the power of Java Generic classes. 
  * </p>
- * Api: true
- * ApiTag.enUS: null
- * ApiUri.enUS: null
- * Color: null
- * IconGroup: null
- * IconName: null
- * Indexed: true
- * {@inheritDoc}
+ * <h2>Api: true</h2>
+ * <h2>ApiTag.enUS: true</h2>
+ * <h2>ApiUri.enUS: null</h2>
+ * <h2>Color: null</h2>
+ * <h2>IconGroup: null</h2>
+ * <h2>IconName: null</h2>
+ * <h2>Indexed: true</h2>
+ * <h2>{@inheritDoc}</h2>
  * <p>By adding a class comment "{@inheritDoc}", the ArticleGenPage class will inherit the helpful inherited class comments from the super class ArticleGenPageGen. 
  * </p>
- * Rows: null
- * Model: true
- * Page: true
- * SuperPage.enUS: null
- * Promise: true
+ * <h2>Rows: null</h2>
+ * <h2>Model: true</h2>
+ * <h2>Page: true</h2>
+ * <h2>SuperPage.enUS: null</h2>
+ * <h2>Promise: true</h2>
  * <p>
  *   This class contains a comment <b>"Promise: true"</b>
  *   Sometimes a Java class must be initialized asynchronously when it involves calling a blocking API. 
@@ -105,19 +101,20 @@ import io.vertx.core.Future;
  * <p>
  *   If a super class of this Java class with `Model: true`, then the child class will also inherit `Promise: true`. 
  * </p>
- * AName: null
+ * <h2>AName.enUS: null</h2>
  * <p>
  * Delete the class ArticleGenPage in Solr: 
- * curl 'http://localhost:8983/solr/computate/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.ArticleGenPage&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'
+ * curl -k 'https://solr-solr.apps-crc.testing/solr/computate/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.ArticleGenPage&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'
  * </p>
  * <p>
  * Delete  the package org.computate.site.enus.article in Solr: 
- * curl 'http://localhost:8983/solr/computate/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;classeNomEnsemble_enUS_indexed_string:org.computate.site.enus.article&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'
+ * curl -k 'https://solr-solr.apps-crc.testing/solr/computate/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;classeNomEnsemble_enUS_indexed_string:org.computate.site.enus.article&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'
  * </p>
  * <p>
  * Delete  the project computateorg in Solr: 
- * curl 'http://localhost:8983/solr/computate/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;siteNom_indexed_string:computateorg&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'
+ * curl -k 'https://solr-solr.apps-crc.testing/solr/computate/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;siteNom_indexed_string:computateorg&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'
  * </p>
+ * Generated: true
  **/
 public abstract class ArticleGenPageGen<DEV> extends PageLayout {
 	protected static final Logger LOG = LoggerFactory.getLogger(ArticleGenPage.class);
@@ -136,7 +133,7 @@ public abstract class ArticleGenPageGen<DEV> extends PageLayout {
 
 	/**	<br> The entity searchListArticle_
 	 *  is defined as null before being initialized. 
-	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.ArticleGenPage&fq=entiteVar_enUS_indexed_string:searchListArticle_">Find the entity searchListArticle_ in Solr</a>
+	 * <br><a href="https://solr-solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.ArticleGenPage&fq=entiteVar_enUS_indexed_string:searchListArticle_">Find the entity searchListArticle_ in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -156,35 +153,12 @@ public abstract class ArticleGenPageGen<DEV> extends PageLayout {
 		Wrap<SearchList<Article>> searchListArticle_Wrap = new Wrap<SearchList<Article>>().var("searchListArticle_");
 		if(searchListArticle_ == null) {
 			_searchListArticle_(searchListArticle_Wrap);
-			setSearchListArticle_(searchListArticle_Wrap.o);
+			Optional.ofNullable(searchListArticle_Wrap.getO()).ifPresent(o -> {
+				setSearchListArticle_(o);
+			});
 		}
 		return (ArticleGenPage)this;
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 	/////////////////
 	// listArticle //
@@ -200,7 +174,7 @@ public abstract class ArticleGenPageGen<DEV> extends PageLayout {
 
 	/**	<br> The entity listArticle
 	 *  It is constructed before being initialized with the constructor by default. 
-	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.ArticleGenPage&fq=entiteVar_enUS_indexed_string:listArticle">Find the entity listArticle in Solr</a>
+	 * <br><a href="https://solr-solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.ArticleGenPage&fq=entiteVar_enUS_indexed_string:listArticle">Find the entity listArticle in Solr</a>
 	 * <br>
 	 * @param l is the entity already constructed. 
 	 **/
@@ -213,12 +187,31 @@ public abstract class ArticleGenPageGen<DEV> extends PageLayout {
 	public void setListArticle(JsonArray listArticle) {
 		this.listArticle = listArticle;
 	}
+	@JsonIgnore
+	public void setListArticle(String o) {
+		this.listArticle = ArticleGenPage.staticSetListArticle(siteRequest_, o);
+	}
 	public static JsonArray staticSetListArticle(SiteRequestEnUS siteRequest_, String o) {
+		if(o != null) {
+				return new JsonArray(o);
+		}
 		return null;
 	}
 	protected ArticleGenPage listArticleInit() {
 		_listArticle(listArticle);
 		return (ArticleGenPage)this;
+	}
+
+	public static String staticSearchListArticle(SiteRequestEnUS siteRequest_, JsonArray o) {
+		return o.toString();
+	}
+
+	public static String staticSearchStrListArticle(SiteRequestEnUS siteRequest_, String o) {
+		return o == null ? null : o.toString();
+	}
+
+	public static String staticSearchFqListArticle(SiteRequestEnUS siteRequest_, String o) {
+		return ArticleGenPage.staticSearchStrListArticle(siteRequest_, ArticleGenPage.staticSearchListArticle(siteRequest_, ArticleGenPage.staticSetListArticle(siteRequest_, o)));
 	}
 
 	//////////////////
@@ -236,7 +229,7 @@ public abstract class ArticleGenPageGen<DEV> extends PageLayout {
 
 	/**	<br> The entity articleCount
 	 *  is defined as null before being initialized. 
-	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.ArticleGenPage&fq=entiteVar_enUS_indexed_string:articleCount">Find the entity articleCount in Solr</a>
+	 * <br><a href="https://solr-solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.ArticleGenPage&fq=entiteVar_enUS_indexed_string:articleCount">Find the entity articleCount in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -262,7 +255,9 @@ public abstract class ArticleGenPageGen<DEV> extends PageLayout {
 		Wrap<Integer> articleCountWrap = new Wrap<Integer>().var("articleCount");
 		if(articleCount == null) {
 			_articleCount(articleCountWrap);
-			setArticleCount(articleCountWrap.o);
+			Optional.ofNullable(articleCountWrap.getO()).ifPresent(o -> {
+				setArticleCount(o);
+			});
 		}
 		return (ArticleGenPage)this;
 	}
@@ -293,7 +288,7 @@ public abstract class ArticleGenPageGen<DEV> extends PageLayout {
 
 	/**	<br> The entity article_
 	 *  is defined as null before being initialized. 
-	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.ArticleGenPage&fq=entiteVar_enUS_indexed_string:article_">Find the entity article_ in Solr</a>
+	 * <br><a href="https://solr-solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.ArticleGenPage&fq=entiteVar_enUS_indexed_string:article_">Find the entity article_ in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -313,7 +308,9 @@ public abstract class ArticleGenPageGen<DEV> extends PageLayout {
 		Wrap<Article> article_Wrap = new Wrap<Article>().var("article_");
 		if(article_ == null) {
 			_article_(article_Wrap);
-			setArticle_(article_Wrap.o);
+			Optional.ofNullable(article_Wrap.getO()).ifPresent(o -> {
+				setArticle_(o);
+			});
 		}
 		return (ArticleGenPage)this;
 	}
@@ -332,7 +329,7 @@ public abstract class ArticleGenPageGen<DEV> extends PageLayout {
 
 	/**	<br> The entity id
 	 *  is defined as null before being initialized. 
-	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.ArticleGenPage&fq=entiteVar_enUS_indexed_string:id">Find the entity id in Solr</a>
+	 * <br><a href="https://solr-solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.ArticleGenPage&fq=entiteVar_enUS_indexed_string:id">Find the entity id in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -351,7 +348,9 @@ public abstract class ArticleGenPageGen<DEV> extends PageLayout {
 		Wrap<String> idWrap = new Wrap<String>().var("id");
 		if(id == null) {
 			_id(idWrap);
-			setId(idWrap.o);
+			Optional.ofNullable(idWrap.getO()).ifPresent(o -> {
+				setId(o);
+			});
 		}
 		return (ArticleGenPage)this;
 	}
@@ -368,16 +367,6 @@ public abstract class ArticleGenPageGen<DEV> extends PageLayout {
 		return ArticleGenPage.staticSearchStrId(siteRequest_, ArticleGenPage.staticSearchId(siteRequest_, ArticleGenPage.staticSetId(siteRequest_, o)));
 	}
 
-
-
-
-
-
-
-
-
-
-
 	////////////////////
 	// pageUriArticle //
 	////////////////////
@@ -392,7 +381,7 @@ public abstract class ArticleGenPageGen<DEV> extends PageLayout {
 
 	/**	<br> The entity pageUriArticle
 	 *  is defined as null before being initialized. 
-	 * <br><a href="http://localhost:8983/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.ArticleGenPage&fq=entiteVar_enUS_indexed_string:pageUriArticle">Find the entity pageUriArticle in Solr</a>
+	 * <br><a href="https://solr-solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.site.enus.article.ArticleGenPage&fq=entiteVar_enUS_indexed_string:pageUriArticle">Find the entity pageUriArticle in Solr</a>
 	 * <br>
 	 * @param c is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -411,7 +400,9 @@ public abstract class ArticleGenPageGen<DEV> extends PageLayout {
 		Wrap<String> pageUriArticleWrap = new Wrap<String>().var("pageUriArticle");
 		if(pageUriArticle == null) {
 			_pageUriArticle(pageUriArticleWrap);
-			setPageUriArticle(pageUriArticleWrap.o);
+			Optional.ofNullable(pageUriArticleWrap.getO()).ifPresent(o -> {
+				setPageUriArticle(o);
+			});
 		}
 		return (ArticleGenPage)this;
 	}
@@ -567,6 +558,8 @@ public abstract class ArticleGenPageGen<DEV> extends PageLayout {
 	}
 	public static Object staticSetArticleGenPage(String entityVar, SiteRequestEnUS siteRequest_, String o) {
 		switch(entityVar) {
+		case "listArticle":
+			return ArticleGenPage.staticSetListArticle(siteRequest_, o);
 		case "articleCount":
 			return ArticleGenPage.staticSetArticleCount(siteRequest_, o);
 		case "id":
@@ -587,6 +580,8 @@ public abstract class ArticleGenPageGen<DEV> extends PageLayout {
 	}
 	public static Object staticSearchArticleGenPage(String entityVar, SiteRequestEnUS siteRequest_, Object o) {
 		switch(entityVar) {
+		case "listArticle":
+			return ArticleGenPage.staticSearchListArticle(siteRequest_, (JsonArray)o);
 		case "articleCount":
 			return ArticleGenPage.staticSearchArticleCount(siteRequest_, (Integer)o);
 		case "id":
@@ -607,6 +602,8 @@ public abstract class ArticleGenPageGen<DEV> extends PageLayout {
 	}
 	public static String staticSearchStrArticleGenPage(String entityVar, SiteRequestEnUS siteRequest_, Object o) {
 		switch(entityVar) {
+		case "listArticle":
+			return ArticleGenPage.staticSearchStrListArticle(siteRequest_, (String)o);
 		case "articleCount":
 			return ArticleGenPage.staticSearchStrArticleCount(siteRequest_, (Integer)o);
 		case "id":
@@ -627,6 +624,8 @@ public abstract class ArticleGenPageGen<DEV> extends PageLayout {
 	}
 	public static String staticSearchFqArticleGenPage(String entityVar, SiteRequestEnUS siteRequest_, String o) {
 		switch(entityVar) {
+		case "listArticle":
+			return ArticleGenPage.staticSearchFqListArticle(siteRequest_, o);
 		case "articleCount":
 			return ArticleGenPage.staticSearchFqArticleCount(siteRequest_, o);
 		case "id":
