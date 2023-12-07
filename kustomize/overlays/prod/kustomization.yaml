@@ -3,7 +3,6 @@ kind: Kustomization
 resources:
   - namespaces/
   - serviceaccounts/
-  - deployments/
   - statefulsets/
   - services/
   - keycloaks/

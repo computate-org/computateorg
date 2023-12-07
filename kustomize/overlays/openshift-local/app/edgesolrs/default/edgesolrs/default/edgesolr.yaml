@@ -1,13 +1,15 @@
 apiVersion: smartvillage.computate.org/v1
 kind: EdgeSolr
 metadata:
-  name: default
+  name: solr
   namespace: solr
 spec:
+  enable_dev_nodeports: true
   solr:
-    name: default
+    name: solr
     route:
       create: true
+      host_name: solr-solr.apps.crc.testing
     replicas: 1
     resources:
       limits:
@@ -19,6 +21,8 @@ spec:
     configsets:
       - name: computate
         configmap: computate-configset
+      - name: trailblazehunt
+        configmap: trailblazehunt-configset
     collections:
       - name: computate
         configset: computate
@@ -28,11 +32,8 @@ spec:
         configset: computate
       - name: opendatapolicing
         configset: computate
+      - name: trailblazehunt
+        configset: trailblazehunt
   zookeeper:
-    replicas: 1
-    limits:
-      memory: 500Mi
-      cpu: 500m
-    requests:
-      memory: 200Mi
-      cpu: 200m
+    host: zookeeper.zookeeper.svc
+    port: 2181
