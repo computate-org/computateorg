@@ -2,7 +2,7 @@ apiVersion: networking.gke.io/v1beta1
 kind: FrontendConfig
 metadata:
   name: sso
-  namespace: sso
+  namespace: keycloak
 spec:
   redirectToHttps:
     enabled: true

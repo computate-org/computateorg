@@ -2,7 +2,7 @@ apiVersion: k8s.keycloak.org/v2alpha1
 kind: Keycloak
 metadata:
   name: sso
-  namespace: sso
+  namespace: keycloak
   labels:
     app: sso
 spec:
@@ -16,11 +16,11 @@ spec:
     host: postgres-cluster-ha.postgres.svc
     port: 5432
     passwordSecret:
-      name: sso-db-secret
-      key: POSTGRES_PASSWORD
+      name: postgres-cluster-pguser-sso
+      key: password
     usernameSecret:
-      name: sso-db-secret
-      key: POSTGRES_USERNAME
+      name: postgres-cluster-pguser-sso
+      key: user
     poolInitialSize: 1
     poolMinSize: 2
     poolMaxSize: 3

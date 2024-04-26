@@ -15,12 +15,12 @@ metadata:
     networking.gke.io/v1beta1.FrontendConfig: sso
   labels:
     app: sso
-  name: sso
-  namespace: sso
+  name: sso-ingress
+  namespace: keycloak
 spec:
   ingressClassName: gce
   defaultBackend:
     service:
-      name: sso
+      name: sso-service
       port:
         number: 8080
