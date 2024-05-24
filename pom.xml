@@ -5,8 +5,8 @@
 	<groupId>org.computate</groupId>
 	<artifactId>site</artifactId>
 	<version>1.0.0</version>
-	<name>your website</name>
-	<description>Computate's guide to building your own data-driven custom website in the cloud</description>
+	<name>Learn that computer</name>
+	<description>Cloud native web development on your own computer</description>
 	<url>https://www.computate.org</url>
 	<packaging>jar</packaging>
 
@@ -85,30 +85,31 @@
 		<mockito.version>4.10.0</mockito.version>
 		<commonmark.version>0.21.0</commonmark.version>
 
-		<quarkus-base.version>2.7.6</quarkus-base.version>
-		<quarkus.version>${quarkus-base.version}.Final-redhat-00006</quarkus.version>
+		<quarkus-base.version>3.2.9</quarkus-base.version>
+		<quarkus.version>${quarkus-base.version}.Final-redhat-00002</quarkus.version>
 		<quarkus-plugin.version>${quarkus.version}</quarkus-plugin.version>
 		<quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
 		<quarkus.platform.group-id>io.quarkus</quarkus.platform.group-id>
 		<quarkus.platform.version>${quarkus.version}</quarkus.platform.version>
+		<rest-assured.version>5.3.2</rest-assured.version>
 
-		<vertx-base.version>4.2.7</vertx-base.version>
-		<vertx.version>${vertx-base.version}.redhat-00003</vertx.version>
+		<vertx-base.version>4.4.4</vertx-base.version>
+		<vertx.version>${vertx-base.version}.redhat-00001</vertx.version>
 
 		<jfreechart.version>1.5.3</jfreechart.version>
 		<handlebars.version>4.3.1</handlebars.version>
+		<jinjava.version>2.7.2</jinjava.version>
 		<flying-saucer.version>9.1.22</flying-saucer.version>
 		<openpdf.version>1.3.30</openpdf.version>
 		<itext-asian.version>5.2.0</itext-asian.version>
 		<commons-text.version>1.10.0</commons-text.version>
-		<log4j.version>2.19.0</log4j.version>
-		<log4j-slf4j-impl.version>2.19.0</log4j-slf4j-impl.version>
-		<slf4j.version>2.0.6</slf4j.version>
-		<jacoco-maven-plugin.version>0.8.8</jacoco-maven-plugin.version>
+		<log4j.version>2.22.0</log4j.version>
+		<slf4j.version>2.0.9</slf4j.version>
+		<jacoco-maven-plugin.version>0.8.11</jacoco-maven-plugin.version>
 		<solr.version>8.11.1</solr.version>
 		<jackson.version>2.14.1</jackson.version>
 		<jackson-databind.version>2.14.1</jackson-databind.version>
-		<commons-lang3.version>3.12.0.redhat-00001</commons-lang3.version>
+		<commons-lang3.version>3.13.0.redhat-00001</commons-lang3.version>
 		<commons-configuration2.version>2.8.0</commons-configuration2.version>
 		<snakeyaml.version>1.33.0.redhat-00001</snakeyaml.version>
 		<camel.version>3.18.3.redhat-00022</camel.version>
@@ -116,7 +117,7 @@
 		<drools.version>8.32.0.Final</drools.version>
 		<cloudevents.version>2.4.0</cloudevents.version>
 
-		<computate.version>4.2.7.27</computate.version>
+		<computate.version>4.4.4.2</computate.version>
 	</properties>
 
 	<dependencyManagement>
@@ -233,16 +234,6 @@
 		</dependency>
 
 		<!-- ###### -->
-		<!-- Charts -->
-		<!-- ###### -->
-
-		<dependency>
-			<groupId>org.jfree</groupId>
-			<artifactId>jfreechart</artifactId>
-			<version>1.5.0</version>
-		</dependency>
-
-		<!-- ###### -->
 		<!-- Vert.X -->
 		<!-- ###### -->
 
@@ -264,6 +255,12 @@
 			<groupId>com.github.jknack</groupId>
 			<artifactId>handlebars-jackson2</artifactId>
 			<version>${handlebars.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.hubspot.jinjava</groupId>
+			<artifactId>jinjava</artifactId>
+			<version>${jinjava.version}</version>
 		</dependency>
 
 		<dependency>
@@ -296,11 +293,6 @@
 			<groupId>io.vertx</groupId>
 			<artifactId>vertx-codegen</artifactId>
 			<classifier>processor</classifier>
-		</dependency>
-
-		<dependency>
-			<groupId>io.vertx</groupId>
-			<artifactId>vertx-service-proxy</artifactId>
 		</dependency>
 
 		<dependency>
@@ -364,10 +356,66 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-simple</artifactId>
-			<version>${slf4j.version}</version>
+			<groupId>io.vertx</groupId>
+			<artifactId>vertx-opentelemetry</artifactId>
 		</dependency>
+
+		<!-- ####### -->
+		<!-- Quarkus -->
+		<!-- ####### -->
+
+		<dependency>
+			<groupId>io.quarkus</groupId>
+			<artifactId>quarkus-resteasy-reactive-jackson</artifactId>
+			<version>${quarkus.platform.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.quarkus</groupId>
+			<artifactId>quarkus-vertx</artifactId>
+			<version>${quarkus.platform.version}</version>
+			<exclusions>
+				<exclusion>
+			        <groupId>org.jboss.slf4j</groupId>
+			        <artifactId>slf4j-jboss-logmanager</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<!--
+		<dependency>
+			<groupId>io.quarkus</groupId>
+			<artifactId>quarkus-bootstrap-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.quarkus</groupId>
+			<artifactId>quarkus-bootstrap-maven-resolver</artifactId>
+		</dependency>
+		-->
+		<dependency>
+			<groupId>io.smallrye.reactive</groupId>
+			<artifactId>smallrye-mutiny-vertx-web-client</artifactId>
+		</dependency>
+		<!--
+		<dependency>
+			<groupId>io.quarkus</groupId>
+			<artifactId>quarkus-arc</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.quarkus</groupId>
+			<artifactId>quarkus-bootstrap-runner</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.quarkus</groupId>
+			<artifactId>quarkus-junit5</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.rest-assured</groupId>
+			<artifactId>rest-assured</artifactId>
+			<scope>test</scope>
+			<version>${rest-assured.version}</version>
+		</dependency>
+		-->
 		
 		<!-- ########## -->
 		<!-- jfreechart -->
@@ -395,9 +443,22 @@
 		</dependency>
 
 		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-api</artifactId>
+			<version>${log4j.version}</version>
+		</dependency>
+
+		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
 			<version>${slf4j.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-simple</artifactId>
+			<version>${slf4j.version}</version>
+			<scope>compile</scope>
 		</dependency>
 
 		<!-- ############ -->
@@ -454,13 +515,6 @@
 		<!-- ##### -->
 		<!-- Other -->
 		<!-- ##### -->
-
-		<dependency>
-			<groupId>org.computate</groupId>
-			<artifactId>computate</artifactId>
-			<version>${computate.version}</version>
-		</dependency>
-		
 
 		<!-- ##### -->
 		<!-- Camel -->
@@ -595,7 +649,7 @@
 					<executable>maven</executable>
 					<includePluginDependencies>false</includePluginDependencies>
 					<includeProjectDependencies>true</includeProjectDependencies>
-					<mainClass>org.computate.site.enus.vertx.MainVerticle</mainClass>
+					<mainClass>org.computate.site.enus.verticle.MainVerticle</mainClass>
 				</configuration>
 			</plugin>
 
@@ -640,8 +694,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>${maven-compiler-plugin.version}</version>
 				<configuration>
-					<source>11</source>
-					<target>11</target>
+					<source>17</source>
+					<target>17</target>
 					<encoding>UTF-8</encoding>
 					<annotationProcessors>
 						<annotationProcessor>io.vertx.codegen.CodeGenProcessor</annotationProcessor>
@@ -702,7 +756,7 @@
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>0.8.6</version>
+				<version>${jacoco-maven-plugin.version}</version>
 				<executions>
 					<execution>
 						<id>prepare-agent</id>
@@ -734,4 +788,12 @@
 			</plugin>
 		</plugins>
 	</build>
+
+	<distributionManagement>
+		<!-- Central Repository -->
+		<snapshotRepository>
+			<id>ossrh</id>
+			<url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
+	</distributionManagement>
 </project>
