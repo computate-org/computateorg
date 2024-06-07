@@ -1,0 +1,29 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: solr-certificate
+  namespace: solr
+spec:
+  issuerRef:
+    name: self-signed
+    kind: ClusterIssuer
+  isCA: true
+  secretName: solr-certificate
+  duration: 2160h0m0s
+  renewBefore: 360h0m0s
+  commonName: solr-solr-solrcloud.apps-crc.testing
+  subject:
+    countries:
+      - Somewhere
+    provinces:
+      - Somewhere
+    localities:
+      - Somewhere
+    postalCodes:
+      - '84000'
+    streetAddresses:
+      - 1234 st
+    organizations:
+      - example
+  dnsNames:
+    - solr-solr-solrcloud.apps-crc.testing
